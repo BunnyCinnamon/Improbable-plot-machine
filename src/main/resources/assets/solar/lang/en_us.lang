@@ -1,0 +1,30 @@
+itemGroup.solar.misc_items=Solar Items
+itemGroup.solar.misc_blocks=Solar Blocks
+
+//Items
+item.primal_stone.name=Primal Stone
+item.primal_glyph.name=Primal Glyph
+item.quingentilliard.name=Quingentilliard
+
+//Blocks
+tile.primal_stone.name=Primal Stone
+tile.primal_glyph.name=Primal Glyph
+tile.black_hole.name=Black Hole
+tile.singularity.name=Singularity
+tile.prism_flower.name=Prism Flower
+tile.quantum_mirror.name=Quantum Mirror
+tile.light_particle.name=Light Particle
+tile.gravity_hopper.name=Gravity Hopper
+tile.crystal_void.name=Crystal Void
+tile.schrodinger_glyph.name=Schrodinger Glyph
+
+//Entity
+entity.eye_of_schrodinger.name=Eye of Schrodinger
+entity.special_item.name=Entity Item
+
+//Tooltip
+tlp.shift_for_info.name=<shift for info>
+tlp.ctrl_for_info.name=<ctrl for info>
+tlp.list_more.name=more
+tlp.quantum.name=Quantum Data
+tlp.uuid_key.name=Uuid

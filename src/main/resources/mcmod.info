@@ -1,0 +1,16 @@
+[
+{
+  "modid": "solar",
+  "name": "Solar",
+  "description": "Improbable plot machine",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://minecraft.curseforge.com/projects/solar",
+  "updateUrl": "",
+  "authorList": ["Arekkuusu"],
+  "credits": "you",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

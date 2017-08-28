@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "normal": [
+      {
+        "model": "solar:primal_stone"
+      }
+    ]
+  }
+}

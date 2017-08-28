@@ -1,0 +1,100 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"textures": {
+	  "all": "solar:blocks/primal_stone",
+	  "overlay": "solar:blocks/glyph/primal_glyph_0",
+	  "particle": "solar:blocks/primal_stone"
+	},
+	"model": "solar:block_overlay",
+	"uvlock": true
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}],
+	"glyph": {
+	  "0" : {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_0"
+		}
+	  },
+	  "1": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_1"
+		}
+	  },
+	  "2": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_2"
+		}
+	  },
+	  "3": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_3"
+		}
+	  },
+	  "4": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_4"
+		}
+	  },
+	  "5": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_5"
+		}
+	  },
+	  "6": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_6"
+		}
+	  },
+	  "7": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_7"
+		}
+	  },
+	  "8": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_8"
+		}
+	  },
+	  "9": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_9"
+		}
+	  },
+	  "10": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_10"
+		}
+	  },
+	  "11": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_11"
+		}
+	  },
+	  "12": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_12"
+		}
+	  },
+	  "13": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_13"
+		}
+	  },
+	  "14": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_14"
+		}
+	  },
+	  "15": {
+		"textures": {
+		  "overlay": "solar:blocks/glyph/primal_glyph_15"
+		}
+	  }
+	}
+  }
+}

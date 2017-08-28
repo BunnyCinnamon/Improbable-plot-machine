@@ -1,0 +1,22 @@
+/*******************************************************************************
+ * Arekkuusu / Solar 2017
+ *
+ * This project is licensed under the MIT.
+ * The source code is available on github: 
+ ******************************************************************************/
+package arekkuusu.solar.common.handler.recipe;
+
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
+
+/**
+ * Created by <Arekkuusu> on 16/08/2017.
+ * It's distributed as part of Solar.
+ */
+public class RecipeHandler {
+
+	public static void register(IForgeRegistry<IRecipe> registry) {
+		registry.register(new QuantumCloningRecipe());
+		registry.register(new QuantumClearRecipe());
+	}
+}

@@ -1,0 +1,18 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"textures": {
+	  "all": "solar:blocks/primal_stone",
+	  "overlay": "solar:blocks/schrodinger_glyph",
+	  "particle": "solar:blocks/primal_stone"
+	},
+	"model": "solar:block_overlay",
+	"uvlock": true
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}]
+  }
+}

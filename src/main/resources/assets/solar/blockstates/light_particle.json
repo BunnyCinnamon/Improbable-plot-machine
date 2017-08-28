@@ -1,0 +1,14 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:light_particle",
+	"uvlock": true
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+		"model": "solar:light_particle"
+	}]
+  }
+}
