@@ -141,7 +141,7 @@ public class BlockQuantumMirror extends BlockBase implements ITileEntityProvider
 		if(tile != null && tile instanceof TileQuantumMirror) {
 			UUID key = ((TileQuantumMirror) tile).getKey();
 			if(key != null) {
-				ItemStack stack = SolarApi.getQuantumItem(key, 0);
+				ItemStack stack = SolarApi.getQuantumStack(key, 0);
 				Item redstone = Item.getItemFromBlock(Blocks.REDSTONE_BLOCK);
 				return !stack.isEmpty() && stack.getItem() == redstone ? 15 : 0;
 			}

@@ -9,7 +9,6 @@ package arekkuusu.solar.common.network;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.Solar;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -17,6 +16,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -24,17 +24,18 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 18/07/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumMessage implements IMessage {
+public class QuantumChangeMessage implements IMessage {
 
-	private ItemStack stack = ItemStack.EMPTY;
 	private UUID uuid;
+	private ItemStack stack;
+	private int slot;
 
-	public QuantumMessage() {
-	}
+	public QuantumChangeMessage() {}
 
-	public QuantumMessage(UUID uuid, ItemStack stack) {
+	public QuantumChangeMessage(UUID uuid, ItemStack stack, int slot) {
 		this.uuid = uuid;
 		this.stack = stack;
+		this.slot = slot;
 	}
 
 	@Override
@@ -44,9 +45,10 @@ public class QuantumMessage implements IMessage {
 		try {
 			stack = beef.readItemStack();
 		} catch(IOException e) {
-			Solar.LOG.warn("[Quantum Message] Failed to load ItemStack, please report this issue!");
+			Solar.LOG.error("[Quantum Message] Failed to read ItemStack from bytes for UUID: ", uuid.toString());
 			e.printStackTrace();
 		}
+		slot = beef.readInt();
 	}
 
 	@Override
@@ -54,16 +56,17 @@ public class QuantumMessage implements IMessage {
 		PacketBuffer beef = new PacketBuffer(buf);
 		beef.writeUniqueId(uuid);
 		beef.writeItemStack(stack);
+		beef.writeInt(slot);
 	}
 
-	public static class QuantumMessageHandler implements IMessageHandler<QuantumMessage, IMessage> {
+	public static class QuantumMessageHandler implements IMessageHandler<QuantumChangeMessage, IMessage> {
 
+		@SuppressWarnings("MethodCallSideOnly")
+		@Nullable
 		@Override
-		public IMessage onMessage(QuantumMessage message, MessageContext ctx) {
-			if (ctx.side == Side.CLIENT) {
-				Minecraft.getMinecraft().addScheduledTask(() -> {
-					//SolarApi.setQuantumItem(message.uuid, message.stack);
-				});
+		public IMessage onMessage(QuantumChangeMessage message, MessageContext ctx) {
+			if (ctx.side == Side.CLIENT && message.stack != null) {
+				SolarApi.setQuantumAsync(message.uuid, message.stack, message.slot);
 			}
 			return null;
 		}

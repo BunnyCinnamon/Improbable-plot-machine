@@ -116,9 +116,9 @@ public class CrystalVoidRenderer extends TESRModelRenderer<TileCrystalVoid> {
 		BlendHelper.lightMap(255F, 255F);
 		GlStateManager.disableCull();
 
-		SpriteLibrary.RED_GLYPH.bindManager();
-		Tuple<Double, Double> uv = SpriteLibrary.RED_GLYPH.getUVFrame((int) (age * 0.15F));
-		double vOffset = SpriteLibrary.RED_GLYPH.getV();
+		SpriteLibrary.GOLDEN_GLYPH.bindManager();
+		Tuple<Double, Double> uv = SpriteLibrary.GOLDEN_GLYPH.getUVFrame((int) (age * 0.15F));
+		double vOffset = SpriteLibrary.GOLDEN_GLYPH.getV();
 		double v = uv.getSecond();
 
 		ModelBakery.renderCube(0.47F, 0F, 1F, v, v + vOffset);
@@ -127,9 +127,11 @@ public class CrystalVoidRenderer extends TESRModelRenderer<TileCrystalVoid> {
 
 	private void renderSquare(int age, int offset, boolean side) {
 		GlStateManager.pushMatrix();
+
 		GlStateManager.rotate(offset, side ? 0F : 1F, side ? 1F : 0F, 0F);
 		GlStateManager.rotate(age, 0F, 0F, 1F);
 		BlockBaker.render(PRIMAL_SIDE);
+
 		GlStateManager.popMatrix();
 	}
 }

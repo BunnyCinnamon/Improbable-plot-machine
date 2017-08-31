@@ -11,12 +11,14 @@ import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.handler.recipe.RecipeHandler;
 import arekkuusu.solar.common.item.ModItems;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 /**
  * Created by <Arekkuusu> on 23/06/2017.
@@ -38,6 +40,13 @@ public final class CommonEvents {
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		RecipeHandler.register(event.getRegistry());
+	}
+
+	@SubscribeEvent
+	public static void syncQuantumData(PlayerEvent.PlayerLoggedInEvent event) {
+		if(event.player instanceof EntityPlayerMP) {
+			WorldQuantumData.syncTo((EntityPlayerMP) event.player);
+		}
 	}
 
 	@SubscribeEvent

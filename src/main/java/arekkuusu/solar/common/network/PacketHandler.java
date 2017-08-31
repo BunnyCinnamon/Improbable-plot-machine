@@ -29,8 +29,8 @@ public class PacketHandler {
 	private static int id = 0;
 
 	public static void init() {
-		register(QuantumMessage.QuantumMessageHandler.class, QuantumMessage.class, Side.CLIENT);
-		register(QuingentilliardMessage.QuingentilliardMessageHandler.class, QuingentilliardMessage.class, Side.SERVER);
+		register(QuantumChangeMessage.QuantumMessageHandler.class, QuantumChangeMessage.class, Side.CLIENT);
+		register(QuantumSyncMessage.QuantumSyncMessageHandler.class, QuantumSyncMessage.class, Side.CLIENT);
 	}
 
 	private static <H extends IMessageHandler<M, IMessage>, M extends IMessage> void register(Class<H> handler, Class<M> message, Side side) {

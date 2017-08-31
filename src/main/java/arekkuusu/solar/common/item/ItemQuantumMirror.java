@@ -50,7 +50,7 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IQuantumItem {
 				.condition(SHIFT_KEY_DOWN)
 				.ifAgrees(builder -> {
 					builder.addI18("quantum", TooltipHelper.DARK_GRAY_ITALIC).end();
-					SolarApi.getQuantumList(uuid).forEach(item -> builder
+					SolarApi.getQuantumStacks(uuid).forEach(item -> builder
 							.add("    - ", TextFormatting.DARK_GRAY)
 							.add(item.getDisplayName(), TooltipHelper.GRAY_ITALIC)
 							.add(" x " + item.getCount()).end()

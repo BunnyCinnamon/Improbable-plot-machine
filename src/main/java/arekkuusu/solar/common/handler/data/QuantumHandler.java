@@ -31,9 +31,9 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 	}
 
 	@Nullable
-	protected abstract UUID getKey();
+	public abstract UUID getKey();
 
-	protected void onChange() {}
+	protected void onChange(int slot) {}
 
 	public boolean assertSafety(ItemStack stack) {
 		return !(stack.getItem() instanceof IQuantumItem) || !((IQuantumItem) stack.getItem()).getKey(stack).isPresent();
@@ -43,12 +43,12 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 	public ItemStack getStackInSlot(int slot) {
 		if(getKey() == null) return ItemStack.EMPTY;
 
-		return SolarApi.getQuantumItem(getKey(), slot);
+		return SolarApi.getQuantumStack(getKey(), slot);
 	}
 
 	@Override
 	public void setStackInSlot(int slot, ItemStack stack) {
-		SolarApi.setQuantumItem(getKey(), stack, slot);
+		SolarApi.setQuantumStack(getKey(), stack, slot);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 
 		if(getKey() == null || !assertSafety(stack)) return stack;
 
-		ItemStack existing = SolarApi.getQuantumItem(getKey(), slot);
+		ItemStack existing = SolarApi.getQuantumStack(getKey(), slot);
 
 		int limit = stack.getMaxStackSize();
 
@@ -79,8 +79,9 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 				setStackInSlot(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
 			} else {
 				existing.grow(reachedLimit ? limit : stack.getCount());
+				setStackInSlot(slot, existing);
 			}
-			onChange();
+			onChange(slot);
 		}
 
 		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
@@ -90,7 +91,7 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		if(amount == 0 || getKey() == null) return ItemStack.EMPTY;
 
-		ItemStack existing = SolarApi.getQuantumItem(getKey(), slot);
+		ItemStack existing = SolarApi.getQuantumStack(getKey(), slot);
 
 		if(existing.isEmpty()) {
 			return ItemStack.EMPTY;
@@ -101,13 +102,13 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 		if(existing.getCount() <= toExtract) {
 			if(!simulate) {
 				setStackInSlot(slot, ItemStack.EMPTY);
-				onChange();
+				onChange(slot);
 			}
 			return existing;
 		} else {
 			if(!simulate) {
 				setStackInSlot(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
-				onChange();
+				onChange(slot);
 			}
 
 			return ItemHandlerHelper.copyStackWithSize(existing, toExtract);

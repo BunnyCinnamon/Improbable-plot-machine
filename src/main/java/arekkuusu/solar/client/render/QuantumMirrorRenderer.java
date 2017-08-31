@@ -32,7 +32,7 @@ public class QuantumMirrorRenderer extends TESRModelRenderer<TileQuantumMirror> 
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		if(!mirror.getWorld().isBlockLoaded(mirror.getPos(), false)) return;
 
-		ItemStack stack = SolarApi.getQuantumItem(mirror.getKey(), 0);
+		ItemStack stack = SolarApi.getQuantumStack(mirror.getKey(), 0);
 		if(!stack.isEmpty()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableRescaleNormal();

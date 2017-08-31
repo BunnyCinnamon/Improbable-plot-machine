@@ -11,7 +11,6 @@ import arekkuusu.solar.api.quantum.ISimpleQuantum;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.handler.data.QuantumHandler;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
-import arekkuusu.solar.common.network.PacketHandler;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,8 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -41,6 +38,11 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 
 	public TileQuantumMirror() {
 		handler = new QuantumTileHandler(this);
+	}
+
+	@Override
+	public void onLoad() {
+
 	}
 
 	@Override
@@ -82,30 +84,6 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 		}
 	}
 
-	/*public void putItem(EntityPlayer player, EnumHand hand, ItemStack stack) {
-		if(key == null || !handler.assertSafety(stack)) return;
-
-		ItemStack contained = getQuantumItem(0).copy();
-
-		if(ItemHandlerHelper.canItemStacksStack(contained, stack)) {
-			if(contained.getCount() < contained.getMaxStackSize()) {
-				int available = contained.getMaxStackSize() - contained.getCount();
-				if(available > 0) {
-					int difference = MathHelper.clamp(available, 0, stack.getCount());
-					stack.shrink(difference);
-					contained.grow(difference);
-					setQuantumItem(contained, 0);
-				}
-			}
-		} else if(contained.isEmpty()) {
-			player.setHeldItem(hand, ItemStack.EMPTY);
-			setQuantumItem(stack.copy(), 0);
-		} else {
-			player.setHeldItem(hand, contained);
-			setQuantumItem(stack.copy(), 0);
-		}
-	}*/
-
 	public void takeItem(EntityPlayer player, ItemStack stack) {
 		if(key == null) return;
 		ItemStack contained = getQuantumItem(0).copy();
@@ -119,13 +97,13 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 
 	@Override
 	public ItemStack getQuantumItem(int slot) {
-		return key == null ? ItemStack.EMPTY : SolarApi.getQuantumItem(key, slot);
+		return key == null ? ItemStack.EMPTY : SolarApi.getQuantumStack(key, slot);
 	}
 
 	@Override
 	public void setQuantumItem(ItemStack stack, int slot) {
 		if(!world.isRemote) {
-			SolarApi.setQuantumItem(key, stack, slot);
+			SolarApi.setQuantumStack(key, stack, slot);
 		}
 		updateState();
 	}
@@ -139,12 +117,13 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 	@Override
 	public void setKey(@Nullable UUID key) {
 		this.key = key;
-		PacketHandler.updatePosition(world, pos);
+		updateState();
 	}
 
 	void updateState() {
 		IBlockState state = world.getBlockState(pos);
 		world.notifyNeighborsOfStateChange(pos, state.getBlock(), true);
+
 		WorldQuantumData.get(world).markDirty();
 	}
 
@@ -191,12 +170,12 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 
 		@Nullable
 		@Override
-		protected UUID getKey() {
+		public UUID getKey() {
 			return tile.getKey();
 		}
 
 		@Override
-		protected void onChange() {
+		protected void onChange(int slot) {
 			tile.updateState();
 		}
 	}

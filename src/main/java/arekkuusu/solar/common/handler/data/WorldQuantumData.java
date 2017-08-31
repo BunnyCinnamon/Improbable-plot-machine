@@ -8,6 +8,10 @@ package arekkuusu.solar.common.handler.data;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.lib.LibMod;
+import arekkuusu.solar.common.network.PacketHandler;
+import arekkuusu.solar.common.network.QuantumChangeMessage;
+import arekkuusu.solar.common.network.QuantumSyncMessage;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -44,13 +48,28 @@ public class WorldQuantumData extends WorldSavedData {
 		return data;
 	}
 
+	public static void syncChanges(UUID uuid, ItemStack stack, int slot) {
+		QuantumChangeMessage message = new QuantumChangeMessage(uuid, stack, slot);
+		PacketHandler.INSTANCE.sendToAll(message);
+	}
+
+	public static void syncTo(EntityPlayerMP player) {
+		QuantumSyncMessage message = new QuantumSyncMessage(SolarApi.QUANTUM_ITEMS);
+		PacketHandler.sendTo(message, player);
+	}
+
+	public static void syncToAll() {
+		QuantumSyncMessage message = new QuantumSyncMessage(SolarApi.QUANTUM_ITEMS);
+		PacketHandler.INSTANCE.sendToAll(message);
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		NBTTagList list = (NBTTagList) nbt.getTag(SolarApi.QUANTUM_DATA);
 		list.forEach(stackList -> {
 			NBTTagList stacks = (NBTTagList) ((NBTTagCompound) stackList).getTag(LIST);
 			UUID key = ((NBTTagCompound) stackList).getUniqueId(KEY);
-			stacks.forEach(tag -> SolarApi.putQuantumItem(key, new ItemStack((NBTTagCompound) tag)));
+			stacks.forEach(tag -> SolarApi.addQuantumAsync(key, new ItemStack((NBTTagCompound) tag)));
 		});
 	}
 

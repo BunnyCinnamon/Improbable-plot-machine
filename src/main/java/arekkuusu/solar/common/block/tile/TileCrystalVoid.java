@@ -36,8 +36,8 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 
 	public void handleItemTransfer(EntityPlayer player, EnumHand hand) {
 		ItemStack inserted = player.getHeldItem(hand);
-		if(!inserted.isEmpty() && inserted.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			if(stack.isEmpty()) {
+		if(!inserted.isEmpty()) {
+			if(stack.isEmpty() && inserted.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
 				player.setHeldItem(hand, ItemStack.EMPTY);
 				setStack(inserted);
 			}
@@ -70,6 +70,7 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 		this.stack = stack;
 		IBlockState state = world.getBlockState(pos);
 		world.notifyBlockUpdate(pos, state, state, 2);
+		markDirty();
 	}
 
 	public ItemStack getStack() {

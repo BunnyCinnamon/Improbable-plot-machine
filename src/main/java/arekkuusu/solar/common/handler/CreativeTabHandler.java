@@ -94,13 +94,12 @@ public class CreativeTabHandler {
 			this.list = list;
 			addBlock(ModBlocks.primal_stone);
 			addBlock(ModBlocks.primal_glyph);
+			addBlock(ModBlocks.schrodinger_glyph);
 			addBlock(ModBlocks.black_hole);
 			addBlock(ModBlocks.singularity);
 			addBlock(ModBlocks.prism_flower);
 			addBlock(ModBlocks.quantum_mirror);
-			addBlock(ModBlocks.light_particle);
 			addBlock(ModBlocks.gravity_hopper);
-			addBlock(ModBlocks.schrodinger_glyph);
 			addBlock(ModBlocks.crystal_void);
 		}
 	}

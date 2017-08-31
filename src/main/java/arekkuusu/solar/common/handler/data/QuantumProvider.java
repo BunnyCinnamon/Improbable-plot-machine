@@ -22,7 +22,11 @@ import java.util.UUID;
  */
 public class QuantumProvider implements ICapabilityProvider {
 
-	private final QuantumItemHandler handler;
+	private final QuantumHandler handler;
+
+	public QuantumProvider(QuantumHandler handler) {
+		this.handler = handler;
+	}
 
 	public QuantumProvider(IQuantumItem quantum, ItemStack stack) {
 		handler = new QuantumItemHandler(quantum, stack);
@@ -41,12 +45,12 @@ public class QuantumProvider implements ICapabilityProvider {
 				: null;
 	}
 
-	private static class QuantumItemHandler extends QuantumHandler {
+	public static class QuantumItemHandler extends QuantumHandler {
 
 		private final IQuantumItem quantum;
 		private final ItemStack stack;
 
-		private QuantumItemHandler(IQuantumItem quantum, ItemStack stack) {
+		public QuantumItemHandler(IQuantumItem quantum, ItemStack stack) {
 			super(quantum.getSlots());
 			this.quantum = quantum;
 			this.stack = stack;
@@ -54,12 +58,12 @@ public class QuantumProvider implements ICapabilityProvider {
 
 		@Override
 		public void setStackInSlot(int slot, ItemStack stack) {
-			quantum.setQuantumItem(this.stack, stack, slot);
+			quantum.setQuantumStack(this.stack, stack, slot);
 		}
 
 		@Nullable
 		@Override
-		protected UUID getKey() {
+		public UUID getKey() {
 			return quantum.getKey(stack).orElse(null);
 		}
 	}

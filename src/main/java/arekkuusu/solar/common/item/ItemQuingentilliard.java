@@ -17,7 +17,7 @@ import arekkuusu.solar.common.entity.EntityQuingentilliardItem;
 import arekkuusu.solar.common.handler.data.QuantumProvider;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.lib.LibNames;
-import com.google.common.collect.Iterators;
+import com.google.common.collect.Iterables;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -35,7 +35,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -65,7 +64,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 				.condition(SHIFT_KEY_DOWN)
 				.ifAgrees(builder -> {
 					builder.addI18("quantum", TooltipHelper.DARK_GRAY_ITALIC).add(":").end();
-					List<ItemStack> items = SolarApi.getQuantumList(uuid).stream()
+					List<ItemStack> items = SolarApi.getQuantumStacks(uuid).stream()
 							.map(ItemStack::copy).collect(Collectors.toList());
 					List<ItemStack> removed = new ArrayList<>();
 
@@ -105,7 +104,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new QuantumProvider(this, stack);
+		return new QuantumProvider(new QuingentilliardItemHandler(this, stack));
 	}
 
 	@Override
@@ -126,14 +125,16 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 		if(!world.isRemote && player.getHeldItem(off).isEmpty()) {
 			getKey(player.getHeldItem(hand)).ifPresent(
 					uuid -> {
-						ItemStack stack = Iterators.getLast(SolarApi.getQuantumList(uuid).iterator());
-						if(!stack.isEmpty()) {
+						List<ItemStack> stacks = SolarApi.getQuantumStacks(uuid);
+
+						if(!stacks.isEmpty()) {
+							ItemStack stack = Iterables.getLast(stacks);
+
 							ItemStack toGiv = stack.copy();
 							toGiv.setCount(1);
+
 							stack.shrink(1);
-							if(stack.isEmpty()) {
-								SolarApi.popQuantumItem(uuid);
-							}
+							SolarApi.setQuantumStack(uuid, stack, stacks.size() - 1);
 
 							player.setHeldItem(off, toGiv);
 							toGiv.getItem().onItemUse(player, world, pos, off, facing, hitX, hitY, hitZ);
@@ -161,22 +162,32 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 		ItemStack container = entity.getItem();
 
 		if(!container.isEmpty() && container.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler handler = container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			entity.world.getEntitiesWithinAABB(EntityItem.class, entity.getEntityBoundingBox().grow(6))
-					.stream()
-					.filter(item -> item.isEntityAlive() && !(item.getItem().getItem() instanceof IQuantumItem))
-					.forEach(item -> {
-						ItemStack inserted = item.getItem();
+			QuingentilliardItemHandler handler = (QuingentilliardItemHandler) container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			List<EntityItem> list = entity.world.getEntitiesWithinAABB(EntityItem.class, entity.getEntityBoundingBox().grow(6))
+					.stream().filter(item -> item.isEntityAlive() && !(item.getItem().getItem() instanceof IQuantumItem))
+					.collect(Collectors.toList());
 
-						for(int i = 0; i < handler.getSlots(); i++) {
-							ItemStack test = handler.insertItem(i, inserted, false);
-							if(test != inserted) {
-								item.setItem(test);
-								WorldQuantumData.get(item.world).markDirty();
-								break;
-							}
+			if(!list.isEmpty()) {
+				boolean update = false;
+
+				for(EntityItem item : list) {
+					ItemStack inserted = item.getItem();
+
+					for(int i = 0; i < handler.getSlots(); i++) {
+						ItemStack test = handler.insertItemAsync(i, inserted);
+						if(test != inserted) {
+							item.setItem(test);
+							update = true;
+							break;
 						}
-					});
+					}
+				}
+
+				if(update) {
+					WorldQuantumData.get(entity.world).markDirty();
+					WorldQuantumData.syncToAll();
+				}
+			}
 		}
 
 		entity.setNoGravity(true);
@@ -207,5 +218,40 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 	@Override
 	public int getSlots() {
 		return 64;
+	}
+
+	private static class QuingentilliardItemHandler extends QuantumProvider.QuantumItemHandler {
+
+		private boolean syncToClients;
+
+		QuingentilliardItemHandler(IQuantumItem quantum, ItemStack stack) {
+			super(quantum, stack);
+		}
+
+		ItemStack insertItemAsync(int slot, ItemStack stack) {
+			syncToClients = false;
+			return super.insertItem(slot, stack, false);
+		}
+
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			syncToClients = true;
+			return super.insertItem(slot, stack, simulate);
+		}
+
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			syncToClients = true;
+			return super.extractItem(slot, amount, simulate);
+		}
+
+		@Override
+		public void setStackInSlot(int slot, ItemStack stack) {
+			if(syncToClients) {
+				super.setStackInSlot(slot, stack);
+			} else {
+				SolarApi.setQuantumAsync(getKey(), stack, slot);
+			}
+		}
 	}
 }

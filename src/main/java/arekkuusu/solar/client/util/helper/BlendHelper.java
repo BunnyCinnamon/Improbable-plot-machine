@@ -6,6 +6,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.helper;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,7 +36,7 @@ public enum BlendHelper {
 	}
 
 	public void blend() {
-		GL11.glBlendFunc(gl0, gl1);
+		GlStateManager.blendFunc(gl0, gl1);
 	}
 
 	public static void lightMap(float u, float v) {

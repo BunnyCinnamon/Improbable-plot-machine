@@ -6,6 +6,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api;
 
+import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
@@ -24,16 +25,16 @@ public class SolarApi {
 		return QUANTUM_ITEMS.containsKey(uuid);
 	}
 
-	public static ItemStack getQuantumItem(UUID uuid, int slot) {
+	public static ItemStack getQuantumStack(UUID uuid, int slot) {
 		if(QUANTUM_ITEMS.containsKey(uuid) && hasSlot(uuid, slot)) {
 			return QUANTUM_ITEMS.get(uuid).get(slot);
 		}
 		return ItemStack.EMPTY;
 	}
 
-	public static void setQuantumItem(UUID uuid, ItemStack stack, int slot) {
-		List<ItemStack> list = getQuantumList(uuid);
-		if(list.isEmpty() || list.size() <= slot) {
+	public static void setQuantumAsync(UUID uuid, ItemStack stack, int slot) {
+		List<ItemStack> list = getQuantumStacks(uuid);
+		if(!hasSlot(uuid, slot)) {
 			if(!stack.isEmpty()) {
 				list.add(stack);
 			}
@@ -44,28 +45,35 @@ public class SolarApi {
 		}
 	}
 
-	public static ItemStack popQuantumItem(UUID uuid) {
-		List<ItemStack> list = getQuantumList(uuid);
-		if(!list.isEmpty()) {
-			ItemStack stack = list.get(list.size() - 1);
-			list.remove(list.size() - 1);
-			return stack;
-		}
-		return ItemStack.EMPTY;
-	}
-
-	public static void putQuantumItem(UUID uuid, ItemStack stack) {
+	public static void addQuantumAsync(UUID uuid, ItemStack stack){
 		if(!stack.isEmpty()) {
-			getQuantumList(uuid).add(stack);
+			getQuantumStacks(uuid).add(stack);
 		}
 	}
 
-	public static List<ItemStack> getQuantumList(UUID uuid) {
-		return QUANTUM_ITEMS.computeIfAbsent(uuid, u -> new ArrayList<>(1));
+	public static void setQuantumStack(UUID uuid, ItemStack stack, int slot) {
+		WorldQuantumData.syncChanges(uuid, stack, slot);
+		setQuantumAsync(uuid, stack, slot);
 	}
 
-	public static boolean hasSlot(UUID uuid, int slot) {
-		List<ItemStack> list = getQuantumList(uuid);
-		return list.size() - 1 >= slot;
+	public static void addQuantumStack(UUID uuid, ItemStack stack) {
+		if(!stack.isEmpty()) {
+			setQuantumStack(uuid, stack, -1);
+		}
+	}
+
+	public static void removeQuantumStack(UUID uuid, int slot) {
+		if(hasSlot(uuid, slot)) {
+			setQuantumStack(uuid, ItemStack.EMPTY, slot);
+		}
+	}
+
+	public static List<ItemStack> getQuantumStacks(UUID uuid) {
+		return QUANTUM_ITEMS.computeIfAbsent(uuid, u -> new ArrayList<>());
+	}
+
+	private static boolean hasSlot(UUID uuid, int slot) {
+		List<ItemStack> stacks = getQuantumStacks(uuid);
+		return slot < 0 || stacks.size() - 1 >= slot;
 	}
 }

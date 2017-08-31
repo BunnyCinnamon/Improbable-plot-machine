@@ -30,12 +30,12 @@ public class QuingentilliardRenderer extends TileEntitySpecialRenderer<RenderDum
 	@SuppressWarnings("ConstantConditions")
 	public void render(RenderDummy.Quingentilliard te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		int tick = Minecraft.getMinecraft().player.ticksExisted;
+		final float prevU = OpenGlHelper.lastBrightnessX;
+		final float prevV = OpenGlHelper.lastBrightnessY;
 
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
 		GlStateManager.color(0, 0.99609375F, 0.76171875F, 1F);
 		BlendHelper.lightMap(255F, 255F);
 

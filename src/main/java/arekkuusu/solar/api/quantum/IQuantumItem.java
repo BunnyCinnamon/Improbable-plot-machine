@@ -56,14 +56,14 @@ public interface IQuantumItem {
 		}
 	}
 
-	default ItemStack getQuantumItem(ItemStack container, int slot) {
+	default ItemStack getQuantumStack(ItemStack container, int slot) {
 		Optional<UUID> optional = getKey(container);
-		return optional.map(uuid -> SolarApi.getQuantumItem(uuid, slot)).orElse(ItemStack.EMPTY);
+		return optional.map(uuid -> SolarApi.getQuantumStack(uuid, slot)).orElse(ItemStack.EMPTY);
 	}
 
-	default void setQuantumItem(ItemStack container, ItemStack contained, int slot) {
+	default void setQuantumStack(ItemStack container, ItemStack contained, int slot) {
 		Optional<UUID> optional = getKey(container);
-		optional.ifPresent(uuid -> SolarApi.setQuantumItem(uuid, contained, slot));
+		optional.ifPresent(uuid -> SolarApi.setQuantumStack(uuid, contained, slot));
 	}
 
 	default void setKey(ItemStack stack, UUID uuid) {

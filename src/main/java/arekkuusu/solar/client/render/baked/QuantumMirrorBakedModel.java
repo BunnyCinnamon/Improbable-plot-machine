@@ -46,7 +46,7 @@ public class QuantumMirrorBakedModel extends RenderedBakedModel {
 		public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
 			Optional<UUID> optional = ((IQuantumItem) stack.getItem()).getKey(stack);
 			if(optional.isPresent()) {
-				ItemStack mirrored = SolarApi.getQuantumItem(optional.get(), 0);
+				ItemStack mirrored = SolarApi.getQuantumStack(optional.get(), 0);
 				if(!mirrored.isEmpty()) {
 					TESRModelRenderer.setTempItemRenderer(mirrored);
 				}
