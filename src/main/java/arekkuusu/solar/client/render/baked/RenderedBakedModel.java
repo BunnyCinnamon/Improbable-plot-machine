@@ -26,7 +26,7 @@ import java.util.List;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class RenderedBakedModel implements IBakedModel {
+public class RenderedBakedModel extends PerspectiveBakedModel {
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {

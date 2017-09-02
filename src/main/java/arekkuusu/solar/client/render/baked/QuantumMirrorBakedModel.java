@@ -8,7 +8,7 @@ package arekkuusu.solar.client.render.baked;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.quantum.IQuantumItem;
-import arekkuusu.solar.client.render.TESRModelRenderer;
+import arekkuusu.solar.client.render.SpecialModelRenderer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.entity.EntityLivingBase;
@@ -48,7 +48,7 @@ public class QuantumMirrorBakedModel extends RenderedBakedModel {
 			if(optional.isPresent()) {
 				ItemStack mirrored = SolarApi.getQuantumStack(optional.get(), 0);
 				if(!mirrored.isEmpty()) {
-					TESRModelRenderer.setTempItemRenderer(mirrored);
+					SpecialModelRenderer.setTempItemRenderer(mirrored);
 				}
 			}
 			return originalModel;

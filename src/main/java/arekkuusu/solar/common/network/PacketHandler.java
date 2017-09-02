@@ -29,8 +29,9 @@ public class PacketHandler {
 	private static int id = 0;
 
 	public static void init() {
-		register(QuantumChangeMessage.QuantumMessageHandler.class, QuantumChangeMessage.class, Side.CLIENT);
-		register(QuantumSyncMessage.QuantumSyncMessageHandler.class, QuantumSyncMessage.class, Side.CLIENT);
+		register(QSyncModifyMessage.QSyncModifyMessageHandler.class, QSyncModifyMessage.class, Side.CLIENT);
+		register(QSyncAllMessage.QSyncAllMessageHandler.class, QSyncAllMessage.class, Side.CLIENT);
+		register(QSyncSpecificMessage.QSyncSpecificMessageHandler.class, QSyncSpecificMessage.class, Side.CLIENT);
 	}
 
 	private static <H extends IMessageHandler<M, IMessage>, M extends IMessage> void register(Class<H> handler, Class<M> message, Side side) {

@@ -6,6 +6,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +18,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,15 +27,14 @@ import java.util.Optional;
  */
 public class TilePrismFlower extends TileBase implements ITickable {
 
-	private static final Map<EnumFacing, Vec3d> FACING_MAP = new HashMap<>();
-	static {
-		FACING_MAP.put(EnumFacing.UP, new Vec3d(0.5D, 0.25D, 0.5D));
-		FACING_MAP.put(EnumFacing.DOWN, new Vec3d(0.5D, 0.75D, 0.5D));
-		FACING_MAP.put(EnumFacing.NORTH, new Vec3d(0.5D, 0.75D, 0.5D));
-		FACING_MAP.put(EnumFacing.SOUTH, new Vec3d(0.5D, 0.75D, 0.4D));
-		FACING_MAP.put(EnumFacing.EAST, new Vec3d(0.4D, 0.75D, 0.5D));
-		FACING_MAP.put(EnumFacing.WEST, new Vec3d(0.5D, 0.75D, 0.5D));
-	}
+	private static final Map<EnumFacing, Vec3d> FACING_MAP = ImmutableMap.<EnumFacing, Vec3d>builder()
+			.put(EnumFacing.UP, new Vec3d(0.5D, 0.25D, 0.5D))
+			.put(EnumFacing.DOWN, new Vec3d(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.NORTH, new Vec3d(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.SOUTH, new Vec3d(0.5D, 0.75D, 0.4D))
+			.put(EnumFacing.EAST, new Vec3d(0.4D, 0.75D, 0.5D))
+			.put(EnumFacing.WEST, new Vec3d(0.5D, 0.75D, 0.5D))
+			.build();
 	private final Comparator<EntityLivingBase> comparator = (compared, entity) -> {
 		double x = distanceTo(compared);
 		double y = distanceTo(entity);

@@ -52,7 +52,7 @@ public class SolarApi {
 	}
 
 	public static void setQuantumStack(UUID uuid, ItemStack stack, int slot) {
-		WorldQuantumData.syncChanges(uuid, stack, slot);
+		WorldQuantumData.syncChange(uuid, stack, slot);
 		setQuantumAsync(uuid, stack, slot);
 	}
 

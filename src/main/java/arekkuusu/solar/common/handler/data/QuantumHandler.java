@@ -9,8 +9,6 @@ package arekkuusu.solar.common.handler.data;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.quantum.IQuantumItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -22,7 +20,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
  */
-public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<NBTTagCompound> {
+public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifiable {
 
 	private final int slots;
 
@@ -123,15 +121,5 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 	@Override
 	public int getSlots() {
 		return slots;
-	}
-
-	@Override
-	public NBTTagCompound serializeNBT() {
-		return new NBTTagCompound();
-	}
-
-	@Override
-	public void deserializeNBT(NBTTagCompound nbt) {
-		//Yoink
 	}
 }

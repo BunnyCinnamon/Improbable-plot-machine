@@ -78,7 +78,7 @@ public class EntityQuingentilliardItem extends EntityItem {
 					EntityTerrainExplosion explosion = new EntityTerrainExplosion(world, this, 8F);
 					explosion.doExplosionA();
 					explosion.doExplosionB(true);
-					coolDown = 20;
+					coolDown = 10;
 				} else {
 					stopMotion();
 				}

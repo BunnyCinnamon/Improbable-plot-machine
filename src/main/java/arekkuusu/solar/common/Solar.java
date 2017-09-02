@@ -19,6 +19,9 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static net.minecraftforge.fml.common.Mod.EventHandler;
+import static net.minecraftforge.fml.common.Mod.Instance;
+
 /**
  * Created by <Arekkuusu> on 21/06/2017.
  * It's distributed as part of Solar.
@@ -28,24 +31,24 @@ public class Solar {
 
 	@SidedProxy(clientSide = LibMod.CLIENT_PROXY, serverSide = LibMod.SERVER_PROXY)
 	public static IProxy PROXY;
-	@Mod.Instance
+	@Instance
 	public static Solar INSTANCE;
-
+	//Logger used to log stuff in the loggerino
 	public static Logger LOG = LogManager.getLogger(LibMod.MOD_NAME);
 
-	@Mod.EventHandler
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		PROXY.preInit(event);
 		PacketHandler.init();
 		ModEntities.init();
 	}
 
-	@Mod.EventHandler
+	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		PROXY.init(event);
 	}
 
-	@Mod.EventHandler
+	@EventHandler
 	public void serverStop(FMLServerStoppedEvent event) {
 		SolarApi.QUANTUM_ITEMS.clear();
 	}

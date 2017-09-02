@@ -6,16 +6,24 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render.baked;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by <Arekkuusu> on 03/08/2017.
@@ -23,6 +31,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public abstract class BrightBakedModel implements IBakedModel {
+
+	private static final Map<IBlockState, List<BakedQuad>> BAKED_CACHE = new HashMap<>();
 
 	private final VertexFormat format;
 
@@ -34,7 +44,7 @@ public abstract class BrightBakedModel implements IBakedModel {
 		for(int e = 0; e < format.getElementCount(); e++) {
 			switch(format.getElement(e).getUsage()) {
 				case POSITION:
-					builder.put(e, (float) x, (float) y, (float) z, 1.0f);
+					builder.put(e, (float) x, (float) y, (float) z, 1F);
 					break;
 				case COLOR:
 					builder.put(e, 1F, 1F, 1F, 1F);
@@ -71,12 +81,21 @@ public abstract class BrightBakedModel implements IBakedModel {
 
 		UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
 		builder.setTexture(sprite);
-		putVertex(builder, normal, v1.x, v1.y, v1.z, sprite, 16, 16, hasBrightness);
-		putVertex(builder, normal, v2.x, v2.y, v2.z, sprite, 16, 0, hasBrightness);
-		putVertex(builder, normal, v3.x, v3.y, v3.z, sprite, 0, 0, hasBrightness);
-		putVertex(builder, normal, v4.x, v4.y, v4.z, sprite, 0, 16, hasBrightness);
+		putVertex(builder, normal, v1.x, v1.y, v1.z, sprite, 16F, 16F, hasBrightness);
+		putVertex(builder, normal, v2.x, v2.y, v2.z, sprite, 16F, 0F, hasBrightness);
+		putVertex(builder, normal, v3.x, v3.y, v3.z, sprite, 0F, 0F, hasBrightness);
+		putVertex(builder, normal, v4.x, v4.y, v4.z, sprite, 0F, 16F, hasBrightness);
 		return builder.build();
 	}
+
+	@Override
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing facing, long rand) {
+		if(state == null || facing != null) return Collections.emptyList();
+
+		return BAKED_CACHE.computeIfAbsent(state, this::getQuads);
+	}
+
+	protected abstract List<BakedQuad> getQuads(IBlockState state);
 
 	@Override
 	public boolean isAmbientOcclusion() {

@@ -39,8 +39,8 @@ public class QuingentilliardRenderer extends TileEntitySpecialRenderer<RenderDum
 		GlStateManager.color(0, 0.99609375F, 0.76171875F, 1F);
 		BlendHelper.lightMap(255F, 255F);
 
-		GlStateManager.scale(0.3F, 0.3F, 0.3F);
-		GlStateManager.translate(1.7F, 1.7F, 1.7F);
+		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+		GlStateManager.scale(0.5F, 0.5F, 0.5F);
 		GlStateManager.rotate(tick, 1F, 0F, 1F);
 
 		renderCube(tick);

@@ -12,7 +12,6 @@ import arekkuusu.solar.client.util.ModelBakery;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.baker.DummyModelLoader;
-import arekkuusu.solar.client.util.baker.EmptyModelLoader;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.resource.SpriteLoader;
 import arekkuusu.solar.common.Solar;
@@ -91,7 +90,6 @@ public class ClientProxy implements IProxy {
 		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
 				.registerReloadListener(SpriteLoader.INSTANCE);
 		ModelLoaderRegistry.registerLoader(new DummyModelLoader());
-		ModelLoaderRegistry.registerLoader(new EmptyModelLoader());
 		OBJLoader.INSTANCE.addDomain(LibMod.MOD_ID);
 		ModRenders.preInit();
 	}

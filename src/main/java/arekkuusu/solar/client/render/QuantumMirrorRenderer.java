@@ -15,8 +15,10 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -26,83 +28,68 @@ import org.lwjgl.opengl.GL11;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class QuantumMirrorRenderer extends TESRModelRenderer<TileQuantumMirror> {
+public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirror> {
 
 	@Override
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		if(!mirror.getWorld().isBlockLoaded(mirror.getPos(), false)) return;
 
-		ItemStack stack = SolarApi.getQuantumStack(mirror.getKey(), 0);
-		if(!stack.isEmpty()) {
-			GlStateManager.pushMatrix();
-			GlStateManager.enableRescaleNormal();
-			GlStateManager.enableBlend();
-			BlendHelper.lightMap(255F, 255F);
-			GlStateManager.translate(x + 0.5, y + 0.3, z + 0.5);
+		int layer = MinecraftForgeClient.getRenderPass();
 
-			GlStateManager.rotate(partialTicks + mirror.tick % 360F, 0F, 1F, 0F);
+		switch(layer) {
+			case 0:
+				ItemStack stack = SolarApi.getQuantumStack(mirror.getKey(), 0);
+				if(!stack.isEmpty()) {
+					GlStateManager.pushMatrix();
+					BlendHelper.lightMap(255F, 255F);
+					GlStateManager.translate(x + 0.5, y + 0.3, z + 0.5);
 
-			RenderItem render = Minecraft.getMinecraft().getRenderItem();
+					GlStateManager.rotate(partialTicks + (float) mirror.tick * 0.5F % 360F, 0F, 1F, 0F);
 
-			render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
-			GlStateManager.disableBlend();
-			GlStateManager.disableRescaleNormal();
-			GlStateManager.popMatrix();
+					RenderItem render = Minecraft.getMinecraft().getRenderItem();
+
+					render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
+					GlStateManager.popMatrix();
+				}
+				break;
+			case 1:
+				renderModel(mirror.tick, x, y, z);
+				break;
 		}
-
-		GlStateManager.pushMatrix();
-		GlStateManager.disableCull();
-		GlStateManager.disableLighting();
-		GlStateManager.enableBlend();
-		float light = MathHelper.cos(mirror.tick * 0.05F);
-		if(light < 0) light *= -1;
-		light *= 255F;
-		BlendHelper.lightMap(light, light);
-
-		GlStateManager.translate(x, y, z + 0.5F);
-
-		SpriteLibrary.QUANTUM_MIRROR.bindManager();
-		renderMirror(mirror.tick, -180F, 0.5F);
-		renderMirror(-mirror.tick, 90F, 0.75F);
-		renderMirror(mirror.tick, 0F, 1F);
-
-		GlStateManager.disableBlend();
-		GlStateManager.enableLighting();
-		GlStateManager.enableCull();
-		GlStateManager.popMatrix();
 	}
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public void renderModel(double x, double y, double z, float partialTicks) {
+	public void renderItem(double x, double y, double z, float partialTicks) {
 		int tick = Minecraft.getMinecraft().player.ticksExisted;
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 
-		if(TESRModelRenderer.getTempItemRenderer() != null) {
+		if(SpecialModelRenderer.getTempItemRenderer() != null) {
 			GlStateManager.pushMatrix();
-			GlStateManager.enableRescaleNormal();
-			GlStateManager.enableBlend();
 			BlendHelper.lightMap(255F, 255F);
-			GlStateManager.translate(x + 0.5, y + 0.4, z + 0.5);
-			GlStateManager.scale(0.5F, 0.5F, 0.5F);
+			GlStateManager.translate(x + 0.5, y + 0.3, z + 0.5);
 
-			GlStateManager.rotate(partialTicks + tick % 360F, 0F, 1F, 0F);
+			GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
 
 			RenderItem render = Minecraft.getMinecraft().getRenderItem();
 
-			render.renderItem(TESRModelRenderer.getTempItemRenderer(), ItemCameraTransforms.TransformType.GROUND);
-			GlStateManager.disableBlend();
-			GlStateManager.disableRescaleNormal();
+			render.renderItem(SpecialModelRenderer.getTempItemRenderer(), ItemCameraTransforms.TransformType.GROUND);
 			GlStateManager.popMatrix();
 
-			TESRModelRenderer.setTempItemRenderer(null);
+			SpecialModelRenderer.setTempItemRenderer(null);
 		}
 
+		renderModel(tick, x, y, z);
+		BlendHelper.lightMap(prevU, prevV);
+	}
+
+	private void renderModel(int tick, double x, double y, double z) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
 		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 		float brigthness = MathHelper.cos(tick * 0.05F);
 		if(brigthness < 0) brigthness *= -1;
 		brigthness *= 255F;
@@ -111,15 +98,14 @@ public class QuantumMirrorRenderer extends TESRModelRenderer<TileQuantumMirror> 
 		GlStateManager.translate(x, y, z + 0.5F);
 
 		SpriteLibrary.QUANTUM_MIRROR.bindManager();
-		renderMirror(tick, -180F, 0.25F);
-		renderMirror(-tick, 90F, 0.375F);
-		renderMirror(tick, 0F, 0.5F);
+		renderMirror(tick, -180F, 0.5F);
+		renderMirror(-tick, 90F, 0.75F);
+		renderMirror(tick, 0F, 1F);
 
 		GlStateManager.disableBlend();
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
-		BlendHelper.lightMap(prevU, prevV);
 	}
 
 	private void renderMirror(int age, float offset, float scale) {

@@ -9,6 +9,7 @@ package arekkuusu.solar.common.network;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.Solar;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -24,15 +25,15 @@ import java.util.*;
  * Created by <Arekkuusu> on 30/08/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumSyncMessage implements IMessage {
+public class QSyncAllMessage implements IMessage {
 
 	private Map<UUID, List<ItemStack>> map;
 
-	public QuantumSyncMessage(){
+	public QSyncAllMessage(){
 		this.map = new HashMap<>();
 	}
 
-	public QuantumSyncMessage(Map<UUID, List<ItemStack>> map){
+	public QSyncAllMessage(Map<UUID, List<ItemStack>> map){
 		this.map = map;
 	}
 
@@ -51,7 +52,7 @@ public class QuantumSyncMessage implements IMessage {
 				try {
 					stacks.add(beef.readItemStack());
 				} catch(IOException e) {
-					Solar.LOG.error("[Quantum Sync Message] Failed to read ItemStack from bytes for UUID: ", key.toString());
+					Solar.LOG.error("[Sync All Message] Failed to read ItemStack from bytes for UUID: ", key.toString());
 					e.printStackTrace();
 				}
 			}
@@ -74,15 +75,17 @@ public class QuantumSyncMessage implements IMessage {
 		}
 	}
 
-	public static class QuantumSyncMessageHandler implements IMessageHandler<QuantumSyncMessage, IMessage> {
+	public static class QSyncAllMessageHandler implements IMessageHandler<QSyncAllMessage, IMessage> {
 
 		@Override
 		@Nullable
 		@SuppressWarnings("MethodCallSideOnly")
-		public IMessage onMessage(QuantumSyncMessage message, MessageContext ctx) {
+		public IMessage onMessage(QSyncAllMessage message, MessageContext ctx) {
 			if (ctx.side == Side.CLIENT) {
-				SolarApi.QUANTUM_ITEMS.clear();
-				SolarApi.QUANTUM_ITEMS.putAll(message.map);
+				Minecraft.getMinecraft().addScheduledTask(() -> {
+					SolarApi.QUANTUM_ITEMS.clear();
+					SolarApi.QUANTUM_ITEMS.putAll(message.map);
+				});
 			}
 			return null;
 		}

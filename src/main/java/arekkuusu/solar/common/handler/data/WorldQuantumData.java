@@ -9,8 +9,9 @@ package arekkuusu.solar.common.handler.data;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHandler;
-import arekkuusu.solar.common.network.QuantumChangeMessage;
-import arekkuusu.solar.common.network.QuantumSyncMessage;
+import arekkuusu.solar.common.network.QSyncAllMessage;
+import arekkuusu.solar.common.network.QSyncModifyMessage;
+import arekkuusu.solar.common.network.QSyncSpecificMessage;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,9 +37,9 @@ public class WorldQuantumData extends WorldSavedData {
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	public static WorldSavedData get(World world) {
+	public static WorldQuantumData get(World world) {
 		MapStorage storage = world.getMapStorage();
-		WorldSavedData data = storage.getOrLoadData(WorldQuantumData.class, NAME);
+		WorldQuantumData data = (WorldQuantumData) storage.getOrLoadData(WorldQuantumData.class, NAME);
 
 		if(data == null) {
 			data = new WorldQuantumData(NAME);
@@ -48,18 +49,23 @@ public class WorldQuantumData extends WorldSavedData {
 		return data;
 	}
 
-	public static void syncChanges(UUID uuid, ItemStack stack, int slot) {
-		QuantumChangeMessage message = new QuantumChangeMessage(uuid, stack, slot);
+	public static void syncChange(UUID uuid, ItemStack stack, int slot) {
+		QSyncModifyMessage message = new QSyncModifyMessage(uuid, stack, slot);
+		PacketHandler.INSTANCE.sendToAll(message);
+	}
+
+	public static void syncChanges(UUID uuid) {
+		QSyncSpecificMessage message = new QSyncSpecificMessage(uuid);
 		PacketHandler.INSTANCE.sendToAll(message);
 	}
 
 	public static void syncTo(EntityPlayerMP player) {
-		QuantumSyncMessage message = new QuantumSyncMessage(SolarApi.QUANTUM_ITEMS);
+		QSyncAllMessage message = new QSyncAllMessage(SolarApi.QUANTUM_ITEMS);
 		PacketHandler.sendTo(message, player);
 	}
 
 	public static void syncToAll() {
-		QuantumSyncMessage message = new QuantumSyncMessage(SolarApi.QUANTUM_ITEMS);
+		QSyncAllMessage message = new QSyncAllMessage(SolarApi.QUANTUM_ITEMS);
 		PacketHandler.INSTANCE.sendToAll(message);
 	}
 

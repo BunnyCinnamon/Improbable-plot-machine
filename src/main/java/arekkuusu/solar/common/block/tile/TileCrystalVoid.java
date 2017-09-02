@@ -15,10 +15,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 
 /**
  * Created by <Arekkuusu> on 27/08/2017.
@@ -26,6 +27,7 @@ import javax.annotation.Nullable;
  */
 public class TileCrystalVoid extends TileBase implements ITickable {
 
+	private static final Field capability = ReflectionHelper.findField(ItemStack.class, "capabilities");
 	private ItemStack stack = ItemStack.EMPTY;
 	public int tick;
 
@@ -37,7 +39,7 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 	public void handleItemTransfer(EntityPlayer player, EnumHand hand) {
 		ItemStack inserted = player.getHeldItem(hand);
 		if(!inserted.isEmpty()) {
-			if(stack.isEmpty() && inserted.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+			if(stack.isEmpty() && hasCapability(inserted)) {
 				player.setHeldItem(hand, ItemStack.EMPTY);
 				setStack(inserted);
 			}
@@ -47,6 +49,13 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 				setStack(ItemStack.EMPTY);
 			}
 		}
+	}
+
+	private boolean hasCapability(ItemStack stack) {
+		try {
+			return capability.get(stack) != null; //Riddle me this, riddle me that, does this stack have a cap?
+		} catch(IllegalAccessException ignored) {}
+		return false;
 	}
 
 	public void takeItem(EntityPlayer player, ItemStack stack) {
@@ -79,7 +88,7 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return !stack.isEmpty() && stack.hasCapability(capability, facing);
+		return stack.hasCapability(capability, facing);
 	}
 
 	@Nullable
@@ -90,15 +99,19 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 
 	@Override
 	void readNBT(NBTTagCompound cmp) {
-		if(cmp.hasKey("id")) {
-			stack = new ItemStack(cmp);
+		if(cmp.hasKey("item")) {
+			NBTTagCompound sub = cmp.getCompoundTag("item");
+			stack = new ItemStack(sub);
+		} else {
+			stack = ItemStack.EMPTY;
 		}
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound cmp) {
 		if(!stack.isEmpty()) {
-			stack.writeToNBT(cmp);
+			NBTTagCompound sub = new NBTTagCompound();
+			cmp.setTag("item", stack.writeToNBT(sub));
 		}
 	}
 }

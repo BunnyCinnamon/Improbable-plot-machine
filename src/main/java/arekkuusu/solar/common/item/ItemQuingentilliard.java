@@ -63,7 +63,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 		getKey(stack).ifPresent(uuid -> TooltipHelper.inline()
 				.condition(SHIFT_KEY_DOWN)
 				.ifAgrees(builder -> {
-					builder.addI18("quantum", TooltipHelper.DARK_GRAY_ITALIC).add(":").end();
+					//Filter
 					List<ItemStack> items = SolarApi.getQuantumStacks(uuid).stream()
 							.map(ItemStack::copy).collect(Collectors.toList());
 					List<ItemStack> removed = new ArrayList<>();
@@ -80,19 +80,19 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 						}
 					});
 					items.removeAll(removed);
-
+					//Populate Tooltip
+					builder.addI18("quantum", TooltipHelper.DARK_GRAY_ITALIC).add(":").end();
 					items.forEach(item -> builder
 							.add("    - ", TextFormatting.DARK_GRAY)
 							.add(item.getDisplayName(), TooltipHelper.GRAY_ITALIC)
 							.add(" x " + item.getCount()).end()
 					);
-
-					int size = items.size();
-					if(size > 16) {
+					if(items.size() > 16) {
 						builder.add("    - . . . + ", TooltipHelper.DARK_GRAY_ITALIC)
-								.add(size - 15).add(" ").addI18("list_more").end();
+								.add(items.size() - 15).add(" ").addI18("list_more").end();
 					}
 
+					builder.skip();
 					builder.condition(CONTROL_KEY_DOWN).ifAgrees(sub -> {
 						sub.addI18("uuid_key", TooltipHelper.DARK_GRAY_ITALIC).add(": ").end();
 						String key = uuid.toString();
@@ -185,7 +185,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 
 				if(update) {
 					WorldQuantumData.get(entity.world).markDirty();
-					WorldQuantumData.syncToAll();
+					WorldQuantumData.syncChanges(handler.getKey());
 				}
 			}
 		}
@@ -235,13 +235,13 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			syncToClients = true;
+			syncToClients = !simulate;
 			return super.insertItem(slot, stack, simulate);
 		}
 
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			syncToClients = true;
+			syncToClients = !simulate;
 			return super.extractItem(slot, amount, simulate);
 		}
 

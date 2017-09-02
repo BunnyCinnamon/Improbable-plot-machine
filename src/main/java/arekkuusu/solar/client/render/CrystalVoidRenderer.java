@@ -15,7 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
@@ -27,22 +26,11 @@ import static arekkuusu.solar.client.util.ModelBakery.BlockBaker.PRIMAL_SIDE;
  * Created by <Arekkuusu> on 27/08/2017.
  * It's distributed as part of Solar.
  */
-public class CrystalVoidRenderer extends TESRModelRenderer<TileCrystalVoid> {
+public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 
 	@Override
 	void renderTile(TileCrystalVoid crystal, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-		GlStateManager.disableLighting();
-
-		GlStateManager.enableBlend();
-		renderFloatingSquares(crystal.tick, 0.75F, partialTicks);
-		GlStateManager.disableBlend();
-
-		renderCube(crystal.tick, 0.25F, partialTicks);
-
-		GlStateManager.enableLighting();
-		GlStateManager.popMatrix();
+		renderModel(crystal.tick, x, y, z, partialTicks);
 
 		ItemStack stack = crystal.getStack();
 		if(!stack.isEmpty()) {
@@ -50,8 +38,7 @@ public class CrystalVoidRenderer extends TESRModelRenderer<TileCrystalVoid> {
 			GlStateManager.enableRescaleNormal();
 			GlStateManager.enableBlend();
 			RenderItem render = Minecraft.getMinecraft().getRenderItem();
-			IBakedModel baked = render.getItemModelWithOverrides(stack, null, null);
-			GlStateManager.translate(x + 0.5D, y + (baked.isBuiltInRenderer() ? 0.5D : 0.4D), z + 0.5D);
+			GlStateManager.translate(x + 0.5D, y + 0.4D, z + 0.5D);
 
 			GlStateManager.scale(0.5F, 0.5F, 0.5F);
 			GlStateManager.rotate(partialTicks + crystal.tick % 360F, 0F, 1F, 0F);
@@ -64,49 +51,47 @@ public class CrystalVoidRenderer extends TESRModelRenderer<TileCrystalVoid> {
 	}
 
 	@Override
-	public void renderModel(double x, double y, double z, float partialTicks) {
+	public void renderItem(double x, double y, double z, float partialTicks) {
 		int tick = Minecraft.getMinecraft().player.ticksExisted;
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-		GlStateManager.disableLighting();
+		renderModel(tick, x, y, z, partialTicks);
 
-		GlStateManager.enableBlend();
-		renderFloatingSquares(tick, 0.35F, partialTicks);
-		GlStateManager.disableBlend();
-
-		renderCube(tick, 0.25F, partialTicks);
-
-		GlStateManager.enableLighting();
-		GlStateManager.popMatrix();
 		BlendHelper.lightMap(prevU, prevV);
 	}
 
-	private void renderCube(int age, float scale, float partialTicks) {
-		GlStateManager.disableTexture2D();
+	private void renderModel(int tick, double x, double y, double z, float partialTicks) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+		GlStateManager.disableLighting();
 
-		GlStateManager.rotate(age % 360, 0, 1, 0);
-		GlStateManager.rotate(30.0f * (float) Math.sin(Math.toRadians(partialTicks / 3.0f + age / 3 % 360)), 1, 0, 0);
-		GlStateManager.scale(scale, scale, scale);
-		ModelBakery.drawCube(0xFFFFFF, 1F);
+		renderFloatingSquares(tick, partialTicks);
 
-		GlStateManager.enableTexture2D();
+		renderCube(tick, partialTicks);
+
+		GlStateManager.enableLighting();
+		GlStateManager.popMatrix();
 	}
 
-	private void renderFloatingSquares(int age, float scale, float partialTicks) {
+	private void renderFloatingSquares(int age, float partialTicks) {
 		GlStateManager.rotate(-age % 360, 0, 1, 0);
 		GlStateManager.rotate(30.0f * (float) Math.sin(Math.toRadians(partialTicks / 15f + -age / 15 % 360)), 1, 0, 0);
-		GlStateManager.scale(scale, scale, scale);
+		GlStateManager.scale(0.75F, 0.75F, 0.75F);
 
 		//Sides x 4
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		boolean side = true;
 		int tick = age;
 		for(int i = 0; i <= 90;) {
-			for(int j = i; j <= 270; j += i + 90, tick = side ? age : -age) {
-				renderSquare(tick, j, side);
+			for(int offset = i; offset <= 270; offset += i + 90, tick = side ? age : -age) {
+				GlStateManager.pushMatrix();
+
+				GlStateManager.rotate(offset, side ? 0F : 1F, side ? 1F : 0F, 0F);
+				GlStateManager.rotate(tick, 0F, 0F, 1F);
+				BlockBaker.render(PRIMAL_SIDE);
+
+				GlStateManager.popMatrix();
 			}
 			side = false;
 			i += 90;
@@ -125,13 +110,14 @@ public class CrystalVoidRenderer extends TESRModelRenderer<TileCrystalVoid> {
 		GlStateManager.enableCull();
 	}
 
-	private void renderSquare(int age, int offset, boolean side) {
-		GlStateManager.pushMatrix();
+	private void renderCube(int tick, float partialTicks) {
+		GlStateManager.disableTexture2D();
 
-		GlStateManager.rotate(offset, side ? 0F : 1F, side ? 1F : 0F, 0F);
-		GlStateManager.rotate(age, 0F, 0F, 1F);
-		BlockBaker.render(PRIMAL_SIDE);
+		GlStateManager.rotate(tick % 360, 0, 1, 0);
+		GlStateManager.rotate(30.0f * (float) Math.sin(Math.toRadians(partialTicks / 3.0f + tick / 3 % 360)), 1, 0, 0);
+		GlStateManager.scale(0.25F, 0.25F, 0.25F);
+		ModelBakery.drawCube(0xFFFFFF, 1F);
 
-		GlStateManager.popMatrix();
+		GlStateManager.enableTexture2D();
 	}
 }

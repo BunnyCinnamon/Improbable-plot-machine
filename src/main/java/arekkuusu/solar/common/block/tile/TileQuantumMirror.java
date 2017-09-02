@@ -41,11 +41,6 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 	}
 
 	@Override
-	public void onLoad() {
-
-	}
-
-	@Override
 	public void update() {
 		if(world.isRemote && world.rand.nextInt(10) == 0) {
 			double x = pos.getX() + 0.5D + (world.rand.nextDouble() * 2F - 1D);
@@ -156,7 +151,7 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 
 	@Override
 	public boolean shouldRenderInPass(int pass) {
-		return pass == 1;
+		return pass == 0 || pass == 1;
 	}
 
 	private static class QuantumTileHandler extends QuantumHandler {

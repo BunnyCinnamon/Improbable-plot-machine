@@ -18,9 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -44,8 +42,7 @@ public class GravityHopperBakedModel extends BrightBakedModel {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing facing, long rand) {
-		if(state == null || facing != null) return Collections.emptyList();
+	protected List<BakedQuad> getQuads(IBlockState state) {
 		EnumFacing face = state.getValue(BlockDirectional.FACING);
 
 		List<BakedQuad> quads = new ArrayList<>();
@@ -54,6 +51,9 @@ public class GravityHopperBakedModel extends BrightBakedModel {
 		switch(face) {
 			case DOWN:
 				addCube(quads, overlay[3], overlay[5], overlay[1], overlay[2], overlay[0], overlay[4], true);
+				break;
+			case UP:
+				addCube(quads, overlay[5], overlay[3], overlay[1], overlay[2], overlay[0], overlay[4], true);
 				break;
 			case NORTH:
 				addCube(quads, overlay[1], overlay[0], overlay[5], overlay[3], overlay[2], overlay[4], true);
@@ -66,9 +66,6 @@ public class GravityHopperBakedModel extends BrightBakedModel {
 				break;
 			case WEST:
 				addCube(quads, overlay[4], overlay[0], overlay[1], overlay[2], overlay[3], overlay[5], true);
-				break;
-			default:
-				addCube(quads, overlay[5], overlay[3], overlay[1], overlay[2], overlay[0], overlay[4], true);
 				break;
 		}
 

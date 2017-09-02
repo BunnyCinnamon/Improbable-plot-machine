@@ -8,6 +8,7 @@ package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.block.ModBlocks;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -26,7 +27,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,22 +36,21 @@ import java.util.Optional;
  */
 public class TileGravityHopper extends TileBase implements ITickable {
 
-	private static final Map<EnumFacing, Vec3d> FACING_MAP = new HashMap<>();
-	static {
-		FACING_MAP.put(EnumFacing.UP, new Vec3d(0.5D, 0.75D, 0.5D));
-		FACING_MAP.put(EnumFacing.DOWN, new Vec3d(0.5D, 0.25D, 0.5D));
-		FACING_MAP.put(EnumFacing.NORTH, new Vec3d(0.5D, 0.5D, 0.25D));
-		FACING_MAP.put(EnumFacing.SOUTH, new Vec3d(0.5D, 0.5D, 0.75D));
-		FACING_MAP.put(EnumFacing.EAST, new Vec3d(0.75D, 0.5D, 0.5D));
-		FACING_MAP.put(EnumFacing.WEST, new Vec3d(0.25D, 0.5D, 0.5D));
-	}
+	private static final Map<EnumFacing, Vec3d> FACING_MAP = ImmutableMap.<EnumFacing, Vec3d>builder()
+			.put(EnumFacing.UP, new Vec3d(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.DOWN, new Vec3d(0.5D, 0.25D, 0.5D))
+			.put(EnumFacing.NORTH, new Vec3d(0.5D, 0.5D, 0.25D))
+			.put(EnumFacing.SOUTH, new Vec3d(0.5D, 0.5D, 0.75D))
+			.put(EnumFacing.EAST, new Vec3d(0.75D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, new Vec3d(0.25D, 0.5D, 0.5D))
+			.build();
 	private final GravityHopperItemHandler handler;
 	private boolean isPowered;
 	private boolean inverse;
 	private int tick;
 
 	public TileGravityHopper() {
-		handler  = new GravityHopperItemHandler(this);
+		handler = new GravityHopperItemHandler(this);
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			if(tick % 2 == 0) {
 				EnumFacing facing = getFacing();
 
-				if(handler.getStackInSlot(0).isEmpty()) {
+				if(handler.getStack().isEmpty()) {
 					Optional<BlockPos> in = traceBlock(facing);
 					if(in.isPresent()) {
 						Optional<IItemHandler> inventoryIn = getInventory(in.get(), facing);
@@ -69,7 +68,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 					}
 				}
 
-				if(!handler.getStackInSlot(0).isEmpty()) {
+				if(!handler.getStack().isEmpty()) {
 					Optional<BlockPos> out = traceBlock(facing.getOpposite());
 					if(out.isPresent()) {
 						Optional<IItemHandler> inventoryOut = getInventory(out.get(), facing.getOpposite());
@@ -84,23 +83,23 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private void spawnParticles() {
-		EnumFacing facing = getFacing();
+		if(tick % 120 == 0) {
+			EnumFacing facing = getFacing();
+			Vec3d front = getOffSet(facing);
 
-		Vec3d front = getOffSet(facing);
-		Vec3d back = getOffSet(facing.getOpposite());
-
-		if(tick % 4 == 0 && world.rand.nextBoolean()) {
-			double speed = world.rand.nextDouble() * 0.025D;
-			Vec3d vec = new Vec3d(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
-
-			ParticleUtil.spawnLightParticle(world, back.x, back.y, back.z, vec.x, vec.y, vec.z, 0x49FFFF, 30, 2F);
-		}
-		if(tick % 160 == 0) {
 			BlockPos target = pos.offset(facing.getOpposite(), 9);
 			Vec3d to = new Vec3d(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D);
 			double speed = 0.025D;
 
 			ParticleUtil.spawnNeutronBlast(world, front.x, front.y, front.z, speed, to.x, to.y, to.z, 0xFF0303, 0.25F, true);
+		} else if(tick % 4 == 0 && world.rand.nextBoolean()) {
+			EnumFacing facing = getFacing();
+			Vec3d back = getOffSet(facing.getOpposite());
+
+			double speed = world.rand.nextDouble() * 0.025D;
+			Vec3d vec = new Vec3d(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
+
+			ParticleUtil.spawnLightParticle(world, back.x, back.y, back.z, vec.x, vec.y, vec.z, 0x49FFFF, 30, 2F);
 		}
 	}
 
@@ -119,8 +118,8 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private Optional<BlockPos> traceBlock(EnumFacing facing) { //Oh boy, I cant wait to use raytrace!
-		for(int i = 0; i < 10; i++) {
-			BlockPos target = pos.offset(facing, i + 1);
+		for(int forward = 0; forward < 10; forward++) {
+			BlockPos target = pos.offset(facing, forward + 1);
 			IBlockState state = world.getBlockState(target);
 			if(state.getBlock() instanceof ITileEntityProvider) {
 				return Optional.of(target);
@@ -130,32 +129,58 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private void transferIn(IItemHandler handler) {
-		for(int i = 0; i < handler.getSlots(); i++) {
-			ItemStack inSlot = handler.getStackInSlot(i);
-			if(!inSlot.isEmpty()) {
-				ItemStack taken = handler.extractItem(i, handler.getSlotLimit(i), false);
-				this.handler.insertItem(0, taken, false);
-				break;
+		if(!isEmpty(handler)) {
+			for(int slot = 0; slot < handler.getSlots(); slot++) {
+				ItemStack inserted = handler.getStackInSlot(slot);
+				if(!inserted.isEmpty() && !handler.extractItem(slot, Integer.MAX_VALUE, true).isEmpty()) {
+					this.handler.setStack(handler.extractItem(slot, Integer.MAX_VALUE, false));
+					break;
+				}
 			}
 		}
 	}
 
 	private void transferOut(IItemHandler handler) {
-		ItemStack insert = this.handler.getStackInSlot(0);
+		if(!isFull(handler)) {
+			ItemStack inserted = this.handler.getStack().copy();
 
-		for(int i = 0; i < handler.getSlots(); i++) {
-			ItemStack inSlot = handler.getStackInSlot(i);
-			if(inSlot.isEmpty() || ItemHandlerHelper.canItemStacksStack(inSlot, insert)) {
-				insert = handler.insertItem(i, insert, false);
+			for(int slot = 0; slot < handler.getSlots(); slot++) {
+				ItemStack inSlot = handler.getStackInSlot(slot);
+
+				if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted) && (inSlot.getCount() < inSlot.getMaxStackSize() && inSlot.getCount() < handler.getSlotLimit(slot)))
+						&& !handler.insertItem(slot, inserted, true).isEmpty()) {
+
+					inserted = handler.insertItem(slot, inserted, false);
+					this.handler.setStack(inserted);
+					break;
+				}
 			}
 		}
+	}
 
-		this.handler.setStackInSlot(0, insert);
+	private static boolean isFull(IItemHandler itemHandler) {
+		for(int slot = 0; slot < itemHandler.getSlots(); slot++) {
+			ItemStack inSlot = itemHandler.getStackInSlot(slot);
+			if(inSlot.isEmpty() || inSlot.getCount() != inSlot.getMaxStackSize()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static boolean isEmpty(IItemHandler itemHandler) {
+		for(int slot = 0; slot < itemHandler.getSlots(); slot++) {
+			ItemStack inSlot = itemHandler.getStackInSlot(slot);
+			if(inSlot.getCount() > 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void remove() {
 		if(!world.isRemote) {
-			ItemStack stack = handler.extractItem(0, handler.getSlotLimit(0), false);
+			ItemStack stack = handler.extractItem(0, Integer.MAX_VALUE, false);
 			if(!stack.isEmpty()) {
 				EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
 				world.spawnEntity(item);
@@ -221,6 +246,14 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		GravityHopperItemHandler(TileGravityHopper tile) {
 			super(1);
 			this.tile = tile;
+		}
+
+		private ItemStack getStack() {
+			return stacks.get(0);
+		}
+
+		private void setStack(ItemStack stack) {
+			setStackInSlot(0, stack);
 		}
 
 		@Override
