@@ -6,7 +6,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.recipe;
 
-import arekkuusu.solar.api.quantum.IQuantumItem;
+import arekkuusu.solar.api.quantum.IEntangledStack;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -34,7 +34,7 @@ public class QuantumClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 			} else if(!cleared.isEmpty() && !inSlot.isEmpty()) return false;
 		}
 
-		return !cleared.isEmpty() && cleared.getItem() instanceof IQuantumItem;
+		return !cleared.isEmpty() && cleared.getItem() instanceof IEntangledStack;
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class QuantumClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 			} else if(!cleared.isEmpty() && !inSlot.isEmpty()) return ItemStack.EMPTY;
 		}
 
-		if(!cleared.isEmpty() && cleared.getItem() instanceof IQuantumItem) {
+		if(!cleared.isEmpty() && cleared.getItem() instanceof IEntangledStack) {
 			return new ItemStack(cleared.getItem(), cleared.getCount());
 		}
 		return ItemStack.EMPTY;

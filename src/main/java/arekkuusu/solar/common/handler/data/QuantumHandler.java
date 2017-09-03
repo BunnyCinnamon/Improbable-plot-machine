@@ -6,10 +6,9 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.data;
 
-import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.quantum.IQuantumItem;
+import arekkuusu.solar.api.quantum.EntanglementHelper;
+import arekkuusu.solar.api.quantum.IEntangledStack;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -20,7 +19,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
  */
-public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifiable {
+public abstract class QuantumHandler implements IItemHandlerModifiable {
 
 	private final int slots;
 
@@ -34,19 +33,19 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 	protected void onChange(int slot) {}
 
 	public boolean assertSafety(ItemStack stack) {
-		return !(stack.getItem() instanceof IQuantumItem) || !((IQuantumItem) stack.getItem()).getKey(stack).isPresent();
+		return !(stack.getItem() instanceof IEntangledStack) || !((IEntangledStack) stack.getItem()).getKey(stack).isPresent();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		if(getKey() == null) return ItemStack.EMPTY;
 
-		return SolarApi.getQuantumStack(getKey(), slot);
+		return EntanglementHelper.getQuantumStack(getKey(), slot);
 	}
 
 	@Override
 	public void setStackInSlot(int slot, ItemStack stack) {
-		SolarApi.setQuantumStack(getKey(), stack, slot);
+		EntanglementHelper.setQuantumStack(getKey(), stack, slot);
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 
 		if(getKey() == null || !assertSafety(stack)) return stack;
 
-		ItemStack existing = SolarApi.getQuantumStack(getKey(), slot);
+		ItemStack existing = EntanglementHelper.getQuantumStack(getKey(), slot);
 
 		int limit = stack.getMaxStackSize();
 
@@ -89,7 +88,7 @@ public abstract class QuantumHandler implements IItemHandler, IItemHandlerModifi
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		if(amount == 0 || getKey() == null) return ItemStack.EMPTY;
 
-		ItemStack existing = SolarApi.getQuantumStack(getKey(), slot);
+		ItemStack existing = EntanglementHelper.getQuantumStack(getKey(), slot);
 
 		if(existing.isEmpty()) {
 			return ItemStack.EMPTY;

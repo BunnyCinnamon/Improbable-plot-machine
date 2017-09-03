@@ -8,10 +8,11 @@ package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.api.quantum.IQuantumItem;
+import arekkuusu.solar.api.quantum.EntanglementHelper;
+import arekkuusu.solar.api.quantum.IEntangledStack;
 import arekkuusu.solar.client.util.helper.TooltipHelper;
 import arekkuusu.solar.common.block.ModBlocks;
-import arekkuusu.solar.common.handler.data.QuantumProvider;
+import arekkuusu.solar.common.handler.data.QuantumStackProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +38,7 @@ import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.SHIFT_K
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Solar.
  */
-public class ItemQuantumMirror extends ItemBaseBlock implements IQuantumItem {
+public class ItemQuantumMirror extends ItemBaseBlock implements IEntangledStack {
 
 	public ItemQuantumMirror() {
 		super(ModBlocks.quantum_mirror);
@@ -46,29 +47,12 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IQuantumItem {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		getKey(stack).ifPresent(uuid -> TooltipHelper.inline()
-				.condition(SHIFT_KEY_DOWN)
-				.ifAgrees(builder -> {
-					builder.addI18("quantum", TooltipHelper.DARK_GRAY_ITALIC).end();
-					SolarApi.getQuantumStacks(uuid).forEach(item -> builder
-							.add("    - ", TextFormatting.DARK_GRAY)
-							.add(item.getDisplayName(), TooltipHelper.GRAY_ITALIC)
-							.add(" x " + item.getCount()).end()
-					);
-					builder.skip();
-
-					builder.condition(CONTROL_KEY_DOWN).ifAgrees(sub -> {
-						sub.addI18("uuid_key", TooltipHelper.DARK_GRAY_ITALIC).add(": ").end();
-						String key = uuid.toString();
-						sub.add(" > ").add(key.substring(0, 18)).end();
-						sub.add(" > ").add(key.substring(18)).end();
-					});
-				}).build(tooltip));
+		addTooltipInfo(stack, tooltip);
 	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new QuantumProvider(this, stack);
+		return new QuantumStackProvider(this, stack);
 	}
 
 	@Override

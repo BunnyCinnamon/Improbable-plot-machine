@@ -7,7 +7,7 @@
 package arekkuusu.solar.common.handler.recipe;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.quantum.IQuantumItem;
+import arekkuusu.solar.api.quantum.IEntangledStack;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -81,11 +81,11 @@ public class QuantumCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 	}
 
 	private boolean hasTag(ItemStack stack) {
-		return stack.getItem() instanceof IQuantumItem && getKey(stack).isPresent();
+		return stack.getItem() instanceof IEntangledStack && getKey(stack).isPresent();
 	}
 
 	private Optional<UUID> getKey(ItemStack stack) {
-		return ((IQuantumItem) stack.getItem()).getKey(stack);
+		return ((IEntangledStack) stack.getItem()).getKey(stack);
 	}
 
 	@Override

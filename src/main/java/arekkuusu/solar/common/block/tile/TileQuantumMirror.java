@@ -6,22 +6,15 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.quantum.ISimpleQuantum;
+import arekkuusu.solar.api.quantum.IEntangledTile;
 import arekkuusu.solar.client.effect.ParticleUtil;
-import arekkuusu.solar.common.handler.data.QuantumHandler;
-import arekkuusu.solar.common.handler.data.WorldQuantumData;
+import arekkuusu.solar.common.handler.data.QuantumTileWrapper;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -30,14 +23,14 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Solar.
  */
-public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQuantum {
+public class TileQuantumMirror extends TileBase implements ITickable, IEntangledTile<TileQuantumMirror> {
 
-	private final QuantumTileHandler handler;
+	private final QuantumTileWrapper<TileQuantumMirror> handler;
 	private UUID key;
 	public int tick;
 
 	public TileQuantumMirror() {
-		handler = new QuantumTileHandler(this);
+		handler = new QuantumTileWrapper<>(this);
 	}
 
 	@Override
@@ -53,56 +46,6 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 		++tick;
 	}
 
-	@SuppressWarnings("ConstantConditions")
-	public void handleItemTransfer(EntityPlayer player, EnumHand hand) {
-		if(hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler handler = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			ItemStack inserted = player.getHeldItem(hand);
-
-			if(!inserted.isEmpty()) {
-				for(int i = 0; i < handler.getSlots(); i++) {
-					ItemStack test = handler.insertItem(i, inserted, true);
-					if(test != inserted) {
-						player.setHeldItem(hand, handler.insertItem(i, inserted, false));
-						break;
-					}
-				}
-			} else {
-				for(int i = 0; i < handler.getSlots(); i++) {
-					ItemStack test = handler.extractItem(i, handler.getSlotLimit(i), false);
-					if(!test.isEmpty()) {
-						player.setHeldItem(hand, test);
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	public void takeItem(EntityPlayer player, ItemStack stack) {
-		if(key == null) return;
-		ItemStack contained = getQuantumItem(0).copy();
-		if(stack.isEmpty()) {
-			player.setHeldItem(EnumHand.MAIN_HAND, contained);
-		} else {
-			ItemHandlerHelper.giveItemToPlayer(player, contained);
-		}
-		setQuantumItem(ItemStack.EMPTY, 0);
-	}
-
-	@Override
-	public ItemStack getQuantumItem(int slot) {
-		return key == null ? ItemStack.EMPTY : SolarApi.getQuantumStack(key, slot);
-	}
-
-	@Override
-	public void setQuantumItem(ItemStack stack, int slot) {
-		if(!world.isRemote) {
-			SolarApi.setQuantumStack(key, stack, slot);
-		}
-		updateState();
-	}
-
 	@Nullable
 	@Override
 	public UUID getKey() {
@@ -112,14 +55,8 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 	@Override
 	public void setKey(@Nullable UUID key) {
 		this.key = key;
-		updateState();
-	}
-
-	void updateState() {
 		IBlockState state = world.getBlockState(pos);
 		world.notifyNeighborsOfStateChange(pos, state.getBlock(), true);
-
-		WorldQuantumData.get(world).markDirty();
 	}
 
 	@Override
@@ -152,26 +89,5 @@ public class TileQuantumMirror extends TileBase implements ITickable, ISimpleQua
 	@Override
 	public boolean shouldRenderInPass(int pass) {
 		return pass == 0 || pass == 1;
-	}
-
-	private static class QuantumTileHandler extends QuantumHandler {
-
-		private final TileQuantumMirror tile;
-
-		QuantumTileHandler(TileQuantumMirror tile) {
-			super(1);
-			this.tile = tile;
-		}
-
-		@Nullable
-		@Override
-		public UUID getKey() {
-			return tile.getKey();
-		}
-
-		@Override
-		protected void onChange(int slot) {
-			tile.updateState();
-		}
 	}
 }

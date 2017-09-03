@@ -7,6 +7,7 @@
 package arekkuusu.solar.common.handler.data;
 
 import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.quantum.EntanglementHelper;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHandler;
 import arekkuusu.solar.common.network.QSyncAllMessage;
@@ -26,6 +27,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 02/08/2017.
  * It's distributed as part of Solar.
  */
+@SuppressWarnings("VariableUseSideOnly")
 public class WorldQuantumData extends WorldSavedData {
 
 	private static final String NAME = LibMod.MOD_ID + ":" + SolarApi.QUANTUM_DATA;
@@ -60,12 +62,12 @@ public class WorldQuantumData extends WorldSavedData {
 	}
 
 	public static void syncTo(EntityPlayerMP player) {
-		QSyncAllMessage message = new QSyncAllMessage(SolarApi.QUANTUM_ITEMS);
+		QSyncAllMessage message = new QSyncAllMessage(SolarApi.getStacks());
 		PacketHandler.sendTo(message, player);
 	}
 
 	public static void syncToAll() {
-		QSyncAllMessage message = new QSyncAllMessage(SolarApi.QUANTUM_ITEMS);
+		QSyncAllMessage message = new QSyncAllMessage(SolarApi.getStacks());
 		PacketHandler.INSTANCE.sendToAll(message);
 	}
 
@@ -75,14 +77,14 @@ public class WorldQuantumData extends WorldSavedData {
 		list.forEach(stackList -> {
 			NBTTagList stacks = (NBTTagList) ((NBTTagCompound) stackList).getTag(LIST);
 			UUID key = ((NBTTagCompound) stackList).getUniqueId(KEY);
-			stacks.forEach(tag -> SolarApi.addQuantumAsync(key, new ItemStack((NBTTagCompound) tag)));
+			stacks.forEach(tag -> EntanglementHelper.addQuantumAsync(key, new ItemStack((NBTTagCompound) tag)));
 		});
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
-		SolarApi.QUANTUM_ITEMS.forEach((uuid, itemStacks) -> {
+		SolarApi.getStacks().forEach((uuid, itemStacks) -> {
 			NBTTagList stackList = new NBTTagList();
 			itemStacks.forEach(stack -> stackList.appendTag(stack.writeToNBT(new NBTTagCompound())));
 			NBTTagCompound nbt = new NBTTagCompound();

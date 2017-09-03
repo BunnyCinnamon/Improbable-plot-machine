@@ -8,13 +8,15 @@ package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.api.quantum.IQuantumItem;
+import arekkuusu.solar.api.quantum.EntanglementHelper;
+import arekkuusu.solar.api.quantum.IEntangledStack;
 import arekkuusu.solar.client.render.baked.RenderedBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipHelper;
 import arekkuusu.solar.common.entity.EntityQuingentilliardItem;
-import arekkuusu.solar.common.handler.data.QuantumProvider;
+import arekkuusu.solar.common.handler.data.QuantumStackProvider;
+import arekkuusu.solar.common.handler.data.QuantumStackWrapper;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.Iterables;
@@ -50,7 +52,7 @@ import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.SHIFT_K
  * Created by <Arekkuusu> on 08/08/2017.
  * It's distributed as part of Solar.
  */
-public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
+public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
 
 	public ItemQuingentilliard() {
 		super(LibNames.QUINGENTILLIARD);
@@ -64,7 +66,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 				.condition(SHIFT_KEY_DOWN)
 				.ifAgrees(builder -> {
 					//Filter
-					List<ItemStack> items = SolarApi.getQuantumStacks(uuid).stream()
+					List<ItemStack> items = EntanglementHelper.getQuantumStacks(uuid).stream()
 							.map(ItemStack::copy).collect(Collectors.toList());
 					List<ItemStack> removed = new ArrayList<>();
 
@@ -81,30 +83,26 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 					});
 					items.removeAll(removed);
 					//Populate Tooltip
-					builder.addI18("quantum", TooltipHelper.DARK_GRAY_ITALIC).add(":").end();
+					builder.addI18("quantum", TooltipHelper.DARK_GRAY_ITALIC).end();
 					items.forEach(item -> builder
 							.add("    - ", TextFormatting.DARK_GRAY)
 							.add(item.getDisplayName(), TooltipHelper.GRAY_ITALIC)
 							.add(" x " + item.getCount()).end()
 					);
-					if(items.size() > 16) {
-						builder.add("    - . . . + ", TooltipHelper.DARK_GRAY_ITALIC)
-								.add(items.size() - 15).add(" ").addI18("list_more").end();
-					}
-
 					builder.skip();
+
 					builder.condition(CONTROL_KEY_DOWN).ifAgrees(sub -> {
 						sub.addI18("uuid_key", TooltipHelper.DARK_GRAY_ITALIC).add(": ").end();
 						String key = uuid.toString();
-						sub.add(" > " + key.substring(0, 18)).end();
-						sub.add(" > " + key.substring(18)).end();
+						sub.add(" > ").add(key.substring(0, 18)).end();
+						sub.add(" > ").add(key.substring(18)).end();
 					});
 				}).build(tooltip));
 	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new QuantumProvider(new QuingentilliardItemHandler(this, stack));
+		return new QuantumStackProvider(new QuingentilliardStackWrapper(this, stack));
 	}
 
 	@Override
@@ -125,7 +123,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 		if(!world.isRemote && player.getHeldItem(off).isEmpty()) {
 			getKey(player.getHeldItem(hand)).ifPresent(
 					uuid -> {
-						List<ItemStack> stacks = SolarApi.getQuantumStacks(uuid);
+						List<ItemStack> stacks = EntanglementHelper.getQuantumStacks(uuid);
 
 						if(!stacks.isEmpty()) {
 							ItemStack stack = Iterables.getLast(stacks);
@@ -134,7 +132,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 							toGiv.setCount(1);
 
 							stack.shrink(1);
-							SolarApi.setQuantumStack(uuid, stack, stacks.size() - 1);
+							EntanglementHelper.setQuantumStack(uuid, stack, stacks.size() - 1);
 
 							player.setHeldItem(off, toGiv);
 							toGiv.getItem().onItemUse(player, world, pos, off, facing, hitX, hitY, hitZ);
@@ -162,9 +160,9 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 		ItemStack container = entity.getItem();
 
 		if(!container.isEmpty() && container.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			QuingentilliardItemHandler handler = (QuingentilliardItemHandler) container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			QuingentilliardStackWrapper handler = (QuingentilliardStackWrapper) container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			List<EntityItem> list = entity.world.getEntitiesWithinAABB(EntityItem.class, entity.getEntityBoundingBox().grow(6))
-					.stream().filter(item -> item.isEntityAlive() && !(item.getItem().getItem() instanceof IQuantumItem))
+					.stream().filter(item -> item.isEntityAlive() && !(item.getItem().getItem() instanceof IEntangledStack))
 					.collect(Collectors.toList());
 
 			if(!list.isEmpty()) {
@@ -220,11 +218,11 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 		return 64;
 	}
 
-	private static class QuingentilliardItemHandler extends QuantumProvider.QuantumItemHandler {
+	private static class QuingentilliardStackWrapper extends QuantumStackWrapper {
 
 		private boolean syncToClients;
 
-		QuingentilliardItemHandler(IQuantumItem quantum, ItemStack stack) {
+		QuingentilliardStackWrapper(IEntangledStack quantum, ItemStack stack) {
 			super(quantum, stack);
 		}
 
@@ -250,7 +248,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumItem {
 			if(syncToClients) {
 				super.setStackInSlot(slot, stack);
 			} else {
-				SolarApi.setQuantumAsync(getKey(), stack, slot);
+				EntanglementHelper.setQuantumAsync(getKey(), stack, slot);
 			}
 		}
 	}

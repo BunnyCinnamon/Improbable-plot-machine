@@ -82,6 +82,57 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		tick++;
 	}
 
+	private Optional<BlockPos> traceBlock(EnumFacing facing) { //Oh boy, I cant wait to use raytrace! ♪~ ᕕ(ᐛ)ᕗ
+		for(int forward = 0; forward < 10; forward++) {
+			BlockPos target = pos.offset(facing, forward + 1);
+			IBlockState state = world.getBlockState(target);
+			if(state.getBlock() instanceof ITileEntityProvider) {
+				return Optional.of(target);
+			}
+		}
+		return Optional.empty();
+	}
+
+	private Optional<IItemHandler> getInventory(BlockPos target, EnumFacing facing) {
+		if(world.isBlockLoaded(target, false)) {
+			TileEntity tile = world.getTileEntity(target);
+			if(tile != null) {
+				if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
+					return Optional.ofNullable(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing));
+				} else if(tile instanceof IItemHandler) { //What have you done????
+					return Optional.of((IItemHandler) tile);
+				}
+			}
+		}
+		return Optional.empty();
+	}
+
+	private void transferIn(IItemHandler handler) {
+		for(int slot = 0; slot < handler.getSlots(); slot++) {
+			ItemStack inserted = handler.getStackInSlot(slot);
+			if(!inserted.isEmpty() && !handler.extractItem(slot, Integer.MAX_VALUE, true).isEmpty()) {
+				this.handler.setStack(handler.extractItem(slot, Integer.MAX_VALUE, false));
+				break;
+			}
+		}
+	}
+
+	private void transferOut(IItemHandler handler) {
+		ItemStack inserted = this.handler.getStack().copy();
+
+		for(int slot = 0; slot < handler.getSlots(); slot++) {
+			ItemStack inSlot = handler.getStackInSlot(slot);
+
+			if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted) && (inSlot.getCount() < inSlot.getMaxStackSize() && inSlot.getCount() < handler.getSlotLimit(slot)))
+					&& !handler.insertItem(slot, inserted, true).isEmpty()) {
+
+				inserted = handler.insertItem(slot, inserted, false);
+				this.handler.setStack(inserted);
+				break;
+			}
+		}
+	}
+
 	private void spawnParticles() {
 		if(tick % 120 == 0) {
 			EnumFacing facing = getFacing();
@@ -101,81 +152,6 @@ public class TileGravityHopper extends TileBase implements ITickable {
 
 			ParticleUtil.spawnLightParticle(world, back.x, back.y, back.z, vec.x, vec.y, vec.z, 0x49FFFF, 30, 2F);
 		}
-	}
-
-	private Optional<IItemHandler> getInventory(BlockPos target, EnumFacing facing) {
-		if(world.isBlockLoaded(target, false)) {
-			TileEntity tile = world.getTileEntity(target);
-			if(tile != null) {
-				if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
-					return Optional.ofNullable(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing));
-				} else if(tile instanceof IItemHandler) { //What have you done????
-					return Optional.of((IItemHandler) tile);
-				}
-			}
-		}
-		return Optional.empty();
-	}
-
-	private Optional<BlockPos> traceBlock(EnumFacing facing) { //Oh boy, I cant wait to use raytrace!
-		for(int forward = 0; forward < 10; forward++) {
-			BlockPos target = pos.offset(facing, forward + 1);
-			IBlockState state = world.getBlockState(target);
-			if(state.getBlock() instanceof ITileEntityProvider) {
-				return Optional.of(target);
-			}
-		}
-		return Optional.empty();
-	}
-
-	private void transferIn(IItemHandler handler) {
-		if(!isEmpty(handler)) {
-			for(int slot = 0; slot < handler.getSlots(); slot++) {
-				ItemStack inserted = handler.getStackInSlot(slot);
-				if(!inserted.isEmpty() && !handler.extractItem(slot, Integer.MAX_VALUE, true).isEmpty()) {
-					this.handler.setStack(handler.extractItem(slot, Integer.MAX_VALUE, false));
-					break;
-				}
-			}
-		}
-	}
-
-	private void transferOut(IItemHandler handler) {
-		if(!isFull(handler)) {
-			ItemStack inserted = this.handler.getStack().copy();
-
-			for(int slot = 0; slot < handler.getSlots(); slot++) {
-				ItemStack inSlot = handler.getStackInSlot(slot);
-
-				if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted) && (inSlot.getCount() < inSlot.getMaxStackSize() && inSlot.getCount() < handler.getSlotLimit(slot)))
-						&& !handler.insertItem(slot, inserted, true).isEmpty()) {
-
-					inserted = handler.insertItem(slot, inserted, false);
-					this.handler.setStack(inserted);
-					break;
-				}
-			}
-		}
-	}
-
-	private static boolean isFull(IItemHandler itemHandler) {
-		for(int slot = 0; slot < itemHandler.getSlots(); slot++) {
-			ItemStack inSlot = itemHandler.getStackInSlot(slot);
-			if(inSlot.isEmpty() || inSlot.getCount() != inSlot.getMaxStackSize()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static boolean isEmpty(IItemHandler itemHandler) {
-		for(int slot = 0; slot < itemHandler.getSlots(); slot++) {
-			ItemStack inSlot = itemHandler.getStackInSlot(slot);
-			if(inSlot.getCount() > 0) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public void remove() {

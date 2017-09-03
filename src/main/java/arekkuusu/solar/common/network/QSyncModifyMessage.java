@@ -6,7 +6,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.quantum.EntanglementHelper;
 import arekkuusu.solar.common.Solar;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -68,7 +68,7 @@ public class QSyncModifyMessage implements IMessage {
 		public IMessage onMessage(QSyncModifyMessage message, MessageContext ctx) {
 			if (ctx.side == Side.CLIENT && message.stack != null) {
 				Minecraft.getMinecraft().addScheduledTask(() ->
-						SolarApi.setQuantumAsync(message.uuid, message.stack, message.slot)
+						EntanglementHelper.setQuantumAsync(message.uuid, message.stack, message.slot)
 				);
 			}
 			return null;

@@ -6,7 +6,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.quantum.EntanglementHelper;
 import arekkuusu.solar.common.Solar;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -83,8 +83,8 @@ public class QSyncAllMessage implements IMessage {
 		public IMessage onMessage(QSyncAllMessage message, MessageContext ctx) {
 			if (ctx.side == Side.CLIENT) {
 				Minecraft.getMinecraft().addScheduledTask(() -> {
-					SolarApi.QUANTUM_ITEMS.clear();
-					SolarApi.QUANTUM_ITEMS.putAll(message.map);
+					EntanglementHelper.getSidedMap().clear();
+					EntanglementHelper.getSidedMap().putAll(message.map);
 				});
 			}
 			return null;

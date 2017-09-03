@@ -50,6 +50,6 @@ public class Solar {
 
 	@EventHandler
 	public void serverStop(FMLServerStoppedEvent event) {
-		SolarApi.QUANTUM_ITEMS.clear();
+		SolarApi.getStacks().clear();
 	}
 }

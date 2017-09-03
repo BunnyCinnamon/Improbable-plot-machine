@@ -6,7 +6,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.quantum.EntanglementHelper;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.BlendHelper;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -38,7 +37,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 		switch(layer) {
 			case 0:
-				ItemStack stack = SolarApi.getQuantumStack(mirror.getKey(), 0);
+				ItemStack stack = EntanglementHelper.getQuantumStack(mirror.getKey(), 0);
 				if(!stack.isEmpty()) {
 					GlStateManager.pushMatrix();
 					BlendHelper.lightMap(255F, 255F);

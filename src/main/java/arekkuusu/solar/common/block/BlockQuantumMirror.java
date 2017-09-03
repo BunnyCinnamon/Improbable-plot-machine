@@ -9,6 +9,7 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.quantum.EntanglementHelper;
 import arekkuusu.solar.client.render.baked.QuantumMirrorBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -141,7 +142,7 @@ public class BlockQuantumMirror extends BlockBase implements ITileEntityProvider
 		if(tile != null && tile instanceof TileQuantumMirror) {
 			UUID key = ((TileQuantumMirror) tile).getKey();
 			if(key != null) {
-				ItemStack stack = SolarApi.getQuantumStack(key, 0);
+				ItemStack stack = EntanglementHelper.getQuantumStack(key, 0);
 				Item redstone = Item.getItemFromBlock(Blocks.REDSTONE_BLOCK);
 				return !stack.isEmpty() && stack.getItem() == redstone ? 15 : 0;
 			}

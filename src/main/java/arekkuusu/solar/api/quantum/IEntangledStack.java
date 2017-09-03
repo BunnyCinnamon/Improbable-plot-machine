@@ -8,25 +8,38 @@ package arekkuusu.solar.api.quantum;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.client.util.helper.TooltipHelper;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.SHIFT_KEY_DOWN;
 
 /**
  * Created by <Arekkuusu> on 09/08/2017.
  * It's distributed as part of Solar.
  */
-public interface IQuantumItem {
+public interface IEntangledStack extends IEntangledInfo {
 
 	int getSlots();
+
+	@SideOnly(Side.CLIENT)
+	default void addTooltipInfo(ItemStack stack, List<String> tooltip) {
+		getKey(stack).ifPresent(uuid -> TooltipHelper.inline()
+				.condition(SHIFT_KEY_DOWN)
+				.ifAgrees(builder -> getInfo(builder, uuid)).build(tooltip));
+	}
 
 	@SuppressWarnings("ConstantConditions")
 	default void handleItemTransfer(EntityPlayer player, World world, ItemStack container, EnumHand hand) {
@@ -54,16 +67,6 @@ public interface IQuantumItem {
 				}
 			}
 		}
-	}
-
-	default ItemStack getQuantumStack(ItemStack container, int slot) {
-		Optional<UUID> optional = getKey(container);
-		return optional.map(uuid -> SolarApi.getQuantumStack(uuid, slot)).orElse(ItemStack.EMPTY);
-	}
-
-	default void setQuantumStack(ItemStack container, ItemStack contained, int slot) {
-		Optional<UUID> optional = getKey(container);
-		optional.ifPresent(uuid -> SolarApi.setQuantumStack(uuid, contained, slot));
 	}
 
 	default void setKey(ItemStack stack, UUID uuid) {
