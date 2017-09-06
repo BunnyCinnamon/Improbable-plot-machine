@@ -3,6 +3,7 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.client.render.baked;
 
@@ -12,7 +13,6 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,21 +46,21 @@ public class PrimalGlyphBakedModel extends BrightBakedModel {
 	protected List<BakedQuad> getQuads(IBlockState state) {
 		List<BakedQuad> quads = new ArrayList<>();
 
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 0.0D), new Vec3d(1.0D, 0.0D, 1.0D), new Vec3d(0.0D, 0.0D, 1.0D), new Vec3d(0.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(1.0D, 1.0D, 0.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 1.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(0.0D, 0.0D, 1.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(0.0D, 0.0D, 0.0D), new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(1.0D, 1.0D, 0.0D), new Vec3d(1.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(0.0D, 0.0D, 1.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(0.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 0.0D), new Vec3d(1.0D, 1.0D, 0.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(1.0D, 0.0D, 1.0D), this.base, false));
+		quads.add(createQuad(vec(1.0D, 0.0D, 0.0D), vec(1.0D, 0.0D, 1.0D), vec(0.0D, 0.0D, 1.0D), vec(0.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vec(0.0D, 1.0D, 0.0D), vec(0.0D, 1.0D, 1.0D), vec(1.0D, 1.0D, 1.0D), vec(1.0D, 1.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vec(1.0D, 0.0D, 1.0D), vec(1.0D, 1.0D, 1.0D), vec(0.0D, 1.0D, 1.0D), vec(0.0D, 0.0D, 1.0D), this.base, false));
+		quads.add(createQuad(vec(0.0D, 0.0D, 0.0D), vec(0.0D, 1.0D, 0.0D), vec(1.0D, 1.0D, 0.0D), vec(1.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vec(0.0D, 0.0D, 1.0D), vec(0.0D, 1.0D, 1.0D), vec(0.0D, 1.0D, 0.0D), vec(0.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vec(1.0D, 0.0D, 0.0D), vec(1.0D, 1.0D, 0.0D), vec(1.0D, 1.0D, 1.0D), vec(1.0D, 0.0D, 1.0D), this.base, false));
 
 		int glyph = state.getValue(GLYPH).ordinal();
 
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 0.0D), new Vec3d(1.0D, 0.0D, 1.0D), new Vec3d(0.0D, 0.0D, 1.0D), new Vec3d(0.0D, 0.0D, 0.0D), this.overlay[glyph], true));
-		quads.add(createQuad(new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(1.0D, 1.0D, 0.0D), this.overlay[glyph], true));
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 1.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(0.0D, 0.0D, 1.0D), this.overlay[glyph], true));
-		quads.add(createQuad(new Vec3d(0.0D, 0.0D, 0.0D), new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(1.0D, 1.0D, 0.0D), new Vec3d(1.0D, 0.0D, 0.0D), this.overlay[glyph], true));
-		quads.add(createQuad(new Vec3d(0.0D, 0.0D, 1.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(0.0D, 0.0D, 0.0D), this.overlay[glyph], true));
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 0.0D), new Vec3d(1.0D, 1.0D, 0.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(1.0D, 0.0D, 1.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vec(1.0D, 0.0D, 0.0D), vec(1.0D, 0.0D, 1.0D), vec(0.0D, 0.0D, 1.0D), vec(0.0D, 0.0D, 0.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vec(0.0D, 1.0D, 0.0D), vec(0.0D, 1.0D, 1.0D), vec(1.0D, 1.0D, 1.0D), vec(1.0D, 1.0D, 0.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vec(1.0D, 0.0D, 1.0D), vec(1.0D, 1.0D, 1.0D), vec(0.0D, 1.0D, 1.0D), vec(0.0D, 0.0D, 1.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vec(0.0D, 0.0D, 0.0D), vec(0.0D, 1.0D, 0.0D), vec(1.0D, 1.0D, 0.0D), vec(1.0D, 0.0D, 0.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vec(0.0D, 0.0D, 1.0D), vec(0.0D, 1.0D, 1.0D), vec(0.0D, 1.0D, 0.0D), vec(0.0D, 0.0D, 0.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vec(1.0D, 0.0D, 0.0D), vec(1.0D, 1.0D, 0.0D), vec(1.0D, 1.0D, 1.0D), vec(1.0D, 0.0D, 1.0D), this.overlay[glyph], true));
 
 		return quads;
 	}

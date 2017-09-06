@@ -2,14 +2,14 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.material.FixedMaterial;
-import arekkuusu.solar.api.quantum.EntanglementHelper;
 import arekkuusu.solar.client.render.baked.QuantumMirrorBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -20,7 +20,6 @@ import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.UUID;
+import java.util.Optional;
 
 /**
  * Created by <Arekkuusu> on 17/07/2017.
@@ -54,101 +53,63 @@ public class BlockQuantumMirror extends BlockBase implements ITileEntityProvider
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity tile = world.getTileEntity(pos);
-
-		if(!world.isRemote && tile instanceof TileQuantumMirror) {
-			TileQuantumMirror quantum = (TileQuantumMirror) tile;
-
-			if(!player.isSneaking()) {
-				quantum.handleItemTransfer(player, hand);
-			}
+		if(!world.isRemote && !player.isSneaking()) {
+			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
+				mirror.handleItemTransfer(player, hand);
+			});
 		}
 		return true;
 	}
 
 	@Override
 	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
-		TileEntity tile = world.getTileEntity(pos);
+		if(!world.isRemote) {
+			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
+				ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 
-		if(!world.isRemote && tile instanceof TileQuantumMirror) {
-			TileQuantumMirror quantum = (TileQuantumMirror) tile;
-			ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
-
-			if(player.isSneaking()) {
-				quantum.takeItem(player, stack);
-			}
+				if(player.isSneaking()) {
+					mirror.takeItem(player, stack);
+				}
+			});
 		}
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		TileEntity tile = placer.world.getTileEntity(pos);
-
-		if(!world.isRemote && tile instanceof TileQuantumMirror) {
-			NBTTagCompound tag = NBTHelper.getNBT(stack, SolarApi.QUANTUM_DATA);
-			if(tag != null) {
-				((TileQuantumMirror) tile).setKey(tag.getUniqueId("key"));
-			}
+		if(!world.isRemote) {
+			getTile(TileQuantumMirror.class, world, pos).ifPresent(blinker -> {
+				Optional<NBTTagCompound> optional = NBTHelper.getNBT(stack, SolarApi.QUANTUM_DATA);
+				optional.ifPresent(nbtTagCompound -> blinker.setKey(nbtTagCompound.getUniqueId("key")));
+			});
 		}
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity tile = world.getTileEntity(pos);
-
-		if(!world.isRemote && tile instanceof TileQuantumMirror) {
-			TileQuantumMirror quantum = (TileQuantumMirror) tile;
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-
-			if(quantum.getKey() != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setUniqueId("key", quantum.getKey());
-				NBTHelper.setNBT(stack, SolarApi.QUANTUM_DATA, tag);
-
-				spawnAsEntity(world, pos, stack);
-			}
-			world.updateComparatorOutputLevel(pos, state.getBlock());
-		}
+		getTile(TileQuantumMirror.class, world, pos).ifPresent(blinker -> {
+			ItemStack stack = getItem(world, pos, state);
+			spawnAsEntity(world, pos, stack);
+		});
 		super.breakBlock(world, pos, state);
 	}
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		TileEntity tile = world.getTileEntity(pos);
+		Optional<TileQuantumMirror> optional = getTile(TileQuantumMirror.class, world, pos);
+		if(optional.isPresent()) {
+			TileQuantumMirror mirror = optional.get();
 
-		if(!world.isRemote && tile instanceof TileQuantumMirror) {
-			TileQuantumMirror quantum = (TileQuantumMirror) tile;
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
 
-			if(quantum.getKey() != null) {
+			mirror.getKey().ifPresent(uuid -> {
 				NBTTagCompound tag = new NBTTagCompound();
-				tag.setUniqueId("key", quantum.getKey());
+				tag.setUniqueId("key", uuid);
 				NBTHelper.setNBT(stack, SolarApi.QUANTUM_DATA, tag);
-			}
+			});
 
 			return stack;
 		}
 		return super.getItem(world, pos, state);
-	}
-
-	@Override
-	public boolean canProvidePower(IBlockState state) {
-		return true;
-	}
-
-	@Override
-	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		TileEntity tile = world.getTileEntity(pos);
-		if(tile != null && tile instanceof TileQuantumMirror) {
-			UUID key = ((TileQuantumMirror) tile).getKey();
-			if(key != null) {
-				ItemStack stack = EntanglementHelper.getQuantumStack(key, 0);
-				Item redstone = Item.getItemFromBlock(Blocks.REDSTONE_BLOCK);
-				return !stack.isEmpty() && stack.getItem() == redstone ? 15 : 0;
-			}
-		}
-
-		return 0;
 	}
 
 	@Override
@@ -193,7 +154,7 @@ public class BlockQuantumMirror extends BlockBase implements ITileEntityProvider
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), pair -> new QuantumMirrorBakedModel());
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), (format, g) -> new QuantumMirrorBakedModel());
 		ModelHandler.registerModel(this, 0);
 	}
 }

@@ -2,11 +2,12 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.quantum.EntanglementHelper;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.common.Solar;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -83,8 +84,8 @@ public class QSyncAllMessage implements IMessage {
 		public IMessage onMessage(QSyncAllMessage message, MessageContext ctx) {
 			if (ctx.side == Side.CLIENT) {
 				Minecraft.getMinecraft().addScheduledTask(() -> {
-					EntanglementHelper.getSidedMap().clear();
-					EntanglementHelper.getSidedMap().putAll(message.map);
+					QuantumHandler.getSidedMap().clear();
+					QuantumHandler.getSidedMap().putAll(message.map);
 				});
 			}
 			return null;

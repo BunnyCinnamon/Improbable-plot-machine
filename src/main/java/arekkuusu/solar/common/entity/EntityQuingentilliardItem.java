@@ -2,7 +2,8 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
@@ -75,7 +76,7 @@ public class EntityQuingentilliardItem extends EntityItem {
 				@SuppressWarnings("deprecation")
 				float blast = world.getBlockState(result.getBlockPos()).getBlock().getExplosionResistance(null);
 				if(blast >= 0F && blast <= 10F) {
-					EntityTerrainExplosion explosion = new EntityTerrainExplosion(world, this, 8F);
+					TerrainExplosion explosion = new TerrainExplosion(world, this, 8F);
 					explosion.doExplosionA();
 					explosion.doExplosionB(true);
 					coolDown = 10;

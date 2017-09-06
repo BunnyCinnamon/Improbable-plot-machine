@@ -3,6 +3,7 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
@@ -30,10 +31,10 @@ public class ModBlocks {
 	public static final Block singularity = PLACE_HOLDER;
 	public static final Block prism_flower = PLACE_HOLDER;
 	public static final Block quantum_mirror = PLACE_HOLDER;
-	public static final Block light_particle = PLACE_HOLDER;
 	public static final Block gravity_hopper = PLACE_HOLDER;
 	public static final Block schrodinger_glyph = PLACE_HOLDER;
 	public static final Block crystal_void = PLACE_HOLDER;
+	public static final Block blinker = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -42,10 +43,10 @@ public class ModBlocks {
 		registry.register(new BlockSingularity());
 		registry.register(new BlockPrismFlower());
 		registry.register(new BlockQuantumMirror());
-		registry.register(new BlockLightParticle());
 		registry.register(new BlockGravityHopper());
 		registry.register(new BlockSchrodingerGlyph());
 		registry.register(new BlockCrystalVoid());
+		registry.register(new BlockBlinker());
 		registerTiles();
 	}
 
@@ -56,6 +57,7 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileQuantumMirror.class, LibMod.MOD_ID + ":quantum_mirror");
 		GameRegistry.registerTileEntity(TileGravityHopper.class, LibMod.MOD_ID + ":gravity_hopper");
 		GameRegistry.registerTileEntity(TileCrystalVoid.class, LibMod.MOD_ID + ":crystal_void");
+		GameRegistry.registerTileEntity(TileBlinker.class, LibMod.MOD_ID + ":blinker");
 
 		GameRegistry.registerTileEntity(RenderDummy.Quingentilliard.class,LibMod.MOD_ID + ":quingentilliard_dummy");
 	}

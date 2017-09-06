@@ -3,6 +3,7 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.client.util;
 
@@ -35,6 +36,9 @@ public final class ResourceLibrary {
 	);
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
 	public static final ResourceLocation SCHRODINGER_GLYPH = getAtlas(BLOCKS, "schrodinger_glyph");
+	public static final ResourceLocation BLINKER_BASE = getAtlas(BLOCKS, "blinker/blinker_base");
+	public static final ResourceLocation BLINKER_TOP = getAtlas(BLOCKS, "blinker/blinker_top");
+	public static final ResourceLocation BLINKER_BOTTOM = getAtlas(BLOCKS, "blinker/blinker_bottom");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
 		StringBuilder builder = new StringBuilder();

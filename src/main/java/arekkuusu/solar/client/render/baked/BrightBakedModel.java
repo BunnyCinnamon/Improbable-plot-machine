@@ -2,7 +2,8 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.client.render.baked;
 
@@ -96,6 +97,10 @@ public abstract class BrightBakedModel implements IBakedModel {
 	}
 
 	protected abstract List<BakedQuad> getQuads(IBlockState state);
+
+	Vec3d vec(double x, double y, double z) {
+		return new Vec3d(x, y, z);
+	}
 
 	@Override
 	public boolean isAmbientOcclusion() {

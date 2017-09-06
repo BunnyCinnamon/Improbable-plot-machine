@@ -3,6 +3,7 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
@@ -14,8 +15,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Optional;
 
 /**
  * Created by <Arekkuusu> on 23/06/2017.
@@ -35,8 +41,14 @@ public class BlockBase extends Block implements IModel {
 		return super.setSoundType(type);
 	}
 
-	protected IBlockState defaultState() {
+	IBlockState defaultState() {
 		return blockState.getBaseState();
+	}
+
+	@SuppressWarnings("unchecked")
+	<T extends TileEntity> Optional<T> getTile(Class<T> clazz, IBlockAccess world, BlockPos pos) {
+		TileEntity tile = world.getTileEntity(pos);
+		return clazz.isInstance(tile) ? Optional.of((T) tile) : Optional.empty();
 	}
 
 	@Override

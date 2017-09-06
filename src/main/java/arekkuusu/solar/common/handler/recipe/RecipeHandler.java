@@ -2,7 +2,8 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.handler.recipe;
 
@@ -16,7 +17,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class RecipeHandler {
 
 	public static void register(IForgeRegistry<IRecipe> registry) {
-		registry.register(new QuantumCloningRecipe());
-		registry.register(new QuantumClearRecipe());
+		registry.register(new EntangledCloningRecipe());
+		registry.register(new EntangledClearRecipe());
 	}
 }

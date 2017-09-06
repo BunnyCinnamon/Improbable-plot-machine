@@ -3,6 +3,7 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
@@ -74,7 +75,7 @@ public class BlockPrimalGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), pair -> new PrimalGlyphBakedModel(pair.getLeft(), pair.getRight()));
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), PrimalGlyphBakedModel::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

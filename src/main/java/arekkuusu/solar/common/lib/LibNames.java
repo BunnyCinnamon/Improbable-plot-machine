@@ -3,6 +3,7 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.lib;
 
@@ -23,4 +24,5 @@ public class LibNames {
 	public static final String QUINGENTILLIARD = "quingentilliard";
 	public static final String SCHRODINGER_GLYPH = "schrodinger_glyph";
 	public static final String CRYSTAL_VOID = "crystal_void";
+	public static final String BLINKER = "blinker";
 }

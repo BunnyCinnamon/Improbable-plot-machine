@@ -2,14 +2,15 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.api.quantum.EntanglementHelper;
-import arekkuusu.solar.api.quantum.IEntangledStack;
+import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import arekkuusu.solar.client.render.baked.RenderedBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -52,7 +53,7 @@ import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.SHIFT_K
  * Created by <Arekkuusu> on 08/08/2017.
  * It's distributed as part of Solar.
  */
-public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
+public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 
 	public ItemQuingentilliard() {
 		super(LibNames.QUINGENTILLIARD);
@@ -66,7 +67,7 @@ public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
 				.condition(SHIFT_KEY_DOWN)
 				.ifAgrees(builder -> {
 					//Filter
-					List<ItemStack> items = EntanglementHelper.getQuantumStacks(uuid).stream()
+					List<ItemStack> items = QuantumHandler.getQuantumStacks(uuid).stream()
 							.map(ItemStack::copy).collect(Collectors.toList());
 					List<ItemStack> removed = new ArrayList<>();
 
@@ -123,7 +124,7 @@ public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
 		if(!world.isRemote && player.getHeldItem(off).isEmpty()) {
 			getKey(player.getHeldItem(hand)).ifPresent(
 					uuid -> {
-						List<ItemStack> stacks = EntanglementHelper.getQuantumStacks(uuid);
+						List<ItemStack> stacks = QuantumHandler.getQuantumStacks(uuid);
 
 						if(!stacks.isEmpty()) {
 							ItemStack stack = Iterables.getLast(stacks);
@@ -132,7 +133,7 @@ public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
 							toGiv.setCount(1);
 
 							stack.shrink(1);
-							EntanglementHelper.setQuantumStack(uuid, stack, stacks.size() - 1);
+							QuantumHandler.setQuantumStack(uuid, stack, stacks.size() - 1);
 
 							player.setHeldItem(off, toGiv);
 							toGiv.getItem().onItemUse(player, world, pos, off, facing, hitX, hitY, hitZ);
@@ -162,7 +163,7 @@ public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
 		if(!container.isEmpty() && container.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
 			QuingentilliardStackWrapper handler = (QuingentilliardStackWrapper) container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			List<EntityItem> list = entity.world.getEntitiesWithinAABB(EntityItem.class, entity.getEntityBoundingBox().grow(6))
-					.stream().filter(item -> item.isEntityAlive() && !(item.getItem().getItem() instanceof IEntangledStack))
+					.stream().filter(item -> item.isEntityAlive() && !(item.getItem().getItem() instanceof IQuantumStack))
 					.collect(Collectors.toList());
 
 			if(!list.isEmpty()) {
@@ -209,7 +210,7 @@ public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, pair -> new RenderedBakedModel());
+		DummyBakedRegistry.register(this, (format, g) -> new RenderedBakedModel());
 		ModelHandler.registerModel(this, 0);
 	}
 
@@ -222,7 +223,7 @@ public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
 
 		private boolean syncToClients;
 
-		QuingentilliardStackWrapper(IEntangledStack quantum, ItemStack stack) {
+		QuingentilliardStackWrapper(IQuantumStack quantum, ItemStack stack) {
 			super(quantum, stack);
 		}
 
@@ -248,7 +249,7 @@ public class ItemQuingentilliard extends ItemBase implements IEntangledStack {
 			if(syncToClients) {
 				super.setStackInSlot(slot, stack);
 			} else {
-				EntanglementHelper.setQuantumAsync(getKey(), stack, slot);
+				QuantumHandler.setQuantumAsync(getKey(), stack, slot);
 			}
 		}
 	}

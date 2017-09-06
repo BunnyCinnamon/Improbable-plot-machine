@@ -2,11 +2,12 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.handler.data;
 
-import arekkuusu.solar.api.quantum.IEntangledStack;
+import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -27,7 +28,7 @@ public class QuantumStackProvider implements ICapabilityProvider {
 		this.handler = handler;
 	}
 
-	public QuantumStackProvider(IEntangledStack quantum, ItemStack stack) {
+	public QuantumStackProvider(IQuantumStack quantum, ItemStack stack) {
 		handler = new QuantumStackWrapper(quantum, stack);
 	}
 

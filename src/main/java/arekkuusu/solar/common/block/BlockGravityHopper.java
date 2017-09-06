@@ -2,7 +2,8 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
@@ -44,15 +45,14 @@ public class BlockGravityHopper extends BlockBase implements ITileEntityProvider
 	public BlockGravityHopper() {
 		super(LibNames.GRAVITY_HOPPER, FixedMaterial.DONT_MOVE);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
+		setHarvestLevel("pickaxe", 1);
 		setHardness(2F);
 	}
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(!world.isRemote && block != this) {
-			TileEntity tile = world.getTileEntity(pos);
-			if(tile != null && tile instanceof TileGravityHopper) {
-				TileGravityHopper hopper = (TileGravityHopper) tile;
+			getTile(TileGravityHopper.class, world, pos).ifPresent(hopper -> {
 				boolean wasPowered = hopper.isPowered();
 				boolean isPowered = world.isBlockPowered(pos);
 				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
@@ -62,8 +62,14 @@ public class BlockGravityHopper extends BlockBase implements ITileEntityProvider
 						hopper.setInverse(isPowered);
 					}
 				}
-			}
+			});
 		}
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		getTile(TileGravityHopper.class, world, pos).ifPresent(TileGravityHopper::remove);
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override
@@ -114,18 +120,9 @@ public class BlockGravityHopper extends BlockBase implements ITileEntityProvider
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntity tile = worldIn.getTileEntity(pos);
-		if(tile != null && tile instanceof TileGravityHopper) {
-			((TileGravityHopper) tile).remove();
-		}
-		worldIn.removeTileEntity(pos);
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), pair -> new GravityHopperBakedModel(pair.getLeft(), pair.getRight()));
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), GravityHopperBakedModel::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

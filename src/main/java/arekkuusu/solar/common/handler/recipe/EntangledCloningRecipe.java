@@ -2,12 +2,13 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.handler.recipe;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.quantum.IEntangledStack;
+import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -24,10 +25,10 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 16/08/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
-	QuantumCloningRecipe() {
-		setRegistryName(LibMod.MOD_ID, "quantum_cloning");
+	EntangledCloningRecipe() {
+		setRegistryName(LibMod.MOD_ID, "entangled_cloning");
 	}
 
 	@Override
@@ -60,10 +61,10 @@ public class QuantumCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 		}
 
 		if(!checked.isEmpty() && hasTag(checked) && i > 0) {
-			ItemStack quingentilliard = new ItemStack(checked.getItem(), i);
-			NBTTagCompound tag = quingentilliard.getOrCreateSubCompound(SolarApi.QUANTUM_DATA);
+			ItemStack entanglement = new ItemStack(checked.getItem(), i);
+			NBTTagCompound tag = entanglement.getOrCreateSubCompound(SolarApi.QUANTUM_DATA);
 			getKey(checked).ifPresent(uuid -> tag.setUniqueId("key", uuid));
-			return quingentilliard;
+			return entanglement;
 		}
 		return ItemStack.EMPTY;
 	}

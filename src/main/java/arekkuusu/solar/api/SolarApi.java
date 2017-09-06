@@ -3,12 +3,11 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.api;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +21,21 @@ import java.util.UUID;
  */
 public class SolarApi {
 
-	private static final Map<UUID, List<ItemStack>> QUANTUM_STACKS = new HashMap<>();
+	private static final Map<UUID, List<ItemStack>> ENTANGLED_STACKS = new HashMap<>();
 	public static final String QUANTUM_DATA = "quantum_data";
 
+	/**
+	 * Map containing all Items linked to an uuid.
+	 * <p>
+	 *     This is most likely empty client side,
+	 *     use {@code QuantumHandler.getSidedMap()} instead.
+	 *
+	 *     Do not modify unless you sync it yourself.
+	 * </p>
+	 *
+	 * @return {@link HashMap}
+	 */
 	public static Map<UUID, List<ItemStack>> getStacks() {
-		return QUANTUM_STACKS;
+		return ENTANGLED_STACKS;
 	}
 }

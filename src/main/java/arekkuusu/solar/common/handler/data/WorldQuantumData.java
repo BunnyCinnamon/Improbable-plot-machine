@@ -2,12 +2,12 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.handler.data;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.quantum.EntanglementHelper;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHandler;
 import arekkuusu.solar.common.network.QSyncAllMessage;
@@ -77,7 +77,7 @@ public class WorldQuantumData extends WorldSavedData {
 		list.forEach(stackList -> {
 			NBTTagList stacks = (NBTTagList) ((NBTTagCompound) stackList).getTag(LIST);
 			UUID key = ((NBTTagCompound) stackList).getUniqueId(KEY);
-			stacks.forEach(tag -> EntanglementHelper.addQuantumAsync(key, new ItemStack((NBTTagCompound) tag)));
+			stacks.forEach(tag -> arekkuusu.solar.api.entanglement.quantum.QuantumHandler.addQuantumAsync(key, new ItemStack((NBTTagCompound) tag)));
 		});
 	}
 

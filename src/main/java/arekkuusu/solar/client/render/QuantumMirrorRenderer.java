@@ -2,11 +2,12 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.api.quantum.EntanglementHelper;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.BlendHelper;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
@@ -21,6 +22,9 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 17/07/2017.
@@ -37,8 +41,11 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 		switch(layer) {
 			case 0:
-				ItemStack stack = EntanglementHelper.getQuantumStack(mirror.getKey(), 0);
-				if(!stack.isEmpty()) {
+				Optional<UUID> optional = mirror.getKey();
+				if(optional.isPresent()) {
+					ItemStack stack = QuantumHandler.getQuantumStack(optional.get(), 0);
+					if(stack.isEmpty()) break;
+
 					GlStateManager.pushMatrix();
 					BlendHelper.lightMap(255F, 255F);
 					GlStateManager.translate(x + 0.5, y + 0.3, z + 0.5);

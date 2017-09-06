@@ -2,11 +2,12 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.handler.recipe;
 
-import arekkuusu.solar.api.quantum.IEntangledStack;
+import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -18,10 +19,10 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
  * Created by <Arekkuusu> on 17/08/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
-	QuantumClearRecipe() {
-		setRegistryName(LibMod.MOD_ID, "quantum_clear");
+	EntangledClearRecipe() {
+		setRegistryName(LibMod.MOD_ID, "entangled_clear");
 	}
 
 	@Override

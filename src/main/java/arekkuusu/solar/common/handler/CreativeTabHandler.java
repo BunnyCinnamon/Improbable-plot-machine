@@ -3,6 +3,7 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.handler;
 
@@ -101,6 +102,7 @@ public class CreativeTabHandler {
 			addBlock(ModBlocks.quantum_mirror);
 			addBlock(ModBlocks.gravity_hopper);
 			addBlock(ModBlocks.crystal_void);
+			addBlock(ModBlocks.blinker);
 		}
 	}
 }

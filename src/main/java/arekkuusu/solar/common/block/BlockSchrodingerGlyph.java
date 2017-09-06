@@ -2,7 +2,8 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
@@ -88,6 +89,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		if(world.isRemote && rand.nextInt(5) == 0 && getClosestPlayer(world, pos).isPresent()) {
 			for(EnumFacing facing : EnumFacing.values()) {
@@ -130,7 +132,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), pair -> new SchrodingerGlyphBakedModel(pair.getLeft(), pair.getRight()));
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), SchrodingerGlyphBakedModel::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

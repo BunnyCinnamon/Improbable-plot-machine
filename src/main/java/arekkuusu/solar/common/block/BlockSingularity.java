@@ -2,7 +2,8 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
@@ -72,11 +73,8 @@ public class BlockSingularity extends BlockBase implements ITileEntityProvider {
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntity tile = worldIn.getTileEntity(pos);
-		if(tile != null && tile instanceof TileSingularity) {
-			((TileSingularity) tile).removeAll();
-		}
-		worldIn.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		getTile(TileSingularity.class, world, pos).ifPresent(TileSingularity::removeAll);
+		super.breakBlock(world, pos, state);
 	}
 }

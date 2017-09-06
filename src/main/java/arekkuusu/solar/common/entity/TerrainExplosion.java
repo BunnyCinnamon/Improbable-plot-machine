@@ -2,7 +2,8 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
@@ -27,13 +28,13 @@ import java.util.Set;
  * Created by <Arekkuusu> on 19/08/2017.
  * It's distributed as part of Solar.
  */
-public class EntityTerrainExplosion extends Explosion {
+public class TerrainExplosion extends Explosion {
 
 	private final World world;
 	private final Entity exploder;
 	private final float size;
 
-	public EntityTerrainExplosion(World world, Entity entity, float size) {
+	public TerrainExplosion(World world, Entity entity, float size) {
 		super(world, entity, entity.posX, entity.posY, entity.posZ, size, false, true);
 		this.world = world;
 		this.exploder = entity;

@@ -2,12 +2,12 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.handler.data;
 
-import arekkuusu.solar.api.quantum.EntanglementHelper;
-import arekkuusu.solar.api.quantum.IEntangledStack;
+import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -33,19 +33,19 @@ public abstract class QuantumHandler implements IItemHandlerModifiable {
 	protected void onChange(int slot) {}
 
 	public boolean assertSafety(ItemStack stack) {
-		return !(stack.getItem() instanceof IEntangledStack) || !((IEntangledStack) stack.getItem()).getKey(stack).isPresent();
+		return !(stack.getItem() instanceof IQuantumStack) || !((IQuantumStack) stack.getItem()).getKey(stack).isPresent();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		if(getKey() == null) return ItemStack.EMPTY;
 
-		return EntanglementHelper.getQuantumStack(getKey(), slot);
+		return arekkuusu.solar.api.entanglement.quantum.QuantumHandler.getQuantumStack(getKey(), slot);
 	}
 
 	@Override
 	public void setStackInSlot(int slot, ItemStack stack) {
-		EntanglementHelper.setQuantumStack(getKey(), stack, slot);
+		arekkuusu.solar.api.entanglement.quantum.QuantumHandler.setQuantumStack(getKey(), stack, slot);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public abstract class QuantumHandler implements IItemHandlerModifiable {
 
 		if(getKey() == null || !assertSafety(stack)) return stack;
 
-		ItemStack existing = EntanglementHelper.getQuantumStack(getKey(), slot);
+		ItemStack existing = arekkuusu.solar.api.entanglement.quantum.QuantumHandler.getQuantumStack(getKey(), slot);
 
 		int limit = stack.getMaxStackSize();
 
@@ -88,7 +88,7 @@ public abstract class QuantumHandler implements IItemHandlerModifiable {
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		if(amount == 0 || getKey() == null) return ItemStack.EMPTY;
 
-		ItemStack existing = EntanglementHelper.getQuantumStack(getKey(), slot);
+		ItemStack existing = arekkuusu.solar.api.entanglement.quantum.QuantumHandler.getQuantumStack(getKey(), slot);
 
 		if(existing.isEmpty()) {
 			return ItemStack.EMPTY;

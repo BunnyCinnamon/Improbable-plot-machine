@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Arekkuusu / Solar 2017
+ *
+ * This project is licensed under the MIT.
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
+ ******************************************************************************/
 package arekkuusu.solar.api.helper;
 
 import net.minecraft.entity.Entity;
@@ -83,10 +90,9 @@ public final class NBTHelper {
 		return fixNBT(stack).getUniqueId(tag);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Nullable
-	public static <T extends NBTBase> T getNBT(ItemStack stack, String tag) {
-		return (T) fixNBT(stack).getTag(tag);
+	@SuppressWarnings({"unchecked", "ConstantConditions"})
+	public static <T extends NBTBase> Optional<T> getNBT(ItemStack stack, String tag) {
+		return Optional.ofNullable((T) fixNBT(stack).getTag(tag));
 	}
 
 	public static <T extends Entity> Optional<T> getEntityByUUID(Class<T> clazz, UUID uuid, World world) {

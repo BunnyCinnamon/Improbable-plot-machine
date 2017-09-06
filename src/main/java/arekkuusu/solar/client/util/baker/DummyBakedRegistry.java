@@ -2,7 +2,8 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker;
 
@@ -13,10 +14,10 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -26,16 +27,16 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class DummyBakedRegistry {
 
-	private static final Map<ResourceLocation, Function<Pair<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>>, IBakedModel>> BAKERS = new HashMap<>();
+	private static final Map<ResourceLocation, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel>> BAKERS = new HashMap<>();
 
-	public static void register(Item item, Function<Pair<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>>, IBakedModel> function) {
+	public static void register(Item item, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel> function) {
 		ResourceLocation location = item.getRegistryName();
 
 		BAKERS.putIfAbsent(location, function);
 	}
 
-	public static IBakedModel getBaked(ResourceLocation location, Pair<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>> pair) {
-		return BAKERS.get(location).apply(pair);
+	public static IBakedModel getBaked(ResourceLocation location, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> function) {
+		return BAKERS.get(location).apply(format, function);
 	}
 
 	public static boolean isRegistered(ResourceLocation location) {

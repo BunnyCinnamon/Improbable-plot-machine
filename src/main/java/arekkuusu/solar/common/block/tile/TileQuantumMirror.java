@@ -2,14 +2,14 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.quantum.IEntangledTile;
+import arekkuusu.solar.api.entanglement.quantum.IQuantumTile;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.handler.data.QuantumTileWrapper;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -17,13 +17,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Solar.
  */
-public class TileQuantumMirror extends TileBase implements ITickable, IEntangledTile<TileQuantumMirror> {
+public class TileQuantumMirror extends TileBase implements ITickable, IQuantumTile {
 
 	private final QuantumTileWrapper<TileQuantumMirror> handler;
 	private UUID key;
@@ -46,17 +47,14 @@ public class TileQuantumMirror extends TileBase implements ITickable, IEntangled
 		++tick;
 	}
 
-	@Nullable
 	@Override
-	public UUID getKey() {
-		return key;
+	public Optional<UUID> getKey() {
+		return Optional.ofNullable(key);
 	}
 
 	@Override
 	public void setKey(@Nullable UUID key) {
 		this.key = key;
-		IBlockState state = world.getBlockState(pos);
-		world.notifyNeighborsOfStateChange(pos, state.getBlock(), true);
 	}
 
 	@Override

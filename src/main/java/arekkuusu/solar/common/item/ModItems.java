@@ -3,6 +3,7 @@
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.item;
 
@@ -32,11 +33,11 @@ public class ModItems {
 		registry.register(itemBlock(ModBlocks.singularity));
 		registry.register(itemBlock(ModBlocks.prism_flower));
 		registry.register(new ItemQuantumMirror());
-		registry.register(itemBlock(ModBlocks.light_particle));
 		registry.register(new ItemGravityHopper());
 		registry.register(new ItemQuingentilliard());
 		registry.register(new ItemSchrodingerGlyph());
 		registry.register(itemBlock(ModBlocks.crystal_void));
+		registry.register(new ItemBlinker());
 	}
 
 	@SuppressWarnings("ConstantConditions")

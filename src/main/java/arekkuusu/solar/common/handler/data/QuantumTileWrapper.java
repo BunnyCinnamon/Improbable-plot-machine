@@ -2,11 +2,12 @@
  * Arekkuusu / Solar 2017
  *
  * This project is licensed under the MIT.
- * The source code is available on github: 
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
 package arekkuusu.solar.common.handler.data;
 
-import arekkuusu.solar.api.quantum.IEntangledTile;
+import arekkuusu.solar.api.entanglement.quantum.IQuantumTile;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumTileWrapper<T extends TileEntity & IEntangledTile<T>> extends QuantumHandler {
+public class QuantumTileWrapper<T extends TileEntity & IQuantumTile> extends QuantumHandler {
 
 	private final T tile;
 
@@ -29,7 +30,7 @@ public class QuantumTileWrapper<T extends TileEntity & IEntangledTile<T>> extend
 	@Nullable
 	@Override
 	public UUID getKey() {
-		return tile.getKey();
+		return tile.getKey().orElse(null);
 	}
 
 	@Override
