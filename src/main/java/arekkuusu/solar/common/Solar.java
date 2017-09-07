@@ -51,6 +51,7 @@ public class Solar {
 
 	@EventHandler
 	public void serverStop(FMLServerStoppedEvent event) {
-		SolarApi.getStacks().clear();
+		SolarApi.getEntangledStacks().clear();
+		SolarApi.getRelativityMap().clear();
 	}
 }

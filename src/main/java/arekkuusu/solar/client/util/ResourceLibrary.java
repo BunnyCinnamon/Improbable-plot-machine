@@ -37,8 +37,10 @@ public final class ResourceLibrary {
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
 	public static final ResourceLocation SCHRODINGER_GLYPH = getAtlas(BLOCKS, "schrodinger_glyph");
 	public static final ResourceLocation BLINKER_BASE = getAtlas(BLOCKS, "blinker/blinker_base");
-	public static final ResourceLocation BLINKER_TOP = getAtlas(BLOCKS, "blinker/blinker_top");
-	public static final ResourceLocation BLINKER_BOTTOM = getAtlas(BLOCKS, "blinker/blinker_bottom");
+	public static final ResourceLocation BLINKER_TOP_ON = getAtlas(BLOCKS, "blinker/blinker_top_on");
+	public static final ResourceLocation BLINKER_BOTTOM_ON = getAtlas(BLOCKS, "blinker/blinker_bottom_on");
+	public static final ResourceLocation BLINKER_TOP_OFF = getAtlas(BLOCKS, "blinker/blinker_top_off");
+	public static final ResourceLocation BLINKER_BOTTOM_OFF = getAtlas(BLOCKS, "blinker/blinker_bottom_off");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
 		StringBuilder builder = new StringBuilder();

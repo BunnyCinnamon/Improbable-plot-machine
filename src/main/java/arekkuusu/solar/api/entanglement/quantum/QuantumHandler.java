@@ -153,7 +153,7 @@ public class QuantumHandler {
 	}
 
 	/**
-	 * Sided sensitive version of {@code SolarApi.getStacks()}
+	 * Sided sensitive version of {@code SolarApi.getEntangledStacks()}
 	 * <p>
 	 *     Depending on the {@link Side}
 	 *     it returns a different map.
@@ -163,7 +163,7 @@ public class QuantumHandler {
 	 */
 	public static Map<UUID, List<ItemStack>> getSidedMap() {
 		Side side = FMLCommonHandler.instance().getEffectiveSide();
-		return side == Side.SERVER ? SolarApi.getStacks() : TEMP_STACKS;
+		return side == Side.SERVER ? SolarApi.getEntangledStacks() : TEMP_STACKS;
 	}
 
 	private static boolean hasSlot(UUID uuid, int slot) {

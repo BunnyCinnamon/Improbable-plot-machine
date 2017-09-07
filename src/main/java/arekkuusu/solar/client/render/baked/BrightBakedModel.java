@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render.baked;
 
+import arekkuusu.solar.api.helper.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -41,7 +42,7 @@ public abstract class BrightBakedModel implements IBakedModel {
 		this.format = new VertexFormat(format).addElement(DefaultVertexFormats.TEX_2S);
 	}
 
-	private void putVertex(UnpackedBakedQuad.Builder builder, Vec3d normal, double x, double y, double z, TextureAtlasSprite sprite, float u, float v, boolean hasBrightness) {
+	private void putVertex(UnpackedBakedQuad.Builder builder, Vector3 normal, double x, double y, double z, TextureAtlasSprite sprite, float u, float v, boolean hasBrightness) {
 		for(int e = 0; e < format.getElementCount(); e++) {
 			switch(format.getElement(e).getUsage()) {
 				case POSITION:
@@ -77,15 +78,20 @@ public abstract class BrightBakedModel implements IBakedModel {
 		}
 	}
 
-	BakedQuad createQuad(Vec3d v1, Vec3d v2, Vec3d v3, Vec3d v4, TextureAtlasSprite sprite, boolean hasBrightness) {
-		Vec3d normal = v3.subtract(v2).crossProduct(v1.subtract(v2)).normalize();
+	BakedQuad createQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, TextureAtlasSprite sprite, boolean hasBrightness) {
+		return createQuad(v1, v2, v3, v4, sprite, 0F, 16F, 0F, 16F, hasBrightness);
+	}
+
+	BakedQuad createQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, TextureAtlasSprite sprite
+			, float uMin, float uMax, float vMin, float vMax, boolean hasBrightness) {
+		Vector3 normal = v3.copy().subtract(v2).crossProduct(v1.copy().subtract(v2)).normalize();
 
 		UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
 		builder.setTexture(sprite);
-		putVertex(builder, normal, v1.x, v1.y, v1.z, sprite, 16F, 16F, hasBrightness);
-		putVertex(builder, normal, v2.x, v2.y, v2.z, sprite, 16F, 0F, hasBrightness);
-		putVertex(builder, normal, v3.x, v3.y, v3.z, sprite, 0F, 0F, hasBrightness);
-		putVertex(builder, normal, v4.x, v4.y, v4.z, sprite, 0F, 16F, hasBrightness);
+		putVertex(builder, normal, v1.x, v1.y, v1.z, sprite, uMax, vMax, hasBrightness);
+		putVertex(builder, normal, v2.x, v2.y, v2.z, sprite, uMax, vMin, hasBrightness);
+		putVertex(builder, normal, v3.x, v3.y, v3.z, sprite, uMin, vMin, hasBrightness);
+		putVertex(builder, normal, v4.x, v4.y, v4.z, sprite, uMin, vMax, hasBrightness);
 		return builder.build();
 	}
 
@@ -98,8 +104,8 @@ public abstract class BrightBakedModel implements IBakedModel {
 
 	protected abstract List<BakedQuad> getQuads(IBlockState state);
 
-	Vec3d vec(double x, double y, double z) {
-		return new Vec3d(x, y, z);
+	Vector3 vector(double x, double y, double z) {
+		return new Vector3(x, y, z);
 	}
 
 	@Override

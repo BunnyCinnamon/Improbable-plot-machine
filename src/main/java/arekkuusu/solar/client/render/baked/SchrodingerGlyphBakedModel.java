@@ -42,19 +42,19 @@ public class SchrodingerGlyphBakedModel extends BrightBakedModel {
 	protected List<BakedQuad> getQuads(IBlockState state) {
 		List<BakedQuad> quads = new ArrayList<>();
 
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 0.0D), new Vec3d(1.0D, 0.0D, 1.0D), new Vec3d(0.0D, 0.0D, 1.0D), new Vec3d(0.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(1.0D, 1.0D, 0.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 1.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(0.0D, 0.0D, 1.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(0.0D, 0.0D, 0.0D), new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(1.0D, 1.0D, 0.0D), new Vec3d(1.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(0.0D, 0.0D, 1.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(0.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 0.0D), new Vec3d(1.0D, 1.0D, 0.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(1.0D, 0.0D, 1.0D), this.base, false));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.0D), vector(1.0D, 0.0D, 1.0D), vector(0.0D, 0.0D, 1.0D), vector(0.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vector(0.0D, 1.0D, 0.0D), vector(0.0D, 1.0D, 1.0D), vector(1.0D, 1.0D, 1.0D), vector(1.0D, 1.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vector(1.0D, 0.0D, 1.0D), vector(1.0D, 1.0D, 1.0D), vector(0.0D, 1.0D, 1.0D), vector(0.0D, 0.0D, 1.0D), this.base, false));
+		quads.add(createQuad(vector(0.0D, 0.0D, 0.0D), vector(0.0D, 1.0D, 0.0D), vector(1.0D, 1.0D, 0.0D), vector(1.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vector(0.0D, 0.0D, 1.0D), vector(0.0D, 1.0D, 1.0D), vector(0.0D, 1.0D, 0.0D), vector(0.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.0D), vector(1.0D, 1.0D, 0.0D), vector(1.0D, 1.0D, 1.0D), vector(1.0D, 0.0D, 1.0D), this.base, false));
 
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 0.0D), new Vec3d(1.0D, 0.0D, 1.0D), new Vec3d(0.0D, 0.0D, 1.0D), new Vec3d(0.0D, 0.0D, 0.0D), this.overlay, true));
-		quads.add(createQuad(new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(1.0D, 1.0D, 0.0D), this.overlay, true));
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 1.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(0.0D, 0.0D, 1.0D), this.overlay, true));
-		quads.add(createQuad(new Vec3d(0.0D, 0.0D, 0.0D), new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(1.0D, 1.0D, 0.0D), new Vec3d(1.0D, 0.0D, 0.0D), this.overlay, true));
-		quads.add(createQuad(new Vec3d(0.0D, 0.0D, 1.0D), new Vec3d(0.0D, 1.0D, 1.0D), new Vec3d(0.0D, 1.0D, 0.0D), new Vec3d(0.0D, 0.0D, 0.0D), this.overlay, true));
-		quads.add(createQuad(new Vec3d(1.0D, 0.0D, 0.0D), new Vec3d(1.0D, 1.0D, 0.0D), new Vec3d(1.0D, 1.0D, 1.0D), new Vec3d(1.0D, 0.0D, 1.0D), this.overlay, true));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.0D), vector(1.0D, 0.0D, 1.0D), vector(0.0D, 0.0D, 1.0D), vector(0.0D, 0.0D, 0.0D), this.overlay, true));
+		quads.add(createQuad(vector(0.0D, 1.0D, 0.0D), vector(0.0D, 1.0D, 1.0D), vector(1.0D, 1.0D, 1.0D), vector(1.0D, 1.0D, 0.0D), this.overlay, true));
+		quads.add(createQuad(vector(1.0D, 0.0D, 1.0D), vector(1.0D, 1.0D, 1.0D), vector(0.0D, 1.0D, 1.0D), vector(0.0D, 0.0D, 1.0D), this.overlay, true));
+		quads.add(createQuad(vector(0.0D, 0.0D, 0.0D), vector(0.0D, 1.0D, 0.0D), vector(1.0D, 1.0D, 0.0D), vector(1.0D, 0.0D, 0.0D), this.overlay, true));
+		quads.add(createQuad(vector(0.0D, 0.0D, 1.0D), vector(0.0D, 1.0D, 1.0D), vector(0.0D, 1.0D, 0.0D), vector(0.0D, 0.0D, 0.0D), this.overlay, true));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.0D), vector(1.0D, 1.0D, 0.0D), vector(1.0D, 1.0D, 1.0D), vector(1.0D, 0.0D, 1.0D), this.overlay, true));
 
 		return quads;
 	}

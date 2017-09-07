@@ -7,7 +7,9 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement.relativity;
 
-import java.util.*;
+import arekkuusu.solar.api.SolarApi;
+
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 /**
@@ -16,14 +18,13 @@ import java.util.function.Consumer;
  */
 public class RelativityHandler {
 
-	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = new HashMap<>();
 
 	public static boolean isRelative(IRelativeTile tile) {
-		return RELATIVITY_MAP.containsKey(tile.getKey().orElse(null));
+		return SolarApi.getRelativityMap().containsKey(tile.getKey().orElse(null));
 	}
 
 	public static <T extends IRelativeTile> void addRelative(T tile, Consumer<T> consumer) {
-		tile.getKey().ifPresent(uuid -> RELATIVITY_MAP.compute(uuid, (key, list) -> {
+		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			list = list == null ? new ArrayList<>() : list;
 			if(list.contains(tile)) return list;
 
@@ -35,7 +36,7 @@ public class RelativityHandler {
 	}
 
 	public static <T extends IRelativeTile> void removeRelative(T tile, Consumer<T> consumer) {
-		tile.getKey().ifPresent(uuid -> RELATIVITY_MAP.compute(uuid, (key, list) -> {
+		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			if(list != null) {
 				list.remove(tile);
 				consumer.accept(tile);
@@ -43,9 +44,5 @@ public class RelativityHandler {
 
 			return list != null && !list.isEmpty() ? list : null;
 		}));
-	}
-
-	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {
-		return RELATIVITY_MAP;
 	}
 }

@@ -62,12 +62,12 @@ public class WorldQuantumData extends WorldSavedData {
 	}
 
 	public static void syncTo(EntityPlayerMP player) {
-		QSyncAllMessage message = new QSyncAllMessage(SolarApi.getStacks());
+		QSyncAllMessage message = new QSyncAllMessage(SolarApi.getEntangledStacks());
 		PacketHandler.sendTo(message, player);
 	}
 
 	public static void syncToAll() {
-		QSyncAllMessage message = new QSyncAllMessage(SolarApi.getStacks());
+		QSyncAllMessage message = new QSyncAllMessage(SolarApi.getEntangledStacks());
 		PacketHandler.INSTANCE.sendToAll(message);
 	}
 
@@ -84,7 +84,7 @@ public class WorldQuantumData extends WorldSavedData {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
-		SolarApi.getStacks().forEach((uuid, itemStacks) -> {
+		SolarApi.getEntangledStacks().forEach((uuid, itemStacks) -> {
 			NBTTagList stackList = new NBTTagList();
 			itemStacks.forEach(stack -> stackList.appendTag(stack.writeToNBT(new NBTTagCompound())));
 			NBTTagCompound nbt = new NBTTagCompound();

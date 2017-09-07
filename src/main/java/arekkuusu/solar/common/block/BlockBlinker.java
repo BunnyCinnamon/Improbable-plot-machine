@@ -10,6 +10,7 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.state.Power;
 import arekkuusu.solar.client.render.baked.BlinkerBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -25,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -47,6 +49,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
 	public BlockBlinker()  {
 		super(LibNames.BLINKER, FixedMaterial.DONT_MOVE);
+		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Power.POWER, Power.OFF));
 		setHarvestLevel("pickaxe", 1);
 		setHardness(2F);
 	}
@@ -57,6 +60,8 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
 				Optional<NBTTagCompound> optional = NBTHelper.getNBT(stack, SolarApi.QUANTUM_DATA);
 				optional.ifPresent(nbtTagCompound -> blinker.setKey(nbtTagCompound.getUniqueId("key")));
+
+				blinker.add();
 			});
 		}
 	}
@@ -108,8 +113,9 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		//TODO SET BLOCK HERE
-		world.notifyNeighborsOfStateChange(pos, state.getBlock(), true);
+		getTile(TileBlinker.class, world, pos).ifPresent(tile ->
+				world.setBlockState(pos, state.withProperty(Power.POWER, TileBlinker.isPowered(tile) ? Power.ON : Power.OFF))
+		);
 	}
 
 	@Override
@@ -125,22 +131,30 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return defaultState().withProperty(BlockDirectional.FACING, facing);
+		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(Power.POWER, Power.OFF);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(BlockDirectional.FACING).getIndex();
+		int i = state.getValue(BlockDirectional.FACING).ordinal();
+
+		if(state.getValue(Power.POWER) == Power.ON) {
+			i |= 8;
+		}
+
+		return i;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return defaultState().withProperty(BlockDirectional.FACING, EnumFacing.values()[meta]);
+		EnumFacing enumfacing = EnumFacing.values()[meta & 7];
+
+		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(Power.POWER, (meta & 8) > 0 ? Power.ON : Power.OFF);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING);
+		return new BlockStateContainer(this, BlockDirectional.FACING, Power.POWER);
 	}
 
 	@Override
@@ -151,6 +165,11 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
 	@Nullable

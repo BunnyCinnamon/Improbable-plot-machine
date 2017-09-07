@@ -73,12 +73,12 @@ public class GravityHopperBakedModel extends BrightBakedModel {
 	}
 
 	private void addCube(List<BakedQuad> quads, TextureAtlasSprite up, TextureAtlasSprite down, TextureAtlasSprite north, TextureAtlasSprite south, TextureAtlasSprite east, TextureAtlasSprite west, boolean shine) {
-		quads.add(createQuad(vec(1.0D, 0.3125D, 0.0D), vec(1.0D, 0.3125D, 1.0D), vec(0.0D, 0.3125D, 1.0D), vec(0.0D, 0.3125D, 0.0D), down, shine));
-		quads.add(createQuad(vec(0.0D, 0.6875D, 0.0D), vec(0.0D, 0.6875D, 1.0D), vec(1.0D, 0.6875D, 1.0D), vec(1.0D, 0.6875D, 0.0D), up, shine));
-		quads.add(createQuad(vec(1.0D, 0.0D, 0.6875D), vec(1.0D, 1.0D, 0.6875D), vec(0.0D, 1.0D, 0.6875D), vec(0.0D, 0.0D, 0.6875D), south, shine));
-		quads.add(createQuad(vec(0.0D, 0.0D, 0.3125D), vec(0.0D, 1.0D, 0.3125D), vec(1.0D, 1.0D, 0.3125D), vec(1.0D, 0.0D, 0.3125D), north, shine));
-		quads.add(createQuad(vec(0.3125D, 0.0D, 1.0D), vec(0.3125D, 1.0D, 1.0D), vec(0.3125D, 1.0D, 0.0D), vec(0.3125D, 0.0D, 0.0D), west, shine));
-		quads.add(createQuad(vec(0.6875D, 0.0D, 0.0D), vec(0.6875D, 1.0D, 0.0D), vec(0.6875D, 1.0D, 1.0D), vec(0.6875D, 0.0D, 1.0D), east, shine));
+		quads.add(createQuad(vector(1.0D, 0.3125D, 0.0D), vector(1.0D, 0.3125D, 1.0D), vector(0.0D, 0.3125D, 1.0D), vector(0.0D, 0.3125D, 0.0D), down, shine));
+		quads.add(createQuad(vector(0.0D, 0.6875D, 0.0D), vector(0.0D, 0.6875D, 1.0D), vector(1.0D, 0.6875D, 1.0D), vector(1.0D, 0.6875D, 0.0D), up, shine));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.6875D), vector(1.0D, 1.0D, 0.6875D), vector(0.0D, 1.0D, 0.6875D), vector(0.0D, 0.0D, 0.6875D), south, shine));
+		quads.add(createQuad(vector(0.0D, 0.0D, 0.3125D), vector(0.0D, 1.0D, 0.3125D), vector(1.0D, 1.0D, 0.3125D), vector(1.0D, 0.0D, 0.3125D), north, shine));
+		quads.add(createQuad(vector(0.3125D, 0.0D, 1.0D), vector(0.3125D, 1.0D, 1.0D), vector(0.3125D, 1.0D, 0.0D), vector(0.3125D, 0.0D, 0.0D), west, shine));
+		quads.add(createQuad(vector(0.6875D, 0.0D, 0.0D), vector(0.6875D, 1.0D, 0.0D), vector(0.6875D, 1.0D, 1.0D), vector(0.6875D, 0.0D, 1.0D), east, shine));
 	}
 
 	@Override

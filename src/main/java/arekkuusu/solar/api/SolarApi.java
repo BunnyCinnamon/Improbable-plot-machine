@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api;
 
+import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class SolarApi {
 
 	private static final Map<UUID, List<ItemStack>> ENTANGLED_STACKS = new HashMap<>();
+	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = new HashMap<>();
 	public static final String QUANTUM_DATA = "quantum_data";
 
 	/**
@@ -35,7 +37,11 @@ public class SolarApi {
 	 *
 	 * @return {@link HashMap}
 	 */
-	public static Map<UUID, List<ItemStack>> getStacks() {
+	public static Map<UUID, List<ItemStack>> getEntangledStacks() {
 		return ENTANGLED_STACKS;
+	}
+
+	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {
+		return RELATIVITY_MAP;
 	}
 }

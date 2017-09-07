@@ -46,21 +46,21 @@ public class PrimalGlyphBakedModel extends BrightBakedModel {
 	protected List<BakedQuad> getQuads(IBlockState state) {
 		List<BakedQuad> quads = new ArrayList<>();
 
-		quads.add(createQuad(vec(1.0D, 0.0D, 0.0D), vec(1.0D, 0.0D, 1.0D), vec(0.0D, 0.0D, 1.0D), vec(0.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(vec(0.0D, 1.0D, 0.0D), vec(0.0D, 1.0D, 1.0D), vec(1.0D, 1.0D, 1.0D), vec(1.0D, 1.0D, 0.0D), this.base, false));
-		quads.add(createQuad(vec(1.0D, 0.0D, 1.0D), vec(1.0D, 1.0D, 1.0D), vec(0.0D, 1.0D, 1.0D), vec(0.0D, 0.0D, 1.0D), this.base, false));
-		quads.add(createQuad(vec(0.0D, 0.0D, 0.0D), vec(0.0D, 1.0D, 0.0D), vec(1.0D, 1.0D, 0.0D), vec(1.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(vec(0.0D, 0.0D, 1.0D), vec(0.0D, 1.0D, 1.0D), vec(0.0D, 1.0D, 0.0D), vec(0.0D, 0.0D, 0.0D), this.base, false));
-		quads.add(createQuad(vec(1.0D, 0.0D, 0.0D), vec(1.0D, 1.0D, 0.0D), vec(1.0D, 1.0D, 1.0D), vec(1.0D, 0.0D, 1.0D), this.base, false));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.0D), vector(1.0D, 0.0D, 1.0D), vector(0.0D, 0.0D, 1.0D), vector(0.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vector(0.0D, 1.0D, 0.0D), vector(0.0D, 1.0D, 1.0D), vector(1.0D, 1.0D, 1.0D), vector(1.0D, 1.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vector(1.0D, 0.0D, 1.0D), vector(1.0D, 1.0D, 1.0D), vector(0.0D, 1.0D, 1.0D), vector(0.0D, 0.0D, 1.0D), this.base, false));
+		quads.add(createQuad(vector(0.0D, 0.0D, 0.0D), vector(0.0D, 1.0D, 0.0D), vector(1.0D, 1.0D, 0.0D), vector(1.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vector(0.0D, 0.0D, 1.0D), vector(0.0D, 1.0D, 1.0D), vector(0.0D, 1.0D, 0.0D), vector(0.0D, 0.0D, 0.0D), this.base, false));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.0D), vector(1.0D, 1.0D, 0.0D), vector(1.0D, 1.0D, 1.0D), vector(1.0D, 0.0D, 1.0D), this.base, false));
 
 		int glyph = state.getValue(GLYPH).ordinal();
 
-		quads.add(createQuad(vec(1.0D, 0.0D, 0.0D), vec(1.0D, 0.0D, 1.0D), vec(0.0D, 0.0D, 1.0D), vec(0.0D, 0.0D, 0.0D), this.overlay[glyph], true));
-		quads.add(createQuad(vec(0.0D, 1.0D, 0.0D), vec(0.0D, 1.0D, 1.0D), vec(1.0D, 1.0D, 1.0D), vec(1.0D, 1.0D, 0.0D), this.overlay[glyph], true));
-		quads.add(createQuad(vec(1.0D, 0.0D, 1.0D), vec(1.0D, 1.0D, 1.0D), vec(0.0D, 1.0D, 1.0D), vec(0.0D, 0.0D, 1.0D), this.overlay[glyph], true));
-		quads.add(createQuad(vec(0.0D, 0.0D, 0.0D), vec(0.0D, 1.0D, 0.0D), vec(1.0D, 1.0D, 0.0D), vec(1.0D, 0.0D, 0.0D), this.overlay[glyph], true));
-		quads.add(createQuad(vec(0.0D, 0.0D, 1.0D), vec(0.0D, 1.0D, 1.0D), vec(0.0D, 1.0D, 0.0D), vec(0.0D, 0.0D, 0.0D), this.overlay[glyph], true));
-		quads.add(createQuad(vec(1.0D, 0.0D, 0.0D), vec(1.0D, 1.0D, 0.0D), vec(1.0D, 1.0D, 1.0D), vec(1.0D, 0.0D, 1.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.0D), vector(1.0D, 0.0D, 1.0D), vector(0.0D, 0.0D, 1.0D), vector(0.0D, 0.0D, 0.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vector(0.0D, 1.0D, 0.0D), vector(0.0D, 1.0D, 1.0D), vector(1.0D, 1.0D, 1.0D), vector(1.0D, 1.0D, 0.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vector(1.0D, 0.0D, 1.0D), vector(1.0D, 1.0D, 1.0D), vector(0.0D, 1.0D, 1.0D), vector(0.0D, 0.0D, 1.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vector(0.0D, 0.0D, 0.0D), vector(0.0D, 1.0D, 0.0D), vector(1.0D, 1.0D, 0.0D), vector(1.0D, 0.0D, 0.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vector(0.0D, 0.0D, 1.0D), vector(0.0D, 1.0D, 1.0D), vector(0.0D, 1.0D, 0.0D), vector(0.0D, 0.0D, 0.0D), this.overlay[glyph], true));
+		quads.add(createQuad(vector(1.0D, 0.0D, 0.0D), vector(1.0D, 1.0D, 0.0D), vector(1.0D, 1.0D, 1.0D), vector(1.0D, 0.0D, 1.0D), this.overlay[glyph], true));
 
 		return quads;
 	}
