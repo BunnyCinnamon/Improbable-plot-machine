@@ -10,6 +10,7 @@ package arekkuusu.solar.common.block.tile;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
+import arekkuusu.solar.api.state.Power;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
@@ -17,7 +18,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -59,14 +62,17 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
 	}
 
 	private static void updateAll(UUID uuid) {
-		SolarApi.getRelativityMap().get(uuid)
-				.stream().filter(tile -> tile.isLoaded() && tile instanceof TileBlinker )
-				.map(tile -> (TileBlinker) tile ).forEach(TileBlinker::updateState);
+		SolarApi.getRelativityMap().computeIfPresent(uuid, (key, list) -> {
+			list.stream()
+					.filter(tile -> tile.isLoaded() && tile instanceof TileBlinker)
+					.map(tile -> (TileBlinker) tile).forEach(TileBlinker::updateState);
+			return list;
+		});
 	}
 
 	private void updateState() {
-		IBlockState state = getWorld().getBlockState(getPos());
-		getWorld().scheduleUpdate(getPos(), state.getBlock(), 0);
+		IBlockState state = world.getBlockState(pos);
+		world.scheduleUpdate(getPos(), state.getBlock(), 0);
 	}
 
 	@Override
@@ -80,8 +86,12 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
 			double speed = world.rand.nextDouble() * -0.01D;
 			Vec3d vec = new Vec3d(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
 
-			ParticleUtil.spawnLightParticle(world, back.x, back.y, back.z, vec.x, vec.y, vec.z, 0xFFFFFF, 30, 2F);
+			ParticleUtil.spawnLightParticle(world, back.x, back.y, back.z, vec.x, vec.y, vec.z, isPoweredLazy() ? 0x49FFFF : 0xFF0303, 30, 2F);
 		}
+	}
+
+	private boolean isPoweredLazy() {
+		return world.getBlockState(pos).getValue(Power.POWER) == Power.ON;
 	}
 
 	private EnumFacing getFacing() {
@@ -120,6 +130,16 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
 			if(detected > power) power = detected;
 		}
 		return power;
+	}
+
+	@Override
+	public World getRelativeWorld() {
+		return world;
+	}
+
+	@Override
+	public BlockPos getRelativePos() {
+		return pos;
 	}
 
 	@Override

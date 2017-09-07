@@ -26,10 +26,10 @@ public interface IRelativeTile extends IEntangledTile {
 	}
 
 	default boolean isLoaded() {
-		return getWorld().isBlockLoaded(getPos());
+		return getRelativeWorld().isBlockLoaded(getRelativePos());
 	}
 
-	World getWorld();
+	World getRelativeWorld();
 
-	BlockPos getPos();
+	BlockPos getRelativePos();
 }

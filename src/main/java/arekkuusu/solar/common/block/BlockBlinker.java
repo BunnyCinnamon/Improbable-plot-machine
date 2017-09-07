@@ -29,6 +29,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
@@ -46,6 +47,13 @@ import java.util.Random;
  */
 @SuppressWarnings("deprecation")
 public class BlockBlinker extends BlockBase implements ITileEntityProvider {
+
+	private final AxisAlignedBB up = new AxisAlignedBB(0.125, 0.9375, 0.125, 0.875, 1, 0.875);
+	private final AxisAlignedBB down = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.0625, 0.875);
+	private final AxisAlignedBB north = new AxisAlignedBB(0.125, 0.125, 0, 0.875, 0.875, 0.0625);
+	private final AxisAlignedBB south = new AxisAlignedBB(0.125, 0.125, 0.9375, 0.875, 0.875, 1);
+	private final AxisAlignedBB east = new AxisAlignedBB(0.9375, 0.125, 0.875, 1, 0.875, 0.125);
+	private final AxisAlignedBB west = new AxisAlignedBB(0, 0.125, 0.125, 0.0625, 0.875, 0.875);
 
 	public BlockBlinker()  {
 		super(LibNames.BLINKER, FixedMaterial.DONT_MOVE);
@@ -165,6 +173,25 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		switch(facing) {
+			case UP:
+				return up;
+			case NORTH:
+				return north;
+			case SOUTH:
+				return south;
+			case WEST:
+				return west;
+			case EAST:
+				return east;
+			default:
+				return down;
+		}
 	}
 
 	@Override
