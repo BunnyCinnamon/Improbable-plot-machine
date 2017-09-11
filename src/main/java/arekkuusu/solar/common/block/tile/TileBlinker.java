@@ -35,12 +35,12 @@ import java.util.UUID;
 public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
 
 	private static final Map<EnumFacing, Vec3d> FACING_MAP = ImmutableMap.<EnumFacing, Vec3d>builder()
-			.put(EnumFacing.UP, new Vec3d(0.5D, 0.1D, 0.5D))
-			.put(EnumFacing.DOWN, new Vec3d(0.5D, 0.9D, 0.5D))
-			.put(EnumFacing.NORTH, new Vec3d(0.5D, 0.5D, 0.9D))
-			.put(EnumFacing.SOUTH, new Vec3d(0.5D, 0.5D, 0.1D))
-			.put(EnumFacing.EAST, new Vec3d(0.1D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, new Vec3d(0.9D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, new Vec3d(0.5D, 0.2D, 0.5D))
+			.put(EnumFacing.DOWN, new Vec3d(0.5D, 0.8D, 0.5D))
+			.put(EnumFacing.NORTH, new Vec3d(0.5D, 0.5D, 0.8D))
+			.put(EnumFacing.SOUTH, new Vec3d(0.5D, 0.5D, 0.2D))
+			.put(EnumFacing.EAST, new Vec3d(0.2D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, new Vec3d(0.8D, 0.5D, 0.5D))
 			.build();
 	private static final Map<UUID, Integer> POWER_MAP = new HashMap<>();
 	private UUID key;
@@ -86,7 +86,7 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
 			double speed = world.rand.nextDouble() * -0.01D;
 			Vec3d vec = new Vec3d(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
 
-			ParticleUtil.spawnLightParticle(world, back.x, back.y, back.z, vec.x, vec.y, vec.z, isPoweredLazy() ? 0x49FFFF : 0xFF0303, 30, 2F);
+			ParticleUtil.spawnLightParticle(world, back.x, back.y, back.z, vec.x, vec.y, vec.z, isPoweredLazy() ? 0x49FFFF : 0xFFFFFF, 60, 2.5F);
 		}
 	}
 

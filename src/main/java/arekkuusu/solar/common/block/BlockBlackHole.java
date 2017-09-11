@@ -10,7 +10,6 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.common.block.tile.TileBlackHole;
 import arekkuusu.solar.common.lib.LibNames;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -20,12 +19,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by <Arekkuusu> on 29/06/2017.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockBlackHole extends BlockBase implements ITileEntityProvider {
+public class BlockBlackHole extends BlockBase {
 
 	public BlockBlackHole() {
 		super(LibNames.BLACK_HOLE, FixedMaterial.DONT_MOVE);
@@ -60,7 +61,12 @@ public class BlockBlackHole extends BlockBase implements ITileEntityProvider {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileBlackHole();
 	}
 }

@@ -34,13 +34,13 @@ public class QuantumStackProvider implements ICapabilityProvider {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+		return facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+		return facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 				? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler)
 				: null;
 	}

@@ -37,7 +37,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.Random;
 
@@ -60,6 +59,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Power.POWER, Power.OFF));
 		setHarvestLevel("pickaxe", 1);
 		setHardness(2F);
+		setLightLevel(0.2F);
 	}
 
 	@Override
@@ -199,7 +199,6 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
-	@Nullable
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new TileBlinker();

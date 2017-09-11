@@ -11,7 +11,6 @@ import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.block.ModBlocks;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -64,7 +63,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 				if(handler.getStack().isEmpty()) {
 					Optional<BlockPos> in = traceBlock(facing);
 					if(in.isPresent()) {
-						Optional<IItemHandler> inventoryIn = getInventory(in.get(), facing);
+						Optional<IItemHandler> inventoryIn = getInventory(in.get(), facing.getOpposite());
 						inventoryIn.ifPresent(this::transferIn);
 					}
 				}
@@ -72,7 +71,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 				if(!handler.getStack().isEmpty()) {
 					Optional<BlockPos> out = traceBlock(facing.getOpposite());
 					if(out.isPresent()) {
-						Optional<IItemHandler> inventoryOut = getInventory(out.get(), facing.getOpposite());
+						Optional<IItemHandler> inventoryOut = getInventory(out.get(), facing);
 						inventoryOut.ifPresent(this::transferOut);
 					}
 				}
@@ -87,7 +86,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		for(int forward = 0; forward < 10; forward++) {
 			BlockPos target = pos.offset(facing, forward + 1);
 			IBlockState state = world.getBlockState(target);
-			if(state.getBlock() instanceof ITileEntityProvider) {
+			if(state.getBlock().hasTileEntity(state)) {
 				return Optional.of(target);
 			}
 		}
@@ -98,11 +97,9 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		if(world.isBlockLoaded(target, false)) {
 			TileEntity tile = world.getTileEntity(target);
 			if(tile != null) {
-				if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
-					return Optional.ofNullable(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing));
-				} else if(tile instanceof IItemHandler) { //What have you done????
-					return Optional.of((IItemHandler) tile);
-				}
+				IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+				return handler != null ? Optional.of(handler)
+						: Optional.ofNullable(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
 			}
 		}
 		return Optional.empty();

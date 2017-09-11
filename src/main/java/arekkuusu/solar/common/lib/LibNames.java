@@ -25,4 +25,5 @@ public class LibNames {
 	public static final String SCHRODINGER_GLYPH = "schrodinger_glyph";
 	public static final String CRYSTAL_VOID = "crystal_void";
 	public static final String BLINKER = "blinker";
+	public static final String PHENOMENA = "phenomena";
 }

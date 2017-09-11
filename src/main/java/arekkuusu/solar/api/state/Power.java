@@ -19,6 +19,10 @@ public enum Power implements IStringSerializable {
 
 	public static final PropertyEnum<Power> POWER = PropertyEnum.create("power", Power.class);
 
+	public Power inverse() {
+		return this == ON ? OFF : ON;
+	}
+
 	@Override
 	public String getName() {
 		return name().toLowerCase();

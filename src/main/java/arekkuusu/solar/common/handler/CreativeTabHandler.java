@@ -96,6 +96,7 @@ public class CreativeTabHandler {
 			addBlock(ModBlocks.primal_stone);
 			addBlock(ModBlocks.primal_glyph);
 			addBlock(ModBlocks.schrodinger_glyph);
+			addBlock(ModBlocks.phenomena);
 			addBlock(ModBlocks.black_hole);
 			addBlock(ModBlocks.singularity);
 			addBlock(ModBlocks.prism_flower);

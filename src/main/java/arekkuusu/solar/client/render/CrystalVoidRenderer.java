@@ -11,6 +11,7 @@ import arekkuusu.solar.client.util.ModelBakery;
 import arekkuusu.solar.client.util.ModelBakery.BlockBaker;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.resource.FrameSpriteResource;
 import arekkuusu.solar.common.block.tile.TileCrystalVoid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -31,9 +32,19 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 
 	@Override
 	void renderTile(TileCrystalVoid crystal, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		renderModel(crystal.tick, x, y, z, partialTicks);
-
 		ItemStack stack = crystal.getStack();
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+		GlStateManager.disableLighting();
+
+		renderFloatingSquares(crystal.tick, partialTicks);
+		renderGlyphs(crystal.tick, !stack.isEmpty());
+		renderWhiteCube(crystal.tick, partialTicks);
+
+		GlStateManager.enableLighting();
+		GlStateManager.popMatrix();
+
 		if(!stack.isEmpty()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableRescaleNormal();
@@ -57,22 +68,18 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 
-		renderModel(tick, x, y, z, partialTicks);
-
-		BlendHelper.lightMap(prevU, prevV);
-	}
-
-	private void renderModel(int tick, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 		GlStateManager.disableLighting();
 
 		renderFloatingSquares(tick, partialTicks);
-
-		renderCube(tick, partialTicks);
+		renderGlyphs(tick, false);
+		renderWhiteCube(tick, partialTicks);
 
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
+
+		BlendHelper.lightMap(prevU, prevV);
 	}
 
 	private void renderFloatingSquares(int age, float partialTicks) {
@@ -97,21 +104,23 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 			side = false;
 			i += 90;
 		}
+	}
 
-		//Overlay
+	private void renderGlyphs(int tick, boolean active) {
 		BlendHelper.lightMap(255F, 255F);
 		GlStateManager.disableCull();
 
-		SpriteLibrary.GOLDEN_GLYPH.bindManager();
-		Tuple<Double, Double> uv = SpriteLibrary.GOLDEN_GLYPH.getUVFrame((int) (age * 0.15F));
-		double vOffset = SpriteLibrary.GOLDEN_GLYPH.getV();
+		FrameSpriteResource sprite = active ? SpriteLibrary.BLUE_GLYPH : SpriteLibrary.RED_GLYPH;
+		sprite.bindManager();
+		Tuple<Double, Double> uv = sprite.getUVFrame((int) (tick * 0.15F));
+		double vOffset = sprite.getV();
 		double v = uv.getSecond();
 
 		ModelBakery.renderCube(0.47F, 0F, 1F, v, v + vOffset);
 		GlStateManager.enableCull();
 	}
 
-	private void renderCube(int tick, float partialTicks) {
+	private void renderWhiteCube(int tick, float partialTicks) {
 		GlStateManager.disableTexture2D();
 
 		GlStateManager.rotate(tick % 360, 0, 1, 0);

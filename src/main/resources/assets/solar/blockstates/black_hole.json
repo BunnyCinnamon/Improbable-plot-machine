@@ -1,9 +1,6 @@
 {
   "forge_marker": 1,
   "defaults": {
-	"textures": {
-	  "particle": "solar:blocks/nothing"
-	},
 	"model": "solar:no_model",
 	"uvlock": true
   },

@@ -15,7 +15,6 @@ import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
 import arekkuusu.solar.common.lib.LibNames;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,6 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
@@ -42,7 +42,7 @@ import java.util.Optional;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockQuantumMirror extends BlockBase implements ITileEntityProvider {
+public class BlockQuantumMirror extends BlockBase {
 
 	private final AxisAlignedBB box = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
 
@@ -147,7 +147,12 @@ public class BlockQuantumMirror extends BlockBase implements ITileEntityProvider
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileQuantumMirror();
 	}
 

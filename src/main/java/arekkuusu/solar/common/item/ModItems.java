@@ -38,6 +38,7 @@ public class ModItems {
 		registry.register(new ItemSchrodingerGlyph());
 		registry.register(itemBlock(ModBlocks.crystal_void));
 		registry.register(new ItemBlinker());
+		registry.register(itemBlock(ModBlocks.phenomena));
 	}
 
 	@SuppressWarnings("ConstantConditions")

@@ -1,0 +1,20 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:phenomena",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}],
+	"power": {
+	  "on" : {
+	  },
+	  "off": {
+		"model": "solar:no_model"
+	  }
+	}
+  }
+}

@@ -10,7 +10,6 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.common.block.tile.TileSingularity;
 import arekkuusu.solar.common.lib.LibNames;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -20,12 +19,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by <Arekkuusu> on 06/07/2017.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockSingularity extends BlockBase implements ITileEntityProvider {
+public class BlockSingularity extends BlockBase {
 
 	private final AxisAlignedBB box = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
@@ -68,7 +69,13 @@ public class BlockSingularity extends BlockBase implements ITileEntityProvider {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileSingularity();
 	}
 

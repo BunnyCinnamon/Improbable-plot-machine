@@ -32,7 +32,8 @@ public final class SpriteLibrary {
 	public static final SpriteResource PRISM_PETAL = SpriteLoader.load(BLOCKS, "prism_flower/petal");
 	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteLoader.load(MODEL, "eye_of_schrodinger_layer");
 	public static final FrameSpriteResource QUINGENTILLIARD = SpriteLoader.load(ITEMS, "quingentilliard", 8, 1);
-	public static final FrameSpriteResource GOLDEN_GLYPH = SpriteLoader.load(BLOCKS, "golden_glyph", 4, 1);
+	public static final FrameSpriteResource RED_GLYPH = SpriteLoader.load(BLOCKS, "red_glyph", 4, 1);
+	public static final FrameSpriteResource BLUE_GLYPH = SpriteLoader.load(BLOCKS, "blue_glyph", 4, 1);
 
 	public static void init() {
 		Solar.LOG.warn("[NOT EVEN A SUPER QUANTUM COMPUTER CALCULATING FOR A THOUSAND YEARS COULD EVEN MEASURE THE NUMBER OF FUCKS I DO NOT GIVE]");

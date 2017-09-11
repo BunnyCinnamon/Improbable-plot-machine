@@ -33,6 +33,7 @@ public class PacketHandler {
 		register(QSyncModifyMessage.QSyncModifyMessageHandler.class, QSyncModifyMessage.class, Side.CLIENT);
 		register(QSyncAllMessage.QSyncAllMessageHandler.class, QSyncAllMessage.class, Side.CLIENT);
 		register(QSyncSpecificMessage.QSyncSpecificMessageHandler.class, QSyncSpecificMessage.class, Side.CLIENT);
+		register(PhenomenaMessage.PhenomenaMessageHandler.class, PhenomenaMessage.class, Side.CLIENT);
 	}
 
 	private static <H extends IMessageHandler<M, IMessage>, M extends IMessage> void register(Class<H> handler, Class<M> message, Side side) {

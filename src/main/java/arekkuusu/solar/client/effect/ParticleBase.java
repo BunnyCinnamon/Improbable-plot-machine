@@ -27,6 +27,9 @@ public class ParticleBase extends net.minecraft.client.particle.Particle {
 		super(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
 	}
 
+	/**
+	 * Fix for particle wobbliness
+	 */
 	void renderEasy(BufferBuilder buffer, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, double uMin, double uMax, double vMin, double vMax) {
 		int light = getBrightnessForRender(partialTicks);
 		float scale = 0.1F * particleScale;

@@ -30,6 +30,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.Sphere;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -216,9 +217,13 @@ public final class ModelBakery {
 	}
 
 	public enum BlockBaker {
-		PRIMAL_SIDE("primal_side");
+		PRIMAL_SIDE("primal_side"),
+		PHENOMENA("phenomena");
 
 		ResourceLocation location;
+
+		List<BakedQuad> quads;
+		IModel model;
 		IBakedModel baked;
 
 		BlockBaker(String name) {
@@ -226,8 +231,20 @@ public final class ModelBakery {
 		}
 
 		void bake() throws Exception {
-			IModel model = ModelLoaderRegistry.getModel(location);
+			model = ModelLoaderRegistry.getModel(location);
 			baked = model.bake(TRSRTransformation.identity(), Attributes.DEFAULT_BAKED_FORMAT, ModelLoader.defaultTextureGetter());
+		}
+
+		public IModel getModel() {
+			return model;
+		}
+
+		public IBakedModel getBaked() {
+			return baked;
+		}
+
+		public List<BakedQuad> getQuads() {
+			return quads;
 		}
 
 		public static void render(BlockBaker model) {
@@ -235,7 +252,7 @@ public final class ModelBakery {
 			BufferBuilder buffer = tessellator.getBuffer();
 			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
-			for(BakedQuad bakedquad : model.baked.getQuads(null, null, 0)) {
+			for(BakedQuad bakedquad : model.quads != null ? model.quads : (model.quads = model.baked.getQuads(null, null, 0))) {
 				LightUtil.renderQuadColor(buffer, bakedquad, -1);
 			}
 			tessellator.draw();

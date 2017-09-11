@@ -38,7 +38,7 @@ import javax.annotation.Nullable;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockGravityHopper extends BlockBase implements ITileEntityProvider {
+public class BlockGravityHopper extends BlockBase {
 
 	private final AxisAlignedBB box = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
@@ -113,9 +113,13 @@ public class BlockGravityHopper extends BlockBase implements ITileEntityProvider
 		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
-	@Nullable
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileGravityHopper();
 	}
 

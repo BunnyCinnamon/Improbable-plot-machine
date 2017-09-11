@@ -11,7 +11,6 @@ import arekkuusu.solar.common.block.tile.TilePrismFlower;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -25,12 +24,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by <Arekkuusu> on 14/07/2017.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockPrismFlower extends BlockBase implements ITileEntityProvider {
+public class BlockPrismFlower extends BlockBase {
 
 	private final AxisAlignedBB up = new AxisAlignedBB(0.3, 0, 0.3, 0.7, 1, 0.7);
 	private final AxisAlignedBB down = new AxisAlignedBB(0.3, 0, 0.3, 0.7, 1, 0.7);
@@ -126,7 +127,12 @@ public class BlockPrismFlower extends BlockBase implements ITileEntityProvider {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TilePrismFlower();
 	}
 }

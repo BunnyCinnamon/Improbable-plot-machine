@@ -1,0 +1,22 @@
+{
+	"parameters": {
+	},
+	"clips": {
+		"default": "solar:block/phenomena@default",
+		
+		"shrink": "solar:block/phenomena@shrink",
+		"grow": "solar:block/phenomena@grow"
+	},
+	"states": [
+		"default",
+		"shrink",
+		"grow"
+	],
+	"transitions": {
+		"default": ["shrink", "grow"],
+		"shrink": "default",
+		"grow": "default",
+		"default": "default"
+	},
+	"start_state": "default"
+}

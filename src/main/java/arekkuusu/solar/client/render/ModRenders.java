@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.solar.client.render.entity.CustomItemRenderer;
+import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.*;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
@@ -48,6 +48,7 @@ public final class ModRenders {
 		registerTESR(TileQuantumMirror.class, new QuantumMirrorRenderer());
 		registerTESR(RenderDummy.Quingentilliard.class, new QuingentilliardRenderer());
 		registerTESR(TileCrystalVoid.class, new CrystalVoidRenderer());
+		registerTESR(TilePhenomena.class, new TilePhenomenaRenderer());
 
 		registerTESRItemStack(ModBlocks.quantum_mirror, TileQuantumMirror.class);
 		registerTESRItemStack(ModItems.quingentilliard, RenderDummy.Quingentilliard.class);

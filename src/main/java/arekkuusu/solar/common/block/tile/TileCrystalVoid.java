@@ -80,6 +80,7 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 		this.stack = stack;
 		IBlockState state = world.getBlockState(pos);
 		world.notifyBlockUpdate(pos, state, state, 2);
+		world.notifyNeighborsOfStateChange(pos, state.getBlock(), true);
 		markDirty();
 	}
 

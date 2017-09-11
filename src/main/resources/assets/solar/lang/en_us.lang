@@ -18,6 +18,7 @@ tile.gravity_hopper.name=Gravity Hopper
 tile.crystal_void.name=Crystal Void
 tile.schrodinger_glyph.name=Schrodinger Glyph
 tile.blinker.name=Blinker
+tile.phenomena.name=Phenomena
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger
