@@ -25,6 +25,8 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 
+import java.util.Optional;
+
 /**
  * Created by <Arekkuusu> on 08/09/2017.
  * It's distributed as part of Solar.
@@ -91,7 +93,8 @@ public class BlockPhenomena extends BlockBase {
 
 	@Override
 	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(Power.POWER) == Power.ON ? 255 : 0;
+		Optional<TilePhenomena> optional = getTile(TilePhenomena.class, world, pos);
+		return state.getValue(Power.POWER) == Power.ON && optional.isPresent() && !optional.get().hasCooldown() ? 255 : 0;
 	}
 
 	@Override

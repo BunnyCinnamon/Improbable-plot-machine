@@ -87,7 +87,7 @@ public class CreativeTabHandler {
 		@Override
 		@Nonnull
 		public ItemStack getIconItemStack() {
-			return new ItemStack(ModBlocks.primal_stone);
+			return new ItemStack(ModBlocks.schrodinger_glyph);
 		}
 
 		@Override

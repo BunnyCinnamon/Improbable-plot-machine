@@ -100,7 +100,7 @@ public class QuantumHandler {
 	/**
 	 * Set and Sync to the item group of the specified {@param uuid}
 	 * <p>
-	 *     See {@code QuantumDataHandler.setQuantumAsync()}
+	 *     See {@code QuantumHandler.setQuantumAsync()}
 	 * </p>
 	 *
 	 * @param uuid Key to the group of entangled items.
@@ -115,7 +115,7 @@ public class QuantumHandler {
 	/**
 	 * Add and Sync to the item group of the specified {@param uuid}
 	 * <p>
-	 *     See {@code QuantumDataHandler.addQuantumAsync()}
+	 *     See {@code QuantumHandler.addQuantumAsync()}
 	 * </p>
 	 *
 	 * @param uuid Key to the group of entangled items.
@@ -130,7 +130,7 @@ public class QuantumHandler {
 	/**
 	 * Remove and Sync to the item group of the specified {@param uuid}
 	 * <p>
-	 *     See {@code QuantumDataHandler.removeQuantumAsync()}
+	 *     See {@code QuantumHandler.removeQuantumAsync()}
 	 * </p>
 	 *
 	 * @param uuid Key to the group of entangled items.
