@@ -8,38 +8,34 @@
 package arekkuusu.solar.client.util;
 
 import arekkuusu.solar.client.render.baked.model.Cube;
+import arekkuusu.solar.client.util.helper.BlockBaker;
 import arekkuusu.solar.common.Solar;
-import com.google.common.collect.ImmutableMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.Attributes;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.obj.OBJLoader;
-import net.minecraftforge.client.model.pipeline.LightUtil;
-import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.glu.Quadric;
 import org.lwjgl.util.glu.Sphere;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
+import java.util.function.Consumer;
 
 /**
  * Created by <Arekkuusu> on 30/06/2017.
  * It's distributed as part of Solar.
  */
+@SuppressWarnings("SameParameterValue")
 @SideOnly(Side.CLIENT)
-public final class ModelBakery {
+public final class RenderBakery {
 
 	private static final Random BEAM_RAND = new Random();
 	private static int sphere;
@@ -47,47 +43,33 @@ public final class ModelBakery {
 
 	public static void bake() {
 		//--------------------Sphere--------------------//
-		Sphere sphereForm = new Sphere();
-		sphereForm.setDrawStyle(GLU.GLU_FILL);
-		sphereForm.setNormals(GLU.GLU_FLAT);
+		sphere = addDraw(new Sphere(), GLU.GLU_FILL, GLU.GLU_FLAT, form -> form.draw(1F, 16, 16));
 
-		sphere = GL11.glGenLists(1);
-		GL11.glNewList(sphere, GL11.GL_COMPILE);
-
-		sphereForm.draw(1F, 16, 16);
-
-		GL11.glEndList();
 		//---------------------Cube---------------------//
-		Cube cubeForm = new Cube();
-		cubeForm.setDrawStyle(GLU.GLU_FILL);
-		cubeForm.setNormals(GLU.GLU_FLAT);
-
-		cube = GL11.glGenLists(1);
-		GL11.glNewList(cube, GL11.GL_COMPILE);
-
-		cubeForm.draw();
-
-		GL11.glEndList();
-		//------------------OBJ Models------------------//
-		for(OBJBaker model : OBJBaker.values()) {
-			try {
-				model.bake();
-			} catch(Exception e) {
-				Solar.LOG.error("[Model Bakery] Failed to bake obj model: " + model.location.toString());
-				e.printStackTrace();
-			}
-		}
+		cube = addDraw(new Cube(), GLU.GLU_FILL, GLU.GLU_FLAT, Cube::draw);
 
 		//-----------------Json Models-----------------//
 		for(BlockBaker model : BlockBaker.values()) {
 			try {
 				model.bake();
 			} catch(Exception e) {
-				Solar.LOG.fatal("[Model Bakery] Failed to bake json model: " + model.location.toString());
+				Solar.LOG.fatal("[Model Bakery] Failed to bake json model: " + model.getLocation().toString());
 				e.printStackTrace();
 			}
 		}
-		Solar.LOG.info("[THE CAKE IS A LIE!]");
+		Solar.LOG.info("[PIE HAS BEEN SUCCESSFULLY BAKED!]");
+	}
+
+	private static <T extends Quadric> int addDraw(T form, int draw, int normal, Consumer<T> consumer) {
+		form.setDrawStyle(draw);
+		form.setNormals(normal);
+		int id = GL11.glGenLists(1);
+
+		GL11.glNewList(id, GL11.GL_COMPILE);
+		consumer.accept(form);
+		GL11.glEndList();
+
+		return id;
 	}
 
 	public static void drawSphere(int color, float alpha) {
@@ -180,82 +162,12 @@ public final class ModelBakery {
 		}
 	}
 
-	public enum OBJBaker {
-		;
-
-		ResourceLocation location;
-		IModel model;
-
-		OBJBaker(String name) {
-			location = ResourceLibrary.getAtlas(ResourceLibrary.ModelLocation.OBJ, name);
+	public static void renderItemStack(ItemStack stack) {
+		//Fix stack 'y' center
+		if(stack.getItem() instanceof ItemBlock) {
+			GlStateManager.translate(0F, -0.1F, 0F);
 		}
-
-		void bake() throws Exception {
-			model = OBJLoader.INSTANCE.loadModel(location);
-		}
-
-		IBakedModel bake(ImmutableMap<String, String> map) {
-			model.retexture(map);
-			return model.bake(TRSRTransformation.identity(), Attributes.DEFAULT_BAKED_FORMAT, ModelLoader.defaultTextureGetter());
-		}
-
-		public static void render(OBJBaker model, Map<String, ResourceLocation> map) {
-			Tessellator tessellator = Tessellator.getInstance();
-			BufferBuilder buffer = tessellator.getBuffer();
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-
-			ImmutableMap.Builder<String, String> immutable = ImmutableMap.builder();
-			for(Map.Entry<String, ResourceLocation> entry : map.entrySet()) {
-				immutable.put(entry.getKey(), entry.getValue().toString());
-			}
-			IBakedModel baked = model.bake(immutable.build());
-
-			for(BakedQuad bakedquad : baked.getQuads(null, null, 0))
-				LightUtil.renderQuadColor(buffer, bakedquad, -1);
-			tessellator.draw();
-		}
-	}
-
-	public enum BlockBaker {
-		PRIMAL_SIDE("primal_side"),
-		PHENOMENA("phenomena");
-
-		ResourceLocation location;
-
-		List<BakedQuad> quads;
-		IModel model;
-		IBakedModel baked;
-
-		BlockBaker(String name) {
-			location = ResourceLibrary.getAtlas(ResourceLibrary.ModelLocation.BLOCK, name);
-		}
-
-		void bake() throws Exception {
-			model = ModelLoaderRegistry.getModel(location);
-			baked = model.bake(TRSRTransformation.identity(), Attributes.DEFAULT_BAKED_FORMAT, ModelLoader.defaultTextureGetter());
-		}
-
-		public IModel getModel() {
-			return model;
-		}
-
-		public IBakedModel getBaked() {
-			return baked;
-		}
-
-		public List<BakedQuad> getQuads() {
-			return quads;
-		}
-
-		public static void render(BlockBaker model) {
-			Tessellator tessellator = Tessellator.getInstance();
-			BufferBuilder buffer = tessellator.getBuffer();
-			buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-
-			for(BakedQuad bakedquad : model.quads != null ? model.quads : (model.quads = model.baked.getQuads(null, null, 0))) {
-				LightUtil.renderQuadColor(buffer, bakedquad, -1);
-			}
-			tessellator.draw();
-		}
+		RenderItem render = Minecraft.getMinecraft().getRenderItem();
+		render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 	}
 }

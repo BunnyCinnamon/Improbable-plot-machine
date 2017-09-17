@@ -36,15 +36,18 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 		int slots = inv.getHeight() * inv.getWidth();
 		int center = (int) ((float)slots / 2F);
 		ItemStack checked = inv.getStackInSlot(center);
-		int i = 0;
+		if(checked.isEmpty() || !checked.hasTagCompound()) return false;
+		int amount = 0;
 
 		for(int j = 0; j < slots; j++) {
 			ItemStack stack = inv.getStackInSlot(j);
-			if(!stack.isEmpty() && (!hasTag(stack) || checked.getItem() != stack.getItem())) return false;
-			if(!stack.isEmpty() && j != center) i++;
+			if(!stack.isEmpty() && (!hasTag(stack) || stack.getItem() != checked.getItem())) return false;
+			if(!stack.isEmpty() && j != center) {
+				amount++;
+			}
 		}
 
-		return !checked.isEmpty() && checked.hasTagCompound() && i > 0;
+		return amount > 0;
 	}
 
 	@Override
@@ -52,16 +55,19 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 		int slots = inv.getHeight() * inv.getWidth();
 		int center = (int) ((float)slots / 2F);
 		ItemStack checked = inv.getStackInSlot(center);
-		int i = 0;
+		if(checked.isEmpty() || !checked.hasTagCompound()) return ItemStack.EMPTY;
+		int amount = 0;
 
 		for(int j = 0; j < slots; j++) {
 			ItemStack stack = inv.getStackInSlot(j);
-			if(!stack.isEmpty() && (!hasTag(stack) || checked.getItem() != stack.getItem())) return ItemStack.EMPTY;
-			if(!stack.isEmpty() && j != center) i++;
+			if(!stack.isEmpty() && (!hasTag(stack) || stack.getItem() != checked.getItem())) return ItemStack.EMPTY;
+			if(!stack.isEmpty() && j != center) {
+				amount++;
+			}
 		}
 
-		if(!checked.isEmpty() && hasTag(checked) && i > 0) {
-			ItemStack entanglement = new ItemStack(checked.getItem(), i);
+		if(amount > 0) {
+			ItemStack entanglement = new ItemStack(checked.getItem(), amount);
 			NBTTagCompound tag = entanglement.getOrCreateSubCompound(SolarApi.QUANTUM_DATA);
 			getKey(checked).ifPresent(uuid -> tag.setUniqueId("key", uuid));
 			return entanglement;

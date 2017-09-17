@@ -27,7 +27,6 @@ public class ModBlocks {
 	//--------------------------------Blocks--------------------------------//
 	public static final Block primal_stone = PLACE_HOLDER;
 	public static final Block primal_glyph = PLACE_HOLDER;
-	public static final Block black_hole = PLACE_HOLDER;
 	public static final Block singularity = PLACE_HOLDER;
 	public static final Block prism_flower = PLACE_HOLDER;
 	public static final Block quantum_mirror = PLACE_HOLDER;
@@ -40,7 +39,6 @@ public class ModBlocks {
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
 		registry.register(new BlockPrimalGlyph());
-		registry.register(new BlockBlackHole());
 		registry.register(new BlockSingularity());
 		registry.register(new BlockPrismFlower());
 		registry.register(new BlockQuantumMirror());
@@ -53,7 +51,6 @@ public class ModBlocks {
 	}
 
 	private static void registerTiles() {
-		GameRegistry.registerTileEntity(TileBlackHole.class, LibMod.MOD_ID + ":black_hole");
 		GameRegistry.registerTileEntity(TileSingularity.class, LibMod.MOD_ID + ":singularity");
 		GameRegistry.registerTileEntity(TilePrismFlower.class, LibMod.MOD_ID + ":prism_flower");
 		GameRegistry.registerTileEntity(TileQuantumMirror.class, LibMod.MOD_ID + ":quantum_mirror");

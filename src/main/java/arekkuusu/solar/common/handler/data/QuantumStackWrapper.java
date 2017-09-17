@@ -18,13 +18,13 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumStackWrapper extends arekkuusu.solar.common.handler.data.QuantumHandler {
+public class QuantumStackWrapper extends QuantumDataHandler {
 
 	private final IQuantumStack quantum;
 	private final ItemStack stack;
 
-	public QuantumStackWrapper(IQuantumStack quantum, ItemStack stack) {
-		super(quantum.getSlots());
+	public QuantumStackWrapper(IQuantumStack quantum, ItemStack stack, int size) {
+		super(size);
 		this.quantum = quantum;
 		this.stack = stack;
 	}

@@ -33,7 +33,7 @@ public abstract class SpecialModelRenderer<T extends TileEntity> extends TileEnt
 	@Override
 	public void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		if(te == null) {
-			renderItem(x, y, z, partialTicks);
+			renderStack(x, y, z, partialTicks);
 		} else {
 			renderTile(te, x, y, z, partialTicks, destroyStage, alpha);
 		}
@@ -41,5 +41,5 @@ public abstract class SpecialModelRenderer<T extends TileEntity> extends TileEnt
 
 	abstract void renderTile(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha);
 
-	abstract void renderItem(double x, double y, double z, float partialTicks);
+	abstract void renderStack(double x, double y, double z, float partialTicks);
 }

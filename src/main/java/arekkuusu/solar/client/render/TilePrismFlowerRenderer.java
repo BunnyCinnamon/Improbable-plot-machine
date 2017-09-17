@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.ModelBakery;
+import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.BlendHelper;
 import arekkuusu.solar.common.block.tile.TilePrismFlower;
@@ -45,7 +45,7 @@ public class TilePrismFlowerRenderer extends TileEntitySpecialRenderer<TilePrism
 		SpriteLibrary.PRISM_PETAL.bindManager();
 		double min = 0.3125D;
 		double max = 0.6875D;
-		ModelBakery.renderCube(0.15F, min, max, min, max);
+		RenderBakery.renderCube(0.15F, min, max, min, max);
 
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();

@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.ModelBakery;
+import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.BlendHelper;
 import arekkuusu.solar.common.block.tile.RenderDummy;
@@ -50,7 +50,7 @@ public class QuingentilliardRenderer extends TileEntitySpecialRenderer<RenderDum
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 
-		ModelBakery.renderBeams((float) tick * 0.01F, 30, 0x000000, 0x000000, 1.25F);
+		RenderBakery.renderBeams((float) tick * 0.01F, 30, 0x000000, 0x000000, 1.25F);
 
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glShadeModel(GL11.GL_FLAT);
@@ -72,6 +72,6 @@ public class QuingentilliardRenderer extends TileEntitySpecialRenderer<RenderDum
 		float vMin = 0.03515625F + (float) v;
 		float vMax = 0.08984375F + (float) v;
 
-		ModelBakery.renderCube(0.35F, uMin, uMax, vMin, vMax);
+		RenderBakery.renderCube(0.35F, uMin, uMax, vMin, vMax);
 	}
 }

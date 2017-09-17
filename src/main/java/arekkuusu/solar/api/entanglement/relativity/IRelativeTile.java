@@ -8,6 +8,7 @@
 package arekkuusu.solar.api.entanglement.relativity;
 
 import arekkuusu.solar.api.entanglement.IEntangledTile;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -15,14 +16,15 @@ import net.minecraft.world.World;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public interface IRelativeTile extends IEntangledTile {
+@SuppressWarnings("unchecked")
+public interface IRelativeTile<T extends TileEntity & IRelativeTile> extends IEntangledTile {
 
 	default void add() {
-		RelativityHandler.addRelative(this, (ignored) -> {});
+		RelativityHandler.addRelative((T) this, (ignored) -> {});
 	}
 
 	default void remove() {
-		RelativityHandler.removeRelative(this, (ignored) -> {});
+		RelativityHandler.removeRelative((T) this, (ignored) -> {});
 	}
 
 	default boolean isLoaded() {

@@ -48,8 +48,7 @@ public class TilePrismFlower extends TileBase implements ITickable {
 	@Override
 	public void update() {
 		if(world.isRemote) {
-			Optional<EntityLivingBase> optional = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(4))
-					.stream().sorted(comparator).findFirst();
+			Optional<EntityLivingBase> optional = getNearestEntity();
 			if(optional.isPresent()) {
 				double distance = distanceTo(optional.get());
 				brightness = (float) (1 - (distance / 5)) * 1.5F;
@@ -60,8 +59,13 @@ public class TilePrismFlower extends TileBase implements ITickable {
 			if(tick % 20 == 0 && world.rand.nextInt(10) == 0) {
 				spawnParticles();
 			}
+			tick++;
 		}
-		tick++;
+	}
+
+	private Optional<EntityLivingBase> getNearestEntity() {
+		return world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(4))
+				.stream().sorted(comparator).findFirst();
 	}
 
 	private void spawnParticles() {
@@ -72,7 +76,7 @@ public class TilePrismFlower extends TileBase implements ITickable {
 		world.spawnParticle(EnumParticleTypes.END_ROD, offset.x + ytho, offset.y + (idk * 2), offset.z + idk, 0, 0, 0);
 	}
 
-	public double distanceTo(EntityLivingBase entity) {
+	private double distanceTo(EntityLivingBase entity) {
 		double x = pos.getX() + 0.5D - entity.posX;
 		double y = (pos.getY() + 0.5D) - (entity.posY + (entity.height / 2));
 		double z = pos.getZ() + 0.5D - entity.posZ;
@@ -81,7 +85,7 @@ public class TilePrismFlower extends TileBase implements ITickable {
 		return Math.sqrt(squared);
 	}
 
-	public Vec3d getOffSet(double x, double y, double z) { //Kill me.....
+	public Vec3d getOffSet(double x, double y, double z) {
 		IBlockState state = world.getBlockState(pos);
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 

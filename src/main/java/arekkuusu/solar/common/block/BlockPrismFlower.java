@@ -12,6 +12,7 @@ import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,8 +24,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by <Arekkuusu> on 14/07/2017.
@@ -47,19 +46,18 @@ public class BlockPrismFlower extends BlockBase {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		BlockPos offset = pos.offset(facing);
-		if(!world.getBlockState(offset).isSideSolid(world, offset, facing)) {
+		if(!canPlaceBlockOnSide(world, pos, facing)) {
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
 		}
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
-		IBlockState state = worldIn.getBlockState(pos.offset(side.getOpposite()));
-		return state.getBlock().isSideSolid(state, worldIn, pos, side);
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+		IBlockState state = world.getBlockState(pos.offset(side.getOpposite()));
+		return state.getBlockFaceShape(world, pos, side) == BlockFaceShape.SOLID;
 	}
 
 	@Override

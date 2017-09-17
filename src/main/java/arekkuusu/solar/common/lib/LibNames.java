@@ -15,15 +15,14 @@ public class LibNames {
 
 	public static final String PRIMAL_STONE = "primal_stone";
 	public static final String PRIMAL_GLYPH = "primal_glyph";
-	public static final String BLACK_HOLE = "black_hole";
 	public static final String SINGULARITY = "singularity";
 	public static final String PRISM_FLOWER = "prism_flower";
 	public static final String QUANTUM_MIRROR = "quantum_mirror";
-	public static final String LIGHT_PARTICLE = "light_particle";
 	public static final String GRAVITY_HOPPER = "gravity_hopper";
 	public static final String QUINGENTILLIARD = "quingentilliard";
 	public static final String SCHRODINGER_GLYPH = "schrodinger_glyph";
 	public static final String CRYSTAL_VOID = "crystal_void";
 	public static final String BLINKER = "blinker";
 	public static final String PHENOMENA = "phenomena";
+	public static final String QUANTUM_QUARTZ = "quantum_quartz";
 }

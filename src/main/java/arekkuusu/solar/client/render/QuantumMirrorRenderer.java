@@ -8,6 +8,7 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.BlendHelper;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
@@ -48,13 +49,11 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 					GlStateManager.pushMatrix();
 					BlendHelper.lightMap(255F, 255F);
-					GlStateManager.translate(x + 0.5, y + 0.3, z + 0.5);
+					GlStateManager.translate(x + 0.5, y + 0.38, z + 0.5);
 
 					GlStateManager.rotate(partialTicks + (float) mirror.tick * 0.5F % 360F, 0F, 1F, 0F);
+					RenderBakery.renderItemStack(stack);
 
-					RenderItem render = Minecraft.getMinecraft().getRenderItem();
-
-					render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 					GlStateManager.popMatrix();
 				}
 				break;
@@ -66,7 +65,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public void renderItem(double x, double y, double z, float partialTicks) {
+	public void renderStack(double x, double y, double z, float partialTicks) {
 		int tick = Minecraft.getMinecraft().player.ticksExisted;
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
@@ -74,13 +73,11 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		if(SpecialModelRenderer.getTempItemRenderer() != null) {
 			GlStateManager.pushMatrix();
 			BlendHelper.lightMap(255F, 255F);
-			GlStateManager.translate(x + 0.5, y + 0.3, z + 0.5);
+			GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 
 			GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
+			RenderBakery.renderItemStack(SpecialModelRenderer.getTempItemRenderer());
 
-			RenderItem render = Minecraft.getMinecraft().getRenderItem();
-
-			render.renderItem(SpecialModelRenderer.getTempItemRenderer(), ItemCameraTransforms.TransformType.GROUND);
 			GlStateManager.popMatrix();
 
 			SpecialModelRenderer.setTempItemRenderer(null);

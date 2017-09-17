@@ -7,13 +7,10 @@
  ******************************************************************************/
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.data.QuantumStackProvider;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -47,29 +44,15 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IQuantumStack {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new QuantumStackProvider(this, stack);
+		return new QuantumStackProvider(this, stack, 1);
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack original = player.getHeldItem(hand);
-		if(!world.isRemote) {
-			EnumHand otherHand = hand == EnumHand.MAIN_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND;
-
-			handleItemTransfer(player, world, original, otherHand);
-		}
-		return ActionResult.newResult(EnumActionResult.FAIL, original);
-	}
-
-	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-		if(!world.isRemote && !NBTHelper.hasTag(stack, SolarApi.QUANTUM_DATA)) {
+		ItemStack stack = player.getHeldItem(hand);
+		if(!world.isRemote && player.isSneaking()) {
 			setKey(stack, UUID.randomUUID());
 		}
-	}
-
-	@Override
-	public int getSlots() {
-		return 1;
+		return ActionResult.newResult(EnumActionResult.FAIL, stack);
 	}
 }

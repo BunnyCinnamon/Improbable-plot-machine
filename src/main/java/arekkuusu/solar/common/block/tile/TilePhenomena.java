@@ -72,7 +72,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 			} else {
 				inverse = isInvisible();
 				if(!inverse) inverse();
-				PacketHandler.sendToAllAround(new PhenomenaMessage(getPos()), PacketHandler.fromTileEntity(this, 15));
+				PacketHandler.sendToAllAround(new PhenomenaMessage(getPos()), PacketHandler.fromTileEntity(this, 25));
 			}
 			timer = 20;
 		}

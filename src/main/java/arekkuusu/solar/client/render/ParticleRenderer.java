@@ -8,6 +8,7 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.effect.ParticleBase;
+import arekkuusu.solar.client.util.helper.BlendHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -52,11 +53,11 @@ public class ParticleRenderer {
 			Particle.interpPosZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partial;
 			Particle.cameraViewDir = entity.getLook(partial);
 
-			float f = ActiveRenderInfo.getRotationX();
-			float f1 = ActiveRenderInfo.getRotationZ();
-			float f2 = ActiveRenderInfo.getRotationYZ();
-			float f3 = ActiveRenderInfo.getRotationXY();
-			float f4 = ActiveRenderInfo.getRotationXZ();
+			float x = ActiveRenderInfo.getRotationX();
+			float z = ActiveRenderInfo.getRotationZ();
+			float yz = ActiveRenderInfo.getRotationYZ();
+			float xy = ActiveRenderInfo.getRotationXY();
+			float xz = ActiveRenderInfo.getRotationXZ();
 
 			GlStateManager.enableAlpha();
 			GlStateManager.enableBlend();
@@ -68,39 +69,39 @@ public class ParticleRenderer {
 			Tessellator tess = Tessellator.getInstance();
 			BufferBuilder buffer = tess.getBuffer();
 
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+			BlendHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
 			for(ParticleBase particle : particles) {
 				if(particle.shouldRender() && !particle.isAdditive()) {
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
-					particle.renderParticle(buffer, entity, partial, f, f4, f1, f2, f3);
+					particle.renderParticle(buffer, entity, partial, x, xz, z, yz, xy);
 					tess.draw();
 				}
 			}
 
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+			BlendHelper.BLEND_SRC_ALPHA$ONE.blend();
 			for(ParticleBase particle : particles) {
 				if(particle.shouldRender() && particle.isAdditive()) {
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
-					particle.renderParticle(buffer, entity, partial, f, f4, f1, f2, f3);
+					particle.renderParticle(buffer, entity, partial, x, xz, z, yz, xy);
 					tess.draw();
 				}
 			}
 
 			GlStateManager.disableDepth();
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+			BlendHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
 			for(ParticleBase particle : particles) {
 				if(particle.shouldRender() && !particle.isAdditive() && particle.shouldDisableDepth()) {
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
-					particle.renderParticle(buffer, entity, partial, f, f4, f1, f2, f3);
+					particle.renderParticle(buffer, entity, partial, x, xz, z, yz, xy);
 					tess.draw();
 				}
 			}
 
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+			BlendHelper.BLEND_SRC_ALPHA$ONE.blend();
 			for(ParticleBase particle : particles) {
 				if(particle.shouldRender() && particle.isAdditive() && particle.shouldDisableDepth()) {
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
-					particle.renderParticle(buffer, entity, partial, f, f4, f1, f2, f3);
+					particle.renderParticle(buffer, entity, partial, x, xz, z, yz, xy);
 					tess.draw();
 				}
 			}

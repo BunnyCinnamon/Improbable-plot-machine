@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
  * This class was created by Arekkuusu on 02/03/2017.
@@ -28,10 +29,6 @@ public final class NBTHelper {
 	private NBTHelper() {
 	}
 
-	public static void setByte(ItemStack stack, String tag, byte i) {
-		fixNBT(stack).setByte(tag, i);
-	}
-
 	public static NBTTagCompound fixNBT(ItemStack stack) {
 		NBTTagCompound tagCompound = stack.getTagCompound();
 		if (tagCompound == null) {
@@ -39,6 +36,10 @@ public final class NBTHelper {
 			stack.setTagCompound(tagCompound);
 		}
 		return tagCompound;
+	}
+
+	public static void setByte(ItemStack stack, String tag, byte i) {
+		fixNBT(stack).setByte(tag, i);
 	}
 
 	public static void setInteger(ItemStack stack, String tag, int i) {
@@ -59,10 +60,6 @@ public final class NBTHelper {
 
 	public static void setUniqueID(ItemStack stack, String tag, UUID i) {
 		fixNBT(stack).setUniqueId(tag, i);
-	}
-
-	public static <T extends NBTBase> void setNBT(ItemStack stack, String tag, T base) {
-		fixNBT(stack).setTag(tag, base);
 	}
 
 	public static byte getByte(ItemStack stack, String tag) {
@@ -90,9 +87,18 @@ public final class NBTHelper {
 		return fixNBT(stack).getUniqueId(tag);
 	}
 
-	@SuppressWarnings({"unchecked", "ConstantConditions"})
+	public static <T extends NBTBase> T setNBT(ItemStack stack, String tag, T base) {
+		fixNBT(stack).setTag(tag, base);
+		return base;
+	}
+
+	@SuppressWarnings({"ConstantConditions", "unchecked"})
 	public static <T extends NBTBase> Optional<T> getNBT(ItemStack stack, String tag) {
 		return Optional.ofNullable((T) fixNBT(stack).getTag(tag));
+	}
+
+	public static <T extends NBTBase> T getOrCreate(ItemStack stack, String tag, Supplier<T> supplier) {
+		return NBTHelper.<T>getNBT(stack, tag).orElseGet(() -> setNBT(stack, tag, supplier.get()));
 	}
 
 	public static <T extends Entity> Optional<T> getEntityByUUID(Class<T> clazz, UUID uuid, World world) {

@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.handler.data;
 
 import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHandler;
 import arekkuusu.solar.common.network.QSyncAllMessage;
@@ -77,7 +78,7 @@ public class WorldQuantumData extends WorldSavedData {
 		list.forEach(stackList -> {
 			NBTTagList stacks = (NBTTagList) ((NBTTagCompound) stackList).getTag(LIST);
 			UUID key = ((NBTTagCompound) stackList).getUniqueId(KEY);
-			stacks.forEach(tag -> arekkuusu.solar.api.entanglement.quantum.QuantumHandler.addQuantumAsync(key, new ItemStack((NBTTagCompound) tag)));
+			stacks.forEach(tag -> QuantumHandler.addQuantumAsync(key, new ItemStack((NBTTagCompound) tag)));
 		});
 	}
 

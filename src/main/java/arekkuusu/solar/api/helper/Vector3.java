@@ -7,6 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.api.helper;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -85,6 +87,10 @@ public class Vector3 {
 		return setVec(x, y, z);
 	}
 
+	public Vector3 offset(EnumFacing facing, float amount) {
+		return setVec(x + facing.getFrontOffsetX() * amount, y + facing.getFrontOffsetY() * amount, z + facing.getFrontOffsetZ() * amount);
+	}
+
 	public Vector3 normalize() {
 		double root = MathHelper.sqrt(x * x + y * y + z * z);
 		return root < 1.0E-4D ? setVec(0, 0, 0) : setVec(x / root, y / root, z / root);
@@ -103,5 +109,9 @@ public class Vector3 {
 
 	public Vec3d toVec3d() {
 		return new Vec3d(x, y, z);
+	}
+
+	public BlockPos toShit() {
+		return new BlockPos(x, y, z);
 	}
 }

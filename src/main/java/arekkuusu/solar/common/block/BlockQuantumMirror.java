@@ -36,6 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 17/07/2017.
@@ -54,9 +55,7 @@ public class BlockQuantumMirror extends BlockBase {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote && !player.isSneaking()) {
-			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
-				mirror.handleItemTransfer(player, hand);
-			});
+			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> mirror.handleItemTransfer(player, hand));
 		}
 		return true;
 	}
@@ -77,16 +76,16 @@ public class BlockQuantumMirror extends BlockBase {
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
-			getTile(TileQuantumMirror.class, world, pos).ifPresent(blinker -> {
+			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
 				Optional<NBTTagCompound> optional = NBTHelper.getNBT(stack, SolarApi.QUANTUM_DATA);
-				optional.ifPresent(nbtTagCompound -> blinker.setKey(nbtTagCompound.getUniqueId("key")));
+				optional.ifPresent(nbtTagCompound -> mirror.setKey(nbtTagCompound.getUniqueId("key")));
 			});
 		}
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileQuantumMirror.class, world, pos).ifPresent(blinker -> {
+		getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
 			ItemStack stack = getItem(world, pos, state);
 			spawnAsEntity(world, pos, stack);
 		});

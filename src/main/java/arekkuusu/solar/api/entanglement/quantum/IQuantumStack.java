@@ -7,20 +7,18 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement.quantum;
 
+import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.client.util.helper.TooltipHelper;
-import arekkuusu.solar.common.handler.data.WorldQuantumData;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.CONTROL_KEY_DOWN;
@@ -32,8 +30,6 @@ import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.SHIFT_K
  */
 public interface IQuantumStack extends IEntangledStack {
 
-	int getSlots();
-
 	@SideOnly(Side.CLIENT)
 	default void addTooltipInfo(ItemStack stack, List<String> tooltip) {
 		getKey(stack).ifPresent(uuid -> TooltipHelper.inline()
@@ -44,7 +40,7 @@ public interface IQuantumStack extends IEntangledStack {
 	@Override
 	@SideOnly(Side.CLIENT)
 	default TooltipHelper.Builder getInfo(TooltipHelper.Builder builder, UUID uuid) {
-		builder.addI18("quantum", TooltipHelper.DARK_GRAY_ITALIC).end();
+		builder.addI18("quantum_data", TooltipHelper.DARK_GRAY_ITALIC).end();
 		QuantumHandler.getQuantumStacks(uuid).forEach(item -> builder
 				.add("    - ", TextFormatting.DARK_GRAY)
 				.add(item.getDisplayName(), TooltipHelper.GRAY_ITALIC)
@@ -61,31 +57,11 @@ public interface IQuantumStack extends IEntangledStack {
 		return builder;
 	}
 
-	@SuppressWarnings("ConstantConditions")
-	default void handleItemTransfer(EntityPlayer player, World world, ItemStack container, EnumHand hand) {
-		if(!container.isEmpty() && container.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler handler = container.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			ItemStack inserted = player.getHeldItem(hand);
-
-			if(!inserted.isEmpty()) {
-				for(int i = 0; i < handler.getSlots(); i++) {
-					ItemStack test = handler.insertItem(i, inserted, true);
-					if(test != inserted) {
-						player.setHeldItem(hand, handler.insertItem(i, inserted, false));
-						WorldQuantumData.get(world).markDirty();
-						break;
-					}
-				}
-			} else {
-				for(int i = 0; i < handler.getSlots(); i++) {
-					ItemStack test = handler.extractItem(i, player.isSneaking() ? handler.getSlotLimit(i) : 1, false);
-					if(!test.isEmpty()) {
-						player.setHeldItem(hand, test);
-						WorldQuantumData.get(world).markDirty();
-						break;
-					}
-				}
-			}
+	@Override
+	default void setKey(ItemStack stack, UUID uuid) {
+		Optional<UUID> optional = getKey(stack);
+		if(!optional.isPresent() || QuantumHandler.getQuantumStacks(optional.get()).isEmpty()) {
+			NBTHelper.getOrCreate(stack, SolarApi.QUANTUM_DATA, NBTTagCompound::new).setUniqueId("key", uuid);
 		}
 	}
 }

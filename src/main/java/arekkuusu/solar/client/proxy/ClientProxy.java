@@ -9,14 +9,13 @@ package arekkuusu.solar.client.proxy;
 
 import arekkuusu.solar.client.render.ModRenders;
 import arekkuusu.solar.client.render.ParticleRenderer;
-import arekkuusu.solar.client.util.ModelBakery;
+import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.baker.DummyModelLoader;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.resource.SpriteLoader;
 import arekkuusu.solar.common.Solar;
-import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.proxy.IProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,7 +26,6 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -98,14 +96,13 @@ public class ClientProxy implements IProxy {
 		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
 				.registerReloadListener(SpriteLoader.INSTANCE);
 		ModelLoaderRegistry.registerLoader(new DummyModelLoader());
-		OBJLoader.INSTANCE.addDomain(LibMod.MOD_ID);
 		ModRenders.preInit();
 	}
 
 	@Override
 	public void init(FMLInitializationEvent event) {
 		SpriteLibrary.init();
-		ModelBakery.bake();
+		RenderBakery.bake();
 		ModRenders.init();
 	}
 }

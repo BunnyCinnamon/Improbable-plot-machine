@@ -13,6 +13,7 @@ import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.Power;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +24,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,7 +32,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
+public class TileBlinker extends TileBase implements ITickable, IRelativeTile<TileBlinker> {
 
 	private static final Map<EnumFacing, Vec3d> FACING_MAP = ImmutableMap.<EnumFacing, Vec3d>builder()
 			.put(EnumFacing.UP, new Vec3d(0.5D, 0.2D, 0.5D))
@@ -42,18 +42,38 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
 			.put(EnumFacing.EAST, new Vec3d(0.2D, 0.5D, 0.5D))
 			.put(EnumFacing.WEST, new Vec3d(0.8D, 0.5D, 0.5D))
 			.build();
-	private static final Map<UUID, Integer> POWER_MAP = new HashMap<>();
+	private static final Map<UUID, Integer> POWER_MAP = Maps.newHashMap();
 	private UUID key;
 	private int tick;
 
+	/**
+	 * If the relative {@param tile} is powered by Redstone.
+	 *
+	 * @param tile The relative tile {@link TileBlinker}.
+	 * @return If the redstone level is higher than 0
+	 */
 	public static boolean isPowered(TileBlinker tile) {
 		return getPower(tile) > 0;
 	}
 
+	/**
+	 * Get the Redstone power from the relative {@param tile}.
+	 *
+	 * @param tile The relative tile {@link TileBlinker}.
+	 * @return The Redstone power from 0 to 15.
+	 */
 	public static int getPower(TileBlinker tile) {
 		return POWER_MAP.getOrDefault(tile.getKey().orElse(null), 0);
 	}
 
+	/**
+	 * Set the Redstone power to the relative {@param tile},
+	 * this will update all other relative tiles, as long as
+	 * they are loaded in the world.
+	 *
+	 * @param tile The relative tile {@link TileBlinker}.
+	 * @param newPower The new redstone power.
+	 */
 	public static void setPower(TileBlinker tile, int newPower) {
 		tile.getKey().ifPresent(uuid -> POWER_MAP.compute(uuid, (key, prevPower) -> {
 			if(prevPower == null || prevPower != newPower) updateAll(key);
@@ -61,6 +81,13 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
 		}));
 	}
 
+	/**
+	 * Updates all relative {@link TileBlinker} entangled
+	 * by a shared {@param uuid} linking to a single Redstone
+	 * power value.
+	 *
+	 * @param uuid The {@link UUID} entangling them together.
+	 */
 	private static void updateAll(UUID uuid) {
 		SolarApi.getRelativityMap().computeIfPresent(uuid, (key, list) -> {
 			list.stream()
@@ -123,7 +150,7 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile {
 		});
 	}
 
-	public int getRedstonePower() {
+	private int getRedstonePower() {
 		int power = 0;
 		for(EnumFacing facing : EnumFacing.values()) {
 			int detected = world.getRedstonePower(pos.offset(facing), facing);

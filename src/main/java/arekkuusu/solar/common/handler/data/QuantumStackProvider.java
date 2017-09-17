@@ -22,14 +22,14 @@ import javax.annotation.Nullable;
  */
 public class QuantumStackProvider implements ICapabilityProvider {
 
-	private final QuantumHandler handler;
+	private final QuantumDataHandler handler;
 
-	public QuantumStackProvider(QuantumHandler handler) {
+	public QuantumStackProvider(QuantumDataHandler handler) {
 		this.handler = handler;
 	}
 
-	public QuantumStackProvider(IQuantumStack quantum, ItemStack stack) {
-		handler = new QuantumStackWrapper(quantum, stack);
+	public QuantumStackProvider(IQuantumStack quantum, ItemStack stack, int size) {
+		handler = new QuantumStackWrapper(quantum, stack, size);
 	}
 
 	@Override

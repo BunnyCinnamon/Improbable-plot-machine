@@ -5,6 +5,7 @@ itemGroup.solar.misc_blocks=Solar Blocks
 item.primal_stone.name=Primal Stone
 item.primal_glyph.name=Primal Glyph
 item.quingentilliard.name=Quingentilliard
+item.quantum_quartz.name=Quantum Quartz
 
 //Blocks
 tile.primal_stone.name=Primal Stone
@@ -28,5 +29,6 @@ entity.special_item.name=Entity Item
 tlp.shift_for_info.name=<shift for info>
 tlp.ctrl_for_info.name=<ctrl for info>
 tlp.list_more.name=more
-tlp.quantum.name=Quantum Data
+tlp.quantum_data.name=Quantum Data
 tlp.uuid_key.name=Uuid
+tlp.valid_entangler.name=Valid Entangler

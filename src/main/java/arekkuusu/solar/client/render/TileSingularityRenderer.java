@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.ModelBakery;
+import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.helper.BlendHelper;
 import arekkuusu.solar.common.block.tile.TileSingularity;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,8 +15,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-
-import java.util.Random;
 
 /**
  * Created by <Arekkuusu> on 06/07/2017.
@@ -45,7 +43,7 @@ public class TileSingularityRenderer extends TileEntitySpecialRenderer<TileSingu
 		GlStateManager.disableCull();
 		BlendHelper.BLEND_NORMAL.blend();
 
-		ModelBakery.renderBeams((float) singularity.tick * 0.001F, 30, 0xFFFFFF, 0xFFFFFF, 0.5F);
+		RenderBakery.renderBeams((float) singularity.tick * 0.001F, 30, 0xFFFFFF, 0xFFFFFF, 0.5F);
 
 		GlStateManager.enableCull();
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -63,7 +61,7 @@ public class TileSingularityRenderer extends TileEntitySpecialRenderer<TileSingu
 		GlStateManager.rotate(age % 360, 0, 1, 0);
 		GlStateManager.rotate(30.0f * (float) Math.sin(Math.toRadians(partialTicks / 3.0f + age / 3 % 360)), 1, 0, 0);
 		GlStateManager.scale(0.25F, 0.25F, 0.25F);
-		ModelBakery.drawCube(0xFFFFFF, 1F);
+		RenderBakery.drawCube(0xFFFFFF, 1F);
 
 		GlStateManager.enableTexture2D();
 	}

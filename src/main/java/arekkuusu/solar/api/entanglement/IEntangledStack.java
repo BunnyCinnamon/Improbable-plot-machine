@@ -34,8 +34,7 @@ public interface IEntangledStack {
 	}
 
 	default void setKey(ItemStack stack, UUID uuid) {
-		NBTTagCompound tag = stack.getOrCreateSubCompound(SolarApi.QUANTUM_DATA);
-		tag.setUniqueId("key", uuid);
+		NBTHelper.getOrCreate(stack, SolarApi.QUANTUM_DATA, NBTTagCompound::new).setUniqueId("key", uuid);
 	}
 
 	default Optional<UUID> getKey(ItemStack stack) {

@@ -7,22 +7,20 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.ModelBakery;
-import arekkuusu.solar.client.util.ModelBakery.BlockBaker;
+import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.BlockBaker;
 import arekkuusu.solar.client.util.resource.FrameSpriteResource;
 import arekkuusu.solar.common.block.tile.TileCrystalVoid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
 
-import static arekkuusu.solar.client.util.ModelBakery.BlockBaker.PRIMAL_SIDE;
+import static arekkuusu.solar.client.util.helper.BlockBaker.PRIMAL_SIDE;
 
 /**
  * Created by <Arekkuusu> on 27/08/2017.
@@ -49,13 +47,13 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableRescaleNormal();
 			GlStateManager.enableBlend();
-			RenderItem render = Minecraft.getMinecraft().getRenderItem();
-			GlStateManager.translate(x + 0.5D, y + 0.4D, z + 0.5D);
+			GlStateManager.translate(x + 0.5D, y + 0.45D, z + 0.5D);
 
 			GlStateManager.scale(0.5F, 0.5F, 0.5F);
 			GlStateManager.rotate(partialTicks + crystal.tick % 360F, 0F, 1F, 0F);
 
-			render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
+			RenderBakery.renderItemStack(stack);
+
 			GlStateManager.disableBlend();
 			GlStateManager.disableRescaleNormal();
 			GlStateManager.popMatrix();
@@ -63,7 +61,7 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 	}
 
 	@Override
-	public void renderItem(double x, double y, double z, float partialTicks) {
+	public void renderStack(double x, double y, double z, float partialTicks) {
 		int tick = Minecraft.getMinecraft().player.ticksExisted;
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
@@ -116,7 +114,7 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 		double vOffset = sprite.getV();
 		double v = uv.getSecond();
 
-		ModelBakery.renderCube(0.47F, 0F, 1F, v, v + vOffset);
+		RenderBakery.renderCube(0.47F, 0F, 1F, v, v + vOffset);
 		GlStateManager.enableCull();
 	}
 
@@ -126,7 +124,7 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 		GlStateManager.rotate(tick % 360, 0, 1, 0);
 		GlStateManager.rotate(30.0f * (float) Math.sin(Math.toRadians(partialTicks / 3.0f + tick / 3 % 360)), 1, 0, 0);
 		GlStateManager.scale(0.25F, 0.25F, 0.25F);
-		ModelBakery.drawCube(0xFFFFFF, 1F);
+		RenderBakery.drawCube(0xFFFFFF, 1F);
 
 		GlStateManager.enableTexture2D();
 	}

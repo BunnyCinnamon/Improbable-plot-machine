@@ -8,6 +8,7 @@
 package arekkuusu.solar.client.util.baker;
 
 import arekkuusu.solar.client.render.baked.model.DummyModel;
+import com.google.common.collect.Maps;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
@@ -15,7 +16,6 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +26,7 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class DummyModelLoader implements ICustomModelLoader {
 
-	private final Map<ResourceLocation, IModel> created = new HashMap<>();
+	private final Map<ResourceLocation, IModel> created = Maps.newHashMap();
 
 	@SuppressWarnings("ConstantConditions")
 	@Override

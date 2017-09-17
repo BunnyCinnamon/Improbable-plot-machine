@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.handler.data;
 
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -19,11 +20,11 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
  */
-public abstract class QuantumHandler implements IItemHandlerModifiable {
+public abstract class QuantumDataHandler implements IItemHandlerModifiable {
 
 	private final int slots;
 
-	protected QuantumHandler(int slots) {
+	QuantumDataHandler(int slots) {
 		this.slots = slots;
 	}
 
@@ -32,29 +33,13 @@ public abstract class QuantumHandler implements IItemHandlerModifiable {
 
 	protected void onChange(int slot) {}
 
-	public boolean assertSafety(ItemStack stack) {
-		return !(stack.getItem() instanceof IQuantumStack) || !((IQuantumStack) stack.getItem()).getKey(stack).isPresent();
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int slot) {
-		if(getKey() == null) return ItemStack.EMPTY;
-
-		return arekkuusu.solar.api.entanglement.quantum.QuantumHandler.getQuantumStack(getKey(), slot);
-	}
-
-	@Override
-	public void setStackInSlot(int slot, ItemStack stack) {
-		arekkuusu.solar.api.entanglement.quantum.QuantumHandler.setQuantumStack(getKey(), stack, slot);
-	}
-
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		if(stack.isEmpty()) return ItemStack.EMPTY;
 
 		if(getKey() == null || !assertSafety(stack)) return stack;
 
-		ItemStack existing = arekkuusu.solar.api.entanglement.quantum.QuantumHandler.getQuantumStack(getKey(), slot);
+		ItemStack existing = getStackInSlot(slot);
 
 		int limit = stack.getMaxStackSize();
 
@@ -84,11 +69,15 @@ public abstract class QuantumHandler implements IItemHandlerModifiable {
 		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
 	}
 
+	public boolean assertSafety(ItemStack stack) {
+		return !(stack.getItem() instanceof IQuantumStack) || !((IQuantumStack) stack.getItem()).getKey(stack).isPresent();
+	}
+
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		if(amount == 0 || getKey() == null) return ItemStack.EMPTY;
 
-		ItemStack existing = arekkuusu.solar.api.entanglement.quantum.QuantumHandler.getQuantumStack(getKey(), slot);
+		ItemStack existing = getStackInSlot(slot);
 
 		if(existing.isEmpty()) {
 			return ItemStack.EMPTY;
@@ -109,6 +98,18 @@ public abstract class QuantumHandler implements IItemHandlerModifiable {
 			}
 
 			return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
+		}
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot) {
+		return getKey() == null ? ItemStack.EMPTY : QuantumHandler.getQuantumStack(getKey(), slot);
+	}
+
+	@Override
+	public void setStackInSlot(int slot, ItemStack stack) {
+		if(getKey() != null) {
+			QuantumHandler.setQuantumStack(getKey(), stack, slot);
 		}
 	}
 

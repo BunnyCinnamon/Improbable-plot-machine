@@ -32,6 +32,8 @@ import net.minecraftforge.common.property.Properties;
 @SuppressWarnings("deprecation")
 public class BlockPhenomena extends BlockBase {
 
+	private final AxisAlignedBB box = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+
 	public BlockPhenomena() {
 		super(LibNames.PHENOMENA, FixedMaterial.DONT_MOVE);
 		setDefaultState(getDefaultState().withProperty(Power.POWER, Power.ON));
@@ -41,7 +43,7 @@ public class BlockPhenomena extends BlockBase {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if(!world.isRemote && block != this && block.canProvidePower(state)) {
+		if(block != this && block.canProvidePower(state)) {
 			getTile(TilePhenomena.class, world, pos).ifPresent(phenomena -> {
 				boolean wasPowered = phenomena.isPowered();
 				boolean powered = world.isBlockPowered(pos);
@@ -53,6 +55,12 @@ public class BlockPhenomena extends BlockBase {
 				}
 			});
 		}
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		Power power = state.getValue(Power.POWER);
+		return power == Power.OFF ? box : FULL_BLOCK_AABB;
 	}
 
 	@Override
@@ -79,6 +87,11 @@ public class BlockPhenomena extends BlockBase {
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
+	}
+
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(Power.POWER) == Power.ON ? 255 : 0;
 	}
 
 	@Override

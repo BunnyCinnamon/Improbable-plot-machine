@@ -36,6 +36,6 @@ public final class SpriteLibrary {
 	public static final FrameSpriteResource BLUE_GLYPH = SpriteLoader.load(BLOCKS, "blue_glyph", 4, 1);
 
 	public static void init() {
-		Solar.LOG.warn("[NOT EVEN A SUPER QUANTUM COMPUTER CALCULATING FOR A THOUSAND YEARS COULD EVEN MEASURE THE NUMBER OF FUCKS I DO NOT GIVE]");
+		Solar.LOG.warn("[ALL GRAFFITI ADDED TO THE WALL!]");
 	}
 }

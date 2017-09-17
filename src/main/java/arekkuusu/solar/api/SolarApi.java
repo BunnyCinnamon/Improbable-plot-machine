@@ -8,6 +8,7 @@
 package arekkuusu.solar.api;
 
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
+import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
@@ -22,15 +23,15 @@ import java.util.UUID;
  */
 public class SolarApi {
 
-	private static final Map<UUID, List<ItemStack>> ENTANGLED_STACKS = new HashMap<>();
-	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = new HashMap<>();
+	private static final Map<UUID, List<ItemStack>> ENTANGLED_STACKS = Maps.newHashMap();
+	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = Maps.newHashMap();
 	public static final String QUANTUM_DATA = "quantum_data";
 
 	/**
 	 * Map containing all Items linked to an uuid.
 	 * <p>
 	 *     This is most likely empty client side,
-	 *     use {@code QuantumHandler.getSidedMap()} instead.
+	 *     use {@code QuantumDataHandler.getSidedMap()} instead.
 	 *
 	 *     Do not modify unless you sync it yourself.
 	 * </p>

@@ -19,6 +19,7 @@ import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -105,7 +106,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if(!world.isRemote && block != this) {
+		if(block != this) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
 				boolean wasPowered = TileBlinker.isPowered(blinker);
 				boolean isPowered = world.isBlockPowered(pos);
@@ -163,6 +164,11 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, BlockDirectional.FACING, Power.POWER);
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
+		return state.getValue(BlockDirectional.FACING) == facing ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
 	}
 
 	@Override

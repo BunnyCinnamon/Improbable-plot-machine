@@ -29,7 +29,7 @@ public abstract class PerspectiveBakedModel implements IBakedModel {
 			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
 			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, get(0F, 0F, 0F, 0F, 45F, 0F, 0.5F))
 			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, get(0F, 0F, 0F, 0F, 225F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 3.5F, 0F, 0F, 0F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 2.8F, 0F, 0F, 0F, 0F, 0.5F))
 			.put(ItemCameraTransforms.TransformType.FIXED, get(0F, 1F, 0F, 0F, 0F, 0F, 0.5F))
 			.build();
 	private static final TRSRTransformation DEFAULT_TRANSFORM = get(0, 0, 0, 0, 0, 0, 1);

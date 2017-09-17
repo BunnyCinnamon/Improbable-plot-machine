@@ -27,7 +27,7 @@ import static net.minecraftforge.fml.common.Mod.Instance;
  * Created by <Arekkuusu> on 21/06/2017.
  * It's distributed as part of Solar.
  */
-@Mod(modid = LibMod.MOD_ID, name = LibMod.MOD_NAME, version = LibMod.MOD_VERSION, acceptedMinecraftVersions = "[1.12]")
+@Mod(modid = LibMod.MOD_ID, name = LibMod.MOD_NAME, version = LibMod.MOD_VERSION, acceptedMinecraftVersions = "[1.12, 1.12.1]")
 public class Solar {
 
 	@SidedProxy(clientSide = LibMod.CLIENT_PROXY, serverSide = LibMod.SERVER_PROXY)

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "solar:items/void_bottle"
+    "layer0": "solar:items/quantum_quartz"
   }
 }
