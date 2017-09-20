@@ -56,7 +56,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	private final AxisAlignedBB west = new AxisAlignedBB(0, 0.125, 0.125, 0.0625, 0.875, 0.875);
 
 	public BlockBlinker()  {
-		super(LibNames.BLINKER, FixedMaterial.DONT_MOVE);
+		super(LibNames.BLINKER, FixedMaterial.BREAK);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Power.POWER, Power.OFF));
 		setHarvestLevel("pickaxe", 1);
 		setHardness(2F);

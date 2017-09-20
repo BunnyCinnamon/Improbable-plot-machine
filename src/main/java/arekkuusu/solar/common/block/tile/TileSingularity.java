@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.client.effect.ParticleUtil;
-import arekkuusu.solar.common.entity.EntitySpecialItem;
+import arekkuusu.solar.common.entity.EntitySingularityItem;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 public class TileSingularity extends TileBase implements ITickable {
 
-	private final List<EntitySpecialItem> list = new ArrayList<>();
+	private final List<EntitySingularityItem> list = new ArrayList<>();
 	private final SingularityItemHandler handler;
 	private final String TAG_TIME = "time";
 	private final String TAG_ORBIT = "orbit";
@@ -66,7 +66,7 @@ public class TileSingularity extends TileBase implements ITickable {
 
 	private void applyGravity(EntityItem entity) {
 		if(entity.isDead || entity.getItem().isEmpty()) return;
-		if(!(entity instanceof EntitySpecialItem)) {
+		if(!(entity instanceof EntitySingularityItem)) {
 			double x = pos.getX() + 0.5D - entity.posX;
 			double y = pos.getY() + 0.5D - entity.posY;
 			double z = pos.getZ() + 0.5D - entity.posZ;
@@ -75,7 +75,7 @@ public class TileSingularity extends TileBase implements ITickable {
 			double gud = Math.sqrt(git);
 
 			if(gud <= 5) {
-				EntitySpecialItem special = new EntitySpecialItem(entity);
+				EntitySingularityItem special = new EntitySingularityItem(entity);
 				world.spawnEntity(special);
 
 				entity.setDead();
@@ -83,12 +83,12 @@ public class TileSingularity extends TileBase implements ITickable {
 			return;
 		}
 
-		EntitySpecialItem item = (EntitySpecialItem) entity;
+		EntitySingularityItem item = (EntitySingularityItem) entity;
 		bindItem(item);
 	}
 
 	private void orbitAll() {
-		for(EntitySpecialItem item : list) {
+		for(EntitySingularityItem item : list) {
 			int orbitTime = getOrbitTime(item);
 			double radius = getOrbit(item);
 			int angle = orbitTime % 360;
@@ -101,11 +101,9 @@ public class TileSingularity extends TileBase implements ITickable {
 			Vec3d currentVec = new Vec3d(item.posX, item.posY - item.height, item.posZ);
 			Vec3d moveVector = targetVec.subtract(currentVec);
 
-			item.motionX = moveVector.x;
-			item.motionY = moveVector.y;
-			item.motionZ = moveVector.z;
-
+			item.setMotion(moveVector.x, moveVector.y, moveVector.z);
 			incrementOrbitTime(item);
+			item.setLifeTime(10);
 		}
 	}
 
@@ -120,58 +118,58 @@ public class TileSingularity extends TileBase implements ITickable {
 		return max * Math.sin(angle * toDegrees);
 	}
 
-	private int getOrbitTime(EntitySpecialItem item) {
+	private int getOrbitTime(EntitySingularityItem item) {
 		NBTTagCompound cmp = item.getEntityData();
 		if(cmp.hasKey(TAG_TIME))
 			return cmp.getInteger(TAG_TIME);
 		else return 0;
 	}
 
-	private void incrementOrbitTime(EntitySpecialItem item) {
+	private void incrementOrbitTime(EntitySingularityItem item) {
 		NBTTagCompound cmp = item.getEntityData();
 		int time = getOrbitTime(item);
 		cmp.setInteger(TAG_TIME, time + getRotation(item));
 	}
 
-	private void setOrbit(EntitySpecialItem item, double orbit) {
+	private void setOrbit(EntitySingularityItem item, double orbit) {
 		NBTTagCompound tag = item.getEntityData();
 		tag.setDouble(TAG_ORBIT, orbit);
 	}
 
-	private double getOrbit(EntitySpecialItem item) {
+	private double getOrbit(EntitySingularityItem item) {
 		NBTTagCompound tag = item.getEntityData();
 		return tag.getDouble(TAG_ORBIT);
 	}
 
-	private void setAngle(EntitySpecialItem item, double angle) {
+	private void setAngle(EntitySingularityItem item, double angle) {
 		NBTTagCompound tag = item.getEntityData();
 		tag.setDouble(TAG_ANGLE, angle);
 	}
 
-	private double getAngle(EntitySpecialItem item) {
+	private double getAngle(EntitySingularityItem item) {
 		NBTTagCompound tag = item.getEntityData();
 		return tag.getDouble(TAG_ANGLE);
 	}
 
-	private void setRotation(EntitySpecialItem item, int rotate) {
+	private void setRotation(EntitySingularityItem item, int rotate) {
 		NBTTagCompound tag = item.getEntityData();
 		tag.setInteger(TAG_ROTATION, rotate);
 	}
 
-	private int getRotation(EntitySpecialItem item) {
+	private int getRotation(EntitySingularityItem item) {
 		NBTTagCompound tag = item.getEntityData();
 		return tag.getInteger(TAG_ROTATION);
 	}
 
 	private void purgeItems() {
-		List<EntitySpecialItem> removed = list.stream()
+		List<EntitySingularityItem> removed = list.stream()
 				.filter(item -> item.isDead || item.getItem().isEmpty())
 				.collect(Collectors.toList());
 
 		list.removeAll(removed);
 	}
 
-	public void bindItem(EntitySpecialItem item) {
+	public void bindItem(EntitySingularityItem item) {
 		if(!world.isRemote && !list.contains(item) && !item.isBound) {
 			double x = pos.getX() + 0.5D - item.posX;
 			double y = pos.getY() + 0.5D - item.posY;
@@ -193,7 +191,7 @@ public class TileSingularity extends TileBase implements ITickable {
 		}
 	}
 
-	public void unbindItem(EntitySpecialItem item) {
+	public void unbindItem(EntitySingularityItem item) {
 		if(!world.isRemote) {
 			EntityItem drop = new EntityItem(world, item.posX, item.posY, item.posZ, item.getItem());
 			drop.setAgeToCreativeDespawnTime();
@@ -204,15 +202,10 @@ public class TileSingularity extends TileBase implements ITickable {
 		}
 	}
 
-	public void removeAll() {
+	public void removeAll(boolean dropItems) {
 		if(!world.isRemote) {
-			for(EntityItem item : list) {
-				if(!item.isDead && !item.getItem().isEmpty()) {
-					EntityItem drop = new EntityItem(world, item.posX, item.posY, item.posZ, item.getItem());
-					drop.setAgeToCreativeDespawnTime();
-					world.spawnEntity(drop);
-					item.setDead();
-				}
+			if(dropItems) {
+				list.forEach(EntitySingularityItem::dropSelf);
 			}
 			list.clear();
 		}
@@ -246,7 +239,7 @@ public class TileSingularity extends TileBase implements ITickable {
 		return pass == 1;
 	}
 
-	private static class SingularityItemHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<NBTTagCompound> {
+	public static class SingularityItemHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<NBTTagCompound> {
 
 		private final TileSingularity tile;
 
@@ -267,7 +260,7 @@ public class TileSingularity extends TileBase implements ITickable {
 
 		@Override
 		public void setStackInSlot(int slot, ItemStack stack) {
-			EntitySpecialItem item = tile.list.get(slot);
+			EntitySingularityItem item = tile.list.get(slot);
 			item.setItem(stack);
 		}
 

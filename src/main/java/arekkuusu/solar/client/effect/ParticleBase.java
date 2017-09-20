@@ -8,6 +8,7 @@
 package arekkuusu.solar.client.effect;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
@@ -19,7 +20,7 @@ import net.minecraft.world.World;
  * Created by <Arekkuusu> on 23/07/2017.
  * It's distributed as part of Solar.
  */
-public class ParticleBase extends net.minecraft.client.particle.Particle {
+public class ParticleBase extends Particle {
 
 	private int layer = 3;
 

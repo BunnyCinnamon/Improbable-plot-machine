@@ -11,10 +11,10 @@ import arekkuusu.solar.client.util.ResourceLibrary;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -52,7 +52,11 @@ public class RenderedBakedModel extends PerspectiveBakedModel {
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public TextureAtlasSprite getParticleTexture() {
-		return Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(ResourceLibrary.NOTHING.toString());
+		return Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(getParticle().toString());
+	}
+
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.NOTHING;
 	}
 
 	@Override

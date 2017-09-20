@@ -20,7 +20,6 @@ import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.Iterables;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -30,14 +29,12 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -150,87 +147,15 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 			EntityQuingentilliardItem quingentilliard = (EntityQuingentilliardItem) entity;
 			ItemStack stack = entity.getItem();
 
-			dragItems(quingentilliard, quingentilliard.world, stack);
-			collectItems(quingentilliard, quingentilliard.world, stack);
+			getKey(stack).ifPresent(uuid -> {
+				quingentilliard.dragItems(quingentilliard.world, uuid);
+				quingentilliard.collectItems(quingentilliard.world, stack, uuid);
+			});
 		}
 
 		entity.setNoGravity(true);
 		entity.setNoDespawn();
 		return false;
-	}
-
-	private void dragItems(EntityQuingentilliardItem entity, World world, ItemStack stack) {
-		getKey(stack).ifPresent(uuid -> {
-			List<EntityItem> list = getItemsFiltered(world, entity.getEntityBoundingBox().grow(9), uuid);
-			for(EntityItem item : list) {
-				applyGravity(entity.posX, entity.posY, entity.posZ, item);
-			}
-		});
-	}
-
-	private void applyGravity(double x, double y, double z, Entity sucked) {
-		x += 0.5D - sucked.posX;
-		y += 0.5D - sucked.posY;
-		z += 0.5D - sucked.posZ;
-
-		double sqrt = Math.sqrt(x * x + y * y + z * z);
-		double v = sqrt / 9;
-
-		if(sqrt <= 9) {
-			double strength = (1 - v) * (1 - v);
-			double power = 0.075D * 1.5D;
-
-			sucked.motionX += (x / sqrt) * strength * power;
-			sucked.motionY += (y / sqrt) * strength * power;
-			sucked.motionZ += (z / sqrt) * strength * power;
-		}
-	}
-
-	private void collectItems(EntityQuingentilliardItem entity, World world, ItemStack stack) {
-		if(stack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			QuingentilliardStackWrapper handler = (QuingentilliardStackWrapper) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			if(handler == null) return;
-
-			getKey(stack).ifPresent(uuid -> {
-				List<EntityItem> list = getItemsFiltered(world, entity.getEntityBoundingBox().grow(0.5F), uuid);
-
-				if(!list.isEmpty()) {
-					boolean update = false;
-
-					for(EntityItem item : list) {
-						ItemStack inserted = item.getItem();
-
-						for(int i = 0; i < handler.getSlots(); i++) {
-							ItemStack test = handler.insertItemAsync(i, inserted);
-							if(test != inserted) {
-								item.setItem(test);
-								update = true;
-								break;
-							}
-						}
-					}
-
-					if(update) {
-						WorldQuantumData.get(entity.world).markDirty();
-						WorldQuantumData.syncChanges(uuid);
-					}
-				}
-			});
-		}
-	}
-
-	private List<EntityItem> getItemsFiltered(World world, AxisAlignedBB box, UUID uuid) {
-		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, box, Entity::isEntityAlive);
-		List<ItemStack> stacks = QuantumHandler.getQuantumStacks(uuid);
-
-		return list.stream().filter(item -> {
-			ItemStack stack = item.getItem();
-			item.setAgeToCreativeDespawnTime();
-			item.setNoGravity(true);
-
-			return !(stack.getItem() instanceof IQuantumStack)
-					&& stacks.stream().anyMatch(match -> ItemHandlerHelper.canItemStacksStack(match, stack));
-		}).collect(Collectors.toList());
 	}
 
 	private boolean makeVortex(EntityItem entity) {
@@ -253,7 +178,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 		ModelHandler.registerModel(this, 0);
 	}
 
-	private static class QuingentilliardStackWrapper extends QuantumStackWrapper {
+	public static class QuingentilliardStackWrapper extends QuantumStackWrapper {
 
 		private boolean syncToClients;
 
@@ -261,7 +186,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 			super(quantum, stack, 64);
 		}
 
-		ItemStack insertItemAsync(int slot, ItemStack stack) {
+		public ItemStack insertItemAsync(int slot, ItemStack stack) {
 			syncToClients = false;
 			return super.insertItem(slot, stack, false);
 		}

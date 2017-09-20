@@ -12,11 +12,11 @@ import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.*;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
+import arekkuusu.solar.common.entity.EntityFastItem;
 import arekkuusu.solar.common.entity.EntityQuingentilliardItem;
-import arekkuusu.solar.common.entity.EntitySpecialItem;
+import arekkuusu.solar.common.entity.EntitySingularityItem;
 import arekkuusu.solar.common.item.ModItems;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -36,9 +36,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class ModRenders {
 
 	public static void preInit() {
-		registerEntity(EntitySpecialItem.class, (RenderManager manager) -> new CustomItemRenderer(manager, true));
+		registerEntity(EntityFastItem.class, manager -> new CustomItemRenderer(manager, false));
+		registerEntity(EntitySingularityItem.class, manager -> new CustomItemRenderer(manager, true));
+		registerEntity(EntityQuingentilliardItem.class, manager -> new CustomItemRenderer(manager, false));
 		registerEntity(EntityEyeOfSchrodinger.class, EyeOfSchrodingerRenderer::new);
-		registerEntity(EntityQuingentilliardItem.class, (RenderManager manager) -> new CustomItemRenderer(manager, false));
 	}
 
 	public static void init() {
@@ -48,10 +49,12 @@ public final class ModRenders {
 		registerTESR(RenderDummy.Quingentilliard.class, new QuingentilliardRenderer());
 		registerTESR(TileCrystalVoid.class, new CrystalVoidRenderer());
 		registerTESR(TilePhenomena.class, new TilePhenomenaRenderer());
+		registerTESR(TileQSquared.class, new QSquaredRenderer());
 
 		registerTESRItemStack(ModBlocks.quantum_mirror, TileQuantumMirror.class);
 		registerTESRItemStack(ModItems.quingentilliard, RenderDummy.Quingentilliard.class);
 		registerTESRItemStack(ModBlocks.crystal_void, TileCrystalVoid.class);
+		registerTESRItemStack(ModBlocks.q_squared, TileQSquared.class);
 	}
 
 	private static <T extends TileEntity> void registerTESR(Class<T> tile, TileEntitySpecialRenderer<T> render) {

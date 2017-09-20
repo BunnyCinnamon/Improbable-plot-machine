@@ -20,10 +20,13 @@ tile.crystal_void.name=Crystal Void
 tile.schrodinger_glyph.name=Schrodinger Glyph
 tile.blinker.name=Blinker
 tile.phenomena.name=Phenomena
+tile.q_squared.name=Q²
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger
-entity.special_item.name=Entity Item
+entity.fast_item.name=Entity Item
+entity.quingentilliard_item.name=Entity Item
+entity.singularity_item.name=Entity Item
 
 //Tooltip
 tlp.shift_for_info.name=<shift for info>

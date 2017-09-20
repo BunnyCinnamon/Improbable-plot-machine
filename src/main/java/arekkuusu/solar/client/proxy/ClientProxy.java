@@ -71,6 +71,7 @@ public class ClientProxy implements IProxy {
 		map.registerSprite(ResourceLibrary.BLINKER_BOTTOM_ON);
 		map.registerSprite(ResourceLibrary.BLINKER_TOP_OFF);
 		map.registerSprite(ResourceLibrary.BLINKER_BOTTOM_OFF);
+		map.registerSprite(ResourceLibrary.Q_SQUARED);
 	}
 
 	//----------------Particle Renderer Start----------------//

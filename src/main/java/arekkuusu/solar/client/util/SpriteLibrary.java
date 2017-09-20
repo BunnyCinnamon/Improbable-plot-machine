@@ -34,6 +34,7 @@ public final class SpriteLibrary {
 	public static final FrameSpriteResource QUINGENTILLIARD = SpriteLoader.load(ITEMS, "quingentilliard", 8, 1);
 	public static final FrameSpriteResource RED_GLYPH = SpriteLoader.load(BLOCKS, "red_glyph", 4, 1);
 	public static final FrameSpriteResource BLUE_GLYPH = SpriteLoader.load(BLOCKS, "blue_glyph", 4, 1);
+	public static final SpriteResource Q_SQUARED = SpriteLoader.load(BLOCKS, "q_squared");
 
 	public static void init() {
 		Solar.LOG.warn("[ALL GRAFFITI ADDED TO THE WALL!]");

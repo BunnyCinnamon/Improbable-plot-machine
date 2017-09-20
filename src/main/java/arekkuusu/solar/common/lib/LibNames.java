@@ -25,4 +25,5 @@ public class LibNames {
 	public static final String BLINKER = "blinker";
 	public static final String PHENOMENA = "phenomena";
 	public static final String QUANTUM_QUARTZ = "quantum_quartz";
+	public static final String Q_SQUARED = "q_squared";
 }

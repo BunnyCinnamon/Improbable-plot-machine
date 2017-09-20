@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
+import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.client.render.baked.RenderedBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -41,7 +42,7 @@ public class BlockCrystalVoid extends BlockBase {
 	private final AxisAlignedBB box = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
 	public BlockCrystalVoid() {
-		super(LibNames.CRYSTAL_VOID, Material.ROCK);
+		super(LibNames.CRYSTAL_VOID, FixedMaterial.BREAK);
 		setHardness(2F);
 	}
 

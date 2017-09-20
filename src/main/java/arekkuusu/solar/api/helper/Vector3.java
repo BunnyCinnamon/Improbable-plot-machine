@@ -13,12 +13,15 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
+import java.util.Random;
+
 /**
  * Created by <Arekkuusu> on 06/09/2017.
  * It's distributed as part of Solar.
  */
 public class Vector3 {
 
+	private static final Random RAND = new Random();
 	public double x;
 	public double y;
 	public double z;
@@ -60,6 +63,21 @@ public class Vector3 {
 		this.x += x;
 		this.y += y;
 		this.z += z;
+		return this;
+	}
+
+	public Vector3 multiply(Vector3 vec) {
+		return multiply(vec.x, vec.y, vec.z);
+	}
+
+	public Vector3 multiply(double m) {
+		return multiply(m, m, m);
+	}
+
+	public Vector3 multiply(double x, double y, double z) {
+		this.x *= x;
+		this.y *= y;
+		this.z *= z;
 		return this;
 	}
 
@@ -111,7 +129,17 @@ public class Vector3 {
 		return new Vec3d(x, y, z);
 	}
 
-	public BlockPos toShit() {
+	public BlockPos toBlockPos() {
 		return new BlockPos(x, y, z);
+	}
+
+	public static Vector3 getRandomVec() {
+		Vector3 vec = new Vector3(0, 0, 0);
+		for(int j = 0, randomized = RAND.nextInt(6); j < randomized; j++) {
+			EnumFacing facing = EnumFacing.values()[RAND.nextInt(5)];
+			vec.offset(facing, RAND.nextFloat() * 3);
+		}
+
+		return vec;
 	}
 }

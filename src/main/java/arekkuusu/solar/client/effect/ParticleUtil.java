@@ -58,14 +58,21 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 
 	@SideOnly(Side.CLIENT)
 	private static boolean doParticle() {
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) return false;
+		if(FMLCommonHandler.instance().getEffectiveSide().isServer()) return false;
+		int setting = Minecraft.getMinecraft().gameSettings.particleSetting;
 
-		float chance = 1F;
-		if(Minecraft.getMinecraft().gameSettings.particleSetting == 1)
-			chance = 0.6F;
-		else if(Minecraft.getMinecraft().gameSettings.particleSetting == 2)
-			chance = 0.2F;
+		float chance;
+		switch(setting) {
+			case 1:
+				chance = 0.6F;
+				break;
+			case 2:
+				chance = 0.2F;
+				break;
+			default:
+				return true;
+		}
 
-		return chance == 1F || Math.random() < chance;
+		return Math.random() < chance;
 	}
 }

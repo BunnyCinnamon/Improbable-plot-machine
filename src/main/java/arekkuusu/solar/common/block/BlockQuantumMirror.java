@@ -34,9 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 17/07/2017.
@@ -48,7 +46,7 @@ public class BlockQuantumMirror extends BlockBase {
 	private final AxisAlignedBB box = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
 
 	public BlockQuantumMirror() {
-		super(LibNames.QUANTUM_MIRROR, FixedMaterial.DONT_MOVE);
+		super(LibNames.QUANTUM_MIRROR, FixedMaterial.BREAK);
 		setHardness(2F);
 	}
 

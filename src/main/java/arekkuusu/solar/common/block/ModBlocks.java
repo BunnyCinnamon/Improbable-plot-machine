@@ -35,6 +35,7 @@ public class ModBlocks {
 	public static final Block crystal_void = PLACE_HOLDER;
 	public static final Block blinker = PLACE_HOLDER;
 	public static final Block phenomena = PLACE_HOLDER;
+	public static final Block q_squared = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -47,6 +48,7 @@ public class ModBlocks {
 		registry.register(new BlockCrystalVoid());
 		registry.register(new BlockBlinker());
 		registry.register(new BlockPhenomena());
+		registry.register(new BlockQSquared());
 		registerTiles();
 	}
 
@@ -58,7 +60,7 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileCrystalVoid.class, LibMod.MOD_ID + ":crystal_void");
 		GameRegistry.registerTileEntity(TileBlinker.class, LibMod.MOD_ID + ":blinker");
 		GameRegistry.registerTileEntity(TilePhenomena.class, LibMod.MOD_ID + ":phenomena");
-
+		GameRegistry.registerTileEntity(TileQSquared.class, LibMod.MOD_ID + ":q_squared");
 		GameRegistry.registerTileEntity(RenderDummy.Quingentilliard.class,LibMod.MOD_ID + ":quingentilliard_dummy");
 	}
 }

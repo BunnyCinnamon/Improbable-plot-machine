@@ -22,9 +22,10 @@ public class ModEntities {
 	private static int id;
 
 	public static void init() {
-		register(EntitySpecialItem.class, "special_item");
-		register(EntityEyeOfSchrodinger.class, "eye_of_schrodinger", 0x222222);
+		register(EntityFastItem.class, "fast_item");
+		register(EntitySingularityItem.class, "singularity_item");
 		register(EntityQuingentilliardItem.class, "quingentilliard_item");
+		register(EntityEyeOfSchrodinger.class, "eye_of_schrodinger", 0x222222);
 	}
 
 	private static <T extends Entity> void register(Class<T> clazz, String name) {

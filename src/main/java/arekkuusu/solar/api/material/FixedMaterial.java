@@ -17,12 +17,18 @@ import net.minecraft.block.material.Material;
 public class FixedMaterial extends Material {
 
 	public final static Material DONT_MOVE = new FixedMaterial(MapColor.AIR).setImmovable().setRequiresTool();
+	public final static Material BREAK = new FixedMaterial(MapColor.AIR).setBreakable().setRequiresTool();
 
 	public FixedMaterial(MapColor color) {
 		super(color);
 	}
 
 	private FixedMaterial setImmovable() {
+		super.setImmovableMobility();
+		return this;
+	}
+
+	private FixedMaterial setBreakable() {
 		super.setImmovableMobility();
 		return this;
 	}

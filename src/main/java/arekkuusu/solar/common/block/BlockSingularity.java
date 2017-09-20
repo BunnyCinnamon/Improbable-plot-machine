@@ -31,7 +31,7 @@ public class BlockSingularity extends BlockBase {
 	private final AxisAlignedBB box = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
 	public BlockSingularity() {
-		super(LibNames.SINGULARITY, FixedMaterial.DONT_MOVE);
+		super(LibNames.SINGULARITY, FixedMaterial.BREAK);
 		setHarvestLevel("pickaxe", 3);
 		setLightLevel(1F);
 		setHardness(10F);
@@ -81,7 +81,7 @@ public class BlockSingularity extends BlockBase {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileSingularity.class, world, pos).ifPresent(TileSingularity::removeAll);
+		getTile(TileSingularity.class, world, pos).ifPresent(singularity -> singularity.removeAll(false));
 		super.breakBlock(world, pos, state);
 	}
 }

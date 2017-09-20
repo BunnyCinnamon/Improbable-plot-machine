@@ -8,11 +8,12 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.helper.Vector3;
-import arekkuusu.solar.common.entity.EntitySpecialItem;
+import arekkuusu.solar.common.entity.EntityFastItem;
 import arekkuusu.solar.common.lib.LibNames;
+import arekkuusu.solar.common.network.PacketHandler;
+import arekkuusu.solar.common.network.QTeleportEffectMessage;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -30,23 +31,19 @@ public class ItemQuantumQuartz extends ItemBase {
 	public boolean onEntityItemUpdate(EntityItem entity) {
 		World world = entity.world;
 		entity.setNoGravity(true);
-		if(!world.isRemote && !(entity instanceof EntitySpecialItem) && itemRand.nextInt(50) == 0) {
-			Vector3 vec = getRandomVec(new Vector3(entity.posX, entity.posY, entity.posZ));
-			BlockPos pos = vec.toShit();
+		if(!world.isRemote && !(entity instanceof EntityFastItem) && itemRand.nextInt(100) == 0) {
+			Vector3 from = new Vector3(entity.posX, entity.posY, entity.posZ);
+			Vector3 to = Vector3.getRandomVec().add(from);
+
+			BlockPos pos = to.toBlockPos();
 			if(!entity.getPosition().equals(pos) && world.isAirBlock(pos)) {
-				entity.setPositionAndUpdate(vec.x, vec.y, vec.z);
+				entity.setPositionAndUpdate(to.x, to.y, to.z);
 				entity.playSound(SoundEvents.ENTITY_SHULKER_TELEPORT, 1F, 1F);
+				//Send teleport effect to clients
+				QTeleportEffectMessage teleport = new QTeleportEffectMessage(from, to);
+				PacketHandler.sendToAllAround(teleport, PacketHandler.fromWorldPos(world, pos, 25));
 			}
 		}
 		return false;
-	}
-
-	private Vector3 getRandomVec(Vector3 pos) {
-		for(int j = 0, randomized = itemRand.nextInt(6); j < randomized; j++) {
-			EnumFacing facing = EnumFacing.values()[itemRand.nextInt(5)];
-			pos.offset(facing, itemRand.nextFloat() * 3);
-		}
-
-		return pos;
 	}
 }

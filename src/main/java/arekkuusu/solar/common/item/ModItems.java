@@ -40,6 +40,7 @@ public class ModItems {
 		registry.register(new ItemBlinker());
 		registry.register(itemBlock(ModBlocks.phenomena));
 		registry.register(new ItemQuantumQuartz());
+		registry.register(itemBlock(ModBlocks.q_squared));
 	}
 
 	@SuppressWarnings("ConstantConditions")

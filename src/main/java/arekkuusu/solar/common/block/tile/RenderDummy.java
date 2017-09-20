@@ -15,5 +15,5 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class RenderDummy {
 
-	public class Quingentilliard extends TileEntity {}
+	public static class Quingentilliard extends TileEntity {}
 }

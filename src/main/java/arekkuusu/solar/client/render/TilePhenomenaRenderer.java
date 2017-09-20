@@ -26,16 +26,12 @@ import net.minecraftforge.common.property.Properties;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by <Arekkuusu> on 09/09/2017.
  * It's distributed as part of Solar.
  */
 public class TilePhenomenaRenderer extends AnimationTESR<TilePhenomena> {
-
-	private final Map<IBlockState, IBakedModel> CACHE = new HashMap<>();
 
 	@Override
 	public void renderTileEntityFast(@Nonnull TilePhenomena phenomena, double x, double y, double z, float partialTick, int breakStage, float partial, BufferBuilder renderer) {
@@ -71,6 +67,6 @@ public class TilePhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 	}
 
 	private IBakedModel getModel(IBlockState state) {
-		return CACHE.computeIfAbsent(state, sts -> blockRenderer.getBlockModelShapes().getModelForState(sts));
+		return blockRenderer.getBlockModelShapes().getModelForState(state);
 	}
 }

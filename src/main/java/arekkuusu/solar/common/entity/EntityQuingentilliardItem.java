@@ -7,171 +7,118 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
-import net.minecraft.entity.MoverType;
+import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.common.handler.data.WorldQuantumData;
+import arekkuusu.solar.common.item.ItemQuingentilliard;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Created by <Arekkuusu> on 19/08/2017.
  * It's distributed as part of Solar.
  */
-public class EntityQuingentilliardItem extends EntityItem {
-
-	private int coolDown;
+public class EntityQuingentilliardItem extends EntityFastItem {
 
 	public EntityQuingentilliardItem(World worldIn, double x, double y, double z, ItemStack stack) {
 		super(worldIn, x, y, z, stack);
-		setDefaultPickupDelay();
-		setEntityInvulnerable(true);
-		setNoDespawn();
-		setNoGravity(true);
+		setMotionRest(0.85F);
+		setPickupDelay(60);
 	}
 
 	public EntityQuingentilliardItem(World worldIn) {
 		super(worldIn);
-		setDefaultPickupDelay();
-		setEntityInvulnerable(true);
-		setNoDespawn();
-		setNoGravity(true);
+		setMotionRest(0.85F);
+		setPickupDelay(60);
 	}
 
-	@Override
-	public void onUpdate() {
-		if(getItem().getItem().onEntityItemUpdate(this)) return;
-		setNoDespawn();
-
-		if(getItem().isEmpty()) {
-			setDead();
-		} else {
-			onEntityUpdate();
-			noClip = true;
-
-			prevPosX = posX;
-			prevPosY = posY;
-			prevPosZ = posZ;
-
-			move(MoverType.SELF, motionX, motionY, motionZ);
-
-			float rest = 0.99F;
-			motionX *= rest;
-			motionY *= rest;
-			motionZ *= rest;
-		}
-
-		if(coolDown <= 0 || coolDown-- <= 0) {
-			Vec3d from = new Vec3d(posX, posY, posZ);
-			Vec3d to = from.addVector(motionX * 2, motionY * 2, motionZ * 2);
-			RayTraceResult result = world.rayTraceBlocks(from, to);
-
-			if(result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
-				@SuppressWarnings("deprecation")
-				float blast = world.getBlockState(result.getBlockPos()).getBlock().getExplosionResistance(null);
-				if(blast >= 0F && blast <= 10F) {
-					TerrainExplosion explosion = new TerrainExplosion(world, this, 8F);
-					explosion.doExplosionA();
-					explosion.doExplosionB(true);
-					coolDown = 10;
-				} else {
-					stopMotion();
-				}
-			}
+	public void dragItems(World world, UUID uuid) {
+		List<EntityFastItem> list = getItemsFiltered(world, getEntityBoundingBox().grow(9F), uuid);
+		for(EntityFastItem item : list) {
+			applyDrag(posX, posY, posZ, item);
 		}
 	}
 
-	@Override
-	public void onCollideWithPlayer(EntityPlayer player) {
-		if(!this.world.isRemote) {
-			if(ticksExisted < 20) return;
-			ItemStack itemstack = this.getItem();
-			Item item = itemstack.getItem();
-			int i = itemstack.getCount();
+	private void applyDrag(double x, double y, double z, Entity sucked) {
+		x += 0.5D - sucked.posX;
+		y += 0.5D - sucked.posY;
+		z += 0.5D - sucked.posZ;
 
-			int hook = net.minecraftforge.event.ForgeEventFactory.onItemPickup(this, player);
-			if(hook < 0) return;
+		double sqrt = Math.sqrt(x * x + y * y + z * z);
+		double v = sqrt / 9;
 
-			if(hook == 1 || i <= 0 || player.inventory.addItemStackToInventory(itemstack)) {
-				net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerItemPickupEvent(player, this);
-				player.onItemPickup(this, i);
+		if(sqrt <= 9) {
+			double strength = (1 - v) * (1 - v);
+			double power = 0.075D * 1.5D;
 
-				if(itemstack.isEmpty()) {
-					this.setDead();
-					itemstack.setCount(i);
+			sucked.motionX += (x / sqrt) * strength * power;
+			sucked.motionY += (y / sqrt) * strength * power;
+			sucked.motionZ += (z / sqrt) * strength * power;
+		}
+	}
+
+	public void collectItems(World world, ItemStack stack, UUID uuid) {
+		if(stack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+			ItemQuingentilliard.QuingentilliardStackWrapper handler = (ItemQuingentilliard.QuingentilliardStackWrapper) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			if(handler == null) return;
+
+			List<EntityFastItem> list = getItemsFiltered(world, getEntityBoundingBox().grow(0.5F), uuid);
+
+			if(!list.isEmpty()) {
+				boolean update = false;
+
+				for(EntityItem item : list) {
+					ItemStack inserted = item.getItem();
+
+					for(int i = 0; i < handler.getSlots(); i++) {
+						ItemStack test = handler.insertItemAsync(i, inserted);
+						if(test != inserted) {
+							item.setItem(test);
+							update = true;
+							break;
+						}
+					}
 				}
 
-				player.addStat(StatList.getObjectsPickedUpStats(item), i);
+				if(update) {
+					WorldQuantumData.get(world).markDirty();
+					WorldQuantumData.syncChanges(uuid);
+				}
 			}
 		}
 	}
 
-	@Override
-	public void move(MoverType type, double x, double y, double z) {
-		if(noClip) {
-			setEntityBoundingBox(getEntityBoundingBox().offset(x, y, z));
-			resetPositionToBB();
-		} else {
-			world.profiler.startSection("move");
+	private List<EntityFastItem> getItemsFiltered(World world, AxisAlignedBB box, UUID uuid) {
+		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, box, Entity::isEntityAlive);
+		List<ItemStack> stacks = QuantumHandler.getQuantumStacks(uuid);
 
-			List<AxisAlignedBB> boxes = world.getCollisionBoxes(this, getEntityBoundingBox().expand(x, y, z));
+		return list.stream().filter(item -> {
+			ItemStack stack = item.getItem();
+			item.setAgeToCreativeDespawnTime();
+			item.setNoGravity(true);
 
-			if(y != 0.0D) {
-				int k = 0;
-
-				for(int l = boxes.size(); k < l; ++k) {
-					y = boxes.get(k).calculateYOffset(getEntityBoundingBox(), y);
-				}
-
-				setEntityBoundingBox(getEntityBoundingBox().offset(0.0D, y, 0.0D));
-			}
-
-			if(x != 0.0D) {
-				int j5 = 0;
-
-				for(int l5 = boxes.size(); j5 < l5; ++j5) {
-					x = boxes.get(j5).calculateXOffset(getEntityBoundingBox(), x);
-				}
-
-				if(x != 0.0D) {
-					setEntityBoundingBox(getEntityBoundingBox().offset(x, 0.0D, 0.0D));
-				}
-			}
-
-			if(z != 0.0D) {
-				int k5 = 0;
-
-				for(int i6 = boxes.size(); k5 < i6; ++k5) {
-					z = boxes.get(k5).calculateZOffset(getEntityBoundingBox(), z);
-				}
-
-				if(z != 0.0D) {
-					setEntityBoundingBox(getEntityBoundingBox().offset(0.0D, 0.0D, z));
-				}
-			}
-		}
-
-		world.profiler.endSection();
-		world.profiler.startSection("rest");
-		resetPositionToBB();
-		world.profiler.endSection();
+			return !(stack.getItem() instanceof IQuantumStack)
+					&& stacks.stream().anyMatch(match -> ItemHandlerHelper.canItemStacksStack(match, stack));
+		}).map(i -> replaceEntity(world, i)).collect(Collectors.toList());
 	}
 
-	public void stopMotion() {
-		this.motionX = 0;
-		this.motionY = 0;
-		this.motionZ = 0;
-	}
+	private EntityFastItem replaceEntity(World world, EntityItem entity) {
+		if(entity instanceof EntityFastItem) return (EntityFastItem) entity;
+		EntityFastItem item = new EntityFastItem(entity);
+		item.setAgeToCreativeDespawnTime();
+		item.setNoGravity(true);
 
-	public void setMotion(double x, double y, double z) {
-		this.motionX = x;
-		this.motionY = y;
-		this.motionZ = z;
+		world.spawnEntity(item);
+		entity.setDead();
+		return item;
 	}
 }

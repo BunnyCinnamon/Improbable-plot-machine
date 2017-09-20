@@ -21,6 +21,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by <Arekkuusu> on 08/07/2017.
  * It's distributed as part of Solar.
@@ -39,14 +41,14 @@ public class CustomItemRenderer extends Render<EntityItem> {
 
 	@SuppressWarnings("ConstantConditions")
 	@Override
-	public void doRender(EntityItem item, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(@Nullable EntityItem item, double x, double y, double z, float entityYaw, float partialTicks) {
 		ItemStack stack = item.getItem();
 
 		GlStateManager.pushMatrix();
 		GlStateManager.enableRescaleNormal();
 		RenderHelper.enableStandardItemLighting();
 
-		if(renderText) {
+		if(renderText && stack.getCount() > 1) {
 			renderLivingLabel(item, String.valueOf(stack.getCount()), x, y, z, 64);
 		}
 

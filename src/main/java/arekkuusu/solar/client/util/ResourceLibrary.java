@@ -41,6 +41,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation BLINKER_BOTTOM_ON = getAtlas(BLOCKS, "blinker/blinker_bottom_on");
 	public static final ResourceLocation BLINKER_TOP_OFF = getAtlas(BLOCKS, "blinker/blinker_top_off");
 	public static final ResourceLocation BLINKER_BOTTOM_OFF = getAtlas(BLOCKS, "blinker/blinker_bottom_off");
+	public static final ResourceLocation Q_SQUARED = getAtlas(BLOCKS, "q_squared");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
 		StringBuilder builder = new StringBuilder();
