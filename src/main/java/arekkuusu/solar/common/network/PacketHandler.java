@@ -34,7 +34,7 @@ public class PacketHandler {
 		register(QSyncAllMessage.QSyncAllMessageHandler.class, QSyncAllMessage.class, Side.CLIENT);
 		register(QSyncSpecificMessage.QSyncSpecificMessageHandler.class, QSyncSpecificMessage.class, Side.CLIENT);
 		register(PhenomenaMessage.PhenomenaMessageHandler.class, PhenomenaMessage.class, Side.CLIENT);
-		register(QTeleportEffectMessage.QTeleportEffectMessageHandler.class, QTeleportEffectMessage.class, Side.CLIENT);
+		register(QQuartzEffectMessage.QQuartzEffectMessageHandler.class, QQuartzEffectMessage.class, Side.CLIENT);
 	}
 
 	private static <H extends IMessageHandler<M, IMessage>, M extends IMessage> void register(Class<H> handler, Class<M> message, Side side) {

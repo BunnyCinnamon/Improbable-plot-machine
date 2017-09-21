@@ -160,7 +160,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 
 	private boolean makeVortex(EntityItem entity) {
 		if(entity.isEntityAlive() && entity.getClass().equals(EntityItem.class)) {
-			EntityQuingentilliardItem item = new EntityQuingentilliardItem(entity.world, entity.posX, entity.posY, entity.posZ, entity.getItem());
+			EntityQuingentilliardItem item = new EntityQuingentilliardItem(entity);
 			item.setMotion(entity.motionX, entity.motionY, entity.motionZ);
 			entity.world.spawnEntity(item);
 			entity.setDead();

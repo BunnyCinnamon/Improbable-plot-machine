@@ -121,6 +121,13 @@ public class Vector3 {
 		return setVec(x, y, z);
 	}
 
+	public double distanceTo(Vector3 vec) {
+		double xDiff = vec.x - x;
+		double yDiff = vec.y - y;
+		double zDiff = vec.z - z;
+		return MathHelper.sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff);
+	}
+
 	public Vector3 copy() {
 		return new Vector3(x, y, z);
 	}
@@ -133,13 +140,11 @@ public class Vector3 {
 		return new BlockPos(x, y, z);
 	}
 
-	public static Vector3 getRandomVec() {
-		Vector3 vec = new Vector3(0, 0, 0);
-		for(int j = 0, randomized = RAND.nextInt(6); j < randomized; j++) {
-			EnumFacing facing = EnumFacing.values()[RAND.nextInt(5)];
-			vec.offset(facing, RAND.nextFloat() * 3);
-		}
+	public static Vector3 getRandomVec(double max) {
+		double x = max * (RAND.nextDouble() * 2 - 1);
+		double y = max * (RAND.nextDouble() * 2 - 1);
+		double z = max * (RAND.nextDouble() * 2 - 1);
 
-		return vec;
+		return new Vector3(x, y, z);
 	}
 }

@@ -9,6 +9,7 @@ package arekkuusu.solar.common.entity;
 
 import arekkuusu.solar.common.entity.ai.FlightMoveHelper;
 import arekkuusu.solar.common.entity.ai.FlightPathNavigate;
+import arekkuusu.solar.common.lib.LibMod;
 import com.google.common.base.Predicate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -26,6 +27,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
@@ -101,6 +103,11 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 	@Override
 	protected PathNavigate createNavigator(World worldIn) {
 		return new FlightPathNavigate(this, worldIn);
+	}
+
+	@Override
+	protected ResourceLocation getLootTable() {
+		return new ResourceLocation(LibMod.MOD_ID, "schrodinger_eye");
 	}
 
 	@Override

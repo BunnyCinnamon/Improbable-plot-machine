@@ -6,6 +6,7 @@ item.primal_stone.name=Primal Stone
 item.primal_glyph.name=Primal Glyph
 item.quingentilliard.name=Quingentilliard
 item.quantum_quartz.name=Quantum Quartz
+item.schrodinger_eye.name=Schrodinger's Eye
 
 //Blocks
 tile.primal_stone.name=Primal Stone
@@ -27,6 +28,7 @@ entity.eye_of_schrodinger.name=Eye of Schrodinger
 entity.fast_item.name=Entity Item
 entity.quingentilliard_item.name=Entity Item
 entity.singularity_item.name=Entity Item
+entity.quantum_quartz.name=Entity Item
 
 //Tooltip
 tlp.shift_for_info.name=<shift for info>

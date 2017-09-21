@@ -26,8 +26,7 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public final class NBTHelper {
 
-	private NBTHelper() {
-	}
+	private NBTHelper() {}
 
 	public static NBTTagCompound fixNBT(ItemStack stack) {
 		NBTTagCompound tagCompound = stack.getTagCompound();

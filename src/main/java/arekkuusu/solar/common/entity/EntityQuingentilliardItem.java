@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
  */
 public class EntityQuingentilliardItem extends EntityFastItem {
 
-	public EntityQuingentilliardItem(World worldIn, double x, double y, double z, ItemStack stack) {
-		super(worldIn, x, y, z, stack);
+	public EntityQuingentilliardItem(EntityItem entity) {
+		super(entity);
 		setMotionRest(0.85F);
 		setPickupDelay(60);
 	}

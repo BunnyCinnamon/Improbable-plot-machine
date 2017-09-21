@@ -24,14 +24,14 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 17/09/2017.
  * It's distributed as part of Solar.
  */
-public class QTeleportEffectMessage implements IMessage {
+public class QQuartzEffectMessage implements IMessage {
 
 	private Vector3 from;
 	private Vector3 to;
 
-	public QTeleportEffectMessage() {}
+	public QQuartzEffectMessage() {}
 
-	public QTeleportEffectMessage(Vector3 from, Vector3 to) {
+	public QQuartzEffectMessage(Vector3 from, Vector3 to) {
 		this.from = from;
 		this.to = to;
 	}
@@ -60,20 +60,28 @@ public class QTeleportEffectMessage implements IMessage {
 		return new Vector3(beef.readDouble(), beef.readDouble(), beef.readDouble());
 	}
 
-	public static class QTeleportEffectMessageHandler implements IMessageHandler<QTeleportEffectMessage, IMessage> {
+	public static class QQuartzEffectMessageHandler implements IMessageHandler<QQuartzEffectMessage, IMessage> {
 
 		@Override
 		@Nullable
 		@SuppressWarnings("MethodCallSideOnly")
-		public IMessage onMessage(QTeleportEffectMessage message, MessageContext ctx) {
+		public IMessage onMessage(QQuartzEffectMessage message, MessageContext ctx) {
 			if(ctx.side == Side.CLIENT) {
 				Minecraft.getMinecraft().addScheduledTask(() -> {
-					Vector3 speed = message.from.copy().subtract(message.to).multiply(0.2D);
 					World world = Minecraft.getMinecraft().player.world;
 
 					for(int i = 0; i < 15; i++) {
-						ParticleUtil.spawnLightParticle(world, message.from.x, message.from.y, message.from.z
-								, speed.x, speed.y, speed.z, 0xFF0303, 60, 0.25F + (world.rand.nextFloat() * 0.5F));
+						Vector3 offset = Vector3.getRandomVec(0.05D).add(message.to);
+						Vector3 speed = Vector3.getRandomVec(0.01D);
+						ParticleUtil.spawnTunnelingPhoton(world, offset.x, offset.y, offset.z
+								, speed.x, speed.y, speed.z, 0x49FFFF, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
+					}
+
+					for(int i = 0; i < 15; i++) {
+						Vector3 offset = Vector3.getRandomVec(0.1D).add(message.from);
+						Vector3 speed = Vector3.getRandomVec(0.1D);
+						ParticleUtil.spawnTunnelingPhoton(world, offset.x, offset.y, offset.z
+								, speed.x, speed.y, speed.z, 0xFF0303, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
 					}
 				});
 			}

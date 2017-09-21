@@ -11,6 +11,7 @@ import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 /**
@@ -25,16 +26,22 @@ public class ModEntities {
 		register(EntityFastItem.class, "fast_item");
 		register(EntitySingularityItem.class, "singularity_item");
 		register(EntityQuingentilliardItem.class, "quingentilliard_item");
+		register(EntityQuantumQuartzItem.class, "quantum_quartz");
 		register(EntityEyeOfSchrodinger.class, "eye_of_schrodinger", 0x222222);
+
+		//Loot Tables
+		LootTableList.register(getLocation("schrodinger_eye"));
 	}
 
 	private static <T extends Entity> void register(Class<T> clazz, String name) {
-		ResourceLocation location = new ResourceLocation(LibMod.MOD_ID, name);
-		EntityRegistry.registerModEntity(location, clazz, name, id++, Solar.INSTANCE, 64, 1, true);
+		EntityRegistry.registerModEntity(getLocation(name), clazz, name, id++, Solar.INSTANCE, 64, 1, true);
 	}
 
 	private static <T extends Entity> void register(Class<T> clazz, String name, int color) {
-		ResourceLocation location = new ResourceLocation(LibMod.MOD_ID, name);
-		EntityRegistry.registerModEntity(location, clazz, name, id++, Solar.INSTANCE, 64, 1, true, color, color);
+		EntityRegistry.registerModEntity(getLocation(name), clazz, name, id++, Solar.INSTANCE, 64, 1, true, color, color);
+	}
+
+	private static ResourceLocation getLocation(String name) {
+		return new ResourceLocation(LibMod.MOD_ID, name);
 	}
 }

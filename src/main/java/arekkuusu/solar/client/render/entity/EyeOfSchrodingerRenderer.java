@@ -92,17 +92,22 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 				GlStateManager.depthMask(true);
 			}
 
-			int rgb = schrodinger.hasTargetedEntity() ? red : blue;
+			boolean hasTarget = schrodinger.hasTargetedEntity();
+			int rgb = hasTarget ? red : blue;
 
 			float r = (rgb >>> 16 & 0xFF) / 256.0F;
 			float g = (rgb >>> 8 & 0xFF) / 256.0F;
 			float b = (rgb & 0xFF) / 256.0F;
 			GlStateManager.color(r, g, b, 1F);
 
-			float brigthness = MathHelper.cos(schrodinger.ticksExisted * 0.05F);
-			if(brigthness < 0) brigthness *= -1;
-			brigthness *= 255F;
-			BlendHelper.lightMap(brigthness, brigthness);
+			if(!hasTarget) {
+				float brigthness = MathHelper.cos(schrodinger.ticksExisted * 0.05F);
+				if(brigthness < 0) brigthness *= -1;
+				brigthness *= 255F;
+				BlendHelper.lightMap(brigthness, brigthness);
+			} else {
+				BlendHelper.lightMap(255F, 255F);
+			}
 			ParticleUtil.spawnTunnelingPhoton(schrodinger.world, schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ
 					, 0, 0, 0, rgb, 10, 1.5F);
 

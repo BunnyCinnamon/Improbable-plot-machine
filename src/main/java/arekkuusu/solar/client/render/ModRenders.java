@@ -11,10 +11,7 @@ import arekkuusu.solar.client.render.entity.CustomItemRenderer;
 import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.*;
-import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
-import arekkuusu.solar.common.entity.EntityFastItem;
-import arekkuusu.solar.common.entity.EntityQuingentilliardItem;
-import arekkuusu.solar.common.entity.EntitySingularityItem;
+import arekkuusu.solar.common.entity.*;
 import arekkuusu.solar.common.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -39,6 +36,7 @@ public final class ModRenders {
 		registerEntity(EntityFastItem.class, manager -> new CustomItemRenderer(manager, false));
 		registerEntity(EntitySingularityItem.class, manager -> new CustomItemRenderer(manager, true));
 		registerEntity(EntityQuingentilliardItem.class, manager -> new CustomItemRenderer(manager, false));
+		registerEntity(EntityQuantumQuartzItem.class, manager -> new CustomItemRenderer(manager, false));
 		registerEntity(EntityEyeOfSchrodinger.class, EyeOfSchrodingerRenderer::new);
 	}
 

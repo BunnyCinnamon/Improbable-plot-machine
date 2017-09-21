@@ -9,6 +9,7 @@ package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.lib.LibMod;
+import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;

@@ -51,7 +51,7 @@ public final class CommonEvents {
 	}
 
 	@SubscribeEvent
-	public static void worldLoad(WorldEvent.Load event) {
+	public static void loadQuantumData(WorldEvent.Load event) {
 		WorldQuantumData.get(event.getWorld());
 	}
 }
