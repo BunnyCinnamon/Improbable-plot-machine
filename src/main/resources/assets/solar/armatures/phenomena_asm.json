@@ -17,7 +17,8 @@
 	  "grow"
 	],
 	"shrink": "default",
-	"grow": "default"
+	"grow": "default",
+	"default": "default"
   },
   "start_state": "default"
 }

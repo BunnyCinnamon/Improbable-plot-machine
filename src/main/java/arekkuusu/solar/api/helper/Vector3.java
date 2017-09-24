@@ -74,6 +74,14 @@ public class Vector3 {
 		return multiply(m, m, m);
 	}
 
+	public Vector3 grow(double amount) {
+		return add(amount, amount, amount);
+	}
+
+	public Vector3 shrink(double amount) {
+		return subtract(amount, amount, amount);
+	}
+
 	public Vector3 multiply(double x, double y, double z) {
 		this.x *= x;
 		this.y *= y;

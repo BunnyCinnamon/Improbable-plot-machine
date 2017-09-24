@@ -31,12 +31,10 @@ import javax.annotation.Nullable;
 public class CustomItemRenderer extends Render<EntityItem> {
 
 	private final RenderItem render;
-	private final boolean renderText;
 
-	public CustomItemRenderer(RenderManager manager, boolean renderText) {
+	public CustomItemRenderer(RenderManager manager) {
 		super(manager);
 		this.render = Minecraft.getMinecraft().getRenderItem();
-		this.renderText = renderText;
 	}
 
 	@SuppressWarnings("ConstantConditions")
@@ -47,10 +45,6 @@ public class CustomItemRenderer extends Render<EntityItem> {
 		GlStateManager.pushMatrix();
 		GlStateManager.enableRescaleNormal();
 		RenderHelper.enableStandardItemLighting();
-
-		if(renderText && stack.getCount() > 1) {
-			renderLivingLabel(item, String.valueOf(stack.getCount()), x, y, z, 64);
-		}
 
 		boolean texture = false;
 
@@ -67,7 +61,6 @@ public class CustomItemRenderer extends Render<EntityItem> {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		GlStateManager.rotate(item.ticksExisted % 360, 0, 1, 0);
-		GlStateManager.rotate(30.0f * (float) Math.sin(Math.toRadians(partialTicks / 3.0f + item.ticksExisted / 3 % 360)), 1, 0, 0);
 
 		render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 

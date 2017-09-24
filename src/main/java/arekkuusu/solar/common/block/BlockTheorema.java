@@ -10,10 +10,9 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.client.render.baked.PerspectiveBakedModel;
 import arekkuusu.solar.client.render.baked.RenderedBakedModel;
-import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.common.block.tile.TileQSquared;
+import arekkuusu.solar.common.block.tile.TileTheorema;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -24,27 +23,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Created by <Arekkuusu> on 17/09/2017.
+ * Created by <Arekkuusu> on 22/09/2017.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockQSquared extends BlockBase {
+public class BlockTheorema extends BlockBase {
 
-	public BlockQSquared() {
-		super(LibNames.Q_SQUARED, FixedMaterial.DONT_MOVE);
-		setHarvestLevel("pickaxe", 1);
-		setLightLevel(1F);
-		setHardness(2F);
+	public BlockTheorema() {
+		super(LibNames.THEOREMA, FixedMaterial.DONT_MOVE);
 	}
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
 	}
 
 	@Override
@@ -54,15 +45,14 @@ public class BlockQSquared extends BlockBase {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileQSquared();
+		return new TileTheorema();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(Item.getItemFromBlock(this), (format, g) -> new RenderedBakedModel()
-				.setTransforms(PerspectiveBakedModel.BLOCK_TRANSFORMS)
-				.setParticle(ResourceLibrary.Q_SQUARED));
+				.setTransforms(PerspectiveBakedModel.BLOCK_TRANSFORMS));
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

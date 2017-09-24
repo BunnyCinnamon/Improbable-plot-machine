@@ -8,19 +8,23 @@
 package arekkuusu.solar.client.render.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by <Arekkuusu> on 09/08/2017.
@@ -28,6 +32,9 @@ import java.util.List;
  */
 @SideOnly(Side.CLIENT)
 public class RenderedBakedModel extends PerspectiveBakedModel {
+
+	private Map<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = ImmutableMap.copyOf(ITEM_TRANSFORMS);
+	private ResourceLocation particle = ResourceLibrary.NOTHING;
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
@@ -55,8 +62,23 @@ public class RenderedBakedModel extends PerspectiveBakedModel {
 		return Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(getParticle().toString());
 	}
 
+	public RenderedBakedModel setTransforms(Map<ItemCameraTransforms.TransformType, TRSRTransformation> transforms) {
+		this.transforms = ImmutableMap.copyOf(transforms);
+		return this;
+	}
+
+	@Override
+	public Map<ItemCameraTransforms.TransformType, TRSRTransformation> getTransforms() {
+		return transforms;
+	}
+
+	public RenderedBakedModel setParticle(ResourceLocation particle) {
+		this.particle = particle;
+		return this;
+	}
+
 	public ResourceLocation getParticle() {
-		return ResourceLibrary.NOTHING;
+		return particle;
 	}
 
 	@Override

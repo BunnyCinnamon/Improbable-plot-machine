@@ -7,8 +7,12 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.common.entity.EntityFastItem;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * Created by <Arekkuusu> on 19/09/2017.
@@ -25,7 +29,26 @@ public class TileQSquared extends TileBase implements ITickable {
 
 	@Override
 	public void update() {
+		if(!world.isRemote) {
+			suspendNearbyItems();
+		}
 		tick++;
+	}
+
+	private void suspendNearbyItems() {
+		world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getPos()).grow(5), Entity::isEntityAlive)
+				.stream().filter(entity -> !(entity instanceof EntityFastItem)).forEach(this::replace);
+	}
+
+	private void replace(EntityItem entity) {
+		EntityFastItem item = new EntityFastItem(entity);
+		item.setAgeToCreativeDespawnTime();
+		item.setNoGravity(true);
+		item.setMotionRest(0.85F);
+		item.setMotion(entity.motionX, entity.motionY, entity.motionZ);
+
+		world.spawnEntity(item);
+		entity.setDead();
 	}
 
 	@Override

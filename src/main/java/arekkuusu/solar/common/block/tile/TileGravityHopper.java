@@ -7,10 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.block.ModBlocks;
-import arekkuusu.solar.common.handler.data.QuantumTileWrapper;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -22,21 +20,21 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 28/07/2017.
  * It's distributed as part of Solar.
  */
-public class TileGravityHopper extends TileQuantumBase<QuantumTileWrapper> implements ITickable {
+public class TileGravityHopper extends TileBase implements ITickable {
 
 	private static final Map<EnumFacing, Vec3d> FACING_MAP = ImmutableMap.<EnumFacing, Vec3d>builder()
 			.put(EnumFacing.UP, new Vec3d(0.5D, 0.75D, 0.5D))
@@ -46,13 +44,13 @@ public class TileGravityHopper extends TileQuantumBase<QuantumTileWrapper> imple
 			.put(EnumFacing.EAST, new Vec3d(0.75D, 0.5D, 0.5D))
 			.put(EnumFacing.WEST, new Vec3d(0.25D, 0.5D, 0.5D))
 			.build();
+	private final GravityHopperItemHandler handler;
 	private boolean isPowered;
 	private boolean inverse;
 	private int tick;
 
-	@Override
-	public QuantumTileWrapper createHandler() {
-		return new GravityHopperItemHandler(this);
+	public TileGravityHopper() {
+		handler = new GravityHopperItemHandler(this);
 	}
 
 	@Override
@@ -85,7 +83,7 @@ public class TileGravityHopper extends TileQuantumBase<QuantumTileWrapper> imple
 	}
 
 	private Optional<BlockPos> traceBlock(EnumFacing facing) { //Oh boy, I cant wait to use raytrace! ♪~ ᕕ(ᐛ)ᕗ
-		for(int forward = 0; forward < 10; forward++) {
+		for(int forward = 0; forward < 15; forward++) {
 			BlockPos target = pos.offset(facing, forward + 1);
 			IBlockState state = world.getBlockState(target);
 			if(state.getBlock().hasTileEntity(state)) {
@@ -163,21 +161,12 @@ public class TileGravityHopper extends TileQuantumBase<QuantumTileWrapper> imple
 		}
 	}
 
-	@Override
-	public void setKey(@Nullable UUID key) {
-		if(getStack().isEmpty()) {
-			super.setKey(key);
-		}
-	}
-
 	private ItemStack getStack() {
-		GravityHopperItemHandler handler = (GravityHopperItemHandler) getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		return handler == null ? ItemStack.EMPTY : handler.getStackInSlot(0);
+		return handler.getStackInSlot(0);
 	}
 
 	private void setStack(ItemStack stack) {
-		GravityHopperItemHandler handler = (GravityHopperItemHandler) getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		if(handler != null) handler.setStackInSlot(0, stack);
+		handler.setStackInSlot(0, stack);
 	}
 
 	public boolean isInverse() {
@@ -207,118 +196,47 @@ public class TileGravityHopper extends TileQuantumBase<QuantumTileWrapper> imple
 		return FACING_MAP.get(facing).addVector(pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	private static class GravityHopperItemHandler extends QuantumTileWrapper<TileGravityHopper> implements INBTSerializable<NBTTagCompound> {
+	@Override
+	void readNBT(NBTTagCompound cmp) {
+		handler.deserializeNBT(cmp);
+	}
 
-		private ItemStack stack = ItemStack.EMPTY;
+	@Override
+	void writeNBT(NBTTagCompound cmp) {
+		NBTTagCompound tag = handler.serializeNBT();
+		cmp.merge(tag);
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+				? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler)
+				: super.getCapability(capability, facing);
+	}
+
+	private static class GravityHopperItemHandler extends ItemStackHandler {
+
+		private final TileGravityHopper tile;
 
 		GravityHopperItemHandler(TileGravityHopper tile) {
-			super(tile,1);
+			super(1);
+			this.tile = tile;
 		}
 
 		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if(stack.isEmpty()) return ItemStack.EMPTY;
-
-			ItemStack existing = getStackInSlot(slot);
-
-			int limit = stack.getMaxStackSize();
-
-			if(!existing.isEmpty()) {
-				if(!ItemHandlerHelper.canItemStacksStack(stack, existing)) {
-					return stack;
-				}
-				limit -= existing.getCount();
-			}
-
-			if(limit <= 0) {
-				return stack;
-			}
-
-			boolean reachedLimit = stack.getCount() > limit;
-
-			if(!simulate) {
-				if(existing.isEmpty()) {
-					setStackInSlot(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
-				} else {
-					existing.grow(reachedLimit ? limit : stack.getCount());
-					setStackInSlot(slot, existing);
-				}
-				onChange(slot);
-			}
-
-			return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
+		public int getSlotLimit(int slot) {
+			return Integer.MAX_VALUE;
 		}
 
 		@Override
-		public boolean assertSafety(ItemStack stack) {
-			return true;
-		}
-
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if(amount == 0) return ItemStack.EMPTY;
-
-			ItemStack existing = getStackInSlot(slot);
-
-			if(existing.isEmpty()) {
-				return ItemStack.EMPTY;
-			}
-
-			int toExtract = Math.min(amount, existing.getMaxStackSize());
-
-			if(existing.getCount() <= toExtract) {
-				if(!simulate) {
-					setStackInSlot(slot, ItemStack.EMPTY);
-					onChange(slot);
-				}
-				return existing;
-			} else {
-				if(!simulate) {
-					setStackInSlot(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
-					onChange(slot);
-				}
-
-				return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
-			}
-		}
-
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			return getKey() == null ? stack : QuantumHandler.getQuantumStack(getKey(), slot);
-		}
-
-		@Override
-		public void setStackInSlot(int slot, ItemStack stack) {
-			if(getKey() == null) {
-				this.stack = stack;
-			} else {
-				QuantumHandler.setQuantumStack(getKey(), stack, slot);
-			}
-		}
-
-		@Override
-		protected void onChange(int slot) {
-			if(getKey() == null) {
-				tile.markDirty();
-			} else {
-				super.onChange(slot);
-			}
-		}
-
-		@Override
-		public NBTTagCompound serializeNBT() {
-			NBTTagCompound nbt = new NBTTagCompound();
-			if(getKey() == null) {
-				nbt.setTag("stack", stack.writeToNBT(new NBTTagCompound()));
-			}
-			return stack.writeToNBT(nbt);
-		}
-
-		@Override
-		public void deserializeNBT(NBTTagCompound nbt) {
-			if(getKey() == null) {
-				stack = new ItemStack(nbt.getCompoundTag("stack"));
-			}
+		protected void onContentsChanged(int slot) {
+			tile.markDirty();
 		}
 	}
 }

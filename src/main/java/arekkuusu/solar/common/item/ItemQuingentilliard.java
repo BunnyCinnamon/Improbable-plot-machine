@@ -148,7 +148,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 			ItemStack stack = entity.getItem();
 
 			getKey(stack).ifPresent(uuid -> {
-				quingentilliard.dragItems(quingentilliard.world, uuid);
+				quingentilliard.attractItems(quingentilliard.world, uuid);
 				quingentilliard.collectItems(quingentilliard.world, stack, uuid);
 			});
 		}

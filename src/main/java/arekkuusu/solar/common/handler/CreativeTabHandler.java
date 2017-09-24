@@ -99,6 +99,7 @@ public class CreativeTabHandler {
 			addBlock(ModBlocks.schrodinger_glyph);
 			addBlock(ModBlocks.phenomena);
 			addBlock(ModBlocks.q_squared);
+			addBlock(ModBlocks.theorema);
 			addBlock(ModBlocks.singularity);
 			addBlock(ModBlocks.prism_flower);
 			addBlock(ModBlocks.quantum_mirror);

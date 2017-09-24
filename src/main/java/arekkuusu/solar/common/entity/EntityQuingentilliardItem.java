@@ -41,14 +41,14 @@ public class EntityQuingentilliardItem extends EntityFastItem {
 		setPickupDelay(60);
 	}
 
-	public void dragItems(World world, UUID uuid) {
+	public void attractItems(World world, UUID uuid) {
 		List<EntityFastItem> list = getItemsFiltered(world, getEntityBoundingBox().grow(9F), uuid);
 		for(EntityFastItem item : list) {
-			applyDrag(posX, posY, posZ, item);
+			applyGravity(posX, posY, posZ, item);
 		}
 	}
 
-	private void applyDrag(double x, double y, double z, Entity sucked) {
+	private void applyGravity(double x, double y, double z, Entity sucked) {
 		x += 0.5D - sucked.posX;
 		y += 0.5D - sucked.posY;
 		z += 0.5D - sucked.posZ;
@@ -101,17 +101,18 @@ public class EntityQuingentilliardItem extends EntityFastItem {
 		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, box, Entity::isEntityAlive);
 		List<ItemStack> stacks = QuantumHandler.getQuantumStacks(uuid);
 
-		return list.stream().filter(item -> {
-			ItemStack stack = item.getItem();
-			item.setAgeToCreativeDespawnTime();
-			item.setNoGravity(true);
+		return list.stream().filter(entity -> {
+			ItemStack stack = entity.getItem();
+			entity.setAgeToCreativeDespawnTime();
+			entity.setNoGravity(true);
 
-			return !(stack.getItem() instanceof IQuantumStack)
-					&& stacks.stream().anyMatch(match -> ItemHandlerHelper.canItemStacksStack(match, stack));
-		}).map(i -> replaceEntity(world, i)).collect(Collectors.toList());
+			return !(stack.getItem() instanceof IQuantumStack) && stacks.stream()
+					.anyMatch(match -> ItemHandlerHelper.canItemStacksStack(match, stack));
+
+		}).map(i -> replace(world, i)).collect(Collectors.toList());
 	}
 
-	private EntityFastItem replaceEntity(World world, EntityItem entity) {
+	private EntityFastItem replace(World world, EntityItem entity) {
 		if(entity instanceof EntityFastItem) return (EntityFastItem) entity;
 		EntityFastItem item = new EntityFastItem(entity);
 		item.setAgeToCreativeDespawnTime();

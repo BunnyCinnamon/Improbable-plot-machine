@@ -57,7 +57,7 @@ public abstract class TileBase extends TileEntity {
 		return tag;
 	}
 
-	abstract void readNBT(NBTTagCompound cmp);
+	abstract void readNBT(NBTTagCompound compound);
 
-	abstract void writeNBT(NBTTagCompound cmp);
+	abstract void writeNBT(NBTTagCompound compound);
 }

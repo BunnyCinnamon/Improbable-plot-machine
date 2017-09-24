@@ -28,7 +28,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation NOTHING = getAtlas(BLOCKS, "nothing");
 	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");
 	public static final ResourceLocation[] PRIMAL_GLYPH = ResourceBuilder.toArray(16, "glyph/primal_glyph_", name ->
-		getAtlas(BLOCKS, name)
+			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation GRAVITY_HOPPER = getAtlas(BLOCKS, "gravity_hopper/side");
 	public static final ResourceLocation[] GRAVITY_HOPPER_GLYPH = ResourceBuilder.toArray(6, "gravity_hopper/glyph_", name ->
@@ -42,6 +42,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation BLINKER_TOP_OFF = getAtlas(BLOCKS, "blinker/blinker_top_off");
 	public static final ResourceLocation BLINKER_BOTTOM_OFF = getAtlas(BLOCKS, "blinker/blinker_bottom_off");
 	public static final ResourceLocation Q_SQUARED = getAtlas(BLOCKS, "q_squared");
+	public static final ResourceLocation THEOREMA = getTexture(BLOCKS, "theorema");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
 		StringBuilder builder = new StringBuilder();

@@ -10,7 +10,6 @@ package arekkuusu.solar.client.util;
 import arekkuusu.solar.client.util.resource.FrameSpriteResource;
 import arekkuusu.solar.client.util.resource.SpriteLoader;
 import arekkuusu.solar.client.util.resource.SpriteResource;
-import arekkuusu.solar.common.Solar;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -36,7 +35,5 @@ public final class SpriteLibrary {
 	public static final FrameSpriteResource BLUE_GLYPH = SpriteLoader.load(BLOCKS, "blue_glyph", 4, 1);
 	public static final SpriteResource Q_SQUARED = SpriteLoader.load(BLOCKS, "q_squared");
 
-	public static void init() {
-		Solar.LOG.warn("[ALL GRAFFITI ADDED TO THE WALL!]");
-	}
+	public static void init() {}
 }

@@ -22,6 +22,7 @@ tile.schrodinger_glyph.name=Schrodinger Glyph
 tile.blinker.name=Blinker
 tile.phenomena.name=Phenomena
 tile.q_squared.name=Q²
+tile.theorema.name=Theorema
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger

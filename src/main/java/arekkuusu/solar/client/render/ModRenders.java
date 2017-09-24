@@ -11,7 +11,8 @@ import arekkuusu.solar.client.render.entity.CustomItemRenderer;
 import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.*;
-import arekkuusu.solar.common.entity.*;
+import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
+import arekkuusu.solar.common.entity.EntityFastItem;
 import arekkuusu.solar.common.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -33,10 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class ModRenders {
 
 	public static void preInit() {
-		registerEntity(EntityFastItem.class, manager -> new CustomItemRenderer(manager, false));
-		registerEntity(EntitySingularityItem.class, manager -> new CustomItemRenderer(manager, true));
-		registerEntity(EntityQuingentilliardItem.class, manager -> new CustomItemRenderer(manager, false));
-		registerEntity(EntityQuantumQuartzItem.class, manager -> new CustomItemRenderer(manager, false));
+		registerEntity(EntityFastItem.class, CustomItemRenderer::new);
 		registerEntity(EntityEyeOfSchrodinger.class, EyeOfSchrodingerRenderer::new);
 	}
 
@@ -48,11 +46,13 @@ public final class ModRenders {
 		registerTESR(TileCrystalVoid.class, new CrystalVoidRenderer());
 		registerTESR(TilePhenomena.class, new TilePhenomenaRenderer());
 		registerTESR(TileQSquared.class, new QSquaredRenderer());
+		registerTESR(TileTheorema.class, new TheoremaRenderer());
 
 		registerTESRItemStack(ModBlocks.quantum_mirror, TileQuantumMirror.class);
 		registerTESRItemStack(ModItems.quingentilliard, RenderDummy.Quingentilliard.class);
 		registerTESRItemStack(ModBlocks.crystal_void, TileCrystalVoid.class);
 		registerTESRItemStack(ModBlocks.q_squared, TileQSquared.class);
+		registerTESRItemStack(ModBlocks.theorema, TileTheorema.class);
 	}
 
 	private static <T extends TileEntity> void registerTESR(Class<T> tile, TileEntitySpecialRenderer<T> render) {

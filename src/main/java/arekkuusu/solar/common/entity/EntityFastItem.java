@@ -12,8 +12,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -60,12 +63,16 @@ public class EntityFastItem extends EntityItem {
 
 			move(MoverType.SELF, motionX, motionY, motionZ);
 
-			if (!hasNoGravity()) {
+			float rest = this.rest;
+			if (!noClip && onGround) {
+				rest = this.world.getBlockState(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ))).getBlock().slipperiness * 0.98F;
+			}
+
+			if (!hasNoGravity() && !onGround) {
 				motionY -= 0.03999999910593033D;
-			} else {
-				motionY *= rest;
 			}
 			motionX *= rest;
+			motionY *= rest;
 			motionZ *= rest;
 			updateLogic();
 		}
@@ -100,57 +107,6 @@ public class EntityFastItem extends EntityItem {
 				player.addStat(StatList.getObjectsPickedUpStats(item), i);
 			}
 		}
-	}
-
-	@Override
-	public void move(MoverType type, double x, double y, double z) {
-		if(noClip) {
-			setEntityBoundingBox(getEntityBoundingBox().offset(x, y, z));
-			resetPositionToBB();
-		} else {
-			world.profiler.startSection("move");
-
-			List<AxisAlignedBB> boxes = world.getCollisionBoxes(this, getEntityBoundingBox().expand(x, y, z));
-
-			if(y != 0.0D) {
-				int k = 0;
-
-				for(int l = boxes.size(); k < l; ++k) {
-					y = boxes.get(k).calculateYOffset(getEntityBoundingBox(), y);
-				}
-
-				setEntityBoundingBox(getEntityBoundingBox().offset(0.0D, y, 0.0D));
-			}
-
-			if(x != 0.0D) {
-				int j5 = 0;
-
-				for(int l5 = boxes.size(); j5 < l5; ++j5) {
-					x = boxes.get(j5).calculateXOffset(getEntityBoundingBox(), x);
-				}
-
-				if(x != 0.0D) {
-					setEntityBoundingBox(getEntityBoundingBox().offset(x, 0.0D, 0.0D));
-				}
-			}
-
-			if(z != 0.0D) {
-				int k5 = 0;
-
-				for(int i6 = boxes.size(); k5 < i6; ++k5) {
-					z = boxes.get(k5).calculateZOffset(getEntityBoundingBox(), z);
-				}
-
-				if(z != 0.0D) {
-					setEntityBoundingBox(getEntityBoundingBox().offset(0.0D, 0.0D, z));
-				}
-			}
-		}
-
-		world.profiler.endSection();
-		world.profiler.startSection("rest");
-		resetPositionToBB();
-		world.profiler.endSection();
 	}
 
 	@Override
@@ -200,5 +156,23 @@ public class EntityFastItem extends EntityItem {
 		this.motionX = x;
 		this.motionY = y;
 		this.motionZ = z;
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		compound.setBoolean("clip", noClip);
+		compound.setFloat("rest", rest);
+		compound.setInteger("despawn", despawn);
+		compound.setInteger("pickup", getPickupDelay());
+		return super.writeToNBT(compound);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		noClip = compound.getBoolean("clip");
+		rest = compound.getFloat("rest");
+		despawn = compound.getInteger("despawn");
+		setPickupDelay(compound.getInteger("pickup"));
 	}
 }

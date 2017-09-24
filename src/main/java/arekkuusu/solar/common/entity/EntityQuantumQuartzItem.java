@@ -48,7 +48,7 @@ public class EntityQuantumQuartzItem extends EntityFastItem {
 				setPositionAndUpdate(to.x, to.y, to.z);
 				playSound(SoundEvents.ENTITY_SHULKER_TELEPORT, 1F, 1F);
 				//Send teleport effect to clients
-				QQuartzEffectMessage effect = new QQuartzEffectMessage(from.add(0, 0.25D, 0), to.add(0, 0.25D, 0));
+				QQuartzEffectMessage effect = new QQuartzEffectMessage(from.add(0, 0.2D, 0), to.add(0, 0.2D, 0));
 				PacketHandler.sendToAllAround(effect, PacketHandler.fromWorldPos(world, pos, 25));
 			}
 		}
