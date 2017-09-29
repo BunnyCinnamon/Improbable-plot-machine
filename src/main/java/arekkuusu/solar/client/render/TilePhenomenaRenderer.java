@@ -35,7 +35,6 @@ public class TilePhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 
 	@Override
 	public void renderTileEntityFast(@Nonnull TilePhenomena phenomena, double x, double y, double z, float partialTick, int breakStage, float partial, BufferBuilder renderer) {
-		if(!phenomena.hasCapability(CapabilityAnimation.ANIMATION_CAPABILITY, null)) return;
 		if(blockRenderer == null) blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
 		BlockPos pos = phenomena.getPos();

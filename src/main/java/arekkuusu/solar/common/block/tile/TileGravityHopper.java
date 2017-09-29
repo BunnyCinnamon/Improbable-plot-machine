@@ -8,7 +8,6 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.client.effect.ParticleUtil;
-import arekkuusu.solar.common.block.ModBlocks;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -174,8 +173,8 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	public void setInverse(boolean inverse) {
-		EnumFacing facing = getFacing().getOpposite();
-		world.setBlockState(pos, ModBlocks.gravity_hopper.getDefaultState().withProperty(BlockDirectional.FACING, facing));
+		IBlockState state = world.getBlockState(pos);
+		world.setBlockState(pos, state.withProperty(BlockDirectional.FACING, getFacing().getOpposite()));
 		this.inverse = inverse;
 	}
 
@@ -188,8 +187,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private EnumFacing getFacing() {
-		IBlockState here = world.getBlockState(pos);
-		return here.getValue(BlockDirectional.FACING);
+		return getState(BlockDirectional.FACING).orElse(EnumFacing.UP);
 	}
 
 	private Vec3d getOffSet(EnumFacing facing) {

@@ -42,7 +42,7 @@ public class TileQSquared extends TileBase implements ITickable {
 
 	private void replace(EntityItem entity) {
 		EntityFastItem item = new EntityFastItem(entity);
-		item.setAgeToCreativeDespawnTime();
+		item.setNoDespawn();
 		item.setNoGravity(true);
 		item.setMotionRest(0.85F);
 		item.setMotion(entity.motionX, entity.motionY, entity.motionZ);
@@ -53,11 +53,11 @@ public class TileQSquared extends TileBase implements ITickable {
 
 	@Override
 	void readNBT(NBTTagCompound cmp) {
-
+		//Get ICED dummy
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound cmp) {
-
+		//You may now access the ICOSAHEDRON
 	}
 }

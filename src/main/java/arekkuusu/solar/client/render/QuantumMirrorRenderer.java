@@ -73,7 +73,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		if(SpecialModelRenderer.getTempItemRenderer() != null) {
 			GlStateManager.pushMatrix();
 			BlendHelper.lightMap(255F, 255F);
-			GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
+			GlStateManager.translate(x + 0.5D, y + 0.4D, z + 0.5D);
 
 			GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
 			RenderBakery.renderItemStack(SpecialModelRenderer.getTempItemRenderer());

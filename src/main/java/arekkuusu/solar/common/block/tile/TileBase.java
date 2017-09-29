@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -17,15 +18,27 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Optional;
+
 /**
  * Created by <Arekkuusu> on 18/07/2017.
  * It's distributed as part of Solar.
  */
 public abstract class TileBase extends TileEntity {
 
+	private IBlockState state;
+
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return oldState.getBlock() != newState.getBlock();
+	}
+
+	<T extends Comparable<T>> Optional<T> getState(IProperty<T> property) {
+		if(state == null) {
+			state = world.getBlockState(pos);
+		}
+
+		return state.getPropertyKeys().contains(property) ? Optional.of(state.getValue(property)) : Optional.empty();
 	}
 
 	@SideOnly(Side.CLIENT)

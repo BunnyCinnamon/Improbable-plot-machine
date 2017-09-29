@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.BlendHelper;
@@ -32,7 +33,7 @@ public class TilePrismFlowerRenderer extends TileEntitySpecialRenderer<TilePrism
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
 
-		Vec3d offset = flower.getOffSet(x, y, z);
+		Vector3 offset = flower.getOffSet(x, y, z);
 		GlStateManager.translate(offset.x, offset.y, offset.z);
 
 		GlStateManager.rotate((flower.tick * 0.25F) % 360, 1, 1, 1);

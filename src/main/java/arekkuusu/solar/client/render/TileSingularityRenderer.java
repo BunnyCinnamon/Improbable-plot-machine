@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Created by <Arekkuusu> on 06/07/2017.
@@ -37,18 +36,12 @@ public class TileSingularityRenderer extends TileEntitySpecialRenderer<TileSingu
 		GlStateManager.popMatrix();
 
 		GlStateManager.enableBlend();
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GlStateManager.disableCull();
 		BlendHelper.BLEND_NORMAL.blend();
 
 		RenderBakery.renderBeams((float) singularity.tick * 0.001F, 30, 0xFFFFFF, 0xFFFFFF, 0.5F);
 
 		GlStateManager.enableCull();
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GlStateManager.disableBlend();
 
 		GlStateManager.enableLighting();

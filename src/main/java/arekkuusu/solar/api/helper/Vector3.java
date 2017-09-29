@@ -60,10 +60,7 @@ public class Vector3 {
 	}
 
 	public Vector3 add(double x, double y, double z) {
-		this.x += x;
-		this.y += y;
-		this.z += z;
-		return this;
+		return setVec(this.x + x, this.y + y, this.z + z);
 	}
 
 	public Vector3 multiply(Vector3 vec) {
@@ -83,10 +80,7 @@ public class Vector3 {
 	}
 
 	public Vector3 multiply(double x, double y, double z) {
-		this.x *= x;
-		this.y *= y;
-		this.z *= z;
-		return this;
+		return setVec(this.x * x, this.x * y, this.z * z);
 	}
 
 	public Vector3 rotateYaw(float angle) {
@@ -140,6 +134,10 @@ public class Vector3 {
 		return new Vector3(x, y, z);
 	}
 
+	public ImmutableVector3 toImmutable() {
+		return new ImmutableVector3(this);
+	}
+
 	public Vec3d toVec3d() {
 		return new Vec3d(x, y, z);
 	}
@@ -154,5 +152,19 @@ public class Vector3 {
 		double z = max * (RAND.nextDouble() * 2 - 1);
 
 		return new Vector3(x, y, z);
+	}
+
+	public static class ImmutableVector3 extends Vector3 {
+
+		public static final ImmutableVector3 NULL = new Vector3(0, 0, 0).toImmutable();
+
+		public ImmutableVector3(Vector3 vec) {
+			super(vec.x, vec.y, vec.z);
+		}
+
+		@Override
+		public Vector3 setVec(double x, double y, double z) {
+			return new Vector3(x, y, z);
+		}
 	}
 }

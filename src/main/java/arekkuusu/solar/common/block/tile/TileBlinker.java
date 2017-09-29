@@ -8,31 +8,24 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.Power;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class TileBlinker extends TileBase implements ITickable, IRelativeTile<TileBlinker> {
+public class TileBlinker extends TileRelativeBase<TileBlinker> implements ITickable {
 
 	private static final Map<EnumFacing, Vec3d> FACING_MAP = ImmutableMap.<EnumFacing, Vec3d>builder()
 			.put(EnumFacing.UP, new Vec3d(0.5D, 0.2D, 0.5D))
@@ -43,7 +36,6 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile<Ti
 			.put(EnumFacing.WEST, new Vec3d(0.8D, 0.5D, 0.5D))
 			.build();
 	private static final Map<UUID, Integer> POWER_MAP = Maps.newHashMap();
-	private UUID key;
 	private int tick;
 
 	/**
@@ -92,21 +84,14 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile<Ti
 		SolarApi.getRelativityMap().computeIfPresent(uuid, (key, list) -> {
 			list.stream()
 					.filter(tile -> tile.isLoaded() && tile instanceof TileBlinker)
-					.map(tile -> (TileBlinker) tile).forEach(TileBlinker::updateState);
+					.map(tile -> (TileBlinker) tile).forEach(TileBlinker::updateRelativity);
 			return list;
 		});
 	}
 
-	private void updateState() {
-		IBlockState state = world.getBlockState(pos);
-		world.scheduleUpdate(getPos(), state.getBlock(), 0);
-	}
-
 	@Override
 	public void update() {
-		if(!world.isRemote) {
-			add();
-		} else if(tick++ % 4 == 0 && world.rand.nextBoolean()) {
+		if(world.isRemote && tick++ % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing();
 			Vec3d back = getOffSet(facing.getOpposite());
 
@@ -117,40 +102,12 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile<Ti
 		}
 	}
 
-	private boolean isPoweredLazy() {
-		return world.getBlockState(pos).getValue(Power.POWER) == Power.ON;
+	public void updateRelativity() {
+		IBlockState state = world.getBlockState(pos);
+		world.scheduleUpdate(getPos(), state.getBlock(), 0);
 	}
 
-	private EnumFacing getFacing() {
-		IBlockState here = world.getBlockState(pos);
-		return here.getValue(BlockDirectional.FACING);
-	}
-
-	private Vec3d getOffSet(EnumFacing facing) {
-		return FACING_MAP.get(facing).addVector(pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	@Override
-	public void add() {
-		RelativityHandler.addRelative(this, tile -> {
-			if(tile.world.isBlockPowered(tile.getPos())) {
-				TileBlinker.setPower(tile, getRedstonePower());
-			} else {
-				tile.updateState();
-			}
-		});
-	}
-
-	@Override
-	public void remove() {
-		RelativityHandler.removeRelative(this, tile -> {
-			if(tile.world.isBlockPowered(tile.getPos())) {
-				TileBlinker.setPower(tile, 0);
-			}
-		});
-	}
-
-	private int getRedstonePower() {
+	public int getRedstonePower() {
 		int power = 0;
 		for(EnumFacing facing : EnumFacing.values()) {
 			int detected = world.getRedstonePower(pos.offset(facing), facing);
@@ -159,39 +116,36 @@ public class TileBlinker extends TileBase implements ITickable, IRelativeTile<Ti
 		return power;
 	}
 
-	@Override
-	public World getRelativeWorld() {
-		return world;
+	private boolean isPoweredLazy() {
+		return getState(Power.POWER).orElse(Power.OFF) == Power.ON;
+	}
+
+	private EnumFacing getFacing() {
+		return getState(BlockDirectional.FACING).orElse(EnumFacing.UP);
+	}
+
+	private Vec3d getOffSet(EnumFacing facing) {
+		return FACING_MAP.get(facing).addVector(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override
-	public BlockPos getRelativePos() {
-		return pos;
+	void onUnload() {
+		//Fuck, I left the oven on in the n'th dimension
 	}
 
 	@Override
-	public Optional<UUID> getKey() {
-		return Optional.ofNullable(key);
-	}
-
-	@Override
-	public void setKey(@Nullable UUID key) {
-		if(key == null) remove();
-		this.key = key;
-		updateState();
-	}
-
-	@Override
-	void readNBT(NBTTagCompound cmp) {
-		if(cmp.hasUniqueId("uuid_key")) {
-			key = cmp.getUniqueId("uuid_key");
+	void onAdd() {
+		if(world.isBlockPowered(getPos())) {
+			TileBlinker.setPower(this, getRedstonePower());
+		} else {
+			updateRelativity();
 		}
 	}
 
 	@Override
-	void writeNBT(NBTTagCompound cmp) {
-		if(key != null) {
-			cmp.setUniqueId("uuid_key", key);
+	void onRemove() {
+		if(world.isBlockPowered(getPos())) {
+			TileBlinker.setPower(this, 0);
 		}
 	}
 }

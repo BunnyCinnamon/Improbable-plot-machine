@@ -16,9 +16,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.Tuple;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Created by <Arekkuusu> on 09/08/2017.
@@ -40,22 +40,18 @@ public class QuingentilliardRenderer extends TileEntitySpecialRenderer<RenderDum
 		GlStateManager.color(0, 0.99609375F, 0.76171875F, 1F);
 		BlendHelper.lightMap(255F, 255F);
 
-		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+		GlStateManager.translate(x + 0.5, y + 0.35, z + 0.5);
 		GlStateManager.scale(0.5F, 0.5F, 0.5F);
 		GlStateManager.rotate(tick, 1F, 0F, 1F);
 
+		GlStateManager.depthMask(false); // Prevent render layer conflict
 		renderCube(tick);
+		RenderBakery.renderBeams((float) tick * 0.01F, 25, 0x000000, 0x000000, 1F);
+		GlStateManager.depthMask(true);
 
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
+		renderCube(tick); //Fix render layer conflict with code above kek
 
-		RenderBakery.renderBeams((float) tick * 0.01F, 30, 0x000000, 0x000000, 1.25F);
-
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();

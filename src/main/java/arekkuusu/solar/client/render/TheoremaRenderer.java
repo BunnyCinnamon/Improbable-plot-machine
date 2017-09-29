@@ -49,6 +49,16 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 
 		RANDOM.setSeed(31100L);
 
+		GlStateManager.texGen(GlStateManager.TexGen.S, 9216);
+		GlStateManager.texGen(GlStateManager.TexGen.T, 9216);
+		GlStateManager.texGen(GlStateManager.TexGen.R, 9216);
+		GlStateManager.texGen(GlStateManager.TexGen.S, 9474, getBuffer(1F, 0F, 0F));
+		GlStateManager.texGen(GlStateManager.TexGen.T, 9474, getBuffer(0F, 1F, 0F));
+		GlStateManager.texGen(GlStateManager.TexGen.R, 9474, getBuffer(0F, 0F, 1F));
+		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.S);
+		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.T);
+		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.R);
+
 		GlStateManager.disableLighting();
 		GlStateManager.getFloat(2982, VIEW);
 		GlStateManager.getFloat(2983, PROJECTION);
@@ -73,15 +83,6 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 				fog = true;
 			}
 
-			GlStateManager.texGen(GlStateManager.TexGen.S, 9216);
-			GlStateManager.texGen(GlStateManager.TexGen.T, 9216);
-			GlStateManager.texGen(GlStateManager.TexGen.R, 9216);
-			GlStateManager.texGen(GlStateManager.TexGen.S, 9474, getBuffer(1F, 0F, 0F));
-			GlStateManager.texGen(GlStateManager.TexGen.T, 9474, getBuffer(0F, 1F, 0F));
-			GlStateManager.texGen(GlStateManager.TexGen.R, 9474, getBuffer(0F, 0F, 1F));
-			GlStateManager.enableTexGenCoord(GlStateManager.TexGen.S);
-			GlStateManager.enableTexGenCoord(GlStateManager.TexGen.T);
-			GlStateManager.enableTexGenCoord(GlStateManager.TexGen.R);
 			GlStateManager.popMatrix();
 			GlStateManager.matrixMode(5890);
 			GlStateManager.pushMatrix();

@@ -34,7 +34,7 @@ public abstract class SpecialModelRenderer<T extends TileEntity> extends TileEnt
 	public void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		if(te == null) {
 			renderStack(x, y, z, partialTicks);
-		} else {
+		} else if(te.getWorld().isBlockLoaded(te.getPos(), false)) {
 			renderTile(te, x, y, z, partialTicks, destroyStage, alpha);
 		}
 	}

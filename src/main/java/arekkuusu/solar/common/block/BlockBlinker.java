@@ -16,6 +16,7 @@ import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileBlinker;
 import arekkuusu.solar.common.lib.LibNames;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
@@ -32,7 +33,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -48,12 +48,14 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
-	private final AxisAlignedBB up = new AxisAlignedBB(0.125, 0.9375, 0.125, 0.875, 1, 0.875);
-	private final AxisAlignedBB down = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.0625, 0.875);
-	private final AxisAlignedBB north = new AxisAlignedBB(0.125, 0.125, 0, 0.875, 0.875, 0.0625);
-	private final AxisAlignedBB south = new AxisAlignedBB(0.125, 0.125, 0.9375, 0.875, 0.875, 1);
-	private final AxisAlignedBB east = new AxisAlignedBB(0.9375, 0.125, 0.875, 1, 0.875, 0.125);
-	private final AxisAlignedBB west = new AxisAlignedBB(0, 0.125, 0.125, 0.0625, 0.875, 0.875);
+	private final ImmutableMap<EnumFacing, AxisAlignedBB> bbMap = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0.125, 0.9375, 0.125, 0.875, 1, 0.875))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.0625, 0.875))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0.125, 0, 0.875, 0.875, 0.0625))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0.125, 0.9375, 0.875, 0.875, 1))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.9375, 0.125, 0.875, 1, 0.875, 0.125))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0.125, 0.125, 0.0625, 0.875, 0.875))
+			.build();
 
 	public BlockBlinker()  {
 		super(LibNames.BLINKER, FixedMaterial.BREAK);
@@ -111,10 +113,10 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 				boolean wasPowered = TileBlinker.isPowered(blinker);
 				boolean isPowered = world.isBlockPowered(pos);
 				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-					Vec3d vec = new Vec3d(fromPos).subtract(new Vec3d(pos));
-					EnumFacing facing = EnumFacing.getFacingFromVector((float) vec.x, (float) vec.y, (float) vec.z);
+					//Vec3d vec = new Vec3d(fromPos).subtract(new Vec3d(pos));
+					//EnumFacing facing = EnumFacing.getFacingFromVector((float) vec.x, (float) vec.y, (float) vec.z);
 
-					TileBlinker.setPower(blinker, world.getRedstonePower(fromPos, facing));
+					TileBlinker.setPower(blinker, blinker.getRedstonePower());
 				}
 			});
 		}
@@ -135,7 +137,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		Optional<TileBlinker> optional = getTile(TileBlinker.class, world, pos);
-		return TileBlinker.getPower(optional.orElse(null));
+		return optional.map(TileBlinker::getPower).orElse(0);
 	}
 
 	@Override
@@ -184,20 +186,8 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		switch(facing) {
-			case UP:
-				return up;
-			case NORTH:
-				return north;
-			case SOUTH:
-				return south;
-			case WEST:
-				return west;
-			case EAST:
-				return east;
-			default:
-				return down;
-		}
+
+		return bbMap.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 
 	@Override

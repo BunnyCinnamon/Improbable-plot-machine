@@ -31,10 +31,10 @@ public class BlockBase extends Block implements IModel {
 
 	public BlockBase(String id, Material material) {
 		super(material);
-		setUnlocalizedName(id);
-		setDefaultState(defaultState());
-		setRegistryName(LibMod.MOD_ID, id);
-		setCreativeTab(CreativeTabHandler.MISC_BLOCKS);
+		this.setUnlocalizedName(id);
+		this.setDefaultState(defaultState());
+		this.setRegistryName(LibMod.MOD_ID, id);
+		this.setCreativeTab(CreativeTabHandler.MISC_BLOCKS);
 	}
 
 	public Block setSound(SoundType type) {

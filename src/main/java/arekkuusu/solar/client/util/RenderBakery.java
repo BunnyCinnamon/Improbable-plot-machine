@@ -129,6 +129,10 @@ public final class RenderBakery {
 	}
 
 	public static void renderBeams(float age, int number, int startRBG, int endRGB, float size) {
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
+
 		BEAM_RAND.setSeed(432L);
 		float r_ = (startRBG >>> 16 & 0xFF) / 256F;
 		float g_ = (startRBG >>> 8 & 0xFF) / 256F;
@@ -160,6 +164,10 @@ public final class RenderBakery {
 			bufferbuilder.pos(-0.866D *  sizeMulti,  resized,  (-0.5F * sizeMulti)).color(r, g, b, 0F).endVertex();
 			tessellator.draw();
 		}
+
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glShadeModel(GL11.GL_FLAT);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	public static void renderItemStack(ItemStack stack) {

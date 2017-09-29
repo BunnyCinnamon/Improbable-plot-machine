@@ -52,7 +52,7 @@ public class EntityFastItem extends EntityItem {
 	public void onUpdate() {
 		if(getItem().getItem().onEntityItemUpdate(this)) return;
 
-		if(getItem().isEmpty() || (despawn != -1 && despawn-- == 0)) {
+		if(getItem().isEmpty() || (!world.isRemote && despawn != -1 && despawn-- == 0)) {
 			setDead();
 		} else {
 			onEntityUpdate();
@@ -61,6 +61,7 @@ public class EntityFastItem extends EntityItem {
 			prevPosY = posY;
 			prevPosZ = posZ;
 
+			if(world.isRemote) noClip = true;
 			move(MoverType.SELF, motionX, motionY, motionZ);
 
 			float rest = this.rest;

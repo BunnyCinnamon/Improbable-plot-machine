@@ -27,7 +27,5 @@ public abstract class ItemBaseBlock extends ItemBlock implements IModel {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-
-	}
+	public void registerModel() {}
 }

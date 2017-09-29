@@ -109,8 +109,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 	}
 
 	public boolean isInvisible() {
-		IBlockState state = world.getBlockState(pos);
-		return state.getValue(Power.POWER) == Power.OFF;
+		return getState(Power.POWER).orElse(Power.ON) == Power.OFF;
 	}
 
 	@Override
