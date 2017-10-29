@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.handler.data.QuantumTileWrapper;
 import net.minecraft.util.ITickable;
@@ -27,12 +28,10 @@ public class TileQuantumMirror extends TileQuantumBase<QuantumTileWrapper> imple
 	@Override
 	public void update() {
 		if(world.isRemote && world.rand.nextInt(10) == 0) {
-			double x = pos.getX() + 0.5D + (world.rand.nextDouble() * 2F - 1D);
-			double y = pos.getY() + 0.5D + (world.rand.nextDouble() * 2F - 1D);
-			double z = pos.getZ() + 0.5D + (world.rand.nextDouble() * 2F - 1D);
-			double speed = 0.05D;
+			Vector3 from = new Vector3(pos).add(0.5D, 0.5D, 0.5D);
+			Vector3 to = Vector3.getRandomVec(1F).add(from);
 
-			ParticleUtil.spawnQuorn(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, speed, x, y, z, 0.1F, 0XFFFFFF);
+			ParticleUtil.spawnQuorn(world, from, 0.05D, to, 0.1F, 0XFFFFFF);
 		}
 		++tick;
 	}

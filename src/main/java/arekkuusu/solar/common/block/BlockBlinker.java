@@ -28,9 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -40,6 +38,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Optional;
 import java.util.Random;
+
+import static net.minecraft.block.BlockDirectional.FACING;
 
 /**
  * Created by <Arekkuusu> on 03/09/2017.
@@ -80,7 +80,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-			blinker.remove();
+			//blinker.remove();
 			ItemStack stack = getItem(world, pos, state);
 			spawnAsEntity(world, pos, stack);
 		});
@@ -113,9 +113,6 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 				boolean wasPowered = TileBlinker.isPowered(blinker);
 				boolean isPowered = world.isBlockPowered(pos);
 				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-					//Vec3d vec = new Vec3d(fromPos).subtract(new Vec3d(pos));
-					//EnumFacing facing = EnumFacing.getFacingFromVector((float) vec.x, (float) vec.y, (float) vec.z);
-
 					TileBlinker.setPower(blinker, blinker.getRedstonePower());
 				}
 			});
@@ -166,6 +163,16 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, BlockDirectional.FACING, Power.POWER);
+	}
+
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
+		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 
 	@Override

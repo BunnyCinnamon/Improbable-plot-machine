@@ -50,7 +50,7 @@ public class PacketHandler {
 	}
 
 	public static void updatePosition(World world, BlockPos pos) {
-		final IBlockState state = world.getBlockState(pos);
+		IBlockState state = world.getBlockState(pos);
 		world.notifyBlockUpdate(pos, state, state, 8);
 	}
 

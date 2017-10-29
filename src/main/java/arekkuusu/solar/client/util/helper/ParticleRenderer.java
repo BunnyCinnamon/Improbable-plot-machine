@@ -5,10 +5,9 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.render;
+package arekkuusu.solar.client.util.helper;
 
 import arekkuusu.solar.client.effect.ParticleBase;
-import arekkuusu.solar.client.util.helper.BlendHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
@@ -69,7 +68,7 @@ public class ParticleRenderer {
 			Tessellator tess = Tessellator.getInstance();
 			BufferBuilder buffer = tess.getBuffer();
 
-			BlendHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
+			GLHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
 			for(ParticleBase particle : particles) {
 				if(particle.shouldRender() && !particle.isAdditive()) {
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
@@ -78,7 +77,7 @@ public class ParticleRenderer {
 				}
 			}
 
-			BlendHelper.BLEND_SRC_ALPHA$ONE.blend();
+			GLHelper.BLEND_SRC_ALPHA$ONE.blend();
 			for(ParticleBase particle : particles) {
 				if(particle.shouldRender() && particle.isAdditive()) {
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
@@ -88,7 +87,7 @@ public class ParticleRenderer {
 			}
 
 			GlStateManager.disableDepth();
-			BlendHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
+			GLHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
 			for(ParticleBase particle : particles) {
 				if(particle.shouldRender() && !particle.isAdditive() && particle.shouldDisableDepth()) {
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
@@ -97,7 +96,7 @@ public class ParticleRenderer {
 				}
 			}
 
-			BlendHelper.BLEND_SRC_ALPHA$ONE.blend();
+			GLHelper.BLEND_SRC_ALPHA$ONE.blend();
 			for(ParticleBase particle : particles) {
 				if(particle.shouldRender() && particle.isAdditive() && particle.shouldDisableDepth()) {
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);

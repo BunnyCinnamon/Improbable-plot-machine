@@ -8,18 +8,21 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TileQSquared;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 /**
  * Created by <Arekkuusu> on 17/09/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 
 	@Override
@@ -36,7 +39,7 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 	private void renderModel(int tick, double x, double y, double z) {
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
-		BlendHelper.lightMap(255F, 255F);
+		GLHelper.lightMap(255F, 255F);
 
 		GlStateManager.pushMatrix();
 		RenderHelper.disableStandardItemLighting();
@@ -67,7 +70,7 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 		GlStateManager.enableLighting();
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.popMatrix();
-		BlendHelper.lightMap(prevU, prevV);
+		GLHelper.lightMap(prevU, prevV);
 	}
 
 	private void renderLayer(double size, int layer) {

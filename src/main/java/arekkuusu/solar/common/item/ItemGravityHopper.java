@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemGravityHopper extends ItemBaseBlock {
 
 	public ItemGravityHopper() {
-		super(ModBlocks.gravity_hopper);
+		super(ModBlocks.GRAVITY_HOPPER);
 	}
 
 	@SideOnly(Side.CLIENT)

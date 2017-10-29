@@ -129,10 +129,6 @@ public class BlockQuantumMirror extends BlockBase {
 		return box;
 	}
 
-	public EnumPushReaction getMobilityFlag(IBlockState state) {
-		return EnumPushReaction.DESTROY;
-	}
-
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;

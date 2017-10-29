@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
@@ -21,9 +22,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings({"MethodCallSideOnly", "LocalVariableDeclarationSideOnly", "VariableUseSideOnly", "NewExpressionSideOnly"})
 public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd iN oThER mAtChIng aNnotAteD cLaSses aNd mEtHodS
 
-	public static void spawnQuorn(World world, double xCoord, double yCoord, double zCoord, double speed, double xPoint, double yPoint, double zPoint, float scale, int rgb) {
+	public static void spawnQuorn(World world, Vector3 from, double speed, Vector3 to, float scale, int rgb) {
 		if(doParticle()) {
-			ParticleQuorn particle = new ParticleQuorn(world, xCoord, yCoord, zCoord, speed, xPoint, yPoint, zPoint, scale, rgb);
+			ParticleQuorn particle = new ParticleQuorn(world, from, speed, to, scale, rgb);
 			ClientProxy.PARTICLE_RENDERER.add(particle);
 		}
 	}
@@ -35,9 +36,9 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 		}
 	}
 
-	public static void spawnNeutronBlast(World world, double xCoord, double yCoord, double zCoord, double speed, double xPoint, double yPoint, double zPoint, int rgb, float scale, boolean collide) {
+	public static void spawnNeutronBlast(World world, Vector3 from, double speed, Vector3 to, int rgb, float scale, boolean collide) {
 		if(doParticle()) {
-			ParticleNeutronBlast particle = new ParticleNeutronBlast(world, xCoord, yCoord, zCoord, speed, xPoint, yPoint, zPoint, rgb, scale, collide);
+			ParticleNeutronBlast particle = new ParticleNeutronBlast(world, from, speed, to, rgb, scale, collide);
 			ClientProxy.PARTICLE_RENDERER.add(particle);
 		}
 	}
@@ -53,6 +54,20 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 		if(doParticle()) {
 			ParticleTunnelingPhoton particle = new ParticleTunnelingPhoton(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, age, scale, rgb);
 			ClientProxy.PARTICLE_RENDERER.add(particle);
+		}
+	}
+
+	public static void spawnChargedIce(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int rgb, int age, float scale) {
+		if(doParticle()) {
+			ParticleDryIce dryIce = new ParticleDryIce(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, rgb, age, scale);
+			ClientProxy.PARTICLE_RENDERER.add(dryIce);
+		}
+	}
+
+	public static void spawnBolt(World world, Vector3 from, Vector3 to, int generations, float offset, int rgb, boolean branch) {
+		if(doParticle()) {
+			ParticleBolt bolt = new ParticleBolt(world, from, to, generations, offset, rgb, branch);
+			ClientProxy.PARTICLE_RENDERER.add(bolt);
 		}
 	}
 

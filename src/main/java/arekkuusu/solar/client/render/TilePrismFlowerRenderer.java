@@ -10,11 +10,10 @@ package arekkuusu.solar.client.render;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TilePrismFlower;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,7 +40,7 @@ public class TilePrismFlowerRenderer extends TileEntitySpecialRenderer<TilePrism
 		GlStateManager.scale(0.75F, 0.75F, 0.75F);
 
 		float brightness = 255F * flower.brightness;
-		BlendHelper.lightMap(brightness, brightness);
+		GLHelper.lightMap(brightness, brightness);
 
 		SpriteLibrary.PRISM_PETAL.bindManager();
 		double min = 0.3125D;

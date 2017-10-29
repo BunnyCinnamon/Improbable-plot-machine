@@ -1,9 +1,13 @@
 {
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:primal_stone",
+	"uvlock": false
+  },
   "variants": {
-    "normal": [
-      {
-        "model": "solar:primal_stone"
-      }
-    ]
+	"normal": [{
+	}],
+    "inventory": [{
+	}]
   }
 }

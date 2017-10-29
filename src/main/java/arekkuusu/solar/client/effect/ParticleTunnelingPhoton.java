@@ -35,12 +35,8 @@ public class ParticleTunnelingPhoton extends ParticleBase {
 		motionX = xSpeed;
 		motionY = ySpeed;
 		motionZ = zSpeed;
-	}
 
-	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-		SpriteLibrary.NEUTRON_PARTICLE.bindManager();
-		renderEasy(buffer, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ, 0, 1, 0, 1);
+		setSprite(SpriteLibrary.NEUTRON_PARTICLE);
 	}
 
 	@Override

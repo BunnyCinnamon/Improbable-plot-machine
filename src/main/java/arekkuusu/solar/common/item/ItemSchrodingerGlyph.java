@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemSchrodingerGlyph extends ItemBaseBlock {
 
 	public ItemSchrodingerGlyph() {
-		super(ModBlocks.schrodinger_glyph);
+		super(ModBlocks.SCHRODINGER_GLYPH);
 	}
 
 	@Override

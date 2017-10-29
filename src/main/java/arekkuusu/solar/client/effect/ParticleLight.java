@@ -8,8 +8,6 @@
 package arekkuusu.solar.client.effect;
 
 import arekkuusu.solar.client.util.SpriteLibrary;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
 /**
@@ -35,12 +33,8 @@ public class ParticleLight extends ParticleBase {
 		motionX = xSpeed;
 		motionY = ySpeed;
 		motionZ = zSpeed;
-	}
 
-	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-		SpriteLibrary.LIGHT_PARTICLE.bindManager();
-		renderEasy(buffer, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ, 0, 1, 0, 1);
+		setSprite(SpriteLibrary.LIGHT_PARTICLE);
 	}
 
 	@Override

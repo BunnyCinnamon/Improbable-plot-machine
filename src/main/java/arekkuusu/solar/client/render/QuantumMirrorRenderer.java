@@ -10,11 +10,13 @@ package arekkuusu.solar.client.render;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
@@ -36,8 +38,6 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 	@Override
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		if(!mirror.getWorld().isBlockLoaded(mirror.getPos(), false)) return;
-
 		int layer = MinecraftForgeClient.getRenderPass();
 
 		switch(layer) {
@@ -48,7 +48,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 					if(stack.isEmpty()) break;
 
 					GlStateManager.pushMatrix();
-					BlendHelper.lightMap(255F, 255F);
+					GLHelper.lightMap(255F, 255F);
 					GlStateManager.translate(x + 0.5, y + 0.38, z + 0.5);
 
 					GlStateManager.rotate(partialTicks + (float) mirror.tick * 0.5F % 360F, 0F, 1F, 0F);
@@ -64,27 +64,27 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 	}
 
 	@Override
-	@SuppressWarnings("ConstantConditions")
 	public void renderStack(double x, double y, double z, float partialTicks) {
 		int tick = Minecraft.getMinecraft().player.ticksExisted;
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 
-		if(SpecialModelRenderer.getTempItemRenderer() != null) {
+		ItemStack stack = SpecialModelRenderer.getTempItemRenderer();
+		if(stack != null) {
 			GlStateManager.pushMatrix();
-			BlendHelper.lightMap(255F, 255F);
+			GLHelper.lightMap(255F, 255F);
 			GlStateManager.translate(x + 0.5D, y + 0.4D, z + 0.5D);
 
 			GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
-			RenderBakery.renderItemStack(SpecialModelRenderer.getTempItemRenderer());
+			RenderBakery.renderItemStack(stack);
 
 			GlStateManager.popMatrix();
-
-			SpecialModelRenderer.setTempItemRenderer(null);
 		}
 
+		GLHelper.disableDepth();
 		renderModel(tick, x, y, z);
-		BlendHelper.lightMap(prevU, prevV);
+		GLHelper.enableDepth();
+		GLHelper.lightMap(prevU, prevV);
 	}
 
 	private void renderModel(int tick, double x, double y, double z) {
@@ -92,11 +92,12 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
 		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+		GLHelper.BLEND_SRC_ALPHA$ONE.blend();
+
 		float brigthness = MathHelper.cos(tick * 0.05F);
 		if(brigthness < 0) brigthness *= -1;
 		brigthness *= 255F;
-		BlendHelper.lightMap(brigthness, brigthness);
+		GLHelper.lightMap(brigthness, brigthness);
 
 		GlStateManager.translate(x, y, z + 0.5F);
 

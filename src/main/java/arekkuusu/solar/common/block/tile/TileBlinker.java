@@ -8,7 +8,6 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.state.Power;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -20,6 +19,8 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.Map;
 import java.util.UUID;
+
+import static arekkuusu.solar.api.state.Power.*;
 
 /**
  * Created by <Arekkuusu> on 03/09/2017.
@@ -117,11 +118,11 @@ public class TileBlinker extends TileRelativeBase<TileBlinker> implements ITicka
 	}
 
 	private boolean isPoweredLazy() {
-		return getState(Power.POWER).orElse(Power.OFF) == Power.ON;
+		return getStateValue(POWER, pos).orElse(OFF) == ON;
 	}
 
 	private EnumFacing getFacing() {
-		return getState(BlockDirectional.FACING).orElse(EnumFacing.UP);
+		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 
 	private Vec3d getOffSet(EnumFacing facing) {
@@ -130,7 +131,7 @@ public class TileBlinker extends TileRelativeBase<TileBlinker> implements ITicka
 
 	@Override
 	void onUnload() {
-		//Fuck, I left the oven on in the n'th dimension
+		//Fuck, I left the oven on in the n534#$532'th dimension
 	}
 
 	@Override

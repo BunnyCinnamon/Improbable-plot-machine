@@ -8,14 +8,14 @@
 package arekkuusu.solar.client.proxy;
 
 import arekkuusu.solar.client.render.ModRenders;
-import arekkuusu.solar.client.render.ParticleRenderer;
 import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.ResourceLibrary;
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.baker.DummyModelLoader;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.client.util.helper.ParticleRenderer;
 import arekkuusu.solar.client.util.resource.SpriteLoader;
-import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.proxy.IProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -77,18 +77,16 @@ public class ClientProxy implements IProxy {
 	//----------------Particle Renderer Start----------------//
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onTick(TickEvent.ClientTickEvent event) {
-		if(event.side == Side.CLIENT && event.phase == TickEvent.Phase.START) {
+		if(event.phase == TickEvent.Phase.START) {
 			PARTICLE_RENDERER.update();
 		}
 	}
 
 	@SubscribeEvent
 	public static void onRenderAfterWorld(RenderWorldLastEvent event) {
-		if(Solar.PROXY instanceof ClientProxy) {
-			GlStateManager.pushMatrix();
-			PARTICLE_RENDERER.renderAll(event.getPartialTicks());
-			GlStateManager.popMatrix();
-		}
+		GlStateManager.pushMatrix();
+		PARTICLE_RENDERER.renderAll(event.getPartialTicks());
+		GlStateManager.popMatrix();
 	}
 	//----------------Particle Renderer End----------------//
 
@@ -103,6 +101,7 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void init(FMLInitializationEvent event) {
 		SpriteLibrary.init();
+		ShaderLibrary.init();
 		RenderBakery.bake();
 		ModRenders.init();
 	}

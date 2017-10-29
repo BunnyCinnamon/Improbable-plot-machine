@@ -100,9 +100,9 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 	}
 
 	@Override
-	void readNBT(NBTTagCompound cmp) {
-		if(cmp.hasKey("item")) {
-			NBTTagCompound sub = cmp.getCompoundTag("item");
+	void readNBT(NBTTagCompound compound) {
+		if(compound.hasKey("item")) {
+			NBTTagCompound sub = compound.getCompoundTag("item");
 			stack = new ItemStack(sub);
 		} else {
 			stack = ItemStack.EMPTY;
@@ -110,10 +110,15 @@ public class TileCrystalVoid extends TileBase implements ITickable {
 	}
 
 	@Override
-	void writeNBT(NBTTagCompound cmp) {
+	void writeNBT(NBTTagCompound compound) {
 		if(!stack.isEmpty()) {
 			NBTTagCompound sub = new NBTTagCompound();
-			cmp.setTag("item", stack.writeToNBT(sub));
+			compound.setTag("item", stack.writeToNBT(sub));
 		}
+	}
+
+	@Override
+	public boolean shouldRenderInPass(int pass) {
+		return pass <= 1;
 	}
 }

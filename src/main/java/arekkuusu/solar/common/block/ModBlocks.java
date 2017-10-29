@@ -12,6 +12,7 @@ import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -25,18 +26,21 @@ public class ModBlocks {
 
 	private static final Block PLACE_HOLDER = new Block(Material.AIR);
 	//--------------------------------Blocks--------------------------------//
-	public static final Block primal_stone = PLACE_HOLDER;
-	public static final Block primal_glyph = PLACE_HOLDER;
+	public static final Block PRIMAL_STONE = PLACE_HOLDER;
+	public static final Block PRIMAL_GLYPH = PLACE_HOLDER;
 	public static final Block singularity = PLACE_HOLDER;
-	public static final Block prism_flower = PLACE_HOLDER;
-	public static final Block quantum_mirror = PLACE_HOLDER;
-	public static final Block gravity_hopper = PLACE_HOLDER;
-	public static final Block schrodinger_glyph = PLACE_HOLDER;
-	public static final Block crystal_void = PLACE_HOLDER;
-	public static final Block blinker = PLACE_HOLDER;
-	public static final Block phenomena = PLACE_HOLDER;
-	public static final Block q_squared = PLACE_HOLDER;
-	public static final Block theorema = PLACE_HOLDER;
+	public static final Block PRISM_FLOWER = PLACE_HOLDER;
+	public static final Block QUANTUM_MIRROR = PLACE_HOLDER;
+	public static final Block GRAVITY_HOPPER = PLACE_HOLDER;
+	public static final Block SCHRODINGER_GLYPH = PLACE_HOLDER;
+	public static final Block CRYSTAL_VOID = PLACE_HOLDER;
+	public static final Block BLINKER = PLACE_HOLDER;
+	public static final Block PHENOMENA = PLACE_HOLDER;
+	public static final Block Q_SQUARED = PLACE_HOLDER;
+	public static final Block THEOREMA = PLACE_HOLDER;
+	public static final Block GRAVITY_INHIBITOR = PLACE_HOLDER;
+	public static final Block HYPER_CONDUCTOR = PLACE_HOLDER;
+	public static final Block ELECTRON_NODE = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -51,6 +55,9 @@ public class ModBlocks {
 		registry.register(new BlockPhenomena());
 		registry.register(new BlockQSquared());
 		registry.register(new BlockTheorema());
+		registry.register(new BlockGravityInhibitor());
+		registry.register(new BlockHyperConductor());
+		registry.register(new BlockElectronNode());
 		registerTiles();
 	}
 
@@ -64,6 +71,10 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TilePhenomena.class, LibMod.MOD_ID + ":phenomena");
 		GameRegistry.registerTileEntity(TileQSquared.class, LibMod.MOD_ID + ":q_squared");
 		GameRegistry.registerTileEntity(TileTheorema.class, LibMod.MOD_ID + ":theorema");
+		GameRegistry.registerTileEntity(TileGravityInhibitor.class, LibMod.MOD_ID + ":gravity_inhibitor");
+		GameRegistry.registerTileEntity(TileHyperConductor.class, LibMod.MOD_ID + ":hyper_conductor");
+		GameRegistry.registerTileEntity(TileElectronNode.class, LibMod.MOD_ID + ":electron_node");
+
 		GameRegistry.registerTileEntity(RenderDummy.Quingentilliard.class,LibMod.MOD_ID + ":quingentilliard_dummy");
 	}
 }

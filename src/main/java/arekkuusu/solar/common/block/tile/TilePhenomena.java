@@ -7,7 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.state.Power;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHandler;
@@ -27,6 +26,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
+
+import static arekkuusu.solar.api.state.Power.*;
 
 /**
  * Created by <Arekkuusu> on 08/09/2017.
@@ -80,14 +81,14 @@ public class TilePhenomena extends TileBase implements ITickable {
 
 	private void inverse() {
 		IBlockState state = world.getBlockState(pos);
-		world.setBlockState(pos, state.withProperty(Power.POWER, state.getValue(Power.POWER).inverse()));
+		world.setBlockState(pos, state.withProperty(POWER, state.getValue(POWER).inverse()));
 	}
 
 	private void propagate() {
 		for(EnumFacing facing : EnumFacing.values()) {
 			BlockPos offset = pos.offset(facing);
 			IBlockState state = world.getBlockState(offset);
-			if(state.getBlock() == ModBlocks.phenomena) {
+			if(state.getBlock() == ModBlocks.PHENOMENA) {
 				TilePhenomena phenomena = (TilePhenomena) world.getTileEntity(offset);
 				if(phenomena != null) {
 					phenomena.makePhenomenon();
@@ -109,7 +110,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 	}
 
 	public boolean isInvisible() {
-		return getState(Power.POWER).orElse(Power.ON) == Power.OFF;
+		return getStateValue(POWER, pos).orElse(ON) == OFF;
 	}
 
 	@Override

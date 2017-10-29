@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -84,7 +83,7 @@ public abstract class BrightBakedModel implements IBakedModel {
 
 	BakedQuad createQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4, TextureAtlasSprite sprite
 			, float uMin, float uMax, float vMin, float vMax, boolean hasBrightness) {
-		Vector3 normal = v3.copy().subtract(v2).crossProduct(v1.copy().subtract(v2)).normalize();
+		Vector3 normal = v3.copy().subtract(v2).cross(v1.copy().subtract(v2)).normalize();
 
 		UnpackedBakedQuad.Builder builder = new UnpackedBakedQuad.Builder(format);
 		builder.setTexture(sprite);

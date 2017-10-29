@@ -23,6 +23,8 @@ import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.Properties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
@@ -31,6 +33,7 @@ import javax.annotation.Nonnull;
  * Created by <Arekkuusu> on 09/09/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public class TilePhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 
 	@Override

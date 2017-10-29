@@ -10,6 +10,8 @@ package arekkuusu.solar.client.render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -17,13 +19,16 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 28/07/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public abstract class SpecialModelRenderer<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
 
 	private static ItemStack tempItemStack;
 
 	@Nullable
 	public static ItemStack getTempItemRenderer() {
-		return tempItemStack;
+		ItemStack stack = SpecialModelRenderer.tempItemStack;
+		SpecialModelRenderer.tempItemStack = null;
+		return stack;
 	}
 
 	public static void setTempItemRenderer(@Nullable ItemStack tempItemStack) {

@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemPrimalGlyph extends ItemBaseBlock {
 
 	public ItemPrimalGlyph() {
-		super(ModBlocks.primal_glyph);
+		super(ModBlocks.PRIMAL_GLYPH);
 		setHasSubtypes(true);
 		setMaxDamage(0);
 	}

@@ -15,9 +15,11 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,7 +36,7 @@ import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.SHIFT_K
 public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 
 	ItemBlinker() {
-		super(ModBlocks.blinker);
+		super(ModBlocks.BLINKER);
 	}
 
 	@Override
@@ -44,11 +46,13 @@ public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 				.ifAgrees(builder -> getInfo(builder, uuid)).build(tooltip));
 	}
 
+	@Nullable
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-		if(!world.isRemote && !NBTHelper.hasTag(stack, SolarApi.QUANTUM_DATA)) {
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		if(FMLCommonHandler.instance().getSide() == Side.SERVER && !NBTHelper.hasTag(stack, SolarApi.QUANTUM_DATA)) {
 			setKey(stack, UUID.randomUUID());
 		}
+		return super.initCapabilities(stack, nbt);
 	}
 
 	@Override

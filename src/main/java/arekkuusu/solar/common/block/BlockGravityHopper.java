@@ -21,15 +21,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static net.minecraft.block.BlockDirectional.FACING;
 
 /**
  * Created by <Arekkuusu> on 28/07/2017.
@@ -42,7 +42,7 @@ public class BlockGravityHopper extends BlockBase {
 
 	public BlockGravityHopper() {
 		super(LibNames.GRAVITY_HOPPER, FixedMaterial.DONT_MOVE);
-		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
+		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.DOWN));
 		setHarvestLevel("pickaxe", 1);
 		setHardness(2F);
 	}
@@ -66,33 +66,39 @@ public class BlockGravityHopper extends BlockBase {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileGravityHopper.class, world, pos).ifPresent(hopper -> {
-			ItemStack stack = getItem(world, pos, state);
-			spawnAsEntity(world, pos, stack);
-			hopper.remove();
-		});
+		getTile(TileGravityHopper.class, world, pos).ifPresent(TileGravityHopper::remove);
 		super.breakBlock(world, pos, state);
 	}
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		EnumFacing side = EnumFacing.getDirectionFromEntityLiving(pos, placer);
-		return defaultState().withProperty(BlockDirectional.FACING, side.getOpposite());
+		return defaultState().withProperty(FACING, side.getOpposite());
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(BlockDirectional.FACING).getIndex();
+		return state.getValue(FACING).getIndex();
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return defaultState().withProperty(BlockDirectional.FACING, EnumFacing.values()[meta]);
+		return defaultState().withProperty(FACING, EnumFacing.values()[meta]);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING);
+		return new BlockStateContainer(this, FACING);
+	}
+
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirror) {
+		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 
 	@Override

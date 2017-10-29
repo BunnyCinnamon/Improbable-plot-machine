@@ -65,15 +65,15 @@ public class CreativeTabHandler {
 		@Override
 		@Nonnull
 		public ItemStack getIconItemStack() {
-			return new ItemStack(ModItems.quingentilliard);
+			return new ItemStack(ModItems.QUINGENTILLIARD);
 		}
 
 		@Override
 		@SideOnly(Side.CLIENT)
 		public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> list) {
 			this.list = list;
-			addItem(ModItems.quingentilliard);
-			addItem(ModItems.quantum_quartz);
+			addItem(ModItems.QUINGENTILLIARD);
+			addItem(ModItems.QUANTUM_QUARTZ);
 		}
 	}
 
@@ -87,25 +87,28 @@ public class CreativeTabHandler {
 		@Override
 		@Nonnull
 		public ItemStack getIconItemStack() {
-			return new ItemStack(ModBlocks.schrodinger_glyph);
+			return new ItemStack(ModBlocks.SCHRODINGER_GLYPH);
 		}
 
 		@Override
 		@SideOnly(Side.CLIENT)
 		public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> list) {
 			this.list = list;
-			addBlock(ModBlocks.primal_stone);
-			addBlock(ModBlocks.primal_glyph);
-			addBlock(ModBlocks.schrodinger_glyph);
-			addBlock(ModBlocks.phenomena);
-			addBlock(ModBlocks.q_squared);
-			addBlock(ModBlocks.theorema);
+			addBlock(ModBlocks.PRIMAL_STONE);
+			addBlock(ModBlocks.PRIMAL_GLYPH);
+			addBlock(ModBlocks.SCHRODINGER_GLYPH);
+			addBlock(ModBlocks.PHENOMENA);
+			addBlock(ModBlocks.Q_SQUARED);
+			addBlock(ModBlocks.THEOREMA);
 			addBlock(ModBlocks.singularity);
-			addBlock(ModBlocks.prism_flower);
-			addBlock(ModBlocks.quantum_mirror);
-			addBlock(ModBlocks.gravity_hopper);
-			addBlock(ModBlocks.crystal_void);
-			addBlock(ModBlocks.blinker);
+			addBlock(ModBlocks.PRISM_FLOWER);
+			addBlock(ModBlocks.QUANTUM_MIRROR);
+			addBlock(ModBlocks.GRAVITY_HOPPER);
+			addBlock(ModBlocks.CRYSTAL_VOID);
+			addBlock(ModBlocks.BLINKER);
+			addBlock(ModBlocks.HYPER_CONDUCTOR);
+			addBlock(ModBlocks.ELECTRON_NODE);
+			addBlock(ModBlocks.GRAVITY_INHIBITOR);
 		}
 	}
 }

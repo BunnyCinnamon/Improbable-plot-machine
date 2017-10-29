@@ -27,7 +27,7 @@ public class Vector3 {
 	public double z;
 
 	public Vector3(Vec3d vec) {
-		this(vec.x, vec.y, vec.y);
+		this(vec.x, vec.y, vec.z);
 	}
 
 	public Vector3(Vec3i vec) {
@@ -51,11 +51,19 @@ public class Vector3 {
 		return subtract(vec.x, vec.y, vec.z);
 	}
 
+	public Vector3 subtract(Vec3d vec) {
+		return subtract(vec.x, vec.y, vec.z);
+	}
+
 	public Vector3 subtract(double x, double y, double z) {
 		return add(-x, -y, -z);
 	}
 
 	public Vector3 add(Vector3 vec) {
+		return add(vec.x, vec.y, vec.z);
+	}
+
+	public Vector3 add(Vec3d vec) {
 		return add(vec.x, vec.y, vec.z);
 	}
 
@@ -71,16 +79,28 @@ public class Vector3 {
 		return multiply(m, m, m);
 	}
 
+	public Vector3 multiply(double x, double y, double z) {
+		return setVec(this.x * x, this.y * y, this.z * z);
+	}
+
+	public Vector3 divide(Vector3 vec) {
+		return divide(vec.x, vec.y, vec.z);
+	}
+
+	public Vector3 divide(double m) {
+		return divide(m, m, m);
+	}
+
+	public Vector3 divide(double x, double y, double z) {
+		return setVec(this.x / x, this.y / y, this.z / z);
+	}
+
 	public Vector3 grow(double amount) {
 		return add(amount, amount, amount);
 	}
 
 	public Vector3 shrink(double amount) {
 		return subtract(amount, amount, amount);
-	}
-
-	public Vector3 multiply(double x, double y, double z) {
-		return setVec(this.x * x, this.x * y, this.z * z);
 	}
 
 	public Vector3 rotateYaw(float angle) {
@@ -116,7 +136,7 @@ public class Vector3 {
 		return root < 1.0E-4D ? setVec(0, 0, 0) : setVec(x / root, y / root, z / root);
 	}
 
-	public Vector3 crossProduct(Vector3 vec) {
+	public Vector3 cross(Vector3 vec) {
 		double x = this.y * vec.z - this.z * vec.y;
 		double y = this.z * vec.x - this.x * vec.z;
 		double z = this.x * vec.y - this.y * vec.x;
@@ -124,9 +144,9 @@ public class Vector3 {
 	}
 
 	public double distanceTo(Vector3 vec) {
-		double xDiff = vec.x - x;
-		double yDiff = vec.y - y;
-		double zDiff = vec.z - z;
+		double xDiff = x - vec.x;
+		double yDiff = y - vec.y;
+		double zDiff = z - vec.z;
 		return MathHelper.sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff);
 	}
 
@@ -159,6 +179,10 @@ public class Vector3 {
 		public static final ImmutableVector3 NULL = new Vector3(0, 0, 0).toImmutable();
 
 		public ImmutableVector3(Vector3 vec) {
+			super(vec.x, vec.y, vec.z);
+		}
+
+		public ImmutableVector3(Vec3d vec) {
 			super(vec.x, vec.y, vec.z);
 		}
 

@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:hyper_conductor",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}],
+	"power": {
+	  "on": {	  },
+	  "off": {	  }
+	}
+  }
+}

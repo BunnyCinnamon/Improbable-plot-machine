@@ -9,14 +9,13 @@ package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.RenderDummy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.Tuple;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,24 +37,24 @@ public class QuingentilliardRenderer extends TileEntitySpecialRenderer<RenderDum
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
 		GlStateManager.color(0, 0.99609375F, 0.76171875F, 1F);
-		BlendHelper.lightMap(255F, 255F);
+		GLHelper.lightMap(255F, 255F);
 
 		GlStateManager.translate(x + 0.5, y + 0.35, z + 0.5);
 		GlStateManager.scale(0.5F, 0.5F, 0.5F);
 		GlStateManager.rotate(tick, 1F, 0F, 1F);
 
-		GlStateManager.depthMask(false); // Prevent render layer conflict
+		GLHelper.disableDepth();
 		renderCube(tick);
 		RenderBakery.renderBeams((float) tick * 0.01F, 25, 0x000000, 0x000000, 1F);
-		GlStateManager.depthMask(true);
+		GLHelper.enableDepth();
 
-		renderCube(tick); //Fix render layer conflict with code above kek
+		renderCube(tick);
 
 		GlStateManager.color(1F, 1F, 1F, 1F);
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
-		BlendHelper.lightMap(prevU, prevV);
+		GLHelper.lightMap(prevU, prevV);
 	}
 
 	private void renderCube(int age) {

@@ -7,11 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.util.SpriteLibrary;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.Tuple;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,39 +20,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ParticleQuorn extends ParticleBase {
 
-	private final Vec3d point;
+	private final Vector3 point;
 	private final double speed;
 
-	ParticleQuorn(World world, double xCoord, double yCoord, double zCoord, double speed, double xPoint, double yPoint, double zPoint, float scale, int rgb) {
-		super(world, xCoord, yCoord, zCoord, 0, 0, 0);
+	ParticleQuorn(World world, Vector3 from, double speed, Vector3 to, float scale, int rgb) {
+		super(world, from.x, from.y, from.z, 0, 0, 0);
 		float r = (rgb >>> 16 & 0xFF) / 256.0F;
 		float g = (rgb >>> 8 & 0xFF) / 256.0F;
 		float b = (rgb & 0xFF) / 256.0F;
 		setRBGColorF(r, g, b);
 
-		this.point = new Vec3d(xPoint, yPoint, zPoint);
+		this.point = from;
 		this.speed = speed;
 
-		double x = posX - point.x;
-		double y = posY - point.y;
-		double z = posZ - point.z;
+		double distance = from.distanceTo(to);
 
-		double square = x * x + y * y + z * z;
-		double distance = Math.sqrt(square);
+		this.particleMaxAge = (int) ((distance / speed) * 0.5);
+		this.particleScale = scale;
+		this.canCollide = false;
 
-		particleMaxAge = (int) ((distance / speed) * 0.5);
-		particleScale = scale;
-		canCollide = false;
-	}
-
-	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-		SpriteLibrary.QUORN_PARTICLE.bindManager();
-		Tuple<Double, Double> uv = SpriteLibrary.QUORN_PARTICLE.getUVFrame(particleAge);
-		double vOffset = SpriteLibrary.QUORN_PARTICLE.getV();
-		double v = uv.getSecond();
-
-		renderEasy(buffer, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ, 0, 1, v, v + vOffset);
+		setSprite(SpriteLibrary.QUORN_PARTICLE);
 	}
 
 	@Override

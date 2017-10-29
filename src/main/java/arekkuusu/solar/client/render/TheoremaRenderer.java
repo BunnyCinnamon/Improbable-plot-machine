@@ -8,12 +8,14 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
-import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TileTheorema;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
@@ -24,6 +26,7 @@ import java.util.Random;
  * Created by <Arekkuusu> on 22/09/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Taken from the End Portal
 
 	private static final FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
@@ -45,7 +48,7 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 	private void renderModel(@Nullable TileTheorema pandora, double x, double y, double z) {
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
-		BlendHelper.lightMap(255F, 255F);
+		GLHelper.lightMap(255F, 255F);
 
 		RANDOM.setSeed(31100L);
 
@@ -86,6 +89,7 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 			GlStateManager.popMatrix();
 			GlStateManager.matrixMode(5890);
 			GlStateManager.pushMatrix();
+
 			GlStateManager.loadIdentity();
 			GlStateManager.translate(0.5F, 0.5F, 0F);
 			GlStateManager.scale(0.5F, 0.5F, 1F);
@@ -156,7 +160,7 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		GlStateManager.disableTexGenCoord(GlStateManager.TexGen.T);
 		GlStateManager.disableTexGenCoord(GlStateManager.TexGen.R);
 		GlStateManager.enableLighting();
-		BlendHelper.lightMap(prevU, prevV);
+		GLHelper.lightMap(prevU, prevV);
 
 		if(fog) {
 			Minecraft.getMinecraft().entityRenderer.setupFogColor(false);

@@ -39,7 +39,7 @@ public class TilePrismFlower extends TileBase implements ITickable {
 		double x = distanceTo(compared);
 		double y = distanceTo(entity);
 
-		return x > y ? 1 : x < y ? -1 : 0;
+		return Double.compare(x, y);
 	};
 	public float brightness;
 	public int tick;
@@ -85,7 +85,7 @@ public class TilePrismFlower extends TileBase implements ITickable {
 	}
 
 	public Vector3 getOffSet(double x, double y, double z) {
-		EnumFacing facing = getState(BlockDirectional.FACING).orElse(EnumFacing.UP);
+		EnumFacing facing = getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 
 		return FACING_MAP.get(facing).add(x, y, z);
 	}

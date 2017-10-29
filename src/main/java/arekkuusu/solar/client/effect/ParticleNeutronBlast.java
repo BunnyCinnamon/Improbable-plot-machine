@@ -7,13 +7,13 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.proxy.ClientProxy;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 /**
@@ -22,29 +22,23 @@ import net.minecraft.world.World;
  */
 public class ParticleNeutronBlast extends ParticleBase {
 
-	private final Vec3d point;
+	private final Vector3 point;
 	private final double speed;
 	private final boolean collide;
 	private final int rgb;
 
-	ParticleNeutronBlast(World world, double xCoord, double yCoord, double zCoord, double speed, double xPoint, double yPoint, double zPoint, int rgb, float scale, boolean collide) {
-		super(world, xCoord, yCoord, zCoord, 0, 0, 0);
+	ParticleNeutronBlast(World world, Vector3 from, double speed, Vector3 to, int rgb, float scale, boolean collide) {
+		super(world, from.x, from.y, from.z, 0, 0, 0);
 		this.rgb = rgb;
-
-		this.point = new Vec3d(xPoint, yPoint, zPoint);
+		this.point = to;
 		this.speed = speed;
 
-		double x = posX - point.x;
-		double y = posY - point.y;
-		double z = posZ - point.z;
+		double distance = from.distanceTo(to);
 
-		double square = x * x + y * y + z * z;
-		double distance = Math.sqrt(square);
-
-		particleMaxAge = (int) ((distance / speed) * 0.5D);
-		particleScale = scale;
+		this.particleMaxAge = (int) (distance / speed);
+		this.particleScale = scale;
 		this.collide = collide;
-		canCollide = !this.collide;
+		this.canCollide = !this.collide;
 	}
 
 	@Override

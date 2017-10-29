@@ -47,12 +47,14 @@ public final class ModRenders {
 		registerTESR(TilePhenomena.class, new TilePhenomenaRenderer());
 		registerTESR(TileQSquared.class, new QSquaredRenderer());
 		registerTESR(TileTheorema.class, new TheoremaRenderer());
+		registerTESR(TileGravityInhibitor.class, new GravityInhibitorRenderer());
 
-		registerTESRItemStack(ModBlocks.quantum_mirror, TileQuantumMirror.class);
-		registerTESRItemStack(ModItems.quingentilliard, RenderDummy.Quingentilliard.class);
-		registerTESRItemStack(ModBlocks.crystal_void, TileCrystalVoid.class);
-		registerTESRItemStack(ModBlocks.q_squared, TileQSquared.class);
-		registerTESRItemStack(ModBlocks.theorema, TileTheorema.class);
+		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
+		registerTESRItemStack(ModItems.QUINGENTILLIARD, RenderDummy.Quingentilliard.class);
+		registerTESRItemStack(ModBlocks.CRYSTAL_VOID, TileCrystalVoid.class);
+		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
+		registerTESRItemStack(ModBlocks.THEOREMA, TileTheorema.class);
+		registerTESRItemStack(ModBlocks.GRAVITY_INHIBITOR, TileGravityInhibitor.class);
 	}
 
 	private static <T extends TileEntity> void registerTESR(Class<T> tile, TileEntitySpecialRenderer<T> render) {

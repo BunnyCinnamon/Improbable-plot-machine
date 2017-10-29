@@ -14,6 +14,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,19 +27,25 @@ import java.util.Optional;
  */
 public abstract class TileBase extends TileEntity {
 
-	private IBlockState state;
-
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return oldState.getBlock() != newState.getBlock();
 	}
 
-	<T extends Comparable<T>> Optional<T> getState(IProperty<T> property) {
-		if(state == null) {
-			state = world.getBlockState(pos);
-		}
-
+	<T extends Comparable<T>> Optional<T> getStateValue(IProperty<T> property, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
 		return state.getPropertyKeys().contains(property) ? Optional.of(state.getValue(property)) : Optional.empty();
+	}
+
+	@SuppressWarnings("unchecked")
+	<T extends TileEntity> Optional<T> getTile(Class<T> clazz, IBlockAccess world, BlockPos pos) {
+		TileEntity tile = world.getTileEntity(pos);
+		return clazz.isInstance(tile) ? Optional.of((T) tile) : Optional.empty();
+	}
+
+	@Override
+	public double getDistanceSq(double x, double y, double z) {
+		return Math.sqrt(super.getDistanceSq(x, y, z));
 	}
 
 	@SideOnly(Side.CLIENT)

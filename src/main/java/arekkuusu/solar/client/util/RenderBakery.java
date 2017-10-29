@@ -121,9 +121,9 @@ public final class RenderBakery {
 		buff.pos(-size, size, size).tex(uMin, vMin).endVertex();
 		//Bottom
 		buff.pos(-size, -size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(size, -size, -size).tex(uMax, vMax).endVertex();
-		buff.pos(size, -size, size).tex(uMin, vMax).endVertex();
 		buff.pos(-size, -size, size).tex(uMin, vMin).endVertex();
+		buff.pos(size, -size, size).tex(uMin, vMax).endVertex();
+		buff.pos(size, -size, -size).tex(uMax, vMax).endVertex();
 
 		tessellator.draw();
 	}

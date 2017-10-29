@@ -7,11 +7,15 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
+import arekkuusu.solar.client.util.resource.FrameSpriteResource;
+import arekkuusu.solar.client.util.resource.SpriteResource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -22,16 +26,45 @@ import net.minecraft.world.World;
  */
 public class ParticleBase extends Particle {
 
+	private SpriteResource sprite;
 	private int layer = 3;
 
 	ParticleBase(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed) {
 		super(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
 	}
 
+	@Override
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+		if(particleTexture != null) {
+			super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+		} else if(sprite != null) {
+			double uMin = 0F;
+			double uMax = 1F;
+			double vMin = 0F;
+			double vMax = 1F;
+			if(sprite instanceof FrameSpriteResource) {
+				FrameSpriteResource framedSprite = ((FrameSpriteResource) sprite);
+				Tuple<Double, Double> uv = framedSprite.getUVFrame((int) particleAngle);
+				double uOffset = framedSprite.getU();
+				double u = uv.getFirst();
+				double vOffset = framedSprite.getV();
+				double v = uv.getSecond();
+
+				uMin = u;
+				uMax = u + uOffset;
+				vMin = v;
+				vMax = v + vOffset;
+			}
+
+			sprite.bindManager();
+			renderEasy(buffer, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ, uMin, uMax, vMin, vMax);
+		}
+	}
+
 	/**
 	 * Fix for particle wobbliness
 	 */
-	void renderEasy(BufferBuilder buffer, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, double uMin, double uMax, double vMin, double vMax) {
+	private void renderEasy(BufferBuilder buffer, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, double uMin, double uMax, double vMin, double vMax) {
 		int light = getBrightnessForRender(partialTicks);
 		float scale = 0.1F * particleScale;
 
@@ -69,6 +102,10 @@ public class ParticleBase extends Particle {
 				.getAtlasSprite(location.toString());
 		layer = 1;
 		setParticleTexture(atlasSprite);
+	}
+
+	public void setSprite(SpriteResource sprite) {
+		this.sprite = sprite;
 	}
 
 	@Override

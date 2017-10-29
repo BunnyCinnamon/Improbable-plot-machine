@@ -26,6 +26,7 @@ public final class SpriteLibrary {
 	public static final FrameSpriteResource QUORN_PARTICLE = SpriteLoader.load(EFFECT, "quorn_particle", 7, 1);
 	public static final SpriteResource NEUTRON_PARTICLE = SpriteLoader.load(EFFECT, "neutron_particle");
 	public static final SpriteResource LIGHT_PARTICLE = SpriteLoader.load(EFFECT, "light_particle");
+	public static final SpriteResource CHARGED_ICE = SpriteLoader.load(EFFECT, "charged_ice");
 	//Other
 	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteLoader.load(BLOCKS, "quantum_mirror", 9, 1);
 	public static final SpriteResource PRISM_PETAL = SpriteLoader.load(BLOCKS, "prism_flower/petal");
@@ -34,6 +35,8 @@ public final class SpriteLibrary {
 	public static final FrameSpriteResource RED_GLYPH = SpriteLoader.load(BLOCKS, "red_glyph", 4, 1);
 	public static final FrameSpriteResource BLUE_GLYPH = SpriteLoader.load(BLOCKS, "blue_glyph", 4, 1);
 	public static final SpriteResource Q_SQUARED = SpriteLoader.load(BLOCKS, "q_squared");
+	public static final FrameSpriteResource GRAVITY_INHIBITOR_OVERLAY = SpriteLoader.load(BLOCKS, "gravity_inhibitor_overlay", 4, 2);
+	public static final SpriteResource GRAVITY_INHIBITOR = SpriteLoader.load(BLOCKS, "gravity_inhibitor");
 
 	public static void init() {}
 }

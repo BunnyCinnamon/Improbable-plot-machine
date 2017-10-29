@@ -33,7 +33,7 @@ import java.util.UUID;
 public class ItemQuantumMirror extends ItemBaseBlock implements IQuantumStack {
 
 	public ItemQuantumMirror() {
-		super(ModBlocks.quantum_mirror);
+		super(ModBlocks.QUANTUM_MIRROR);
 	}
 
 	@Override

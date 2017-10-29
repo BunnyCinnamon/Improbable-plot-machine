@@ -27,38 +27,38 @@ public abstract class TileRelativeBase<T extends TileRelativeBase> extends TileB
 
 	@Override
 	public void onLoad() {
-		if(!world.isRemote) add();
-	}
-
-	@Override
-	public void validate() {
-		super.validate();
-		if(!world.isRemote) add();
+		add();
 	}
 
 	@Override
 	public void invalidate() {
 		super.invalidate();
-		if(!world.isRemote) remove();
+		remove();
 	}
 
 	@Override
 	public void onChunkUnload() {
-		RelativityHandler.removeRelative(this, tile -> onUnload());
+		if(!world.isRemote) {
+			RelativityHandler.removeRelative(this, tile -> onUnload());
+		}
 	}
 
 	abstract void onUnload();
 
 	@Override
 	public void add() {
-		RelativityHandler.addRelative(this, tile -> onAdd());
+		if(!world.isRemote) {
+			RelativityHandler.addRelative(this, tile -> onAdd());
+		}
 	}
 
 	abstract void onAdd();
 
 	@Override
 	public void remove() {
-		RelativityHandler.removeRelative(this, tile -> onRemove());
+		if(!world.isRemote) {
+			RelativityHandler.removeRelative(this, tile -> onRemove());
+		}
 	}
 
 	abstract void onRemove();
@@ -88,16 +88,14 @@ public abstract class TileRelativeBase<T extends TileRelativeBase> extends TileB
 	abstract void updateRelativity();
 
 	@Override
-	void readNBT(NBTTagCompound cmp) {
-		if(cmp.hasUniqueId("uuid_key")) {
-			key = cmp.getUniqueId("uuid_key");
+	void readNBT(NBTTagCompound compound) {
+		if(compound.hasUniqueId("key")) {
+			key = compound.getUniqueId("key");
 		}
 	}
 
 	@Override
-	void writeNBT(NBTTagCompound cmp) {
-		if(key != null) {
-			cmp.setUniqueId("uuid_key", key);
-		}
+	void writeNBT(NBTTagCompound compound) {
+		getKey().ifPresent(key -> compound.setUniqueId("key", key));
 	}
 }

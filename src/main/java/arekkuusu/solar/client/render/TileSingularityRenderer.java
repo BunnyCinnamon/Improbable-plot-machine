@@ -8,7 +8,7 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.RenderBakery;
-import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TileSingularity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -27,7 +27,7 @@ public class TileSingularityRenderer extends TileEntitySpecialRenderer<TileSingu
 		if(!singularity.getWorld().isBlockLoaded(singularity.getPos(), false)) return;
 
 		GlStateManager.pushMatrix();
-		BlendHelper.lightMap(255F, 255F);
+		GLHelper.lightMap(255F, 255F);
 		GlStateManager.disableLighting();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 
@@ -37,7 +37,7 @@ public class TileSingularityRenderer extends TileEntitySpecialRenderer<TileSingu
 
 		GlStateManager.enableBlend();
 		GlStateManager.disableCull();
-		BlendHelper.BLEND_NORMAL.blend();
+		GLHelper.BLEND_NORMAL.blend();
 
 		RenderBakery.renderBeams((float) singularity.tick * 0.001F, 30, 0xFFFFFF, 0xFFFFFF, 0.5F);
 

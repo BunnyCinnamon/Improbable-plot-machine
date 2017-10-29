@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.client.render.baked.SchrodingerGlyphBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
@@ -22,7 +23,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -95,11 +95,11 @@ public class BlockSchrodingerGlyph extends BlockBase {
 			for(EnumFacing facing : EnumFacing.values()) {
 				BlockPos target = pos.offset(facing);
 
-				Vec3d from = new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-				Vec3d to = new Vec3d(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D);
+				Vector3 from = new Vector3(pos).add(0.5D, 0.5D, 0.5D);
+				Vector3 to = new Vector3(target).add(0.5D, 0.5D, 0.5D);
 				double speed = 0.025D;
 
-				ParticleUtil.spawnNeutronBlast(world, from.x, from.y, from.z, speed, to.x, to.y, to.z, 0xFF0303, 0.25F, false);
+				ParticleUtil.spawnNeutronBlast(world, from, speed, to, 0xFF0303, 0.25F, false);
 			}
 		}
 	}

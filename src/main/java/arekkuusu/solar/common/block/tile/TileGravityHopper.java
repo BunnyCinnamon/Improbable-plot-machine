@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
@@ -44,7 +45,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			.put(EnumFacing.WEST, new Vec3d(0.25D, 0.5D, 0.5D))
 			.build();
 	private final GravityHopperItemHandler handler;
-	private boolean isPowered;
+	private boolean powered;
 	private boolean inverse;
 	private int tick;
 
@@ -59,21 +60,21 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			if(tick % 2 == 0) {
 				EnumFacing facing = getFacing();
 
-				if(getStack().isEmpty()) {
-					Optional<BlockPos> in = traceBlock(facing);
-					if(in.isPresent()) {
-						Optional<IItemHandler> inventoryIn = getInventory(in.get(), facing.getOpposite());
-						inventoryIn.ifPresent(this::transferIn);
-					}
-				}
+				Optional<BlockPos> positionOut = traceBlock(facing.getOpposite());
+				positionOut.ifPresent(posOut -> {
+					Optional<IItemHandler> inventoryOut = getInventory(posOut, facing);
+					inventoryOut.ifPresent(handlerOut -> {
+						Optional<BlockPos> positionIn = traceBlock(facing);
+						positionIn.ifPresent(posIn -> {
+							Optional<IItemHandler> inventoryIn = getInventory(posIn, facing.getOpposite());
+							inventoryIn.ifPresent(this::transferIn);
+						});
 
-				if(!getStack().isEmpty()) {
-					Optional<BlockPos> out = traceBlock(facing.getOpposite());
-					if(out.isPresent()) {
-						Optional<IItemHandler> inventoryOut = getInventory(out.get(), facing);
-						inventoryOut.ifPresent(this::transferOut);
-					}
-				}
+						if(!getStack().isEmpty()) {
+							transferOut(handlerOut);
+						}
+					});
+				});
 			}
 		} else {
 			spawnParticles();
@@ -129,15 +130,14 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private void spawnParticles() {
-		if(tick % 120 == 0) {
+		if(tick % 160 == 0) {
 			EnumFacing facing = getFacing();
-			Vec3d front = getOffSet(facing);
 
+			Vector3 from = new Vector3(getOffSet(facing));
 			BlockPos target = pos.offset(facing.getOpposite(), 9);
-			Vec3d to = new Vec3d(target.getX() + 0.5D, target.getY() + 0.5D, target.getZ() + 0.5D);
-			double speed = 0.025D;
+			Vector3 to = new Vector3(target).add(0.5D, 0.5D, 0.5D);
 
-			ParticleUtil.spawnNeutronBlast(world, front.x, front.y, front.z, speed, to.x, to.y, to.z, 0xFF0303, 0.25F, true);
+			ParticleUtil.spawnNeutronBlast(world, from, 0.025D, to, 0xFF0303, 0.25F, true);
 		} else if(tick % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing();
 			Vec3d back = getOffSet(facing.getOpposite());
@@ -179,15 +179,15 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	public boolean isPowered() {
-		return isPowered;
+		return powered;
 	}
 
 	public void setPowered(boolean powered) {
-		isPowered = powered;
+		this.powered = powered;
 	}
 
 	private EnumFacing getFacing() {
-		return getState(BlockDirectional.FACING).orElse(EnumFacing.UP);
+		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 
 	private Vec3d getOffSet(EnumFacing facing) {

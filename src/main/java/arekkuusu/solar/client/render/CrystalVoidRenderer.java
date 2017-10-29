@@ -9,7 +9,7 @@ package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.BlockBaker;
 import arekkuusu.solar.client.util.resource.FrameSpriteResource;
 import arekkuusu.solar.common.block.tile.TileCrystalVoid;
@@ -19,6 +19,9 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static arekkuusu.solar.client.util.helper.BlockBaker.PRIMAL_SIDE;
 
@@ -26,37 +29,52 @@ import static arekkuusu.solar.client.util.helper.BlockBaker.PRIMAL_SIDE;
  * Created by <Arekkuusu> on 27/08/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 
 	@Override
 	void renderTile(TileCrystalVoid crystal, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		ItemStack stack = crystal.getStack();
+		int layer = MinecraftForgeClient.getRenderPass();
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-		GlStateManager.disableLighting();
+		switch(layer) {
+			case 0:
+				ItemStack stack = crystal.getStack();
 
-		renderFloatingSquares(crystal.tick, partialTicks);
-		renderGlyphs(crystal.tick, !stack.isEmpty());
-		renderWhiteCube(crystal.tick, partialTicks);
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+				GlStateManager.disableLighting();
 
-		GlStateManager.enableLighting();
-		GlStateManager.popMatrix();
+				renderFloatingSquares(crystal.tick, partialTicks);
+				renderGlyphs(crystal.tick, !stack.isEmpty());
 
-		if(!stack.isEmpty()) {
-			GlStateManager.pushMatrix();
-			GlStateManager.enableRescaleNormal();
-			GlStateManager.enableBlend();
-			GlStateManager.translate(x + 0.5D, y + 0.45D, z + 0.5D);
+				GlStateManager.enableLighting();
+				GlStateManager.popMatrix();
 
-			GlStateManager.scale(0.5F, 0.5F, 0.5F);
-			GlStateManager.rotate(partialTicks + crystal.tick % 360F, 0F, 1F, 0F);
+				if(!stack.isEmpty()) {
+					GlStateManager.pushMatrix();
+					GlStateManager.enableRescaleNormal();
+					GlStateManager.enableBlend();
+					GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 
-			RenderBakery.renderItemStack(stack);
+					GlStateManager.scale(0.5F, 0.5F, 0.5F);
+					GlStateManager.rotate(partialTicks + crystal.tick % 360F, 0F, 1F, 0F);
 
-			GlStateManager.disableBlend();
-			GlStateManager.disableRescaleNormal();
-			GlStateManager.popMatrix();
+					RenderBakery.renderItemStack(stack);
+
+					GlStateManager.disableBlend();
+					GlStateManager.disableRescaleNormal();
+					GlStateManager.popMatrix();
+				}
+				break;
+			case 1:
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
+				GLHelper.lightMap(255F, 255F);
+				GlStateManager.disableLighting();
+				renderBeams(crystal.tick);
+				GlStateManager.enableLighting();
+				GlStateManager.popMatrix();
+				break;
 		}
 	}
 
@@ -72,12 +90,14 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 
 		renderFloatingSquares(tick, partialTicks);
 		renderGlyphs(tick, false);
-		renderWhiteCube(tick, partialTicks);
+		GLHelper.disableDepth();
+		renderBeams(tick);
+		GLHelper.enableDepth();
 
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 
-		BlendHelper.lightMap(prevU, prevV);
+		GLHelper.lightMap(prevU, prevV);
 	}
 
 	private void renderFloatingSquares(int age, float partialTicks) {
@@ -87,9 +107,9 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 
 		//Sides x 4
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		boolean side = true;
 		int tick = age;
 		for(int i = 0; i <= 90;) {
+			boolean side = i == 0;
 			for(int offset = i; offset <= 270; offset += i + 90, tick = side ? age : -age) {
 				GlStateManager.pushMatrix();
 
@@ -99,14 +119,12 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 
 				GlStateManager.popMatrix();
 			}
-			side = false;
 			i += 90;
 		}
 	}
 
 	private void renderGlyphs(int tick, boolean active) {
-		BlendHelper.lightMap(255F, 255F);
-		GlStateManager.disableCull();
+		GLHelper.lightMap(255F, 255F);
 
 		FrameSpriteResource sprite = active ? SpriteLibrary.BLUE_GLYPH : SpriteLibrary.RED_GLYPH;
 		sprite.bindManager();
@@ -114,18 +132,19 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 		double vOffset = sprite.getV();
 		double v = uv.getSecond();
 
+		GlStateManager.disableCull();
 		RenderBakery.renderCube(0.47F, 0F, 1F, v, v + vOffset);
 		GlStateManager.enableCull();
 	}
 
-	private void renderWhiteCube(int tick, float partialTicks) {
-		GlStateManager.disableTexture2D();
+	private void renderBeams(int tick) {
+		GlStateManager.enableBlend();
+		GlStateManager.disableCull();
+		GLHelper.BLEND_NORMAL.blend();
 
-		GlStateManager.rotate(tick % 360, 0, 1, 0);
-		GlStateManager.rotate(30.0f * (float) Math.sin(Math.toRadians(partialTicks / 3.0f + tick / 3 % 360)), 1, 0, 0);
-		GlStateManager.scale(0.25F, 0.25F, 0.25F);
-		RenderBakery.drawCube(0xFFFFFF, 1F);
+		RenderBakery.renderBeams((float) tick * 0.001F, 30, 0xFFFFFF, 0xFFFFFF, 0.18F);
 
-		GlStateManager.enableTexture2D();
+		GlStateManager.enableCull();
+		GlStateManager.disableBlend();
 	}
 }

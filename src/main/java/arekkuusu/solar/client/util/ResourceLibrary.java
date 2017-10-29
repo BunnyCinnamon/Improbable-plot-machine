@@ -101,9 +101,26 @@ public final class ResourceLibrary {
 		}
 	}
 
+	public enum ShaderLocation implements Location {
+		POST("post"),
+		PROGRAM("program");
+
+		private final String path;
+
+		ShaderLocation(String path) {
+			this.path = path;
+		}
+
+		@Override
+		public String getPath() {
+			return path + "/";
+		}
+	}
+
 	public enum AssetLocation {
 		MODELS("models"),
-		TEXTURES("textures");
+		TEXTURES("textures"),
+		SHADERS("shaders");
 
 		private final String path;
 

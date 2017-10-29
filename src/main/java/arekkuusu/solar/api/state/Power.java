@@ -8,6 +8,7 @@
 package arekkuusu.solar.api.state;
 
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.util.IStringSerializable;
 
 /**
@@ -18,6 +19,7 @@ public enum Power implements IStringSerializable {
 	ON, OFF;
 
 	public static final PropertyEnum<Power> POWER = PropertyEnum.create("power", Power.class);
+	public static final PropertyInteger POWER_AMOUNT = PropertyInteger.create("power", 0, 15);
 
 	public Power inverse() {
 		return this == ON ? OFF : ON;

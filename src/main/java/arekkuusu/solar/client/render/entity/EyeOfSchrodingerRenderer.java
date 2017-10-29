@@ -10,7 +10,7 @@ package arekkuusu.solar.client.render.entity;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.BlendHelper;
+import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -104,9 +104,9 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 				float brigthness = MathHelper.cos(schrodinger.ticksExisted * 0.05F);
 				if(brigthness < 0) brigthness *= -1;
 				brigthness *= 255F;
-				BlendHelper.lightMap(brigthness, brigthness);
+				GLHelper.lightMap(brigthness, brigthness);
 			} else {
-				BlendHelper.lightMap(255F, 255F);
+				GLHelper.lightMap(255F, 255F);
 			}
 			ParticleUtil.spawnTunnelingPhoton(schrodinger.world, schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ
 					, 0, 0, 0, rgb, 10, 1.5F);

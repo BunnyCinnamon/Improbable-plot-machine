@@ -27,4 +27,7 @@ public class LibNames {
 	public static final String QUANTUM_QUARTZ = "quantum_quartz";
 	public static final String Q_SQUARED = "q_squared";
 	public static final String THEOREMA = "theorema";
+	public static final String GRAVITY_INHIBITOR = "gravity_inhibitor";
+	public static final String HYPER_CONDUCTOR = "hyper_conductor";
+	public static final String ELECTRON_NODE = "electron_node";
 }

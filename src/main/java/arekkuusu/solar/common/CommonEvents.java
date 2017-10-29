@@ -52,6 +52,7 @@ public final class CommonEvents {
 
 	@SubscribeEvent
 	public static void loadQuantumData(WorldEvent.Load event) {
+		Solar.LOG.info("[WorldQuantumData] Loading Quantum Data");
 		WorldQuantumData.get(event.getWorld());
 	}
 }
