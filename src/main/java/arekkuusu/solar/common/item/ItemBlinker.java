@@ -15,11 +15,9 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,13 +44,11 @@ public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 				.ifAgrees(builder -> getInfo(builder, uuid)).build(tooltip));
 	}
 
-	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		if(FMLCommonHandler.instance().getSide() == Side.SERVER && !NBTHelper.hasTag(stack, SolarApi.QUANTUM_DATA)) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+		if(!world.isRemote && !NBTHelper.hasTag(stack, SolarApi.QUANTUM_DATA)) {
 			setKey(stack, UUID.randomUUID());
 		}
-		return super.initCapabilities(stack, nbt);
 	}
 
 	@Override

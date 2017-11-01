@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-import static arekkuusu.solar.api.state.Power.*;
+import static arekkuusu.solar.api.state.Power.POWER_AMOUNT;
 
 /**
  * Created by <Arekkuusu> on 25/10/2017.
@@ -33,7 +33,7 @@ public class BlockHyperConductor extends BlockBase {
 
 	public BlockHyperConductor() {
 		super(LibNames.HYPER_CONDUCTOR, FixedMaterial.DONT_MOVE);
-		setDefaultState(getDefaultState().withProperty(POWER, OFF));
+		setDefaultState(getDefaultState().withProperty(POWER_AMOUNT, 0));
 		setHardness(1F);
 		setTickRandomly(true);
 	}
@@ -54,7 +54,7 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		getTile(TileHyperConductor.class, world, pos).ifPresent(conductor -> {
-			if(state.getValue(POWER) == ON) {
+			if(state.getValue(POWER_AMOUNT) > 0) {
 				conductor.setPowered(false);
 			}
 		});
@@ -63,22 +63,22 @@ public class BlockHyperConductor extends BlockBase {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(POWER, OFF);
+		return getDefaultState().withProperty(POWER_AMOUNT, 0);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(POWER) == ON ? 0 : 1;
+		return state.getValue(POWER_AMOUNT);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(POWER, meta == 0 ? ON : OFF);
+		return getDefaultState().withProperty(POWER_AMOUNT, meta);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, POWER);
+		return new BlockStateContainer(this, POWER_AMOUNT);
 	}
 
 	@Override

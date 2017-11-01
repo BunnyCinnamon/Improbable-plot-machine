@@ -24,6 +24,8 @@ tile.phenomena.name=Phenomena
 tile.q_squared.name=Q²
 tile.theorema.name=Theorema
 tile.gravity_inhibitor.name=Gravity Inhibitor
+tile.hyper_conductor.name=Hyper Conductor
+tile.electron_node.name=Electron Node
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger

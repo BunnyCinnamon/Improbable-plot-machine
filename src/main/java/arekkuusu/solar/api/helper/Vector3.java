@@ -55,6 +55,10 @@ public class Vector3 {
 		return subtract(vec.x, vec.y, vec.z);
 	}
 
+	public Vector3 subtract(Vec3i vec) {
+		return subtract(vec.getX(), vec.getY(), vec.getZ());
+	}
+
 	public Vector3 subtract(double x, double y, double z) {
 		return add(-x, -y, -z);
 	}
@@ -65,6 +69,10 @@ public class Vector3 {
 
 	public Vector3 add(Vec3d vec) {
 		return add(vec.x, vec.y, vec.z);
+	}
+
+	public Vector3 add(Vec3i vec) {
+		return add(vec.getX(), vec.getY(), vec.getZ());
 	}
 
 	public Vector3 add(double x, double y, double z) {

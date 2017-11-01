@@ -40,6 +40,8 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		int layer = MinecraftForgeClient.getRenderPass();
 
+		final float prevU = OpenGlHelper.lastBrightnessX;
+		final float prevV = OpenGlHelper.lastBrightnessY;
 		switch(layer) {
 			case 0:
 				Optional<UUID> optional = mirror.getKey();
@@ -61,6 +63,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 				renderModel(mirror.tick, x, y, z);
 				break;
 		}
+		GLHelper.lightMap(prevU, prevV);
 	}
 
 	@Override

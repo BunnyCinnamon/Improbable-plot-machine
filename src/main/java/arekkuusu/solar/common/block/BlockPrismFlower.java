@@ -9,6 +9,7 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.common.block.tile.TilePrismFlower;
 import arekkuusu.solar.common.lib.LibNames;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
@@ -32,12 +33,14 @@ import net.minecraft.world.World;
 @SuppressWarnings("deprecation")
 public class BlockPrismFlower extends BlockBase {
 
-	private final AxisAlignedBB up = new AxisAlignedBB(0.3, 0, 0.3, 0.7, 1, 0.7);
-	private final AxisAlignedBB down = new AxisAlignedBB(0.3, 0, 0.3, 0.7, 1, 0.7);
-	private final AxisAlignedBB north = new AxisAlignedBB(0.3, 0.45, 0, 0.7, 0.9, 0.8);
-	private final AxisAlignedBB south = new AxisAlignedBB(0.3, 0.45, 0.2, 0.7, 0.9, 1);
-	private final AxisAlignedBB east = new AxisAlignedBB(0.2, 0.45, 0.3, 1, 0.9, 0.7);
-	private final AxisAlignedBB west = new AxisAlignedBB(0, 0.45, 0.3, 0.8, 0.9, 0.7);
+	private final ImmutableMap<EnumFacing, AxisAlignedBB> bbMap = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0.3, 0, 0.3, 0.7, 1, 0.7))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.3, 0, 0.3, 0.7, 1, 0.7))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.3, 0.45, 0, 0.7, 0.9, 0.8))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.3, 0.45, 0.2, 0.7, 0.9, 1))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.2, 0.45, 0.3, 1, 0.9, 0.7))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0.45, 0.3, 0.8, 0.9, 0.7))
+			.build();
 
 	public BlockPrismFlower() {
 		super(LibNames.PRISM_FLOWER, Material.PLANTS);
@@ -103,20 +106,7 @@ public class BlockPrismFlower extends BlockBase {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		switch(facing) {
-			case UP:
-				return up;
-			case NORTH:
-				return north;
-			case SOUTH:
-				return south;
-			case WEST:
-				return west;
-			case EAST:
-				return east;
-			default:
-				return down;
-		}
+		return bbMap.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 
 	@Override

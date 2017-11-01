@@ -80,7 +80,6 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-			//blinker.remove();
 			ItemStack stack = getItem(world, pos, state);
 			spawnAsEntity(world, pos, stack);
 		});
@@ -193,7 +192,6 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-
 		return bbMap.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 

@@ -15,6 +15,7 @@ import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -45,6 +46,16 @@ public class BlockElectronNode extends BlockBase {
 		setDefaultState(getDefaultState().withProperty(POWER_AMOUNT, 0));
 		setLightLevel(0.2F);
 		setHardness(1F);
+	}
+
+	@Override
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(worldIn, pos, state);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 	}
 
 	@Override

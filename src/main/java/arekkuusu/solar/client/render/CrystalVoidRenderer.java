@@ -36,6 +36,8 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 	void renderTile(TileCrystalVoid crystal, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		int layer = MinecraftForgeClient.getRenderPass();
 
+		final float prevU = OpenGlHelper.lastBrightnessX;
+		final float prevV = OpenGlHelper.lastBrightnessY;
 		switch(layer) {
 			case 0:
 				ItemStack stack = crystal.getStack();
@@ -45,10 +47,12 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 				GlStateManager.disableLighting();
 
 				renderFloatingSquares(crystal.tick, partialTicks);
+				GLHelper.lightMap(255F, 255F);
 				renderGlyphs(crystal.tick, !stack.isEmpty());
 
 				GlStateManager.enableLighting();
 				GlStateManager.popMatrix();
+				GLHelper.lightMap(prevU, prevV);
 
 				if(!stack.isEmpty()) {
 					GlStateManager.pushMatrix();
@@ -74,6 +78,7 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 				renderBeams(crystal.tick);
 				GlStateManager.enableLighting();
 				GlStateManager.popMatrix();
+				GLHelper.lightMap(prevU, prevV);
 				break;
 		}
 	}
@@ -89,6 +94,7 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 		GlStateManager.disableLighting();
 
 		renderFloatingSquares(tick, partialTicks);
+		GLHelper.lightMap(255F, 255F);
 		renderGlyphs(tick, false);
 		GLHelper.disableDepth();
 		renderBeams(tick);
@@ -124,8 +130,6 @@ public class CrystalVoidRenderer extends SpecialModelRenderer<TileCrystalVoid> {
 	}
 
 	private void renderGlyphs(int tick, boolean active) {
-		GLHelper.lightMap(255F, 255F);
-
 		FrameSpriteResource sprite = active ? SpriteLibrary.BLUE_GLYPH : SpriteLibrary.RED_GLYPH;
 		sprite.bindManager();
 		Tuple<Double, Double> uv = sprite.getUVFrame((int) (tick * 0.15F));

@@ -13,6 +13,7 @@ import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TilePrismFlower;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,16 +28,16 @@ public class TilePrismFlowerRenderer extends TileEntitySpecialRenderer<TilePrism
 	@Override
 	public void render(TilePrismFlower flower, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		if(!flower.getWorld().isBlockLoaded(flower.getPos(), false)) return;
+		final float prevU = OpenGlHelper.lastBrightnessX;
+		final float prevV = OpenGlHelper.lastBrightnessY;
 
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
 
-		Vector3 offset = flower.getOffSet(x, y, z);
+		Vector3 offset = flower.getOffSet().add(x, y, z);
 		GlStateManager.translate(offset.x, offset.y, offset.z);
-
 		GlStateManager.rotate((flower.tick * 0.25F) % 360, 1, 1, 1);
-
 		GlStateManager.scale(0.75F, 0.75F, 0.75F);
 
 		float brightness = 255F * flower.brightness;
@@ -50,5 +51,6 @@ public class TilePrismFlowerRenderer extends TileEntitySpecialRenderer<TilePrism
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
+		GLHelper.lightMap(prevU, prevV);
 	}
 }

@@ -52,7 +52,17 @@ public class ParticleBolt extends ParticleBase {
 				ImmutableVector3 to = segment.to.toImmutable();
 
 				Vector3 mid = average(from, to);
-				mid.add(to.subtract(from).normalize().multiply(Vector3.getRandomVec(offset)));
+				Vector3 midOffset = to.subtract(from);
+				if(midOffset.x == 0) {
+					midOffset.x = 2D * rand.nextDouble();
+				}
+				if(midOffset.y == 0) {
+					midOffset.y = 2D * rand.nextDouble();
+				}
+				if(midOffset.z == 0) {
+					midOffset.z = 2D * rand.nextDouble();
+				}
+				mid.add(midOffset.normalize().multiply(Vector3.getRandomVec(offset)));
 
 				if(branch && rand.nextInt(5) == 0) {
 					Vector3 direction = mid.copy().subtract(from);
@@ -87,11 +97,9 @@ public class ParticleBolt extends ParticleBase {
 	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		Tessellator.getInstance().draw();
 
-		GlStateManager.pushAttrib();
-		GlStateManager.enableTexture2D();
-		segments.forEach(BoltSegment::render);
 		GlStateManager.disableTexture2D();
-		GlStateManager.popAttrib();
+		segments.forEach(BoltSegment::render);
+		GlStateManager.enableTexture2D();
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 	}

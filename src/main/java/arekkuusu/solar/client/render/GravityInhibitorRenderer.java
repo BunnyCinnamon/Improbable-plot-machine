@@ -36,7 +36,6 @@ public class GravityInhibitorRenderer extends SpecialModelRenderer<TileGravityIn
 
 	private void renderModel(int tick, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
-		GlStateManager.enableBlend();
 		GlStateManager.disableCull();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 		GlStateManager.rotate(tick % 360, 0, 1, tick % 720);
@@ -47,7 +46,6 @@ public class GravityInhibitorRenderer extends SpecialModelRenderer<TileGravityIn
 
 			float size = MathHelper.sin(relativeTime);
 			size = (size < 0 ? -size : size);
-			GlStateManager.color(1F, 1F, 1F, 1F - size * 0.25F);
 			size += 0.1F;
 			size *= 0.2F;
 
@@ -77,7 +75,6 @@ public class GravityInhibitorRenderer extends SpecialModelRenderer<TileGravityIn
 		}
 
 		GlStateManager.enableCull();
-		GlStateManager.disableBlend();
 		GlStateManager.popMatrix();
 	}
 }

@@ -36,13 +36,13 @@ import java.util.Optional;
  */
 public class TileGravityHopper extends TileBase implements ITickable {
 
-	private static final Map<EnumFacing, Vec3d> FACING_MAP = ImmutableMap.<EnumFacing, Vec3d>builder()
-			.put(EnumFacing.UP, new Vec3d(0.5D, 0.75D, 0.5D))
-			.put(EnumFacing.DOWN, new Vec3d(0.5D, 0.25D, 0.5D))
-			.put(EnumFacing.NORTH, new Vec3d(0.5D, 0.5D, 0.25D))
-			.put(EnumFacing.SOUTH, new Vec3d(0.5D, 0.5D, 0.75D))
-			.put(EnumFacing.EAST, new Vec3d(0.75D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, new Vec3d(0.25D, 0.5D, 0.5D))
+	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
+			.put(EnumFacing.UP, new Vector3(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.DOWN, new Vector3(0.5D, 0.25D, 0.5D))
+			.put(EnumFacing.NORTH, new Vector3(0.5D, 0.5D, 0.25D))
+			.put(EnumFacing.SOUTH, new Vector3(0.5D, 0.5D, 0.75D))
+			.put(EnumFacing.EAST, new Vector3(0.75D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, new Vector3(0.25D, 0.5D, 0.5D))
 			.build();
 	private final GravityHopperItemHandler handler;
 	private boolean powered;
@@ -130,17 +130,17 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private void spawnParticles() {
-		if(tick % 160 == 0) {
+		if(tick % 180 == 0) {
 			EnumFacing facing = getFacing();
 
-			Vector3 from = new Vector3(getOffSet(facing));
+			Vector3 from = getOffSet(facing);
 			BlockPos target = pos.offset(facing.getOpposite(), 9);
 			Vector3 to = new Vector3(target).add(0.5D, 0.5D, 0.5D);
 
 			ParticleUtil.spawnNeutronBlast(world, from, 0.025D, to, 0xFF0303, 0.25F, true);
 		} else if(tick % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing();
-			Vec3d back = getOffSet(facing.getOpposite());
+			Vector3 back = getOffSet(facing.getOpposite());
 
 			double speed = world.rand.nextDouble() * -0.015D;
 			Vec3d vec = new Vec3d(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
@@ -190,8 +190,8 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 
-	private Vec3d getOffSet(EnumFacing facing) {
-		return FACING_MAP.get(facing).addVector(pos.getX(), pos.getY(), pos.getZ());
+	private Vector3 getOffSet(EnumFacing facing) {
+		return FACING_MAP.get(facing).copy().add(pos);
 	}
 
 	@Override

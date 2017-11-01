@@ -30,10 +30,10 @@ public class TilePrismFlower extends TileBase implements ITickable {
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
 			.put(EnumFacing.UP, new Vector3(0.5D, 0.25D, 0.5D))
 			.put(EnumFacing.DOWN, new Vector3(0.5D, 0.75D, 0.5D))
-			.put(EnumFacing.NORTH, new Vector3(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.NORTH, new Vector3(0.5D, 0.75D, 0.55D))
 			.put(EnumFacing.SOUTH, new Vector3(0.5D, 0.75D, 0.4D))
 			.put(EnumFacing.EAST, new Vector3(0.4D, 0.75D, 0.5D))
-			.put(EnumFacing.WEST, new Vector3(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.WEST, new Vector3(0.55D, 0.75D, 0.5D))
 			.build();
 	private final Comparator<EntityLivingBase> comparator = (compared, entity) -> {
 		double x = distanceTo(compared);
@@ -68,7 +68,7 @@ public class TilePrismFlower extends TileBase implements ITickable {
 	}
 
 	private void spawnParticles() {
-		Vector3 offset = getOffSet(pos.getX(), pos.getY(), pos.getZ());
+		Vector3 offset = getOffSet().add(pos);
 		double ytho = world.rand.nextDouble() * 0.2;
 		double idk = world.rand.nextDouble() * 0.2;
 
@@ -84,10 +84,9 @@ public class TilePrismFlower extends TileBase implements ITickable {
 		return Math.sqrt(squared);
 	}
 
-	public Vector3 getOffSet(double x, double y, double z) {
+	public Vector3 getOffSet() {
 		EnumFacing facing = getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
-
-		return FACING_MAP.get(facing).add(x, y, z);
+		return FACING_MAP.get(facing).copy();
 	}
 
 	@Override
