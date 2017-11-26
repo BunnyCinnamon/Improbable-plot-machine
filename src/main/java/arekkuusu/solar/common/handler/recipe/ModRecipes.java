@@ -14,7 +14,7 @@ import net.minecraftforge.registries.IForgeRegistry;
  * Created by <Arekkuusu> on 16/08/2017.
  * It's distributed as part of Solar.
  */
-public class RecipeHandler {
+public final class ModRecipes {
 
 	public static void register(IForgeRegistry<IRecipe> registry) {
 		registry.register(new EntangledCloningRecipe());

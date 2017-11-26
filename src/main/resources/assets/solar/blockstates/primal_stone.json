@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-	"model": "solar:primal_stone",
+    "textures": {
+	  "all": "solar:blocks/primal_stone"
+	},
+	"model": "cube_all",
 	"uvlock": false
   },
   "variants": {

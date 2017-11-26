@@ -13,7 +13,7 @@ import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileCrystalVoid;
 import arekkuusu.solar.common.lib.LibNames;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -30,8 +30,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
-
 /**
  * Created by <Arekkuusu> on 27/08/2017.
  * It's distributed as part of Solar.
@@ -39,7 +37,7 @@ import javax.annotation.Nullable;
 @SuppressWarnings("deprecation")
 public class BlockCrystalVoid extends BlockBase {
 
-	private final AxisAlignedBB box = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
 	public BlockCrystalVoid() {
 		super(LibNames.CRYSTAL_VOID, FixedMaterial.BREAK);
@@ -100,7 +98,7 @@ public class BlockCrystalVoid extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return box;
+		return BB;
 	}
 
 	@Override

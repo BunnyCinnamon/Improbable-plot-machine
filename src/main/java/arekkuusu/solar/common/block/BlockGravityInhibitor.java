@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings("deprecation")
 public class BlockGravityInhibitor extends BlockBase {
 
-	private final AxisAlignedBB box = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
 
 	public BlockGravityInhibitor() {
 		super(LibNames.GRAVITY_INHIBITOR, FixedMaterial.BREAK);
@@ -57,7 +57,7 @@ public class BlockGravityInhibitor extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return box;
+		return BB;
 	}
 
 	@Override

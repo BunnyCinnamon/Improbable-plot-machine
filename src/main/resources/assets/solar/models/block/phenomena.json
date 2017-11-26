@@ -1,6 +1,6 @@
 {
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "solar:blocks/phenomena"
-  }
+	"parent": "block/cube_all",
+	"textures": {
+	  "all": "solar:blocks/phenomena"
+	}
 }

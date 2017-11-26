@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "solar:blocks/ashen/ashen_solid",
+        "down": "solar:blocks/ashen/ashen_blank",
+        "up": "solar:blocks/ashen/ashen_blank",
+        "north": "solar:blocks/ashen/ashen_side",
+        "east": "solar:blocks/ashen/ashen_side_",
+        "south": "solar:blocks/ashen/ashen_blank",
+        "west": "solar:blocks/ashen/ashen_blank"
+    }
+}

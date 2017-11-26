@@ -11,14 +11,13 @@ import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 /**
  * Created by <Arekkuusu> on 08/07/2017.
  * It's distributed as part of Solar.
  */
-public class ModEntities {
+public final class ModEntities {
 
 	private static int id;
 
@@ -28,9 +27,6 @@ public class ModEntities {
 		register(EntityQuingentilliardItem.class, "quingentilliard_item");
 		register(EntityQuantumQuartzItem.class, "quantum_quartz");
 		register(EntityEyeOfSchrodinger.class, "eye_of_schrodinger", 0x222222);
-
-		//Loot Tables
-		LootTableList.register(getLocation("schrodinger_eye"));
 	}
 
 	private static <T extends Entity> void register(Class<T> clazz, String name) {

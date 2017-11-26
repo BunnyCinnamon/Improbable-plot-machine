@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 @SuppressWarnings("deprecation")
 public class BlockPrismFlower extends BlockBase {
 
-	private final ImmutableMap<EnumFacing, AxisAlignedBB> bbMap = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0.3, 0, 0.3, 0.7, 1, 0.7))
 			.put(EnumFacing.DOWN, new AxisAlignedBB(0.3, 0, 0.3, 0.7, 1, 0.7))
 			.put(EnumFacing.NORTH, new AxisAlignedBB(0.3, 0.45, 0, 0.7, 0.9, 0.8))
@@ -106,7 +106,7 @@ public class BlockPrismFlower extends BlockBase {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		return bbMap.getOrDefault(facing, FULL_BLOCK_AABB);
+		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 
 	@Override

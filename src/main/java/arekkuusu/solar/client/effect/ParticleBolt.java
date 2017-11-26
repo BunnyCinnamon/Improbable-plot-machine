@@ -54,13 +54,13 @@ public class ParticleBolt extends ParticleBase {
 				Vector3 mid = average(from, to);
 				Vector3 midOffset = to.subtract(from);
 				if(midOffset.x == 0) {
-					midOffset.x = 2D * rand.nextDouble();
+					midOffset.x = 4D * rand.nextDouble();
 				}
 				if(midOffset.y == 0) {
-					midOffset.y = 2D * rand.nextDouble();
+					midOffset.y = 4D * rand.nextDouble();
 				}
 				if(midOffset.z == 0) {
-					midOffset.z = 2D * rand.nextDouble();
+					midOffset.z = 4D * rand.nextDouble();
 				}
 				mid.add(midOffset.normalize().multiply(Vector3.getRandomVec(offset)));
 

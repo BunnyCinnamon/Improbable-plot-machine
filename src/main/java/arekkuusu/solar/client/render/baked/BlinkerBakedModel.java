@@ -8,7 +8,7 @@
 package arekkuusu.solar.client.render.baked;
 
 import arekkuusu.solar.api.helper.Vector3;
-import arekkuusu.solar.api.state.Power;
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -56,7 +56,7 @@ public class BlinkerBakedModel extends BrightBakedModel {
 	protected List<BakedQuad> getQuads(IBlockState state) {
 		List<BakedQuad> quads = new ArrayList<>();
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		boolean on = state.getValue(Power.POWER) == Power.ON;
+		boolean on = state.getValue(State.ACTIVE);
 
 		switch(facing) {
 			case DOWN:

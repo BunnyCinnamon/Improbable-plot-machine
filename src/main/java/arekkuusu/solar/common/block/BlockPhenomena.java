@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.material.FixedMaterial;
-import arekkuusu.solar.api.state.Power;
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
@@ -32,11 +32,11 @@ import net.minecraftforge.common.property.Properties;
 @SuppressWarnings("deprecation")
 public class BlockPhenomena extends BlockBase {
 
-	private final AxisAlignedBB box = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+	private static final AxisAlignedBB EMPTY_BB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
 	public BlockPhenomena() {
 		super(LibNames.PHENOMENA, FixedMaterial.BREAK);
-		setDefaultState(getDefaultState().withProperty(Power.POWER, Power.ON));
+		setDefaultState(getDefaultState().withProperty(State.ACTIVE, true));
 		setHarvestLevel("pickaxe", 3);
 		setHardness(4F);
 	}
@@ -59,29 +59,29 @@ public class BlockPhenomena extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		Power power = state.getValue(Power.POWER);
-		return power == Power.OFF ? box : FULL_BLOCK_AABB;
+		boolean power = state.getValue(State.ACTIVE);
+		return !power ? EMPTY_BB : FULL_BLOCK_AABB;
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		Power power = state.getValue(Power.POWER);
-		return power == Power.OFF ? NULL_AABB : FULL_BLOCK_AABB;
+		boolean power = state.getValue(State.ACTIVE);
+		return !power ? NULL_AABB : FULL_BLOCK_AABB;
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(Power.POWER).ordinal();
+		return state.getValue(State.ACTIVE) ? 0 : 1;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(Power.POWER, Power.values()[meta]);
+		return getDefaultState().withProperty(State.ACTIVE, meta == 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new ExtendedBlockState(this, new IProperty[]{Power.POWER}, new IUnlistedProperty[]{Properties.AnimationProperty});
+		return new ExtendedBlockState(this, new IProperty[]{State.ACTIVE}, new IUnlistedProperty[]{Properties.AnimationProperty});
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class BlockPhenomena extends BlockBase {
 
 	@Override
 	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(Power.POWER) == Power.ON ? 3 : 0;
+		return state.getValue(State.ACTIVE) ? 3 : 0;
 	}
 
 	@Override

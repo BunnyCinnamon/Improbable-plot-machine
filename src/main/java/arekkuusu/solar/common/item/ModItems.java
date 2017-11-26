@@ -20,7 +20,7 @@ import net.minecraftforge.registries.IForgeRegistry;
  * It's distributed as part of Solar.
  */
 @ObjectHolder(LibMod.MOD_ID)
-public class ModItems {
+public final class ModItems {
 
 	private static final Item PLACE_HOLDER = new Item();
 	//--------------------------------Items--------------------------------//
@@ -45,6 +45,7 @@ public class ModItems {
 		registry.register(itemBlock(ModBlocks.GRAVITY_INHIBITOR));
 		registry.register(itemBlock(ModBlocks.HYPER_CONDUCTOR));
 		registry.register(itemBlock(ModBlocks.ELECTRON_NODE));
+		registry.register(itemBlock(ModBlocks.ASHEN));
 	}
 
 	@SuppressWarnings("ConstantConditions")

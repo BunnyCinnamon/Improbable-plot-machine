@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 @SuppressWarnings("deprecation")
 public class BlockSingularity extends BlockBase {
 
-	private final AxisAlignedBB box = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
 	public BlockSingularity() {
 		super(LibNames.SINGULARITY, FixedMaterial.BREAK);
@@ -50,7 +50,7 @@ public class BlockSingularity extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return box;
+		return BB;
 	}
 
 	@Override

@@ -8,10 +8,12 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.network.PacketHandler;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -21,15 +23,13 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.HashSet;
 
-import static arekkuusu.solar.api.state.Power.POWER_AMOUNT;
-
 /**
  * Created by <Arekkuusu> on 25/10/2017.
  * It's distributed as part of Solar.
  */
 public class TileHyperConductor extends TileBase implements ITickable {
 
-	private HashSet<BlockPos> electrons = new HashSet<>();
+	private HashSet<BlockPos> electrons = Sets.newHashSet();
 	private boolean needsUpdate;
 	private boolean powered;
 	private int tick;
@@ -57,13 +57,13 @@ public class TileHyperConductor extends TileBase implements ITickable {
 			PacketHandler.updatePosition(world, pos);
 			needsUpdate = false;
 		}
-		electrons.removeIf(pos -> !world.isBlockLoaded(pos) || world.getBlockState(pos).getBlock() != ModBlocks.ELECTRON_NODE);
-		if(world.isRemote && isPoweredLazy() && tick % 2 == 0 && !electrons.isEmpty()) {
+		electrons.removeIf(pos -> world.getBlockState(pos).getBlock() != ModBlocks.ELECTRON_NODE);
+		if(world.isRemote && isPoweredLazy() && tick++ % 2 == 0 && !electrons.isEmpty()) {
 			int index = world.rand.nextInt(electrons.size());
 			int i = 0;
 
 			for(BlockPos pos : electrons) {
-				if(i == index && world.rand.nextInt(2) == 0) {
+				if(world.isBlockLoaded(pos) && i++ == index && world.rand.nextInt(2) == 0) {
 					Vector3 from = new Vector3(getPos()).add(0.5D, 0.5D, 0.5D);
 					Vector3 to = new Vector3(pos).add(0.5D, 0.5D, 0.5D);
 
@@ -72,10 +72,8 @@ public class TileHyperConductor extends TileBase implements ITickable {
 					ParticleUtil.spawnBolt(world, from, to, (int) distance + 2, (float) (0.45D * distance), 0x5194FF, true);
 					break;
 				}
-				i++;
 			}
 		}
-		tick++;
 	}
 
 	public void hyperInduceAtmosphere() {
@@ -90,12 +88,12 @@ public class TileHyperConductor extends TileBase implements ITickable {
 	}
 
 	private void electrifyElectron(IBlockState state, BlockPos pos) {
-		int power = state.getValue(POWER_AMOUNT);
+		int power = state.getValue(State.POWER);
 		if(power == 0) {
 			power = calculatePower(pos);
 		} else power = 0;
 
-		world.setBlockState(pos, state.withProperty(POWER_AMOUNT, power));
+		world.setBlockState(pos, state.withProperty(State.POWER, power));
 	}
 
 	private int calculatePower(BlockPos pos) {
@@ -110,21 +108,20 @@ public class TileHyperConductor extends TileBase implements ITickable {
 	}
 
 	public void addElectron(IBlockState state, BlockPos pos) {
-		if(state.getBlock() == ModBlocks.ELECTRON_NODE && !electrons.contains(pos)) {
+		if(state.getBlock() == ModBlocks.ELECTRON_NODE && electrons.add(pos)) {
 			if(isPoweredLazy()) { //If the tile is ON, then it must inverse the electron node
 				electrifyElectron(state, pos);
-			} else if(state.getValue(POWER_AMOUNT) > 0) { //If the electron node is ON, then it should be powered according to its distance to the tile
-				world.setBlockState(pos, state.withProperty(POWER_AMOUNT, calculatePower(pos)));
+			} else if(state.getValue(State.POWER) > 0) { //If the electron node is ON, then it should be powered according to its distance to the tile
+				world.setBlockState(pos, state.withProperty(State.POWER, calculatePower(pos)));
 			}
 
-			this.electrons.add(pos);
 			this.markDirty();
 			needsUpdate = true;
 		}
 	}
 
 	public int getPowerLazy() {
-		return getStateValue(POWER_AMOUNT, pos).orElse(0);
+		return getStateValue(State.POWER, pos).orElse(0);
 	}
 
 	public boolean isPoweredLazy() {
@@ -137,7 +134,7 @@ public class TileHyperConductor extends TileBase implements ITickable {
 
 	public void setPowered(boolean powered) {
 		IBlockState state = world.getBlockState(pos);
-		world.setBlockState(pos, state.withProperty(POWER_AMOUNT, getRedstonePower()));
+		world.setBlockState(pos, state.withProperty(State.POWER, getRedstonePower()));
 		this.hyperInduceAtmosphere();
 		this.powered = powered;
 	}

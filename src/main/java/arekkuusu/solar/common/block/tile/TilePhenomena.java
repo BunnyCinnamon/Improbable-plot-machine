@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHandler;
@@ -26,8 +27,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
-
-import static arekkuusu.solar.api.state.Power.*;
 
 /**
  * Created by <Arekkuusu> on 08/09/2017.
@@ -81,7 +80,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 
 	private void inverse() {
 		IBlockState state = world.getBlockState(pos);
-		world.setBlockState(pos, state.withProperty(POWER, state.getValue(POWER).inverse()));
+		world.setBlockState(pos, state.withProperty(State.ACTIVE, !state.getValue(State.ACTIVE)));
 	}
 
 	private void propagate() {
@@ -110,7 +109,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 	}
 
 	public boolean isInvisible() {
-		return getStateValue(POWER, pos).orElse(ON) == OFF;
+		return !getStateValue(State.ACTIVE, pos).orElse(true);
 	}
 
 	@Override

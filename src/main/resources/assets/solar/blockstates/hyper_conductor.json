@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-	"model": "solar:hyper_conductor",
+    "textures": {
+	  "all": "solar:blocks/hyper_conductor"
+	},
+	"model": "cube_all",
 	"uvlock": false
   },
   "variants": {

@@ -15,6 +15,7 @@ import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQSquared;
 import arekkuusu.solar.common.lib.LibNames;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -35,6 +36,7 @@ public class BlockQSquared extends BlockBase {
 		setHarvestLevel("pickaxe", 1);
 		setLightLevel(1F);
 		setHardness(2F);
+		setSound(SoundType.GLASS);
 	}
 
 	@Override

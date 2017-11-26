@@ -17,8 +17,8 @@ import javax.annotation.Nullable;
  */
 public class Pair<T> {
 
-	private T l;
-	private T r;
+	public T l;
+	public T r;
 
 	public Pair(){}
 
@@ -28,15 +28,15 @@ public class Pair<T> {
 	}
 
 	public Pair<T> offer(T t) {
-		if(l == null && !equalsR(t)) setL(t);
-		else if(r == null && !equalsL(t)) setR(t);
+		if(l == null && !equalsR(t)) l = t;
+		else if(r == null && !equalsL(t)) r = t;
 
 		return this;
 	}
 
 	public Pair<T> remove(T t) {
-		if(equalsL(t)) setL(null);
-		else if(equalsR(t)) setR(null);
+		if(equalsL(t)) l = null;
+		else if(equalsR(t)) r = null;
 
 		return this;
 	}
@@ -47,24 +47,6 @@ public class Pair<T> {
 		if(equalsR(t)) return l;
 
 		return null;
-	}
-
-	@Nullable
-	public T getL() {
-		return l;
-	}
-
-	public void setL(@Nullable T l) {
-		this.l = l;
-	}
-
-	@Nullable
-	public T getR() {
-		return r;
-	}
-
-	public void setR(@Nullable T r) {
-		this.r = r;
 	}
 
 	@Override

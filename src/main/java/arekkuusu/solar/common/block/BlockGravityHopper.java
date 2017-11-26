@@ -14,12 +14,10 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileGravityHopper;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -38,7 +36,7 @@ import static net.minecraft.block.BlockDirectional.FACING;
 @SuppressWarnings("deprecation")
 public class BlockGravityHopper extends BlockBase {
 
-	private final AxisAlignedBB box = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
 	public BlockGravityHopper() {
 		super(LibNames.GRAVITY_HOPPER, FixedMaterial.DONT_MOVE);
@@ -113,7 +111,7 @@ public class BlockGravityHopper extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return box;
+		return BB;
 	}
 
 	@Override

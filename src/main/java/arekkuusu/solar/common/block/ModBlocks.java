@@ -12,7 +12,6 @@ import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -22,7 +21,7 @@ import net.minecraftforge.registries.IForgeRegistry;
  * It's distributed as part of Solar.
  */
 @ObjectHolder(LibMod.MOD_ID)
-public class ModBlocks {
+public final class ModBlocks {
 
 	private static final Block PLACE_HOLDER = new Block(Material.AIR);
 	//--------------------------------Blocks--------------------------------//
@@ -41,6 +40,7 @@ public class ModBlocks {
 	public static final Block GRAVITY_INHIBITOR = PLACE_HOLDER;
 	public static final Block HYPER_CONDUCTOR = PLACE_HOLDER;
 	public static final Block ELECTRON_NODE = PLACE_HOLDER;
+	public static final Block ASHEN = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -58,6 +58,7 @@ public class ModBlocks {
 		registry.register(new BlockGravityInhibitor());
 		registry.register(new BlockHyperConductor());
 		registry.register(new BlockElectronNode());
+		registry.register(new BlockAshen());
 		registerTiles();
 	}
 

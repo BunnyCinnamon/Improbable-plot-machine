@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -19,8 +20,6 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.Map;
 import java.util.UUID;
-
-import static arekkuusu.solar.api.state.Power.*;
 
 /**
  * Created by <Arekkuusu> on 03/09/2017.
@@ -118,7 +117,7 @@ public class TileBlinker extends TileRelativeBase<TileBlinker> implements ITicka
 	}
 
 	private boolean isPoweredLazy() {
-		return getStateValue(POWER, pos).orElse(OFF) == ON;
+		return getStateValue(State.ACTIVE, pos).orElse(false);
 	}
 
 	private EnumFacing getFacing() {

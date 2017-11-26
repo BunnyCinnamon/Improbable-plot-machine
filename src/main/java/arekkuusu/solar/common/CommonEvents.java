@@ -9,7 +9,7 @@ package arekkuusu.solar.common;
 
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
-import arekkuusu.solar.common.handler.recipe.RecipeHandler;
+import arekkuusu.solar.common.handler.recipe.ModRecipes;
 import arekkuusu.solar.common.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -40,7 +40,7 @@ public final class CommonEvents {
 
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-		RecipeHandler.register(event.getRegistry());
+		ModRecipes.register(event.getRegistry());
 	}
 
 	@SubscribeEvent

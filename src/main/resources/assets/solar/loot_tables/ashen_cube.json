@@ -1,0 +1,28 @@
+{
+  "pools": [
+	{
+	  "name": "solar:ashen_cube",
+	  "rolls": 1,
+	  "entries": [
+		{
+		  "type": "item",
+		  "name": "solar:quantum_quartz",
+		  "weight": 1,
+		  "functions": [
+			{
+			  "function": "minecraft:set_count",
+			  "count": {
+				"min": 0,
+				"max": 1
+			  }
+			}
+		  ]
+		},
+        {
+          "type": "empty",
+          "weight": 35
+        }
+	  ]
+	}
+  ]
+}

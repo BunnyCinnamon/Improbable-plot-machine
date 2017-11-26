@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
@@ -22,8 +23,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-import static arekkuusu.solar.api.state.Power.POWER_AMOUNT;
-
 /**
  * Created by <Arekkuusu> on 25/10/2017.
  * It's distributed as part of Solar.
@@ -33,7 +32,7 @@ public class BlockHyperConductor extends BlockBase {
 
 	public BlockHyperConductor() {
 		super(LibNames.HYPER_CONDUCTOR, FixedMaterial.DONT_MOVE);
-		setDefaultState(getDefaultState().withProperty(POWER_AMOUNT, 0));
+		setDefaultState(getDefaultState().withProperty(State.POWER, 0));
 		setHardness(1F);
 		setTickRandomly(true);
 	}
@@ -54,7 +53,7 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		getTile(TileHyperConductor.class, world, pos).ifPresent(conductor -> {
-			if(state.getValue(POWER_AMOUNT) > 0) {
+			if(state.getValue(State.POWER) > 0) {
 				conductor.setPowered(false);
 			}
 		});
@@ -63,22 +62,22 @@ public class BlockHyperConductor extends BlockBase {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(POWER_AMOUNT, 0);
+		return getDefaultState().withProperty(State.POWER, 0);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(POWER_AMOUNT);
+		return state.getValue(State.POWER);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(POWER_AMOUNT, meta);
+		return getDefaultState().withProperty(State.POWER, meta);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, POWER_AMOUNT);
+		return new BlockStateContainer(this, State.POWER);
 	}
 
 	@Override

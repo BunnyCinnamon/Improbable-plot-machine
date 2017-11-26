@@ -9,7 +9,7 @@ package arekkuusu.solar.common.entity;
 
 import arekkuusu.solar.common.entity.ai.FlightMoveHelper;
 import arekkuusu.solar.common.entity.ai.FlightPathNavigate;
-import arekkuusu.solar.common.lib.LibMod;
+import arekkuusu.solar.common.handler.gen.ModGen;
 import com.google.common.base.Predicate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -107,7 +107,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 
 	@Override
 	protected ResourceLocation getLootTable() {
-		return new ResourceLocation(LibMod.MOD_ID, "schrodinger_eye");
+		return ModGen.SCHRODINGER_LOOT;
 	}
 
 	@Override

@@ -10,7 +10,7 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.material.FixedMaterial;
-import arekkuusu.solar.api.state.Power;
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.render.baked.BlinkerBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -48,7 +48,7 @@ import static net.minecraft.block.BlockDirectional.FACING;
 @SuppressWarnings("deprecation")
 public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
-	private final ImmutableMap<EnumFacing, AxisAlignedBB> bbMap = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0.125, 0.9375, 0.125, 0.875, 1, 0.875))
 			.put(EnumFacing.DOWN, new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.0625, 0.875))
 			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0.125, 0, 0.875, 0.875, 0.0625))
@@ -59,7 +59,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
 	public BlockBlinker()  {
 		super(LibNames.BLINKER, FixedMaterial.BREAK);
-		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Power.POWER, Power.OFF));
+		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(State.ACTIVE, false));
 		setHarvestLevel("pickaxe", 1);
 		setHardness(2F);
 		setLightLevel(0.2F);
@@ -121,7 +121,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		getTile(TileBlinker.class, world, pos).ifPresent(tile ->
-				world.setBlockState(pos, state.withProperty(Power.POWER, TileBlinker.isPowered(tile) ? Power.ON : Power.OFF))
+				world.setBlockState(pos, state.withProperty(State.ACTIVE, TileBlinker.isPowered(tile)))
 		);
 	}
 
@@ -138,14 +138,14 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(Power.POWER, Power.OFF);
+		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(State.ACTIVE, false);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = state.getValue(BlockDirectional.FACING).ordinal();
 
-		if(state.getValue(Power.POWER) == Power.ON) {
+		if(state.getValue(State.ACTIVE)) {
 			i |= 8;
 		}
 
@@ -156,12 +156,12 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing enumfacing = EnumFacing.values()[meta & 7];
 
-		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(Power.POWER, (meta & 8) > 0 ? Power.ON : Power.OFF);
+		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(State.ACTIVE, (meta & 8) > 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING, Power.POWER);
+		return new BlockStateContainer(this, BlockDirectional.FACING, State.ACTIVE);
 	}
 
 	@Override
@@ -192,7 +192,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		return bbMap.getOrDefault(facing, FULL_BLOCK_AABB);
+		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 
 	@Override

@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.api.state.Power;
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -65,7 +65,7 @@ public class TilePhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 
 	private IBlockState getState(TilePhenomena phenomena, IBlockAccess world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
-		return phenomena.timer > 0 ? state.withProperty(Power.POWER, Power.ON) : state;
+		return phenomena.timer > 0 ? state.withProperty(State.ACTIVE, true) : state;
 	}
 
 	private IBakedModel getModel(IBlockState state) {

@@ -1,0 +1,259 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+	  "all": "solar:blocks/ashen/ashen_solid"
+	},
+	"model": "cube_all",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}],
+	"direction": {
+	  "non": {
+	  },
+	  "up": {
+	    "model": "solar:ashen/ashen_cut"
+	  },
+	  "down": {
+	    "model": "solar:ashen/ashen_cut",
+		"x": 180
+	  },
+	  "north": {
+	    "model": "solar:ashen/ashen_cut",
+		"x": 90
+	  },
+	  "south": {
+	    "model": "solar:ashen/ashen_cut",
+		"x": -90
+	  },
+	  "east": {
+	    "model": "solar:ashen/ashen_cut",
+		"x": -90,
+		"y": 90
+	  },
+	  "west": {
+	    "model": "solar:ashen/ashen_cut",
+		"x": 90,
+		"y": 90
+	  },
+	  "up_down": {
+	    "model": "solar:ashen/ashen_column"
+	  },
+	  "up_north": {
+	    "model": "solar:ashen/ashen_corner"
+	  },
+	  "up_south": {
+	    "model": "solar:ashen/ashen_corner",
+		"y": 180
+	  },
+	  "up_east": {
+	    "model": "solar:ashen/ashen_corner",
+		"y": 90
+	  },
+	  "up_west": {
+	    "model": "solar:ashen/ashen_corner",
+		"y": 270
+	  },
+	  "down_north": {
+	    "model": "solar:ashen/ashen_corner",
+		"x": 180,
+		"y": 180
+	  },
+	  "down_south": {
+	    "model": "solar:ashen/ashen_corner",
+		"x": 180
+	  },
+	  "down_east": {
+	    "model": "solar:ashen/ashen_corner",
+		"x": 180,
+		"y": 270
+	  },
+	  "down_west": {
+	    "model": "solar:ashen/ashen_corner",
+		"x": 180,
+		"y": 90
+	  },
+	  "north_south": {
+	    "model": "solar:ashen/ashen_column",
+		"x": 90
+	  },
+	  "east_west": {
+	    "model": "solar:ashen/ashen_column",
+		"x": 90,
+		"y": 90
+	  },
+	  "north_east": {
+	    "model": "solar:ashen/ashen_corner_"
+	  },
+	  "north_west": {
+	    "model": "solar:ashen/ashen_corner_",
+		"y": -90
+	  },
+	  "south_east": {
+	    "model": "solar:ashen/ashen_corner_",
+		"y": 90
+	  },
+	  "south_west": {
+	    "model": "solar:ashen/ashen_corner_",
+		"y": 180
+	  },
+	  "up_north_south": {
+	    "model": "solar:ashen/ashen_cross"
+	  },
+	  "up_east_west": {
+	    "model": "solar:ashen/ashen_cross",
+		"y": 90
+	  },
+	  "up_north_east": {
+	    "model": "solar:ashen/ashen_cube_corner"
+	  },
+	  "up_north_west": {
+	    "model": "solar:ashen/ashen_cube_corner",
+		"y": -90
+	  },
+	  "up_south_east": {
+	    "model": "solar:ashen/ashen_cube_corner",
+		"y": 90
+	  },
+	  "up_south_west": {
+	    "model": "solar:ashen/ashen_cube_corner",
+		"y": 180
+	  },
+	  "down_north_south": {
+	    "model": "solar:ashen/ashen_cross",		
+		"x": 180
+	  },
+	  "down_east_west": {
+	    "model": "solar:ashen/ashen_cross",		
+		"x": 180,
+		"y": 90
+	  },
+	  "down_north_east": {
+	    "model": "solar:ashen/ashen_cube_corner",		
+		"x": 180,
+		"y": -90
+	  },
+	  "down_north_west": {
+	    "model": "solar:ashen/ashen_cube_corner",
+		"x": 180,
+		"y": 180
+	  },
+	  "down_south_east": {
+	    "model": "solar:ashen/ashen_cube_corner",
+		"x": 180
+	  },
+	  "down_south_west": {
+	    "model": "solar:ashen/ashen_cube_corner",
+		"x": 180,
+		"y": 90
+	  },
+	  "up_down_north": {
+	    "model": "solar:ashen/ashen_cross",
+		"x": 90
+	  },
+	  "up_down_south": {
+	    "model": "solar:ashen/ashen_cross",
+		"x": 90,
+		"y": 180
+	  },
+	  "up_down_east": {
+	    "model": "solar:ashen/ashen_cross",
+		"x": 90,
+		"y": 90
+	  },
+	  "up_down_west": {
+	    "model": "solar:ashen/ashen_cross",
+		"x": 90,
+		"y": 270
+	  },
+	  "north_south_east": {
+	    "model": "solar:ashen/ashen_cross_"
+	  },
+	  "north_east_west": {
+	    "model": "solar:ashen/ashen_cross_",
+		"y": -90
+	  },
+	  "north_south_west": {
+	    "model": "solar:ashen/ashen_cross_",
+		"y": -180
+	  },
+	  "south_east_west": {
+	    "model": "solar:ashen/ashen_cross_",
+		"y": -270
+	  },
+	  "edge_down_north": {
+	    "model": "solar:ashen/ashen_edge"
+	  },
+	  "edge_down_south": {
+	    "model": "solar:ashen/ashen_edge",
+		"y": 180
+	  },
+	  "edge_down_east": {
+	    "model": "solar:ashen/ashen_edge",
+		"y": 90
+	  },
+	  "edge_down_west": {
+	    "model": "solar:ashen/ashen_edge",
+		"y": -90
+	  },
+	  "edge_up_north": {
+	    "model": "solar:ashen/ashen_edge",
+		"x": 180,
+		"y": 180
+	  },
+	  "edge_up_south": {
+	    "model": "solar:ashen/ashen_edge",
+		"x": 180
+	  },
+	  "edge_up_east": {
+	    "model": "solar:ashen/ashen_edge",
+		"x": 180,
+		"y": -90
+	  },
+	  "edge_up_west": {
+	    "model": "solar:ashen/ashen_edge",
+		"x": 180,
+		"y": 90
+	  },
+	  "edge_north_east": {
+	    "model": "solar:ashen/ashen_edge_",
+		"y": 180
+	  },
+	  "edge_north_west": {
+	    "model": "solar:ashen/ashen_edge_",
+		"y": 90
+	  },
+	  "edge_south_east": {
+	    "model": "solar:ashen/ashen_edge_",
+		"y": -90
+	  },
+	  "edge_south_west": {
+	    "model": "solar:ashen/ashen_edge_"
+	  },
+	  "horizontal": {
+	    "textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
+	  "vertical_x": {
+	    "textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
+	  "vertical_y": {
+	    "textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
+	  "full": {
+	    "textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  }
+	}
+  }
+}

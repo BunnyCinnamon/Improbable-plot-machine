@@ -8,6 +8,7 @@
 package arekkuusu.solar.api.helper;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -133,6 +134,20 @@ public class Vector3 {
 		double y = this.y * cos + this.x * sin;
 		double x = this.x * cos - this.y * sin;
 		return setVec(x, y, z);
+	}
+
+	public Vector3 rotate(Rotation rotationIn) {
+		switch(rotationIn) {
+			case NONE:
+			default:
+				return this;
+			case CLOCKWISE_90:
+				return setVec(-z, y, x);
+			case CLOCKWISE_180:
+				return setVec(-x, y, -z);
+			case COUNTERCLOCKWISE_90:
+				return setVec(z, y, -x);
+		}
 	}
 
 	public Vector3 offset(EnumFacing facing, float amount) {

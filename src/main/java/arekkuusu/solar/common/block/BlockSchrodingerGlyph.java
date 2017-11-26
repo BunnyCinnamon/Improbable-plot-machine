@@ -13,6 +13,7 @@ import arekkuusu.solar.client.render.baked.SchrodingerGlyphBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
+import arekkuusu.solar.common.entity.Megumin;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -51,6 +52,19 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		world.scheduleUpdate(pos, this, tickRate(world));
+	}
+
+	@Override
+	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
+		Vector3 vec = new Vector3(pos).add(0.5D, 0.5D, 0.5D);
+		Megumin.chant(world, vec, 5F, false)
+				.Oh_blackness_shrouded_in_light()
+				.Frenzied_blaze_clad_in_night()
+				.In_the_name_of_the_crimson_demons()
+				.let_the_collapse_of_thine_origin_manifest()
+				.Summon_before_me_the_root_of_thy_power_hidden_within_the_lands()
+				.of_the_kingdom_of_demise()
+				.EXPLOSION();
 	}
 
 	@Override

@@ -9,6 +9,7 @@ package arekkuusu.solar.common;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.entity.ModEntities;
+import arekkuusu.solar.common.handler.gen.ModGen;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHandler;
 import arekkuusu.solar.common.proxy.IProxy;
@@ -42,6 +43,7 @@ public class Solar {
 		PROXY.preInit(event);
 		PacketHandler.init();
 		ModEntities.init();
+		ModGen.init();
 	}
 
 	@EventHandler

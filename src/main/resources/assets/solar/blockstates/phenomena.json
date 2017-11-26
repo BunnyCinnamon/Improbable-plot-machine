@@ -9,10 +9,10 @@
 	}],
     "inventory": [{
 	}],
-	"power": {
-	  "on" : {
+	"active": {
+	  "true" : {
 	  },
-	  "off": {
+	  "false": {
 		"model": "solar:no_model"
 	  }
 	}

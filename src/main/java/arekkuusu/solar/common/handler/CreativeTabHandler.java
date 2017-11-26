@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  * Created by <Arekkuusu> on 23/06/2017.
  * It's distributed as part of Solar.
  */
-public class CreativeTabHandler {
+public final class CreativeTabHandler {
 
 	public static final CreativeTab MISC_ITEMS = new MiscItems();
 	public static final CreativeTab MISC_BLOCKS = new MiscBlocks();
@@ -96,6 +96,7 @@ public class CreativeTabHandler {
 			this.list = list;
 			addBlock(ModBlocks.PRIMAL_STONE);
 			addBlock(ModBlocks.PRIMAL_GLYPH);
+			addBlock(ModBlocks.ASHEN);
 			addBlock(ModBlocks.SCHRODINGER_GLYPH);
 			addBlock(ModBlocks.PHENOMENA);
 			addBlock(ModBlocks.Q_SQUARED);

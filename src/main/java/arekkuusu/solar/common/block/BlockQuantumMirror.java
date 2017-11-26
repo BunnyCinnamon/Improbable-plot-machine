@@ -15,7 +15,7 @@ import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
 import arekkuusu.solar.common.lib.LibNames;
-import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,11 +43,12 @@ import java.util.Optional;
 @SuppressWarnings("deprecation")
 public class BlockQuantumMirror extends BlockBase {
 
-	private final AxisAlignedBB box = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
 
 	public BlockQuantumMirror() {
 		super(LibNames.QUANTUM_MIRROR, FixedMaterial.BREAK);
 		setHardness(2F);
+		setSound(SoundType.GLASS);
 	}
 
 	@Override
@@ -126,7 +127,7 @@ public class BlockQuantumMirror extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return box;
+		return BB;
 	}
 
 	@Override
