@@ -10,8 +10,8 @@ package arekkuusu.solar.api.entanglement.relativity;
 import arekkuusu.solar.api.SolarApi;
 import net.minecraft.tileentity.TileEntity;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.function.Consumer;
 
 /**
  * Created by <Arekkuusu> on 03/09/2017.
@@ -26,7 +26,7 @@ public class RelativityHandler {
 	 * @return If the {@param tile} is relative to others.
 	 */
 	public static <T extends TileEntity & IRelativeTile> boolean isRelative(T tile) {
-		return SolarApi.getRelativityMap().containsKey(tile.getKey().orElse(null));
+		return tile.getKey().map(uuid -> SolarApi.getRelativityMap().containsKey(uuid)).orElse(false);
 	}
 
 	/**
@@ -34,16 +34,18 @@ public class RelativityHandler {
 	 * MUST be implemented in a {@link TileEntity} and nothing else.
 	 *
 	 * @param tile The {@link TileEntity} to be added.
-	 * @param consumer If the {@param tile} is added, execute it with {@param <T>}.
+	 * @param runnable If the {@param tile} is added, run {@param <T>}.
 	 * @param <T> An instance of {@param tile} that will be added.
 	 */
-	public static <T extends TileEntity & IRelativeTile> void addRelative(T tile, Consumer<T> consumer) {
+	public static <T extends TileEntity & IRelativeTile> void addRelative(T tile, @Nullable Runnable runnable) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			list = list == null ? new ArrayList<>() : list;
 			if(list.contains(tile)) return list;
 
 			list.add(tile);
-			consumer.accept(tile);
+			if(runnable != null) {
+				runnable.run();
+			}
 
 			return list;
 		}));
@@ -54,14 +56,16 @@ public class RelativityHandler {
 	 * MUST be implemented in a {@link TileEntity} and nothing else.
 	 *
 	 * @param tile The {@link TileEntity} to be removed.
-	 * @param consumer If the {@param tile} is removed, execute it with {@param <T>}.
+	 * @param runnable If the {@param tile} is removed, run {@param <T>}.
 	 * @param <T> An instance of {@param tile} that will be removed.
 	 */
-	public static <T extends TileEntity & IRelativeTile> void removeRelative(T tile, Consumer<T> consumer) {
+	public static <T extends TileEntity & IRelativeTile> void removeRelative(T tile, @Nullable Runnable runnable) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			if(list != null) {
 				list.remove(tile);
-				consumer.accept(tile);
+				if(runnable != null) {
+					runnable.run();
+				}
 			}
 
 			return list != null && !list.isEmpty() ? list : null;

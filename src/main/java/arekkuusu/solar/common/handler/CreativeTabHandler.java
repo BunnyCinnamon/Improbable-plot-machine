@@ -108,7 +108,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.CRYSTAL_VOID);
 			addBlock(ModBlocks.BLINKER);
 			addBlock(ModBlocks.HYPER_CONDUCTOR);
-			addBlock(ModBlocks.ELECTRON_NODE);
+			addBlock(ModBlocks.ELECTRON);
 			addBlock(ModBlocks.GRAVITY_INHIBITOR);
 		}
 	}

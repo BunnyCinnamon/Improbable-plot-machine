@@ -10,19 +10,19 @@ package arekkuusu.solar.api.entanglement.quantum;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
  */
-@SuppressWarnings("WeakerAccess")
 public class QuantumHandler {
 
-	private static final Map<UUID, List<ItemStack>> TEMP_STACKS = new HashMap<>();
+	public static final String NBT_TAG = "quantum_data";
 
 	/**
 	 * Check if the {@param uuid} is entangled to any group.
@@ -31,7 +31,7 @@ public class QuantumHandler {
 	 * @return If the key is entangled.
 	 */
 	public static boolean isEntangled(UUID uuid) {
-		return getSidedMap().containsKey(uuid);
+		return SolarApi.getEntangledStacks().containsKey(uuid);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class QuantumHandler {
 	 * @return The original ItemStack.
 	 */
 	public static ItemStack getQuantumStack(UUID uuid, int slot) {
-		Map<UUID, List<ItemStack>> map = getSidedMap();
+		Map<UUID, List<ItemStack>> map = SolarApi.getEntangledStacks();
 		if(map.containsKey(uuid) && hasSlot(uuid, slot)) {
 			return map.get(uuid).get(slot);
 		}
@@ -149,21 +149,7 @@ public class QuantumHandler {
 	 * @return {@link ArrayList}.
 	 */
 	public static List<ItemStack> getQuantumStacks(UUID uuid) {
-		return getSidedMap().computeIfAbsent(uuid, u -> new ArrayList<>());
-	}
-
-	/**
-	 * Sided sensitive version of {@code SolarApi.getEntangledStacks()}
-	 * <p>
-	 *     Depending on the {@link Side}
-	 *     it returns a different map.
-	 * </p>
-	 *
-	 * @return {@link HashMap}
-	 */
-	public static Map<UUID, List<ItemStack>> getSidedMap() {
-		Side side = FMLCommonHandler.instance().getEffectiveSide();
-		return side == Side.SERVER ? SolarApi.getEntangledStacks() : TEMP_STACKS;
+		return SolarApi.getEntangledStacks().computeIfAbsent(uuid, u -> new ArrayList<>());
 	}
 
 	private static boolean hasSlot(UUID uuid, int slot) {

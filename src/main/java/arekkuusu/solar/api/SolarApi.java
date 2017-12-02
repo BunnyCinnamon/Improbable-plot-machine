@@ -8,8 +8,11 @@
 package arekkuusu.solar.api;
 
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,23 +26,24 @@ import java.util.UUID;
  */
 public class SolarApi {
 
-	private static final Map<UUID, List<ItemStack>> ENTANGLED_STACKS = Maps.newHashMap();
+	private static final ImmutableMap<Side, Map<UUID, List<ItemStack>>> ENTANGLED_MAP = ImmutableMap.of(
+			Side.SERVER, Maps.newHashMap(),
+			Side.CLIENT, Maps.newHashMap()
+	);
 	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = Maps.newHashMap();
-	public static final String QUANTUM_DATA = "quantum_data";
 
 	/**
 	 * Map containing all Items linked to an uuid.
 	 * <p>
-	 *     This is most likely empty client side,
-	 *     use {@code QuantumDataHandler.getSidedMap()} instead.
-	 *
+	 *     Side sensitive.
 	 *     Do not modify unless you sync it yourself.
 	 * </p>
 	 *
 	 * @return {@link HashMap}
 	 */
 	public static Map<UUID, List<ItemStack>> getEntangledStacks() {
-		return ENTANGLED_STACKS;
+		Side side = FMLCommonHandler.instance().getEffectiveSide();
+		return ENTANGLED_MAP.get(side);
 	}
 
 	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {

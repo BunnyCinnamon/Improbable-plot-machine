@@ -7,9 +7,9 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement;
 
-import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.client.util.helper.TooltipHelper;
+import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,8 +25,8 @@ import java.util.UUID;
 public interface IEntangledStack {
 
 	@SideOnly(Side.CLIENT)
-	default TooltipHelper.Builder getInfo(TooltipHelper.Builder builder, UUID uuid) {
-		builder.addI18("uuid_key", TooltipHelper.DARK_GRAY_ITALIC).add(": ").end();
+	default TooltipBuilder getInfo(TooltipBuilder builder, UUID uuid) {
+		builder.addI18("uuid_key", TooltipBuilder.DARK_GRAY_ITALIC).add(": ").end();
 		String key = uuid.toString();
 		builder.add(" > ").add(key.substring(0, 18)).end();
 		builder.add(" > ").add(key.substring(18)).end();
@@ -34,11 +34,14 @@ public interface IEntangledStack {
 	}
 
 	default void setKey(ItemStack stack, UUID uuid) {
-		NBTHelper.getOrCreate(stack, SolarApi.QUANTUM_DATA, NBTTagCompound::new).setUniqueId("key", uuid);
+		Optional<UUID> optional = getKey(stack);
+		if(!optional.isPresent()) {
+			NBTHelper.getOrCreate(stack, QuantumHandler.NBT_TAG, NBTTagCompound::new).setUniqueId("key", uuid);
+		}
 	}
 
 	default Optional<UUID> getKey(ItemStack stack) {
-		Optional<NBTTagCompound> optional = NBTHelper.getNBT(stack, SolarApi.QUANTUM_DATA);
+		Optional<NBTTagCompound> optional = NBTHelper.getNBT(stack, QuantumHandler.NBT_TAG);
 		return Optional.ofNullable(optional.map(nbtTagCompound -> nbtTagCompound.getUniqueId("key")).orElse(null));
 	}
 }

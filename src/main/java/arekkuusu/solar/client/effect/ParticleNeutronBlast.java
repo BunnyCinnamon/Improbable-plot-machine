@@ -89,7 +89,8 @@ public class ParticleNeutronBlast extends ParticleBase {
 		yOffset += posY;
 		zOffset += posZ;
 
-		ParticleNeutron particle = new ParticleNeutron(world, xOffset, yOffset, zOffset, 0, 0, 0, 60, particleScale, rgb);
+		ParticleNeutron particle = new ParticleNeutron(world, new Vector3(xOffset, yOffset, zOffset),
+				Vector3.ImmutableVector3.NULL, 60, particleScale, rgb);
 		ClientProxy.PARTICLE_RENDERER.add(particle);
 	}
 

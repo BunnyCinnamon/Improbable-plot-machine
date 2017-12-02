@@ -9,12 +9,9 @@ package arekkuusu.solar.client.effect;
 
 import arekkuusu.solar.client.util.resource.FrameSpriteResource;
 import arekkuusu.solar.client.util.resource.SpriteResource;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -27,7 +24,6 @@ import net.minecraft.world.World;
 public class ParticleBase extends Particle {
 
 	private SpriteResource sprite;
-	private int layer = 3;
 
 	ParticleBase(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed) {
 		super(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
@@ -35,9 +31,7 @@ public class ParticleBase extends Particle {
 
 	@Override
 	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-		if(particleTexture != null) {
-			super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
-		} else if(sprite != null) {
+		if(sprite != null) {
 			double uMin = 0F;
 			double uMax = 1F;
 			double vMin = 0F;
@@ -97,20 +91,13 @@ public class ParticleBase extends Particle {
 		buffer.pos(x + vec3.x, y + vec3.y, z + vec3.z).tex(uMin, vMax).color(getRedColorF(), getGreenColorF(), getBlueColorF(), particleAlpha).lightmap(light, light).endVertex();
 	}
 
-	public void setAtlas(ResourceLocation location) {
-		TextureAtlasSprite atlasSprite = Minecraft.getMinecraft().getTextureMapBlocks()
-				.getAtlasSprite(location.toString());
-		layer = 1;
-		setParticleTexture(atlasSprite);
-	}
-
 	public void setSprite(SpriteResource sprite) {
 		this.sprite = sprite;
 	}
 
 	@Override
 	public int getFXLayer() {
-		return layer;
+		return 3;
 	}
 
 	public boolean shouldRender() {

@@ -31,7 +31,7 @@ import java.util.UUID;
 @SuppressWarnings("VariableUseSideOnly")
 public class WorldQuantumData extends WorldSavedData {
 
-	private static final String NAME = LibMod.MOD_ID + ":" + SolarApi.QUANTUM_DATA;
+	private static final String NAME = LibMod.MOD_ID + ":" + QuantumHandler.NBT_TAG;
 	private static final String LIST = "list";
 	private static final String KEY = "key";
 
@@ -74,7 +74,7 @@ public class WorldQuantumData extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		NBTTagList list = (NBTTagList) nbt.getTag(SolarApi.QUANTUM_DATA);
+		NBTTagList list = (NBTTagList) nbt.getTag(QuantumHandler.NBT_TAG);
 		list.forEach(stackList -> {
 			NBTTagList stacks = (NBTTagList) ((NBTTagCompound) stackList).getTag(LIST);
 			UUID key = ((NBTTagCompound) stackList).getUniqueId(KEY);
@@ -93,7 +93,7 @@ public class WorldQuantumData extends WorldSavedData {
 			nbt.setTag(LIST, stackList);
 			list.appendTag(nbt);
 		});
-		compound.setTag(SolarApi.QUANTUM_DATA, list);
+		compound.setTag(QuantumHandler.NBT_TAG, list);
 		return compound;
 	}
 }

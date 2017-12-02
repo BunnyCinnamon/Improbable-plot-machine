@@ -9,10 +9,11 @@ package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.client.render.baked.RenderedBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.client.util.helper.TooltipHelper;
+import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.entity.EntityQuingentilliardItem;
 import arekkuusu.solar.common.handler.data.QuantumStackProvider;
 import arekkuusu.solar.common.handler.data.QuantumStackWrapper;
@@ -43,14 +44,16 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.CONTROL_KEY_DOWN;
-import static arekkuusu.solar.client.util.helper.TooltipHelper.Condition.SHIFT_KEY_DOWN;
+import static arekkuusu.solar.client.util.helper.TooltipBuilder.Condition.SHIFT_KEY_DOWN;
 
 /**
  * Created by <Arekkuusu> on 08/08/2017.
  * It's distributed as part of Solar.
  */
 public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
+
+	public static final int SLOTS = 16;
+	public static final String FILTER_TAG = "quingentilliard_filter";
 
 	public ItemQuingentilliard() {
 		super(LibNames.QUINGENTILLIARD);
@@ -60,41 +63,34 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		getKey(stack).ifPresent(uuid -> TooltipHelper.inline()
+		ItemStack lookup = new ItemStack(stack.getOrCreateSubCompound(FILTER_TAG));
+		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline()
+				.addI18("quingentilliard_filter", TextFormatting.DARK_GRAY).add(": ")
+				.add(lookup.isEmpty() ?  " - " : lookup.getDisplayName(), TooltipBuilder.DARK_GRAY_ITALIC)
+				.end()
+				.skip()
 				.condition(SHIFT_KEY_DOWN)
 				.ifAgrees(builder -> {
 					//Filter
 					List<ItemStack> items = QuantumHandler.getQuantumStacks(uuid).stream()
 							.map(ItemStack::copy).collect(Collectors.toList());
 					List<ItemStack> removed = new ArrayList<>();
-
 					items.forEach(i -> {
 						if(!removed.contains(i)) {
-							items.stream().filter(j -> j != i
-									&& ItemHandlerHelper.canItemStacksStack(j, i)).forEach(j -> {
-								if(!removed.contains(j)) {
+							for(ItemStack j : items) {
+								if(j == i) continue;
+								if(ItemHandlerHelper.canItemStacksStack(j, i)) {
 									i.grow(j.getCount());
 									removed.add(j);
+								} else {
+									break;
 								}
-							});
+							}
 						}
 					});
 					items.removeAll(removed);
 					//Populate Tooltip
-					builder.addI18("quantum_data", TooltipHelper.DARK_GRAY_ITALIC).end();
-					items.forEach(item -> builder
-							.add("    - ", TextFormatting.DARK_GRAY)
-							.add(item.getDisplayName(), TooltipHelper.GRAY_ITALIC)
-							.add(" x " + item.getCount()).end()
-					);
-					builder.skip();
-
-					builder.condition(CONTROL_KEY_DOWN).ifAgrees(sub -> {
-						sub.addI18("uuid_key", TooltipHelper.DARK_GRAY_ITALIC).add(": ").end();
-						String key = uuid.toString();
-						sub.add(" > ").add(key.substring(0, 18)).end();
-						sub.add(" > ").add(key.substring(18)).end();
-					});
+					getDetailedInfo(builder, items, uuid);
 				}).build(tooltip));
 	}
 
@@ -106,10 +102,13 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
-		if(!world.isRemote && player.isSneaking()) {
+		if(!world.isRemote) {
 			setKey(stack, UUID.randomUUID());
+			if(player.isSneaking()) {
+				ItemStack loopuk = player.getHeldItem(hand == EnumHand.MAIN_HAND ? EnumHand.OFF_HAND : EnumHand.MAIN_HAND);
+				NBTHelper.setNBT(stack, FILTER_TAG, loopuk.serializeNBT());
+			}
 		}
-
 		return ActionResult.newResult(EnumActionResult.FAIL, stack);
 	}
 
@@ -119,18 +118,14 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 		if(!world.isRemote) {
 			getKey(player.getHeldItem(hand)).ifPresent(uuid -> {
 				List<ItemStack> stacks = QuantumHandler.getQuantumStacks(uuid);
-
 				if(!stacks.isEmpty() && Iterables.getLast(stacks).getItem() instanceof ItemBlock) {
 					ItemStack stack = Iterables.getLast(stacks);
 					ItemStack toGiv = stack.copy();
 					toGiv.setCount(1);
-
 					stack.shrink(1);
 					QuantumHandler.setQuantumStack(uuid, stack, stacks.size() - 1);
-
 					player.setHeldItem(off, toGiv);
 					toGiv.getItem().onItemUse(player, world, pos, off, facing, hitX, hitY, hitZ);
-
 					WorldQuantumData.get(world).markDirty();
 				}
 			});
@@ -142,17 +137,15 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 	@SuppressWarnings("ConstantConditions")
 	public boolean onEntityItemUpdate(EntityItem entity) {
 		if(entity.world.isRemote || makeVortex(entity)) return false;
-
 		if(entity instanceof EntityQuingentilliardItem) {
 			EntityQuingentilliardItem quingentilliard = (EntityQuingentilliardItem) entity;
 			ItemStack stack = entity.getItem();
-
 			getKey(stack).ifPresent(uuid -> {
-				quingentilliard.attractItems(quingentilliard.world, uuid);
-				quingentilliard.collectItems(quingentilliard.world, stack, uuid);
+				ItemStack lookup = new ItemStack(stack.getOrCreateSubCompound(FILTER_TAG));
+				quingentilliard.attractItems(quingentilliard.world, lookup);
+				quingentilliard.collectItems(quingentilliard.world, stack, uuid, lookup);
 			});
 		}
-
 		entity.setNoGravity(true);
 		entity.setNoDespawn();
 		return false;
@@ -164,10 +157,8 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 			item.setMotion(entity.motionX, entity.motionY, entity.motionZ);
 			entity.world.spawnEntity(item);
 			entity.setDead();
-
 			return true;
 		}
-
 		return !entity.isEntityAlive();
 	}
 
@@ -183,7 +174,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 		private boolean syncToClients;
 
 		QuingentilliardStackWrapper(IQuantumStack quantum, ItemStack stack) {
-			super(quantum, stack, 64);
+			super(quantum, stack, SLOTS);
 		}
 
 		public ItemStack insertItemAsync(int slot, ItemStack stack) {
@@ -208,7 +199,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 			if(syncToClients) {
 				super.setStackInSlot(slot, stack);
 			} else {
-				QuantumHandler.setQuantumAsync(getKey(), stack, slot);
+				getKey().ifPresent(uuid -> QuantumHandler.setQuantumAsync(uuid, stack, slot));
 			}
 		}
 	}

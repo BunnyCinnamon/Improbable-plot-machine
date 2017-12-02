@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render.entity;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
@@ -108,8 +109,9 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 			} else {
 				GLHelper.lightMap(255F, 255F);
 			}
-			ParticleUtil.spawnTunnelingPhoton(schrodinger.world, schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ
-					, 0, 0, 0, rgb, 10, 1.5F);
+			ParticleUtil.spawnTunnelingPhoton(schrodinger.world
+					, new Vector3(schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ)
+					, Vector3.ImmutableVector3.NULL, rgb, 10, 1.5F);
 
 			Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
 

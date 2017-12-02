@@ -22,16 +22,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SuppressWarnings({"MethodCallSideOnly", "LocalVariableDeclarationSideOnly", "VariableUseSideOnly", "NewExpressionSideOnly"})
 public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd iN oThER mAtChIng aNnotAteD cLaSses aNd mEtHodS
 
-	public static void spawnQuorn(World world, Vector3 from, double speed, Vector3 to, float scale, int rgb) {
+	public static void spawnQuorn(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
 		if(doParticle()) {
-			ParticleQuorn particle = new ParticleQuorn(world, from, speed, to, scale, rgb);
+			ParticleQuorn particle = new ParticleQuorn(world, pos, speed, age, scale, rgb);
 			ClientProxy.PARTICLE_RENDERER.add(particle);
 		}
 	}
 
-	public static void spawnNeutron(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int rgb, int age, float scale) {
+	public static void spawnNeutron(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
 		if(doParticle()) {
-			ParticleNeutron particle = new ParticleNeutron(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, age, scale, rgb);
+			ParticleNeutron particle = new ParticleNeutron(world, pos, speed, age, scale, rgb);
 			ClientProxy.PARTICLE_RENDERER.add(particle);
 		}
 	}
@@ -43,23 +43,23 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 		}
 	}
 
-	public static void spawnLightParticle(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int rgb, int age, float scale) {
+	public static void spawnLightParticle(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
 		if(doParticle()) {
-			ParticleLight particle = new ParticleLight(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, rgb, age, scale);
+			ParticleLight particle = new ParticleLight(world, pos, speed, rgb, age, scale);
 			ClientProxy.PARTICLE_RENDERER.add(particle);
 		}
 	}
 
-	public static void spawnTunnelingPhoton(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int rgb, int age, float scale) {
+	public static void spawnTunnelingPhoton(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
 		if(doParticle()) {
-			ParticleTunnelingPhoton particle = new ParticleTunnelingPhoton(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, age, scale, rgb);
+			ParticleTunnelingPhoton particle = new ParticleTunnelingPhoton(world, pos, speed, age, scale, rgb);
 			ClientProxy.PARTICLE_RENDERER.add(particle);
 		}
 	}
 
-	public static void spawnChargedIce(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int rgb, int age, float scale) {
+	public static void spawnChargedIce(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
 		if(doParticle()) {
-			ParticleDryIce dryIce = new ParticleDryIce(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed, rgb, age, scale);
+			ParticleDryIce dryIce = new ParticleDryIce(world, pos, speed, rgb, age, scale);
 			ClientProxy.PARTICLE_RENDERER.add(dryIce);
 		}
 	}

@@ -8,10 +8,9 @@
 package arekkuusu.solar.common.handler.data;
 
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -30,13 +29,7 @@ public class QuantumStackWrapper extends QuantumDataHandler {
 	}
 
 	@Override
-	public void setStackInSlot(int slot, ItemStack inserted) {
-		QuantumHandler.setQuantumStack(getKey(), inserted, slot);
-	}
-
-	@Nullable
-	@Override
-	public UUID getKey() {
-		return quantum.getKey(stack).orElse(null);
+	public Optional<UUID> getKey() {
+		return quantum.getKey(stack);
 	}
 }

@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.network;
 
+import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.common.Solar;
 import io.netty.buffer.ByteBuf;
@@ -75,7 +76,7 @@ public class QSyncSpecificMessage implements IMessage {
 		public IMessage onMessage(QSyncSpecificMessage message, MessageContext ctx) {
 			if(ctx.side == Side.CLIENT) {
 				Minecraft.getMinecraft().addScheduledTask(() ->
-						QuantumHandler.getSidedMap().replace(message.uuid, message.stacks)
+						SolarApi.getEntangledStacks().replace(message.uuid, message.stacks)
 				);
 			}
 			return null;

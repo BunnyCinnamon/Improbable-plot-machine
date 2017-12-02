@@ -21,7 +21,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 28/09/2017.
  * It's distributed as part of Solar.
  */
-public abstract class TileRelativeBase<T extends TileRelativeBase> extends TileBase implements IRelativeTile<T> {
+public abstract class TileRelativeBase extends TileBase implements IRelativeTile {
 
 	private UUID key;
 
@@ -39,29 +39,23 @@ public abstract class TileRelativeBase<T extends TileRelativeBase> extends TileB
 	@Override
 	public void onChunkUnload() {
 		if(!world.isRemote) {
-			RelativityHandler.removeRelative(this, tile -> onUnload());
+			RelativityHandler.removeRelative(this, null);
 		}
 	}
-
-	abstract void onUnload();
 
 	@Override
 	public void add() {
 		if(!world.isRemote) {
-			RelativityHandler.addRelative(this, tile -> onAdd());
+			RelativityHandler.addRelative(this, null);
 		}
 	}
-
-	abstract void onAdd();
 
 	@Override
 	public void remove() {
 		if(!world.isRemote) {
-			RelativityHandler.removeRelative(this, tile -> onRemove());
+			RelativityHandler.removeRelative(this, null);
 		}
 	}
-
-	abstract void onRemove();
 
 	@Override
 	public World getRelativeWorld() {

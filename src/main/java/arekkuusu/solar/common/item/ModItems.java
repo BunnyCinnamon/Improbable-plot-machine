@@ -44,7 +44,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.THEOREMA));
 		registry.register(itemBlock(ModBlocks.GRAVITY_INHIBITOR));
 		registry.register(itemBlock(ModBlocks.HYPER_CONDUCTOR));
-		registry.register(itemBlock(ModBlocks.ELECTRON_NODE));
+		registry.register(itemBlock(ModBlocks.ELECTRON));
 		registry.register(itemBlock(ModBlocks.ASHEN));
 	}
 

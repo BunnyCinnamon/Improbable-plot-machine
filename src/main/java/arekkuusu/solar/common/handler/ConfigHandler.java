@@ -27,16 +27,31 @@ public final class ConfigHandler {
 
 	public static class Gen {
 
-		@Comment("Modify structure rarity and chest loot tables")
 		public final AshenCubeStructureConfig ASHEN_CUBE_STRUCTURE = new AshenCubeStructureConfig();
 
 		public static class AshenCubeStructureConfig {
+
+			public final AshenWeights WEIGHTS = new AshenWeights();
+
+			@Comment("If the structure should generate underground only --Debug stuff--")
+			public boolean underground = true;
 			@Comment("Max amount of \"nuggets\" allowed in one Structure")
-			public double size = 15;
+			public double size = 25;
+			@Comment("Spread of \"nuggets\" in the structure")
+			public int spread = 15;
 			@Comment("Chance of 0-100% for loot")
-			public double loot = 50;
+			public double loot = 15;
 			@Comment("Chance of 0-100% to generate")
-			public double rarity = 10;
+			public double rarity = 0.01;
+
+			public static class AshenWeights {
+				@Comment("Weight of big \"nuggets\"")
+				public int big = 10;
+				@Comment("Weight of small \"nuggets\"")
+				public int small = 6;
+				@Comment("Weight of spawn \"nuggets\"")
+				public int spawn = 1;
+			}
 		}
 	}
 }

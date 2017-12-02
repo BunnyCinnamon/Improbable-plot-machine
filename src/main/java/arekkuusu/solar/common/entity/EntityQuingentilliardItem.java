@@ -20,6 +20,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,8 +42,8 @@ public class EntityQuingentilliardItem extends EntityFastItem {
 		setPickupDelay(60);
 	}
 
-	public void attractItems(World world, UUID uuid) {
-		List<EntityFastItem> list = getItemsFiltered(world, getEntityBoundingBox().grow(9F), uuid);
+	public void attractItems(World world, ItemStack lookup) {
+		List<EntityFastItem> list = getItemsFiltered(world, getEntityBoundingBox().grow(9F), lookup);
 		for(EntityFastItem item : list) {
 			applyGravity(posX, posY, posZ, item);
 		}
@@ -66,29 +67,25 @@ public class EntityQuingentilliardItem extends EntityFastItem {
 		}
 	}
 
-	public void collectItems(World world, ItemStack stack, UUID uuid) {
+	public void collectItems(World world, ItemStack stack, UUID uuid, ItemStack lookup) {
 		if(stack.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
 			ItemQuingentilliard.QuingentilliardStackWrapper handler = (ItemQuingentilliard.QuingentilliardStackWrapper) stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			if(handler == null) return;
 
-			List<EntityFastItem> list = getItemsFiltered(world, getEntityBoundingBox().grow(0.5F), uuid);
-
+			List<EntityFastItem> list = getItemsFiltered(world, getEntityBoundingBox().grow(0.5F), lookup);
 			if(!list.isEmpty()) {
 				boolean update = false;
-
-				for(EntityItem item : list) {
-					ItemStack inserted = item.getItem();
-
+				for(EntityItem entity : list) {
+					ItemStack inserted = entity.getItem();
 					for(int i = 0; i < handler.getSlots(); i++) {
 						ItemStack test = handler.insertItemAsync(i, inserted);
 						if(test != inserted) {
-							item.setItem(test);
+							entity.setItem(test);
 							update = true;
 							break;
 						}
 					}
 				}
-
 				if(update) {
 					WorldQuantumData.get(world).markDirty();
 					WorldQuantumData.syncChanges(uuid);
@@ -97,19 +94,21 @@ public class EntityQuingentilliardItem extends EntityFastItem {
 		}
 	}
 
-	private List<EntityFastItem> getItemsFiltered(World world, AxisAlignedBB box, UUID uuid) {
+	private List<EntityFastItem> getItemsFiltered(World world, AxisAlignedBB box, ItemStack lookup) {
 		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, box, Entity::isEntityAlive);
-		List<ItemStack> stacks = QuantumHandler.getQuantumStacks(uuid);
-
 		return list.stream().filter(entity -> {
 			ItemStack stack = entity.getItem();
-			entity.setAgeToCreativeDespawnTime();
-			entity.setNoGravity(true);
 
-			return !(stack.getItem() instanceof IQuantumStack) && stacks.stream()
-					.anyMatch(match -> ItemHandlerHelper.canItemStacksStack(match, stack));
-
+			return !isEntangled(stack) && (lookup.isEmpty() || ItemHandlerHelper.canItemStacksStack(lookup, stack));
 		}).map(i -> replace(world, i)).collect(Collectors.toList());
+	}
+
+	public final boolean isEntangled(ItemStack stack) {
+		if(stack.getItem() instanceof IQuantumStack) {
+			Optional<UUID> optional = ((IQuantumStack) stack.getItem()).getKey(stack);
+			return optional.isPresent();
+		}
+		return false;
 	}
 
 	private EntityFastItem replace(World world, EntityItem entity) {

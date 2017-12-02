@@ -17,15 +17,11 @@ import net.minecraft.world.World;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("unchecked")
-public interface IRelativeTile<T extends TileEntity & IRelativeTile> extends IEntangledTile {
+public interface IRelativeTile extends IEntangledTile {
 
-	default void add() {
-		RelativityHandler.addRelative((T) this, (ignored) -> {});
-	}
+	void add();
 
-	default void remove() {
-		RelativityHandler.removeRelative((T) this, (ignored) -> {});
-	}
+	void remove();
 
 	default boolean isLoaded() {
 		return getRelativeWorld().isBlockLoaded(getRelativePos());

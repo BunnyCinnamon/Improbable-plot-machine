@@ -7,8 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.render.baked.BlinkerBakedModel;
@@ -26,7 +25,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -69,9 +67,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				Optional<NBTTagCompound> optional = NBTHelper.getNBT(stack, SolarApi.QUANTUM_DATA);
-				optional.ifPresent(nbtTagCompound -> blinker.setKey(nbtTagCompound.getUniqueId("key")));
-
+				((IEntangledStack) stack.getItem()).getKey(stack).ifPresent(blinker::setKey);
 				blinker.add();
 			});
 		}
@@ -91,15 +87,10 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 		Optional<TileBlinker> optional = getTile(TileBlinker.class, world, pos);
 		if(optional.isPresent()) {
 			TileBlinker blinker = optional.get();
-
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-
 			blinker.getKey().ifPresent(uuid -> {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setUniqueId("key", uuid);
-				NBTHelper.setNBT(stack, SolarApi.QUANTUM_DATA, tag);
+				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
 			});
-
 			return stack;
 		}
 		return super.getItem(world, pos, state);

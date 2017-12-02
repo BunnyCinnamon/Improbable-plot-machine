@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -28,34 +28,24 @@ public abstract class QuantumDataHandler implements IItemHandlerModifiable {
 		this.slots = slots;
 	}
 
-	@Nullable
-	public abstract UUID getKey();
+	public abstract Optional<UUID> getKey();
 
 	protected void onChange(int slot) {}
 
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		if(stack.isEmpty()) return ItemStack.EMPTY;
-
-		if(getKey() == null || !assertSafety(stack)) return stack;
-
+		if(!getKey().isPresent() || isEntangled(stack)) return stack;
 		ItemStack existing = getStackInSlot(slot);
-
 		int limit = stack.getMaxStackSize();
-
 		if(!existing.isEmpty()) {
 			if(!ItemHandlerHelper.canItemStacksStack(stack, existing)) {
 				return stack;
 			}
 			limit -= existing.getCount();
 		}
-
-		if(limit <= 0) {
-			return stack;
-		}
-
+		if(limit <= 0) return stack;
 		boolean reachedLimit = stack.getCount() > limit;
-
 		if(!simulate) {
 			if(existing.isEmpty()) {
 				setStackInSlot(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
@@ -65,26 +55,25 @@ public abstract class QuantumDataHandler implements IItemHandlerModifiable {
 			}
 			onChange(slot);
 		}
-
 		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
 	}
 
-	public boolean assertSafety(ItemStack stack) {
-		return !(stack.getItem() instanceof IQuantumStack) || !((IQuantumStack) stack.getItem()).getKey(stack).isPresent();
+	public final boolean isEntangled(ItemStack stack) {
+		if(stack.getItem() instanceof IQuantumStack) {
+			Optional<UUID> optional = ((IQuantumStack) stack.getItem()).getKey(stack);
+			return optional.isPresent();
+		}
+		return false;
 	}
 
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
-		if(amount == 0 || getKey() == null) return ItemStack.EMPTY;
-
+		if(amount == 0 || !getKey().isPresent()) return ItemStack.EMPTY;
 		ItemStack existing = getStackInSlot(slot);
-
 		if(existing.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
-
 		int toExtract = Math.min(amount, existing.getMaxStackSize());
-
 		if(existing.getCount() <= toExtract) {
 			if(!simulate) {
 				setStackInSlot(slot, ItemStack.EMPTY);
@@ -96,21 +85,18 @@ public abstract class QuantumDataHandler implements IItemHandlerModifiable {
 				setStackInSlot(slot, ItemHandlerHelper.copyStackWithSize(existing, existing.getCount() - toExtract));
 				onChange(slot);
 			}
-
 			return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
 		}
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return getKey() == null ? ItemStack.EMPTY : QuantumHandler.getQuantumStack(getKey(), slot);
+		return getKey().map(uuid -> QuantumHandler.getQuantumStack(uuid, slot)).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
 	public void setStackInSlot(int slot, ItemStack stack) {
-		if(getKey() != null) {
-			QuantumHandler.setQuantumStack(getKey(), stack, slot);
-		}
+		getKey().ifPresent(uuid -> QuantumHandler.setQuantumStack(uuid, stack, slot));
 	}
 
 	@Override

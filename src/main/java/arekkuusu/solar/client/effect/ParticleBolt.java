@@ -9,6 +9,7 @@ package arekkuusu.solar.client.effect;
 
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.api.helper.Vector3.ImmutableVector3;
+import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -45,6 +46,8 @@ public class ParticleBolt extends ParticleBase {
 	}
 
 	private void calculateBolts(int generations, float offset, boolean branch) {
+		ProfilerHelper.begin("[Particle Bolt] Calculating Bolts");
+		List<BoltSegment> branched = Lists.newArrayList();
 		for(int i = 0; i < generations; i++) {
 			List<BoltSegment> temp = Lists.newArrayList();
 			for(BoltSegment segment : segments) {
@@ -53,40 +56,34 @@ public class ParticleBolt extends ParticleBase {
 
 				Vector3 mid = average(from, to);
 				Vector3 midOffset = to.subtract(from);
-				if(midOffset.x == 0) {
-					midOffset.x = 4D * rand.nextDouble();
-				}
-				if(midOffset.y == 0) {
-					midOffset.y = 4D * rand.nextDouble();
-				}
-				if(midOffset.z == 0) {
-					midOffset.z = 4D * rand.nextDouble();
-				}
-				mid.add(midOffset.normalize().multiply(Vector3.getRandomVec(offset)));
+				mid.add(midOffset.normalize().cross(new Vector3(1, 1, 1)).multiply(Vector3.getRandomVec(offset)));
 
-				if(branch && rand.nextInt(5) == 0) {
+				if(branch && rand.nextDouble() > 0.6D) {
 					Vector3 direction = mid.copy().subtract(from);
 					Vector3 splitEnd = direction
-							.rotatePitchX((rand.nextFloat() * 2F - 1F) * 0.45F)
-							.rotatePitchZ((rand.nextFloat() * 2F - 1F) * 0.45F)
+							.rotatePitchX((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
+							.rotatePitchZ((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
 							.multiply(0.7D)
 							.add(mid);
 
 					BoltSegment sub = new BoltSegment(mid, splitEnd);
-					sub.alpha = segment.alpha * 0.5F;
+					sub.alpha = segment.alpha * 0.25F;
 					temp.add(sub);
 				}
 
 				BoltSegment one = new BoltSegment(from, mid);
-				one.alpha = segment.alpha;
 				BoltSegment two = new BoltSegment(mid, to);
-				two.alpha = segment.alpha * 0.75F;
 				temp.add(one);
 				temp.add(two);
+
+				if(branched.isEmpty() || branched.contains(segment)) {
+					branched.add(two);
+				}
 			}
 			segments = temp;
 			offset /= 2;
 		}
+		ProfilerHelper.end();
 	}
 
 	private Vector3 average(ImmutableVector3 one, ImmutableVector3 two) {
@@ -121,7 +118,7 @@ public class ParticleBolt extends ParticleBase {
 		private final Vector3 to;
 		private float alpha = 1F;
 
-		public BoltSegment(Vector3 from, Vector3 to) {
+		BoltSegment(Vector3 from, Vector3 to) {
 			this.from = from;
 			this.to = to;
 		}

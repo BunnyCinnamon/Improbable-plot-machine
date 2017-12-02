@@ -7,13 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.recipe;
 
-import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -68,8 +66,7 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 
 		if(amount > 0) {
 			ItemStack entanglement = new ItemStack(checked.getItem(), amount);
-			NBTTagCompound tag = entanglement.getOrCreateSubCompound(SolarApi.QUANTUM_DATA);
-			getKey(checked).ifPresent(uuid -> tag.setUniqueId("key", uuid));
+			getKey(checked).ifPresent(uuid -> setKey(entanglement, uuid));
 			return entanglement;
 		}
 		return ItemStack.EMPTY;
@@ -93,6 +90,10 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 
 	private Optional<UUID> getKey(ItemStack stack) {
 		return ((IEntangledStack) stack.getItem()).getKey(stack);
+	}
+
+	private void setKey(ItemStack stack, UUID uuid) {
+		((IEntangledStack) stack.getItem()).setKey(stack, uuid);
 	}
 
 	@Override

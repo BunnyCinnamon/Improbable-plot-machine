@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.proxy;
 
+import arekkuusu.solar.client.effect.SoundBase;
 import arekkuusu.solar.client.render.ModRenders;
 import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.ResourceLibrary;
@@ -21,11 +22,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -34,6 +36,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
+
+import java.util.Arrays;
 
 /**
  * This class was created by <Arekkuusu> on 21/06/2017.
@@ -52,17 +57,17 @@ public class ClientProxy implements IProxy {
 	}
 
 	@SubscribeEvent
-	public static void onTextureAtlasSprite(TextureStitchEvent event) {
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		IForgeRegistry<SoundEvent> registry = event.getRegistry();
+		registry.register(new SoundBase("spark"));
+	}
+
+	@SubscribeEvent
+	public static void onSpriteRegister(TextureStitchEvent event) {
 		TextureMap map = event.getMap();
 		map.registerSprite(ResourceLibrary.NOTHING);
 		map.registerSprite(ResourceLibrary.PRIMAL_STONE);
-		for(ResourceLocation location : ResourceLibrary.PRIMAL_GLYPH) {
-			map.registerSprite(location);
-		}
 		map.registerSprite(ResourceLibrary.GRAVITY_HOPPER);
-		for(ResourceLocation location : ResourceLibrary.GRAVITY_HOPPER_GLYPH) {
-			map.registerSprite(location);
-		}
 		map.registerSprite(ResourceLibrary.SCHRODINGER_GLYPH);
 		map.registerSprite(ResourceLibrary.BLINKER_BASE);
 		map.registerSprite(ResourceLibrary.BLINKER_TOP_ON);
@@ -72,6 +77,8 @@ public class ClientProxy implements IProxy {
 		map.registerSprite(ResourceLibrary.BLINKER_TOP_OFF);
 		map.registerSprite(ResourceLibrary.BLINKER_BOTTOM_OFF);
 		map.registerSprite(ResourceLibrary.Q_SQUARED);
+		Arrays.stream(ResourceLibrary.PRIMAL_GLYPH).forEach(map::registerSprite);
+		Arrays.stream(ResourceLibrary.GRAVITY_HOPPER_GLYPH).forEach(map::registerSprite);
 	}
 
 	//----------------Particle Renderer Start----------------//

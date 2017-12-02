@@ -7,8 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.client.render.baked.QuantumMirrorBakedModel;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
@@ -21,7 +20,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -35,6 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 17/07/2017.
@@ -64,7 +63,6 @@ public class BlockQuantumMirror extends BlockBase {
 		if(!world.isRemote) {
 			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
 				ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
-
 				if(player.isSneaking()) {
 					mirror.takeItem(player, stack);
 				}
@@ -76,8 +74,11 @@ public class BlockQuantumMirror extends BlockBase {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
-				Optional<NBTTagCompound> optional = NBTHelper.getNBT(stack, SolarApi.QUANTUM_DATA);
-				optional.ifPresent(nbtTagCompound -> mirror.setKey(nbtTagCompound.getUniqueId("key")));
+				IEntangledStack entangled = (IEntangledStack) stack.getItem();
+				if(!entangled.getKey(stack).isPresent()) {
+					entangled.setKey(stack, UUID.randomUUID());
+				}
+				entangled.getKey(stack).ifPresent(mirror::setKey);
 			});
 		}
 	}
@@ -96,15 +97,10 @@ public class BlockQuantumMirror extends BlockBase {
 		Optional<TileQuantumMirror> optional = getTile(TileQuantumMirror.class, world, pos);
 		if(optional.isPresent()) {
 			TileQuantumMirror mirror = optional.get();
-
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-
 			mirror.getKey().ifPresent(uuid -> {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setUniqueId("key", uuid);
-				NBTHelper.setNBT(stack, SolarApi.QUANTUM_DATA, tag);
+				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
 			});
-
 			return stack;
 		}
 		return super.getItem(world, pos, state);

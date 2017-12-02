@@ -7,11 +7,13 @@
  ******************************************************************************/
 package arekkuusu.solar.common;
 
+import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.handler.recipe.ModRecipes;
 import arekkuusu.solar.common.item.ModItems;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -47,6 +49,13 @@ public final class CommonEvents {
 	public static void syncQuantumData(PlayerEvent.PlayerLoggedInEvent event) {
 		if(event.player instanceof EntityPlayerMP) {
 			WorldQuantumData.syncTo((EntityPlayerMP) event.player);
+		}
+	}
+
+	@SubscribeEvent
+	public static void unsyncQuantumData(PlayerEvent.PlayerLoggedOutEvent event) {
+		if(event.player instanceof EntityPlayerSP) {
+			SolarApi.getEntangledStacks().clear();
 		}
 	}
 

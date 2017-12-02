@@ -20,24 +20,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ParticleQuorn extends ParticleBase {
 
-	private final Vector3 point;
-	private final double speed;
-
-	ParticleQuorn(World world, Vector3 from, double speed, Vector3 to, float scale, int rgb) {
-		super(world, from.x, from.y, from.z, 0, 0, 0);
+	ParticleQuorn(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
+		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
 		float r = (rgb >>> 16 & 0xFF) / 256.0F;
 		float g = (rgb >>> 8 & 0xFF) / 256.0F;
 		float b = (rgb & 0xFF) / 256.0F;
 		setRBGColorF(r, g, b);
 
-		this.point = from;
-		this.speed = speed;
-
-		double distance = from.distanceTo(to);
-
-		this.particleMaxAge = (int) ((distance / speed) * 0.5);
+		this.particleMaxAge = age;
 		this.particleScale = scale;
 		this.canCollide = false;
+
+		motionX = speed.x;
+		motionY = speed.y;
+		motionZ = speed.z;
 
 		setSprite(SpriteLibrary.QUORN_PARTICLE);
 	}
@@ -49,17 +45,6 @@ public class ParticleQuorn extends ParticleBase {
 		}
 		float life = (float) particleAge / (float) particleMaxAge;
 		this.particleAlpha = 1F * (1F - life);
-
-		double x = posX - point.x;
-		double y = posY - point.y;
-		double z = posZ - point.z;
-
-		double square = x * x + y * y + z * z;
-		double distance = Math.sqrt(square);
-
-		motionX = speed * (x / distance);
-		motionY = speed * (y / distance);
-		motionZ = speed * (z / distance);
 
 		prevPosX = posX += motionX;
 		prevPosY = posY += motionY;

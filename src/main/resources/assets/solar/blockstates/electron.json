@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-	"model": "solar:electron_node",
+	"model": "solar:electron",
 	"uvlock": true
   },
   "variants": {

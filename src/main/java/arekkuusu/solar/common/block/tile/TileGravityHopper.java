@@ -19,7 +19,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -143,9 +142,9 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 back = getOffSet(facing.getOpposite());
 
 			double speed = world.rand.nextDouble() * -0.015D;
-			Vec3d vec = new Vec3d(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
+			Vector3 vec = new Vector3(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
 
-			ParticleUtil.spawnLightParticle(world, back.x, back.y, back.z, vec.x, vec.y, vec.z, 0x49FFFF, 30, 2F);
+			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 30, 2F);
 		}
 	}
 

@@ -73,15 +73,15 @@ public class QQuartzEffectMessage implements IMessage {
 					for(int i = 0; i < 15; i++) {
 						Vector3 offset = Vector3.getRandomVec(0.05D).add(message.to);
 						Vector3 speed = Vector3.getRandomVec(0.01D);
-						ParticleUtil.spawnTunnelingPhoton(world, offset.x, offset.y, offset.z
-								, speed.x, speed.y, speed.z, 0x49FFFF, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
+						ParticleUtil.spawnTunnelingPhoton(world, offset,
+								speed, 0x49FFFF, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
 					}
 
 					for(int i = 0; i < 15; i++) {
 						Vector3 offset = Vector3.getRandomVec(0.1D).add(message.from);
 						Vector3 speed = Vector3.getRandomVec(0.1D);
-						ParticleUtil.spawnTunnelingPhoton(world, offset.x, offset.y, offset.z
-								, speed.x, speed.y, speed.z, 0xFF0303, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
+						ParticleUtil.spawnTunnelingPhoton(world, offset,
+								speed, 0xFF0303, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
 					}
 				});
 			}

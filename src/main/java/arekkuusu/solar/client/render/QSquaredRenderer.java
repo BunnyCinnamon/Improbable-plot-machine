@@ -47,30 +47,37 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 		GlStateManager.disableCull();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 
-		double[] layers = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		double perLayer = 0.00625D;
-		double maxLayer = 0.025D;
-		double modifier = MathHelper.sin((float) tick * 0.035F);
-		int num = (int) (24D * modifier);
-
-		for(int i = num - 4; i < num + 4; i++) {
-			if(i < layers.length && i >= 0) {
-				int diff = i - num;
-				if(diff > 0) diff = -diff;
-				layers[i] = maxLayer + (perLayer * (double) diff);
-			}
-		}
-
-		SpriteLibrary.Q_SQUARED.bindManager();
-		for(int layer = 0; layer < 16; layer++) {
-			renderLayer(0.5F + layers[layer], layer);
-		}
+		calculateWaves(tick);
 
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.popMatrix();
 		GLHelper.lightMap(prevU, prevV);
+	}
+
+	private void calculateWaves(float tick) {
+		double[] layers = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		double perLayer = 0.00625D;
+		double maxLayer = 0.025D;
+		double modifier = MathHelper.sin(tick * 0.035F) * 24D;
+		for(int wave = 0; wave < 2; wave++) {
+			int num = wave == 0 ? (int) modifier : (int) (modifier + (-(modifier - 7D) * 2D));
+			for(int i = num - 4; i < num + 4; i++) {
+				if(i < layers.length && i >= 0) {
+					int diff = i - num;
+					if(diff > 0) diff = -diff;
+					double layer = maxLayer + (perLayer * (double) diff);
+					if(layer > layers[i]) {
+						layers[i] = layer;
+					}
+				}
+			}
+		}
+		SpriteLibrary.Q_SQUARED.bindManager();
+		for(int layer = 0; layer < 16; layer++) {
+			renderLayer(0.5F + layers[layer], layer);
+		}
 	}
 
 	private void renderLayer(double size, int layer) {

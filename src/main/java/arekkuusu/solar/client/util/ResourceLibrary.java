@@ -25,6 +25,7 @@ import static arekkuusu.solar.client.util.ResourceLibrary.TextureLocation.MODEL;
 @SideOnly(Side.CLIENT)
 public final class ResourceLibrary {
 
+	//Textures
 	public static final ResourceLocation NOTHING = getAtlas(BLOCKS, "nothing");
 	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");
 	public static final ResourceLocation[] PRIMAL_GLYPH = ResourceBuilder.toArray(16, "glyph/primal_glyph_", name ->
@@ -63,6 +64,10 @@ public final class ResourceLibrary {
 
 	public static ResourceLocation getTexture(Location location, String name) {
 		return getLocation(AssetLocation.TEXTURES, location, name, ".png");
+	}
+
+	public static ResourceLocation getSimpleLocation(String name) {
+		return getLocation(null, null, name, "");
 	}
 
 	public enum ModelLocation implements Location {

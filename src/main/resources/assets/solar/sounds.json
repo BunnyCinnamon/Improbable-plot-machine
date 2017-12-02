@@ -1,0 +1,9 @@
+{
+  "spark": {
+    "category": "neutral",
+    "sounds": [
+      "solar:spark"
+    ],
+    "subtitle": "solar.sound.spark"
+  }
+}

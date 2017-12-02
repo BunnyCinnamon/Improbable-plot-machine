@@ -41,6 +41,7 @@ public class BlockHyperConductor extends BlockBase {
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this) {
 			getTile(TileHyperConductor.class, world, pos).ifPresent(conductor -> {
+				if(conductor.getElectrons().contains(fromPos)) return;
 				boolean wasPowered = conductor.isPowered();
 				boolean isPowered = world.isBlockPowered(pos);
 				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {

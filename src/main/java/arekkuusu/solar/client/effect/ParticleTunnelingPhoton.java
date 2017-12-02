@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
@@ -20,8 +21,8 @@ public class ParticleTunnelingPhoton extends ParticleBase {
 
 	private final float initScale;
 
-	ParticleTunnelingPhoton(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int age, float scale, int rgb) {
-		super(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
+	ParticleTunnelingPhoton(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
+		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
 		float r = (rgb >>> 16 & 0xFF) / 256.0F;
 		float g = (rgb >>> 8 & 0xFF) / 256.0F;
 		float b = (rgb & 0xFF) / 256.0F;
@@ -32,9 +33,9 @@ public class ParticleTunnelingPhoton extends ParticleBase {
 		particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
 		canCollide = false;
 
-		motionX = xSpeed;
-		motionY = ySpeed;
-		motionZ = zSpeed;
+		motionX = speed.x;
+		motionY = speed.y;
+		motionZ = speed.z;
 
 		setSprite(SpriteLibrary.NEUTRON_PARTICLE);
 	}

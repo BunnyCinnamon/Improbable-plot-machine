@@ -35,9 +35,9 @@ public class AshenCubeStructure implements IWorldGenerator {
 
 	private final Random random = new Random();
 	private final RandomCollection<Structure> structures = new RandomCollection<Structure>(random)
-			.add(5, Structure.ASHEN_NUGGET_BIG)
-			.add(3, Structure.ASHEN_NUGGET_SMALL)
-			.add(1, Structure.ASHEN_NUGGET_SPAWN);
+			.add(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.WEIGHTS.big, Structure.ASHEN_NUGGET_BIG)
+			.add(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.WEIGHTS.small, Structure.ASHEN_NUGGET_SMALL)
+			.add(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.WEIGHTS.spawn, Structure.ASHEN_NUGGET_SPAWN);
 
 	@Override
 	public void generate(Random r, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
@@ -51,22 +51,26 @@ public class AshenCubeStructure implements IWorldGenerator {
 			random.setSeed(good ^ succ ^ world.getSeed());
 			if(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.rarity > 0D && GEN_CONFIG.ASHEN_CUBE_STRUCTURE.rarity / 100D > random.nextDouble()) {
 				BlockPos center = new BlockPos(chunkX * 16, 15 + random.nextInt(25), chunkZ * 16);
-				genCubes(world, center);
+				if(!world.canSeeSky(center) || !GEN_CONFIG.ASHEN_CUBE_STRUCTURE.underground) {
+					genCubes(world, center);
+				}
 			}
 		}
 	}
 
 	private void genCubes(World world, BlockPos pos) {
 		//Gen Cube
-		BlockPos center = pos.add(5, 0, 5);
+		BlockPos origin = pos.add(5, 0, 5);
 		Template template = Structure.ASHEN_CUBE.load(world);
-		template.addBlocksToWorld(world, center, new PlacementSettings());
-		PlacementSettings setting = new PlacementSettings();
-		setting.setIntegrity(random.nextFloat() > 0.25F ? 1F : random.nextFloat());
-		Structure.ASHEN_CUBE_.generate(world, center, setting);
+		boolean loot = GEN_CONFIG.ASHEN_CUBE_STRUCTURE.loot / 100D > random.nextDouble();
+		PlacementSettings integrity = new PlacementSettings();
+		integrity.setIntegrity(loot ? 1F : 0.35F + 0.45F * random.nextFloat());
+		template.addBlocksToWorld(world, origin, integrity);
+		integrity.setIntegrity(!loot && random.nextFloat() > 0.45F ? 1F : random.nextFloat());
+		Structure.ASHEN_CUBE_.generate(world, origin, integrity);
 		//Add loot
-		if(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.loot / 100D > random.nextDouble()) {
-			center = center.add(
+		if(loot) {
+			BlockPos center = origin.add(
 					template.getSize().getX() / 2,
 					template.getSize().getY() / 2,
 					template.getSize().getZ() / 2
@@ -79,17 +83,17 @@ public class AshenCubeStructure implements IWorldGenerator {
 			}
 		}
 		//Gen Cubes
+		AxisAlignedBB cubeBB = new AxisAlignedBB(origin, origin.add(template.getSize()));
 		for(int i = 0; i < GEN_CONFIG.ASHEN_CUBE_STRUCTURE.size; i++) {
 			Template cube = structures.next().load(world);
 			Rotation rotation = Rotation.values()[random.nextInt(4)];
 			Vector3 vec = new Vector3(cube.getSize()).rotate(rotation);
 			BlockPos offset = randomVector().add(pos).toBlockPos();
-			if(offset.getX() < 1) continue;
-			AxisAlignedBB cubeBB = new AxisAlignedBB(center, center.add(template.getSize()));
+			if(offset.getY() < 1  || (world.canSeeSky(offset) && GEN_CONFIG.ASHEN_CUBE_STRUCTURE.underground)) continue;
 			AxisAlignedBB nuggetBB = new AxisAlignedBB(offset, vec.add(offset).toBlockPos());
-			if(!cubeBB.intersects(nuggetBB)) {
+			if(!nuggetBB.intersects(cubeBB)) {
 				PlacementSettings settings = new PlacementSettings();
-				settings.setIntegrity(random.nextFloat() > 0.65F ? 1F : random.nextFloat());
+				settings.setIntegrity(random.nextFloat() > 0.85F ? 0.9F : 0.35F + 0.45F * random.nextFloat());
 				settings.setRotation(rotation);
 				settings.setRandom(random);
 				cube.addBlocksToWorld(world, offset, settings);
@@ -98,9 +102,9 @@ public class AshenCubeStructure implements IWorldGenerator {
 	}
 
 	private Vector3 randomVector() {
-		double x = 3 + random.nextInt(11);
-		double y = 30 * (random.nextDouble() * 2 - 1);
-		double z = 3 + random.nextInt(11);
+		double x = 7D + (4D * (random.nextDouble() * 2D - 1D));
+		double y = GEN_CONFIG.ASHEN_CUBE_STRUCTURE.spread * (random.nextDouble() * 2D - 1D);
+		double z = 7D + (4D * (random.nextDouble() * 2D - 1D));
 		return new Vector3(x, y, z);
 	}
 }

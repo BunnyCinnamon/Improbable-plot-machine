@@ -45,10 +45,15 @@ public class BlockAshen extends BlockBase {
 	@Override
 	public void onFallenUpon(World world, BlockPos pos, Entity entity, float fallDistance) {
 		super.onFallenUpon(world, pos, entity, fallDistance);
-		if(fallDistance >= 1.5F + world.rand.nextFloat() * 1.5F) {
+		/*if(fallDistance >= 1.5F + world.rand.nextFloat() * 1.5F) {
 			world.setBlockToAir(pos);
 			entity.playSound(SoundEvents.BLOCK_SNOW_BREAK, 1F, 1F);
-		}
+		}*/
+	}
+
+	@Override
+	public void onLanded(World worldIn, Entity entity) {
+		entity.motionY = 0.0D;
 	}
 
 	@Override

@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement;
 
-import arekkuusu.solar.client.util.helper.TooltipHelper;
+import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -22,8 +22,8 @@ import java.util.UUID;
 public interface IEntangledTile {
 
 	@SideOnly(Side.CLIENT)
-	default TooltipHelper.Builder getInfo(TooltipHelper.Builder builder, UUID uuid) {
-		builder.addI18("uuid_key", TooltipHelper.DARK_GRAY_ITALIC).add(": ").end();
+	default TooltipBuilder getInfo(TooltipBuilder builder, UUID uuid) {
+		builder.addI18("uuid_key", TooltipBuilder.DARK_GRAY_ITALIC).add(": ").end();
 		String key = uuid.toString();
 		builder.add(" > ").add(key.substring(0, 18)).end();
 		builder.add(" > ").add(key.substring(18)).end();

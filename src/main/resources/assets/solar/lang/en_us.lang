@@ -1,6 +1,9 @@
 itemGroup.solar.misc_items=Solar Items
 itemGroup.solar.misc_blocks=Solar Blocks
 
+//Sound subtitles
+solar.sound.spark=spark!
+
 //Items
 item.primal_stone.name=Primal Stone
 item.primal_glyph.name=Primal Glyph
@@ -25,7 +28,7 @@ tile.q_squared.name=Q²
 tile.theorema.name=Theorema
 tile.gravity_inhibitor.name=Gravity Inhibitor
 tile.hyper_conductor.name=Hyper Conductor
-tile.electron_node.name=Electron Node
+tile.electron.name=Electron
 tile.ashen.name=Ashen
 
 //Entity
@@ -41,4 +44,5 @@ tlp.ctrl_for_info.name=<ctrl for info>
 tlp.list_more.name=more
 tlp.quantum_data.name=Quantum Data
 tlp.uuid_key.name=Uuid
+tlp.quingentilliard_filter.name=Gravity Filter
 tlp.valid_entangler.name=Valid Entangler

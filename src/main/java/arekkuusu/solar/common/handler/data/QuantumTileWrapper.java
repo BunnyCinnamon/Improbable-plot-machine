@@ -10,7 +10,7 @@ package arekkuusu.solar.common.handler.data;
 import arekkuusu.solar.api.entanglement.quantum.IQuantumTile;
 import net.minecraft.tileentity.TileEntity;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -26,10 +26,9 @@ public class QuantumTileWrapper<T extends TileEntity & IQuantumTile> extends Qua
 		this.tile = tile;
 	}
 
-	@Nullable
 	@Override
-	public UUID getKey() {
-		return tile.getKey().orElse(null);
+	public Optional<UUID> getKey() {
+		return tile.getKey();
 	}
 
 	@Override

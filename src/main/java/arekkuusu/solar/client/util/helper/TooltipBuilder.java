@@ -23,70 +23,70 @@ import java.util.function.Consumer;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class TooltipHelper {
+public class TooltipBuilder {
 
 	public static final TextFormatting[] DARK_GRAY_ITALIC = {TextFormatting.DARK_GRAY, TextFormatting.ITALIC};
 	public static final TextFormatting[] GRAY_ITALIC = {TextFormatting.GRAY, TextFormatting.ITALIC};
 	private static final String FORMAT = "tlp.%s.name";
 
-	public static Builder inline() {
-		return new Builder();
+	private TooltipBuilder(){}
+
+	public static TooltipBuilder inline() {
+		return new TooltipBuilder();
 	}
 
-	public static class Builder {
+	private StringBuilder builder = new StringBuilder();
+	private List<String> strings = new ArrayList<>();
 
-		private StringBuilder builder = new StringBuilder();
-		private List<String> strings = new ArrayList<>();
+	public Condition condition(Condition condition) {
+		return condition.apply(this);
+	}
 
-		public Condition condition(Condition condition) {
-			return condition.apply(this);
+	public TooltipBuilder add(Object object, TextFormatting... formats) {
+		for(TextFormatting format : formats) {
+			builder.append(format);
 		}
+		builder.append(object);
+		return this;
+	}
 
-		public Builder add(Object object, TextFormatting... formats) {
-			for(TextFormatting format : formats) {
-				builder.append(format);
-			}
-			builder.append(object);
-			return this;
-		}
+	public TooltipBuilder addI18(String i18, TextFormatting... formats) {
+		return add(I18n.format(String.format(FORMAT, i18)), formats);
+	}
 
-		public Builder addI18(String i18, TextFormatting... formats) {
-			return add(I18n.format(String.format(FORMAT, i18)), formats);
-		}
+	public TooltipBuilder end() {
+		strings.add(builder.toString());
+		builder = new StringBuilder();
+		return this;
+	}
 
-		public Builder end() {
-			strings.add(builder.toString());
-			builder = new StringBuilder();
-			return this;
-		}
+	public TooltipBuilder skip() {
+		strings.add("");
+		return this;
+	}
 
-		public Builder skip() {
-			strings.add("");
-			return this;
-		}
-
-		public void build(List<String> tooltip) {
-			tooltip.addAll(strings);
-		}
+	public void build(List<String> tooltip) {
+		tooltip.addAll(strings);
 	}
 
 	public enum Condition {
-		NOTHING(() -> true, builder -> {}),
+		NOTHING(() -> true, builder -> {
+		}),
 		SHIFT_KEY_DOWN(GuiScreen::isShiftKeyDown
-				, builder -> builder.addI18("shift_for_info", TooltipHelper.DARK_GRAY_ITALIC).end()),
+				, builder -> builder.addI18("shift_for_info", TooltipBuilder.DARK_GRAY_ITALIC).end()),
 		CONTROL_KEY_DOWN(GuiScreen::isCtrlKeyDown
-				, builder -> builder.addI18("ctrl_for_info", TooltipHelper.DARK_GRAY_ITALIC).end());
+				, builder -> builder.addI18("ctrl_for_info", TooltipBuilder.DARK_GRAY_ITALIC).end());
 
 		private final BooleanSupplier supplier;
-		private final Consumer<Builder> consumer;
-		private Builder builder;
+		private final Consumer<TooltipBuilder> consumer;
+		private TooltipBuilder builder;
 
-		Condition(BooleanSupplier supplier, Consumer<Builder> consumer) {
+		Condition(BooleanSupplier supplier, Consumer<TooltipBuilder> consumer) {
 			this.supplier = supplier;
 			this.consumer = consumer;
 		}
 
-		public Condition apply(Builder builder) {
+		public Condition apply(TooltipBuilder builder) {
 			this.builder = builder;
 			return this;
 		}
@@ -95,8 +95,8 @@ public class TooltipHelper {
 			return supplier.getAsBoolean();
 		}
 
-		public Builder ifAgrees(Consumer<Builder> consumer) {
-			Builder builder = this.builder;
+		public TooltipBuilder ifAgrees(Consumer<TooltipBuilder> consumer) {
+			TooltipBuilder builder = this.builder;
 			this.builder = null;
 			if(agrees()) consumer.accept(builder);
 			else this.consumer.accept(builder);
