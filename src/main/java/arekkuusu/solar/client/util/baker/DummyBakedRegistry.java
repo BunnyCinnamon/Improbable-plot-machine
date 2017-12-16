@@ -31,7 +31,6 @@ public class DummyBakedRegistry {
 
 	public static void register(Item item, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel> function) {
 		ResourceLocation location = item.getRegistryName();
-
 		BAKERS.putIfAbsent(location, function);
 	}
 

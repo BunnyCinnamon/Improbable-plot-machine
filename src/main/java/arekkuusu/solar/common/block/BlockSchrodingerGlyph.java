@@ -9,7 +9,7 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
-import arekkuusu.solar.client.render.baked.SchrodingerGlyphBakedModel;
+import arekkuusu.solar.client.render.baked.BakedSchrodingerGlyph;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
@@ -146,7 +146,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), SchrodingerGlyphBakedModel::new);
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedSchrodingerGlyph::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

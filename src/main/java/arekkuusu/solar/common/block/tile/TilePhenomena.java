@@ -10,8 +10,7 @@ package arekkuusu.solar.common.block.tile;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.lib.LibMod;
-import arekkuusu.solar.common.network.PacketHandler;
-import arekkuusu.solar.common.network.PhenomenaMessage;
+import arekkuusu.solar.common.network.PacketHelper;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -72,7 +71,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 			} else {
 				inverse = isInvisible();
 				if(!inverse) inverse();
-				PacketHandler.sendToAllAround(new PhenomenaMessage(getPos()), PacketHandler.fromTileEntity(this, 25));
+				PacketHelper.sendPhenomenaPacket(this);
 			}
 			timer = 20;
 		}
@@ -130,11 +129,13 @@ public class TilePhenomena extends TileBase implements ITickable {
 
 	@Override
 	void readNBT(NBTTagCompound cmp) {
+		inverse = cmp.getBoolean("inverse");
 		timer = cmp.getInteger("timer");
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound cmp) {
+		cmp.setBoolean("inverse", inverse);
 		cmp.setInteger("timer", timer);
 	}
 }

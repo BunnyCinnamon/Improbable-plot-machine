@@ -37,8 +37,7 @@ public class TileGravityInhibitor extends TileBase implements ITickable {
 		if(!world.isRemote) {
 			getFilteredEntities().forEach(this::captureEntity);
 			filterCaptured();
-		}
-		tick++;
+		} else tick++;
 	}
 
 	private void filterCaptured() {

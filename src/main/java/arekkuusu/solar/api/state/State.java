@@ -18,5 +18,6 @@ public class State {
 
 	public static final PropertyInteger POWER = PropertyInteger.create("power", 0, 15);
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
+	public static final PropertyInteger GLYPH = PropertyInteger.create("glyph", 0, 15);
 
 }

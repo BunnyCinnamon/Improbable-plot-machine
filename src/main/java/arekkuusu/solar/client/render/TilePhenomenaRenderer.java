@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by <Arekkuusu> on 09/09/2017.
@@ -37,7 +38,7 @@ import javax.annotation.Nonnull;
 public class TilePhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 
 	@Override
-	public void renderTileEntityFast(@Nonnull TilePhenomena phenomena, double x, double y, double z, float partialTick, int breakStage, float partial, BufferBuilder renderer) {
+	public void renderTileEntityFast(@Nonnull TilePhenomena phenomena, double x, double y, double z, float partialTick, int breakStage, float partial, @Nullable BufferBuilder renderer) {
 		if(blockRenderer == null) blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
 		BlockPos pos = phenomena.getPos();
@@ -55,6 +56,7 @@ public class TilePhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 					extendedState = extendedState.withProperty(Properties.AnimationProperty, pair.getLeft());
 					IBakedModel model = getModel(state);
 
+					assert renderer != null;
 					renderer.setTranslation(x - pos.getX(), y - pos.getY(), z - pos.getZ());
 
 					blockRenderer.getBlockModelRenderer().renderModel(world, model, extendedState, pos, renderer, false);

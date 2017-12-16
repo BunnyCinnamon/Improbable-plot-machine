@@ -1,7 +1,7 @@
 {
 	"parent": "block/block",
 	"textures": {
-		"particle": "solar:blocks/nothing"
+		"particle": "solar:blocks/transparent"
 	},
 	"elements": [
 

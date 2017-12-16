@@ -32,8 +32,6 @@ public final class SpriteLibrary {
 	public static final SpriteResource PRISM_PETAL = SpriteLoader.load(BLOCKS, "prism_flower/petal");
 	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteLoader.load(MODEL, "eye_of_schrodinger_layer");
 	public static final FrameSpriteResource QUINGENTILLIARD = SpriteLoader.load(ITEMS, "quingentilliard", 8, 1);
-	public static final FrameSpriteResource RED_GLYPH = SpriteLoader.load(BLOCKS, "red_glyph", 4, 1);
-	public static final FrameSpriteResource BLUE_GLYPH = SpriteLoader.load(BLOCKS, "blue_glyph", 4, 1);
 	public static final SpriteResource Q_SQUARED = SpriteLoader.load(BLOCKS, "q_squared");
 	public static final FrameSpriteResource GRAVITY_INHIBITOR_OVERLAY = SpriteLoader.load(BLOCKS, "gravity_inhibitor_overlay", 4, 2);
 	public static final SpriteResource GRAVITY_INHIBITOR = SpriteLoader.load(BLOCKS, "gravity_inhibitor");

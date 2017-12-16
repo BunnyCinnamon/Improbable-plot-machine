@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.material.FixedMaterial;
-import arekkuusu.solar.client.render.baked.GravityHopperBakedModel;
+import arekkuusu.solar.client.render.baked.BakedGravityHopper;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileGravityHopper;
@@ -132,7 +132,7 @@ public class BlockGravityHopper extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), GravityHopperBakedModel::new);
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedGravityHopper::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

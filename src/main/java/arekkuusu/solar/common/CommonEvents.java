@@ -12,6 +12,7 @@ import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.handler.recipe.ModRecipes;
 import arekkuusu.solar.common.item.ModItems;
+import arekkuusu.solar.common.network.PacketHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -48,7 +49,7 @@ public final class CommonEvents {
 	@SubscribeEvent
 	public static void syncQuantumData(PlayerEvent.PlayerLoggedInEvent event) {
 		if(event.player instanceof EntityPlayerMP) {
-			WorldQuantumData.syncTo((EntityPlayerMP) event.player);
+			PacketHelper.syncQuantumTo((EntityPlayerMP) event.player);
 		}
 	}
 

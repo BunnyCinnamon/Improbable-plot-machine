@@ -28,6 +28,7 @@ public final class ConfigHandler {
 	public static class Gen {
 
 		public final AshenCubeStructureConfig ASHEN_CUBE_STRUCTURE = new AshenCubeStructureConfig();
+		public final MonolithConfig MONOLITH_CONFIG = new MonolithConfig();
 
 		public static class AshenCubeStructureConfig {
 
@@ -51,6 +52,37 @@ public final class ConfigHandler {
 				public int small = 6;
 				@Comment("Weight of spawn \"nuggets\"")
 				public int spawn = 1;
+			}
+		}
+
+		public static class MonolithConfig {
+
+			public final HollowMonolithStructure MONOLITH_STRUCTURE = new HollowMonolithStructure();
+			public final ObeliskDecorator OBELISK_DECORATOR = new ObeliskDecorator();
+
+			public static class HollowMonolithStructure {
+
+				@Comment("Chance of 0-100% to generate")
+				public double rarity = 10;
+				@Comment("If obelisks should generate around the structure")
+				public boolean generateObelisks = true;
+			}
+
+			public static class ObeliskDecorator {
+
+				public final ObeliskWeights WEIGHTS = new ObeliskWeights();
+
+				@Comment("Chance of 0-100% to generate")
+				public double rarity = 10;
+				@Comment("Max amount of obelisks allowed in one chunk")
+				public double size = 1;
+
+				public static class ObeliskWeights {
+					@Comment("Weight of monolithic obelisk")
+					public int monolithic = 2;
+					@Comment("Weight of fragmented obelisk")
+					public int fragmented = 1;
+				}
 			}
 		}
 	}

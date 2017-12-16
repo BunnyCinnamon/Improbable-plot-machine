@@ -9,17 +9,24 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.api.state.State;
+import arekkuusu.solar.client.render.baked.BakedHyperConductor;
+import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -82,6 +89,11 @@ public class BlockHyperConductor extends BlockBase {
 	}
 
 	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT_MIPPED;
+	}
+
+	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
@@ -90,5 +102,12 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileHyperConductor();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerModel() {
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedHyperConductor::new);
+		ModelHandler.registerModel(this, 0, "");
 	}
 }

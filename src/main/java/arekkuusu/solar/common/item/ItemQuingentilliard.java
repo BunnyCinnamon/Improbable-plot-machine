@@ -10,7 +10,7 @@ package arekkuusu.solar.common.item;
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.client.render.baked.RenderedBakedModel;
+import arekkuusu.solar.client.render.baked.BakedRender;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
@@ -165,7 +165,7 @@ public class ItemQuingentilliard extends ItemBase implements IQuantumStack {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, (format, g) -> new RenderedBakedModel());
+		DummyBakedRegistry.register(this, (format, g) -> new BakedRender());
 		ModelHandler.registerModel(this, 0);
 	}
 

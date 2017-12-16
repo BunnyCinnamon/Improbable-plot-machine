@@ -73,7 +73,7 @@ public final class CreativeTabHandler {
 		public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> list) {
 			this.list = list;
 			addItem(ModItems.QUINGENTILLIARD);
-			addItem(ModItems.QUANTUM_QUARTZ);
+			addItem(ModItems.CRYSTAL_QUARTZ);
 		}
 	}
 
@@ -97,15 +97,15 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.PRIMAL_STONE);
 			addBlock(ModBlocks.PRIMAL_GLYPH);
 			addBlock(ModBlocks.ASHEN);
+			addBlock(ModBlocks.MONOLITHIC);
 			addBlock(ModBlocks.SCHRODINGER_GLYPH);
 			addBlock(ModBlocks.PHENOMENA);
 			addBlock(ModBlocks.Q_SQUARED);
 			addBlock(ModBlocks.THEOREMA);
-			addBlock(ModBlocks.singularity);
+			addBlock(ModBlocks.SINGULARITY);
 			addBlock(ModBlocks.PRISM_FLOWER);
 			addBlock(ModBlocks.QUANTUM_MIRROR);
 			addBlock(ModBlocks.GRAVITY_HOPPER);
-			addBlock(ModBlocks.CRYSTAL_VOID);
 			addBlock(ModBlocks.BLINKER);
 			addBlock(ModBlocks.HYPER_CONDUCTOR);
 			addBlock(ModBlocks.ELECTRON);

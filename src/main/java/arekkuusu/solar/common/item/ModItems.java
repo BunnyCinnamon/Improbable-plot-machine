@@ -25,27 +25,27 @@ public final class ModItems {
 	private static final Item PLACE_HOLDER = new Item();
 	//--------------------------------Items--------------------------------//
 	public static final Item QUINGENTILLIARD = PLACE_HOLDER;
-	public static final Item QUANTUM_QUARTZ = PLACE_HOLDER;
+	public static final Item CRYSTAL_QUARTZ = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
 		registry.register(new ItemPrimalGlyph());
-		registry.register(itemBlock(ModBlocks.singularity));
+		registry.register(itemBlock(ModBlocks.SINGULARITY));
 		registry.register(itemBlock(ModBlocks.PRISM_FLOWER));
 		registry.register(new ItemQuantumMirror());
 		registry.register(new ItemGravityHopper());
 		registry.register(new ItemQuingentilliard());
 		registry.register(new ItemSchrodingerGlyph());
-		registry.register(itemBlock(ModBlocks.CRYSTAL_VOID));
 		registry.register(new ItemBlinker());
 		registry.register(itemBlock(ModBlocks.PHENOMENA));
-		registry.register(new ItemQuantumQuartz());
+		registry.register(new ItemCrystalQuartz());
 		registry.register(itemBlock(ModBlocks.Q_SQUARED));
 		registry.register(itemBlock(ModBlocks.THEOREMA));
 		registry.register(itemBlock(ModBlocks.GRAVITY_INHIBITOR));
-		registry.register(itemBlock(ModBlocks.HYPER_CONDUCTOR));
-		registry.register(itemBlock(ModBlocks.ELECTRON));
+		registry.register(new ItemHyperConductor());
+		registry.register(new ItemElectron());
 		registry.register(itemBlock(ModBlocks.ASHEN));
+		registry.register(itemBlock(ModBlocks.MONOLITHIC));
 	}
 
 	@SuppressWarnings("ConstantConditions")

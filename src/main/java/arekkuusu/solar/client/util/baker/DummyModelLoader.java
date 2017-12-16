@@ -28,7 +28,6 @@ public class DummyModelLoader implements ICustomModelLoader {
 
 	private final Map<ResourceLocation, IModel> created = Maps.newHashMap();
 
-	@SuppressWarnings("ConstantConditions")
 	@Override
 	public boolean accepts(ResourceLocation location) {
 		return DummyBakedRegistry.isRegistered(trim(location));

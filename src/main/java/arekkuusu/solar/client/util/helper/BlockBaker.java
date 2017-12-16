@@ -32,7 +32,7 @@ import java.util.List;
  */
 @SideOnly(Side.CLIENT)
 public enum BlockBaker {
-	PRIMAL_SIDE("primal_side");
+	;
 
 	ResourceLocation location;
 
@@ -41,12 +41,13 @@ public enum BlockBaker {
 	IBakedModel baked;
 
 	BlockBaker(String name) {
-		location = ResourceLibrary.getAtlas(ResourceLibrary.ModelLocation.BLOCK, name);
+		location = ResourceLibrary.getLocation(null, ResourceLibrary.ModelLocation.BLOCK, name, "");
 	}
 
 	public void bake() throws Exception {
 		model = ModelLoaderRegistry.getModel(location);
 		baked = model.bake(TRSRTransformation.identity(), Attributes.DEFAULT_BAKED_FORMAT, ModelLoader.defaultTextureGetter());
+		quads = baked.getQuads(null, null, 0);
 	}
 
 	public ResourceLocation getLocation() {
@@ -70,7 +71,7 @@ public enum BlockBaker {
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
-		for(BakedQuad bakedquad : model.quads != null ? model.quads : (model.quads = model.baked.getQuads(null, null, 0))) {
+		for(BakedQuad bakedquad : model.quads) {
 			LightUtil.renderQuadColor(buffer, bakedquad, -1);
 		}
 		tessellator.draw();

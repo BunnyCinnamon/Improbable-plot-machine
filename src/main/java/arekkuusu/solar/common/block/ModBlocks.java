@@ -27,12 +27,11 @@ public final class ModBlocks {
 	//--------------------------------Blocks--------------------------------//
 	public static final Block PRIMAL_STONE = PLACE_HOLDER;
 	public static final Block PRIMAL_GLYPH = PLACE_HOLDER;
-	public static final Block singularity = PLACE_HOLDER;
+	public static final Block SINGULARITY = PLACE_HOLDER;
 	public static final Block PRISM_FLOWER = PLACE_HOLDER;
 	public static final Block QUANTUM_MIRROR = PLACE_HOLDER;
 	public static final Block GRAVITY_HOPPER = PLACE_HOLDER;
 	public static final Block SCHRODINGER_GLYPH = PLACE_HOLDER;
-	public static final Block CRYSTAL_VOID = PLACE_HOLDER;
 	public static final Block BLINKER = PLACE_HOLDER;
 	public static final Block PHENOMENA = PLACE_HOLDER;
 	public static final Block Q_SQUARED = PLACE_HOLDER;
@@ -41,6 +40,7 @@ public final class ModBlocks {
 	public static final Block HYPER_CONDUCTOR = PLACE_HOLDER;
 	public static final Block ELECTRON = PLACE_HOLDER;
 	public static final Block ASHEN = PLACE_HOLDER;
+	public static final Block MONOLITHIC = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -50,7 +50,6 @@ public final class ModBlocks {
 		registry.register(new BlockQuantumMirror());
 		registry.register(new BlockGravityHopper());
 		registry.register(new BlockSchrodingerGlyph());
-		registry.register(new BlockCrystalVoid());
 		registry.register(new BlockBlinker());
 		registry.register(new BlockPhenomena());
 		registry.register(new BlockQSquared());
@@ -59,6 +58,7 @@ public final class ModBlocks {
 		registry.register(new BlockHyperConductor());
 		registry.register(new BlockElectron());
 		registry.register(new BlockAshen());
+		registry.register(new BlockMonolithic());
 		registerTiles();
 	}
 
@@ -67,7 +67,6 @@ public final class ModBlocks {
 		GameRegistry.registerTileEntity(TilePrismFlower.class, LibMod.MOD_ID + ":prism_flower");
 		GameRegistry.registerTileEntity(TileQuantumMirror.class, LibMod.MOD_ID + ":quantum_mirror");
 		GameRegistry.registerTileEntity(TileGravityHopper.class, LibMod.MOD_ID + ":gravity_hopper");
-		GameRegistry.registerTileEntity(TileCrystalVoid.class, LibMod.MOD_ID + ":crystal_void");
 		GameRegistry.registerTileEntity(TileBlinker.class, LibMod.MOD_ID + ":blinker");
 		GameRegistry.registerTileEntity(TilePhenomena.class, LibMod.MOD_ID + ":phenomena");
 		GameRegistry.registerTileEntity(TileQSquared.class, LibMod.MOD_ID + ":q_squared");

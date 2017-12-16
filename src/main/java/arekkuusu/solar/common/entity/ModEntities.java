@@ -25,7 +25,7 @@ public final class ModEntities {
 		register(EntityFastItem.class, "fast_item");
 		register(EntitySingularityItem.class, "singularity_item");
 		register(EntityQuingentilliardItem.class, "quingentilliard_item");
-		register(EntityQuantumQuartzItem.class, "quantum_quartz");
+		register(EntityCrystalQuartzItem.class, "crystal_quartz");
 		register(EntityEyeOfSchrodinger.class, "eye_of_schrodinger", 0x222222);
 	}
 

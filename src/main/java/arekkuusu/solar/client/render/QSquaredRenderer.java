@@ -9,6 +9,7 @@ package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
+import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import arekkuusu.solar.common.block.tile.TileQSquared;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -27,7 +28,9 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 
 	@Override
 	void renderTile(TileQSquared squared, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		RenderHelper.disableStandardItemLighting();
 		renderModel(squared.tick, x, y, z);
+		RenderHelper.enableStandardItemLighting();
 	}
 
 	@Override
@@ -37,12 +40,12 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 	}
 
 	private void renderModel(int tick, double x, double y, double z) {
+		ProfilerHelper.begin("[Q²] - Rendering waves");
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 		GLHelper.lightMap(255F, 255F);
 
 		GlStateManager.pushMatrix();
-		RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -51,9 +54,9 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
-		RenderHelper.enableStandardItemLighting();
 		GlStateManager.popMatrix();
 		GLHelper.lightMap(prevU, prevV);
+		ProfilerHelper.end();
 	}
 
 	private void calculateWaves(float tick) {

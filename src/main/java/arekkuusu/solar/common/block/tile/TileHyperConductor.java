@@ -57,7 +57,7 @@ public class TileHyperConductor extends TileBase implements ITickable {
 	@Override
 	public void update() {
 		if(needsUpdate) {
-			PacketHandler.updatePosition(world, pos);
+			updatePosition(world, pos);
 			needsUpdate = false;
 		}
 		electrons.removeIf(pos -> world.getBlockState(pos).getBlock() != ModBlocks.ELECTRON);

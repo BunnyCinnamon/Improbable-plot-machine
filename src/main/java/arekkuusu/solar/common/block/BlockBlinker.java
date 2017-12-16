@@ -8,9 +8,10 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.client.render.baked.BlinkerBakedModel;
+import arekkuusu.solar.client.render.baked.BakedBlinker;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileBlinker;
@@ -100,10 +101,10 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				boolean wasPowered = TileBlinker.isPowered(blinker);
+				boolean wasPowered = RelativityHandler.isPowered(blinker);
 				boolean isPowered = world.isBlockPowered(pos);
 				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-					TileBlinker.setPower(blinker, blinker.getRedstonePower());
+					RelativityHandler.setPower(blinker, blinker.getRedstonePower());
 				}
 			});
 		}
@@ -112,7 +113,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		getTile(TileBlinker.class, world, pos).ifPresent(tile ->
-				world.setBlockState(pos, state.withProperty(State.ACTIVE, TileBlinker.isPowered(tile)))
+				world.setBlockState(pos, state.withProperty(State.ACTIVE, RelativityHandler.isPowered(tile)))
 		);
 	}
 
@@ -124,7 +125,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		Optional<TileBlinker> optional = getTile(TileBlinker.class, world, pos);
-		return optional.map(TileBlinker::getPower).orElse(0);
+		return optional.map(RelativityHandler::getPower).orElse(0);
 	}
 
 	@Override
@@ -188,7 +189,12 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 
 	@Override
 	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT_MIPPED;
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
 	}
 
 	@Override
@@ -199,7 +205,7 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), BlinkerBakedModel::new);
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedBlinker::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

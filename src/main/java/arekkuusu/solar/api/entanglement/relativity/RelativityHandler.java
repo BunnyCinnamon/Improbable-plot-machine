@@ -33,9 +33,9 @@ public class RelativityHandler {
 	 * Add the given {@link IRelativeTile} to the relative list,
 	 * MUST be implemented in a {@link TileEntity} and nothing else.
 	 *
-	 * @param tile The {@link TileEntity} to be added.
+	 * @param tile     The {@link TileEntity} to be added.
 	 * @param runnable If the {@param tile} is added, run {@param <T>}.
-	 * @param <T> An instance of {@param tile} that will be added.
+	 * @param <T>      An instance of {@param tile} that will be added.
 	 */
 	public static <T extends TileEntity & IRelativeTile> void addRelative(T tile, @Nullable Runnable runnable) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
@@ -55,9 +55,9 @@ public class RelativityHandler {
 	 * Remove the given {@link IRelativeTile} from the relative list,
 	 * MUST be implemented in a {@link TileEntity} and nothing else.
 	 *
-	 * @param tile The {@link TileEntity} to be removed.
+	 * @param tile     The {@link TileEntity} to be removed.
 	 * @param runnable If the {@param tile} is removed, run {@param <T>}.
-	 * @param <T> An instance of {@param tile} that will be removed.
+	 * @param <T>      An instance of {@param tile} that will be removed.
 	 */
 	public static <T extends TileEntity & IRelativeTile> void removeRelative(T tile, @Nullable Runnable runnable) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
@@ -69,6 +69,48 @@ public class RelativityHandler {
 			}
 
 			return list != null && !list.isEmpty() ? list : null;
+		}));
+	}
+
+	/**
+	 * If the relative {@param tile} is powered by Redstone.
+	 *
+	 * @param tile The relative tile {@link IRelativePower}.
+	 * @return If the redstone level is higher than 0
+	 */
+	public static <T extends TileEntity & IRelativePower> boolean isPowered(T tile) {
+		return getPower(tile) > 0;
+	}
+
+	/**
+	 * Get the Redstone power from the relative {@param tile}.
+	 *
+	 * @param tile The relative tile {@link IRelativePower}.
+	 * @return The Redstone power from 0 to 15.
+	 */
+	public static <T extends TileEntity & IRelativePower> int getPower(T tile) {
+		return SolarApi.getRelativityPowerMap().getOrDefault(tile.getKey().orElse(null), 0);
+	}
+
+	/**
+	 * Set the Redstone power to the relative {@param tile},
+	 * this will update all other relative tiles, as long as
+	 * they are loaded in the world.
+	 *
+	 * @param tile     The relative tile {@link IRelativePower}.
+	 * @param newPower The new redstone power.
+	 */
+	public static <T extends TileEntity & IRelativePower> void setPower(T tile, int newPower) {
+		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityPowerMap().compute(uuid, (key, prevPower) -> {
+			if(prevPower == null || prevPower != newPower) {
+				SolarApi.getRelativityMap().computeIfPresent(key, (k, list) -> {
+					list.stream()
+							.filter(t -> t.isLoaded() && t instanceof IRelativePower)
+							.map(t -> (IRelativePower) t).forEach(IRelativePower::onPowerUpdate);
+					return list;
+				});
+			}
+			return newPower > 0 ? newPower : null;
 		}));
 	}
 }

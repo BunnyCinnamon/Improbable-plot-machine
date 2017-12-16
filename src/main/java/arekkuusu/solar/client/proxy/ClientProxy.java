@@ -38,8 +38,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 
-import java.util.Arrays;
-
 /**
  * This class was created by <Arekkuusu> on 21/06/2017.
  * It's distributed as part of Solar under
@@ -65,20 +63,7 @@ public class ClientProxy implements IProxy {
 	@SubscribeEvent
 	public static void onSpriteRegister(TextureStitchEvent event) {
 		TextureMap map = event.getMap();
-		map.registerSprite(ResourceLibrary.NOTHING);
-		map.registerSprite(ResourceLibrary.PRIMAL_STONE);
-		map.registerSprite(ResourceLibrary.GRAVITY_HOPPER);
-		map.registerSprite(ResourceLibrary.SCHRODINGER_GLYPH);
-		map.registerSprite(ResourceLibrary.BLINKER_BASE);
-		map.registerSprite(ResourceLibrary.BLINKER_TOP_ON);
-		map.registerSprite(ResourceLibrary.BLINKER_BOTTOM_ON);
-		map.registerSprite(ResourceLibrary.BLINKER_TOP_ON);
-		map.registerSprite(ResourceLibrary.BLINKER_BOTTOM_ON);
-		map.registerSprite(ResourceLibrary.BLINKER_TOP_OFF);
-		map.registerSprite(ResourceLibrary.BLINKER_BOTTOM_OFF);
-		map.registerSprite(ResourceLibrary.Q_SQUARED);
-		Arrays.stream(ResourceLibrary.PRIMAL_GLYPH).forEach(map::registerSprite);
-		Arrays.stream(ResourceLibrary.GRAVITY_HOPPER_GLYPH).forEach(map::registerSprite);
+		ResourceLibrary.ATLAS_SET.forEach(map::registerSprite);
 	}
 
 	//----------------Particle Renderer Start----------------//

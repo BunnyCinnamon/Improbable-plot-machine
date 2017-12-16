@@ -31,6 +31,7 @@ public class SolarApi {
 			Side.CLIENT, Maps.newHashMap()
 	);
 	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = Maps.newHashMap();
+	private static final Map<UUID, Integer> RELATIVITY_POWER_MAP = Maps.newHashMap();
 
 	/**
 	 * Map containing all Items linked to an uuid.
@@ -48,5 +49,9 @@ public class SolarApi {
 
 	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {
 		return RELATIVITY_MAP;
+	}
+
+	public static Map<UUID, Integer> getRelativityPowerMap() {
+		return RELATIVITY_POWER_MAP;
 	}
 }

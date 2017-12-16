@@ -10,11 +10,6 @@ package arekkuusu.solar.common.handler.data;
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.common.lib.LibMod;
-import arekkuusu.solar.common.network.PacketHandler;
-import arekkuusu.solar.common.network.QSyncAllMessage;
-import arekkuusu.solar.common.network.QSyncModifyMessage;
-import arekkuusu.solar.common.network.QSyncSpecificMessage;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -28,7 +23,6 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 02/08/2017.
  * It's distributed as part of Solar.
  */
-@SuppressWarnings("VariableUseSideOnly")
 public class WorldQuantumData extends WorldSavedData {
 
 	private static final String NAME = LibMod.MOD_ID + ":" + QuantumHandler.NBT_TAG;
@@ -52,29 +46,9 @@ public class WorldQuantumData extends WorldSavedData {
 		return data;
 	}
 
-	public static void syncChange(UUID uuid, ItemStack stack, int slot) {
-		QSyncModifyMessage message = new QSyncModifyMessage(uuid, stack, slot);
-		PacketHandler.INSTANCE.sendToAll(message);
-	}
-
-	public static void syncChanges(UUID uuid) {
-		QSyncSpecificMessage message = new QSyncSpecificMessage(uuid);
-		PacketHandler.INSTANCE.sendToAll(message);
-	}
-
-	public static void syncTo(EntityPlayerMP player) {
-		QSyncAllMessage message = new QSyncAllMessage(SolarApi.getEntangledStacks());
-		PacketHandler.sendTo(message, player);
-	}
-
-	public static void syncToAll() {
-		QSyncAllMessage message = new QSyncAllMessage(SolarApi.getEntangledStacks());
-		PacketHandler.INSTANCE.sendToAll(message);
-	}
-
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		NBTTagList list = (NBTTagList) nbt.getTag(QuantumHandler.NBT_TAG);
+	public void readFromNBT(NBTTagCompound compound) {
+		NBTTagList list = (NBTTagList) compound.getTag(QuantumHandler.NBT_TAG);
 		list.forEach(stackList -> {
 			NBTTagList stacks = (NBTTagList) ((NBTTagCompound) stackList).getTag(LIST);
 			UUID key = ((NBTTagCompound) stackList).getUniqueId(KEY);

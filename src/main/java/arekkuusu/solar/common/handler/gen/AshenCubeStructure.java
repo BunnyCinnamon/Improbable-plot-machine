@@ -20,9 +20,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
-import net.minecraftforge.fml.common.IWorldGenerator;
-
-import java.util.Random;
 
 import static arekkuusu.solar.common.handler.ConfigHandler.GEN_CONFIG;
 import static arekkuusu.solar.common.handler.gen.ModGen.Structure;
@@ -31,29 +28,27 @@ import static arekkuusu.solar.common.handler.gen.ModGen.Structure;
  * Created by <Arekkuusu> on 01/11/2017.
  * It's distributed as part of Solar.
  */
-public class AshenCubeStructure implements IWorldGenerator {
+public class AshenCubeStructure extends BaseGen {
 
-	private final Random random = new Random();
-	private final RandomCollection<Structure> structures = new RandomCollection<Structure>(random)
+	private final RandomCollection<Structure> nuggets = new RandomCollection<Structure>(random)
 			.add(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.WEIGHTS.big, Structure.ASHEN_NUGGET_BIG)
 			.add(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.WEIGHTS.small, Structure.ASHEN_NUGGET_SMALL)
 			.add(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.WEIGHTS.spawn, Structure.ASHEN_NUGGET_SPAWN);
 
 	@Override
-	public void generate(Random r, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-		if(world.provider.getDimension() == 0 && world.getWorldInfo().isMapFeaturesEnabled()) {
-			random.setSeed(world.getSeed());
-			long good = random.nextLong();
-			long succ = random.nextLong();
+	void gen(World world, int x, int z, IChunkGenerator generator, IChunkProvider provider) {
+		random.setSeed(world.getSeed());
+		long good = random.nextLong();
+		long succ = random.nextLong();
 
-			good *= (chunkX * 16) >> 1;
-			succ *= (chunkZ * 16) >> 1;
-			random.setSeed(good ^ succ ^ world.getSeed());
-			if(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.rarity > 0D && GEN_CONFIG.ASHEN_CUBE_STRUCTURE.rarity / 100D > random.nextDouble()) {
-				BlockPos center = new BlockPos(chunkX * 16, 15 + random.nextInt(25), chunkZ * 16);
-				if(!world.canSeeSky(center) || !GEN_CONFIG.ASHEN_CUBE_STRUCTURE.underground) {
-					genCubes(world, center);
-				}
+		good *= x >> 1;
+		succ *= z >> 1;
+		random.setSeed(good ^ succ ^ world.getSeed());
+		//Generate
+		if(GEN_CONFIG.ASHEN_CUBE_STRUCTURE.rarity > 0D && GEN_CONFIG.ASHEN_CUBE_STRUCTURE.rarity / 100D > random.nextDouble()) {
+			BlockPos center = new BlockPos(x, 15 + random.nextInt(25), z);
+			if(!world.canSeeSky(center) || !GEN_CONFIG.ASHEN_CUBE_STRUCTURE.underground) {
+				genCubes(world, center);
 			}
 		}
 	}
@@ -85,7 +80,7 @@ public class AshenCubeStructure implements IWorldGenerator {
 		//Gen Cubes
 		AxisAlignedBB cubeBB = new AxisAlignedBB(origin, origin.add(template.getSize()));
 		for(int i = 0; i < GEN_CONFIG.ASHEN_CUBE_STRUCTURE.size; i++) {
-			Template cube = structures.next().load(world);
+			Template cube = nuggets.next().load(world);
 			Rotation rotation = Rotation.values()[random.nextInt(4)];
 			Vector3 vec = new Vector3(cube.getSize()).rotate(rotation);
 			BlockPos offset = randomVector().add(pos).toBlockPos();

@@ -11,12 +11,16 @@ import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.render.baked.BakedElectron;
+import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -126,4 +130,10 @@ public class BlockElectron extends BlockBase {
 		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerModel() {
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedElectron::new);
+		ModelHandler.registerModel(this, 0, "");
+	}
 }

@@ -9,18 +9,24 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.client.util.helper.IModel;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.handler.CreativeTabHandler;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,12 +35,25 @@ import java.util.Optional;
  */
 public class BlockBase extends Block implements IModel {
 
+	private TooltipBuilder tooltip;
+
 	public BlockBase(String id, Material material) {
 		super(material);
 		this.setUnlocalizedName(id);
 		this.setDefaultState(defaultState());
 		this.setRegistryName(LibMod.MOD_ID, id);
 		this.setCreativeTab(CreativeTabHandler.MISC_BLOCKS);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+		if(this.tooltip != null) this.tooltip.build(tooltip);
+	}
+
+	public Block setTooltip(TooltipBuilder tooltip) {
+		this.tooltip = tooltip;
+		return this;
 	}
 
 	public Block setSound(SoundType type) {

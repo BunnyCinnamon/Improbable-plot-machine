@@ -29,6 +29,8 @@ public final class ModGen {
 	public static void init() {
 		//World generators
 		GameRegistry.registerWorldGenerator(new AshenCubeStructure(), 5);
+		GameRegistry.registerWorldGenerator(new MonolithStructure(), 5);
+		GameRegistry.registerWorldGenerator(new ObeliskDecorator(), 5);
 		//Loot tables
 		LootTableList.register(ASHEN_CUBE_LOOT);
 		LootTableList.register(SCHRODINGER_LOOT);
@@ -43,7 +45,12 @@ public final class ModGen {
 		ASHEN_CUBE_("ashen_cube_"),
 		ASHEN_NUGGET_BIG("ashen_nugget_big"),
 		ASHEN_NUGGET_SMALL("ashen_nugget_small"),
-		ASHEN_NUGGET_SPAWN("ashen_nugget_spawn");
+		ASHEN_NUGGET_SPAWN("ashen_nugget_spawn"),
+		MONOLITH_CUBE("monolith_cube"),
+		MONOLITH_CUBE_HOLLOW("monolith_cube_hollow"),
+		MONOLITH_CUBE_HOLLOW_HALF("monolith_cube_hollow_half"),
+		MONOLITH_OBELISK("monolith_obelisk"),
+		MONOLITH_OBELISK_FRAGMENTED("monolith_obelisk_fragmented"),;
 
 		private final ResourceLocation location;
 

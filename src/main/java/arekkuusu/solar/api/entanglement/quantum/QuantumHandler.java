@@ -8,7 +8,7 @@
 package arekkuusu.solar.api.entanglement.quantum;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.common.handler.data.WorldQuantumData;
+import arekkuusu.solar.common.network.PacketHelper;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class QuantumHandler {
 	 * @param slot Position in the list.
 	 */
 	public static void setQuantumStack(UUID uuid, ItemStack stack, int slot) {
-		WorldQuantumData.syncChange(uuid, stack, slot);
+		PacketHelper.syncQuantumChange(uuid, stack, slot);
 		setQuantumAsync(uuid, stack, slot);
 	}
 

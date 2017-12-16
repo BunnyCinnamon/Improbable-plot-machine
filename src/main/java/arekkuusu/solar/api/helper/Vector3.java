@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api.helper;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +27,12 @@ public class Vector3 {
 	public double x;
 	public double y;
 	public double z;
+
+	public Vector3(NBTTagCompound tag) {
+		this.x = tag.getDouble("x");
+		this.y = tag.getDouble("y");
+		this.z = tag.getDouble("z");
+	}
 
 	public Vector3(Vec3d vec) {
 		this(vec.x, vec.y, vec.z);
@@ -112,32 +119,48 @@ public class Vector3 {
 		return subtract(amount, amount, amount);
 	}
 
-	public Vector3 rotateYaw(float angle) {
-		float cos = MathHelper.cos(angle);
-		float sin = MathHelper.sin(angle);
+	public Vector3 rotate(EnumFacing.Axis axis, float degrees) {
+		float radians = degrees * (float) (Math.PI / 180D);
+		switch(axis) {
+			case X:
+				rotatePitchX(radians);
+				break;
+			case Y:
+				rotateYaw(radians);
+				break;
+			case Z:
+				rotatePitchZ(radians);
+				break;
+		}
+		return this;
+	}
+
+	public Vector3 rotateYaw(float radians) {
+		float cos = MathHelper.cos(radians);
+		float sin = MathHelper.sin(radians);
 		double x = this.x * cos + this.z * sin;
 		double z = this.z * cos - this.x * sin;
 		return setVec(x, y, z);
 	}
 
-	public Vector3 rotatePitchZ(float angle) {
-		float cos = MathHelper.cos(angle);
-		float sin = MathHelper.sin(angle);
+	public Vector3 rotatePitchZ(float radians) {
+		float cos = MathHelper.cos(radians);
+		float sin = MathHelper.sin(radians);
 		double y = this.y * cos + this.z * sin;
 		double z = this.z * cos - this.y * sin;
 		return setVec(x, y, z);
 	}
 
-	public Vector3 rotatePitchX(float angle) {
-		float cos = MathHelper.cos(angle);
-		float sin = MathHelper.sin(angle);
+	public Vector3 rotatePitchX(float radians) {
+		float cos = MathHelper.cos(radians);
+		float sin = MathHelper.sin(radians);
 		double y = this.y * cos + this.x * sin;
 		double x = this.x * cos - this.y * sin;
 		return setVec(x, y, z);
 	}
 
-	public Vector3 rotate(Rotation rotationIn) {
-		switch(rotationIn) {
+	public Vector3 rotate(Rotation rotation) {
+		switch(rotation) {
 			case NONE:
 			default:
 				return this;
@@ -189,12 +212,24 @@ public class Vector3 {
 		return new BlockPos(x, y, z);
 	}
 
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tag.setDouble("x", x);
+		tag.setDouble("y", y);
+		tag.setDouble("z", z);
+
+		return tag;
+	}
+
 	public static Vector3 getRandomVec(double max) {
 		double x = max * (RAND.nextDouble() * 2 - 1);
 		double y = max * (RAND.nextDouble() * 2 - 1);
 		double z = max * (RAND.nextDouble() * 2 - 1);
 
 		return new Vector3(x, y, z);
+	}
+
+	public static void setSeed(long seed) {
+		RAND.setSeed(seed);
 	}
 
 	public static class ImmutableVector3 extends Vector3 {

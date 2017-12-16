@@ -43,7 +43,6 @@ public final class ModRenders {
 		registerTESR(TilePrismFlower.class, new TilePrismFlowerRenderer());
 		registerTESR(TileQuantumMirror.class, new QuantumMirrorRenderer());
 		registerTESR(RenderDummy.Quingentilliard.class, new QuingentilliardRenderer());
-		registerTESR(TileCrystalVoid.class, new CrystalVoidRenderer());
 		registerTESR(TilePhenomena.class, new TilePhenomenaRenderer());
 		registerTESR(TileQSquared.class, new QSquaredRenderer());
 		registerTESR(TileTheorema.class, new TheoremaRenderer());
@@ -51,7 +50,6 @@ public final class ModRenders {
 
 		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
 		registerTESRItemStack(ModItems.QUINGENTILLIARD, RenderDummy.Quingentilliard.class);
-		registerTESRItemStack(ModBlocks.CRYSTAL_VOID, TileCrystalVoid.class);
 		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
 		registerTESRItemStack(ModBlocks.THEOREMA, TileTheorema.class);
 		registerTESRItemStack(ModBlocks.GRAVITY_INHIBITOR, TileGravityInhibitor.class);

@@ -3,7 +3,7 @@
   "defaults": {
 	"textures": {
 	  "all": "solar:blocks/primal_stone",
-	  "overlay": "solar:blocks/glyph/primal_glyph_0",
+	  "overlay": "solar:blocks/glyph/glyph_overlay_0",
 	  "particle": "solar:blocks/primal_stone"
 	},
 	"model": "solar:block_overlay",
@@ -17,82 +17,82 @@
 	"glyph": {
 	  "0" : {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_0"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_0"
 		}
 	  },
 	  "1": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_1"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_1"
 		}
 	  },
 	  "2": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_2"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_2"
 		}
 	  },
 	  "3": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_3"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_3"
 		}
 	  },
 	  "4": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_4"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_4"
 		}
 	  },
 	  "5": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_5"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_5"
 		}
 	  },
 	  "6": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_6"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_6"
 		}
 	  },
 	  "7": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_7"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_7"
 		}
 	  },
 	  "8": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_8"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_8"
 		}
 	  },
 	  "9": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_9"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_9"
 		}
 	  },
 	  "10": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_10"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_10"
 		}
 	  },
 	  "11": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_11"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_11"
 		}
 	  },
 	  "12": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_12"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_12"
 		}
 	  },
 	  "13": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_13"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_13"
 		}
 	  },
 	  "14": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_14"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_14"
 		}
 	  },
 	  "15": {
 		"textures": {
-		  "overlay": "solar:blocks/glyph/primal_glyph_15"
+		  "overlay": "solar:blocks/glyph/glyph_overlay_15"
 		}
 	  }
 	}

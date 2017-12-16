@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.state.Glyph;
-import arekkuusu.solar.client.render.baked.PrimalGlyphBakedModel;
+import arekkuusu.solar.api.state.State;
+import arekkuusu.solar.client.render.baked.BakedPrimalGlyph;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.lib.LibNames;
@@ -23,8 +23,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static arekkuusu.solar.api.state.Glyph.GLYPH;
-
 /**
  * Created by <Arekkuusu> on 24/06/2017.
  * It's distributed as part of Solar.
@@ -33,7 +31,7 @@ public class BlockPrimalGlyph extends BlockBase {
 
 	public BlockPrimalGlyph() {
 		super(LibNames.PRIMAL_GLYPH, Material.ROCK);
-		setDefaultState(defaultState().withProperty(GLYPH, Glyph.A));
+		setDefaultState(defaultState().withProperty(State.GLYPH, 0));
 		setHarvestLevel("pickaxe", 1);
 		setHardness(4F);
 		setResistance(2000F);
@@ -42,17 +40,17 @@ public class BlockPrimalGlyph extends BlockBase {
 	@SuppressWarnings("deprecation")
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(GLYPH, Glyph.values()[meta]);
+		return getDefaultState().withProperty(State.GLYPH, meta);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(GLYPH).ordinal();
+		return state.getValue(State.GLYPH);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, GLYPH);
+		return new BlockStateContainer(this, State.GLYPH);
 	}
 
 	@Override
@@ -75,7 +73,7 @@ public class BlockPrimalGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), PrimalGlyphBakedModel::new);
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedPrimalGlyph::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

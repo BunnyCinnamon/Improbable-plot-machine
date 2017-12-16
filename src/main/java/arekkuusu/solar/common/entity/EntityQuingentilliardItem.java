@@ -8,9 +8,9 @@
 package arekkuusu.solar.common.entity;
 
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.item.ItemQuingentilliard;
+import arekkuusu.solar.common.network.PacketHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
@@ -88,7 +88,7 @@ public class EntityQuingentilliardItem extends EntityFastItem {
 				}
 				if(update) {
 					WorldQuantumData.get(world).markDirty();
-					WorldQuantumData.syncChanges(uuid);
+					PacketHelper.syncQuantumChanges(uuid);
 				}
 			}
 		}

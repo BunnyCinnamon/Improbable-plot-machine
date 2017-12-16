@@ -31,8 +31,7 @@ public class TileQSquared extends TileBase implements ITickable {
 	public void update() {
 		if(!world.isRemote) {
 			suspendNearbyItems();
-		}
-		tick++;
+		} else tick++;
 	}
 
 	private void suspendNearbyItems() {

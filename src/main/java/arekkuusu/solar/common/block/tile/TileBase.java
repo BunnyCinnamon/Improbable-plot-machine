@@ -43,6 +43,11 @@ public abstract class TileBase extends TileEntity {
 		return clazz.isInstance(tile) ? Optional.of((T) tile) : Optional.empty();
 	}
 
+	public void updatePosition(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		world.notifyBlockUpdate(pos, state, state, 8);
+	}
+
 	@Override
 	public double getDistanceSq(double x, double y, double z) {
 		return Math.sqrt(super.getDistanceSq(x, y, z));
