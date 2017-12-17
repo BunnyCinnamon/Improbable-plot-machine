@@ -19,6 +19,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -45,6 +46,18 @@ public class BlockHyperConductor extends BlockBase {
 	}
 
 	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState s, EntityLivingBase placer, ItemStack stack) {
+		if(!world.isRemote) {
+			BlockPos vec = new BlockPos(8, 8, 8);
+			BlockPos from = pos.add(vec);
+			BlockPos to = pos.subtract(vec);
+			getTile(TileHyperConductor.class, world, pos).ifPresent(tile -> {
+				BlockPos.getAllInBox(from, to).forEach(tile::addElectron);
+			});
+		}
+	}
+
+	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this) {
 			getTile(TileHyperConductor.class, world, pos).ifPresent(conductor -> {
@@ -66,11 +79,6 @@ public class BlockHyperConductor extends BlockBase {
 			}
 		});
 		super.breakBlock(world, pos, state);
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(State.POWER, 0);
 	}
 
 	@Override

@@ -19,11 +19,9 @@ import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -56,12 +54,9 @@ public class BlockElectron extends BlockBase {
 			BlockPos vec = new BlockPos(8, 8, 8);
 			BlockPos from = pos.add(vec);
 			BlockPos to = pos.subtract(vec);
-			BlockPos.getAllInBox(from, to).forEach(p -> getTile(TileHyperConductor.class, world, p).ifPresent(conductor -> {
-				double distance = conductor.getDistanceSq(pos.getX(), pos.getY(), pos.getZ());
-				if(distance <= 8D) {
-					conductor.addElectron(world.getBlockState(pos), pos);
-				}
-			}));
+			BlockPos.getAllInBox(from, to).forEach(p ->
+					getTile(TileHyperConductor.class, world, p).ifPresent(conductor -> conductor.addElectron(pos))
+			);
 		}
 	}
 
@@ -88,11 +83,6 @@ public class BlockElectron extends BlockBase {
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return state.getValue(State.POWER);
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(State.POWER, placer.isSneaking() ? 15 : 0);
 	}
 
 	@Override
