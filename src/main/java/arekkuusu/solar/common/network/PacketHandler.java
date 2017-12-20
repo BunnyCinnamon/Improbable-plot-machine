@@ -7,7 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
@@ -25,8 +24,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class PacketHandler {
 			}
 			map.put(uuid, stacks);
 		}
-		SolarApi.getEntangledStacks().putAll(map);
+		QuantumHandler.getEntanglements().putAll(map);
 	};
 
 	public static final IPacketHandler Q_SYNC_SOME = (compound, context) -> {
@@ -64,14 +65,14 @@ public class PacketHandler {
 			stacks.add(new ItemStack((NBTTagCompound) stack));
 		}
 
-		SolarApi.getEntangledStacks().replace(uuid, stacks);
+		QuantumHandler.getEntanglements().replace(uuid, stacks);
 	};
 
 	public static final IPacketHandler Q_SYNC_CHANGE = (compound, context) -> {
 		ItemStack stack = new ItemStack((NBTTagCompound) compound.getTag("stack"));
 		UUID uuid = compound.getUniqueId("uuid");
 		int slot = compound.getInteger("slot");
-		QuantumHandler.setQuantumAsync(uuid, stack, slot);
+		QuantumHandler.setEntanglementStack(uuid, stack, slot);
 	};
 
 	public static final IPacketHandler PHENOMENA = (compound, context) -> {
@@ -82,21 +83,25 @@ public class PacketHandler {
 		}
 	};
 
-	public static final IPacketHandler QUARTZ_EFFECT = (compound, context) -> {
-		World world = Minecraft.getMinecraft().player.world;
-		Vector3 from = new Vector3(compound.getCompoundTag("from"));
-		Vector3 to = new Vector3(compound.getCompoundTag("to"));
-		for(int i = 0; i < 15; i++) {
-			Vector3 offset = Vector3.getRandomVec(0.1D).add(from);
-			Vector3 speed = Vector3.getRandomVec(0.1D);
-			ParticleUtil.spawnTunnelingPhoton(world, offset,
-					speed, 0xFF0303, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
-		}
-		for(int i = 0; i < 15; i++) {
-			Vector3 offset = Vector3.getRandomVec(0.05D).add(to);
-			Vector3 speed = Vector3.getRandomVec(0.01D);
-			ParticleUtil.spawnTunnelingPhoton(world, offset,
-					speed, 0x49FFFF, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
+	public static final IPacketHandler QUARTZ_EFFECT = new IPacketHandler() {
+		@Override
+		@SideOnly(Side.CLIENT)
+		public void handleData(NBTTagCompound compound, MessageContext context) {
+			World world = Minecraft.getMinecraft().player.world;
+			Vector3 from = new Vector3(compound.getCompoundTag("from"));
+			Vector3 to = new Vector3(compound.getCompoundTag("to"));
+			for(int i = 0; i < 15; i++) {
+				Vector3 offset = Vector3.getRandomVec(0.1D).add(from);
+				Vector3 speed = Vector3.getRandomVec(0.1D);
+				ParticleUtil.spawnTunnelingPhoton(world, offset,
+						speed, 0xFF0303, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
+			}
+			for(int i = 0; i < 15; i++) {
+				Vector3 offset = Vector3.getRandomVec(0.05D).add(to);
+				Vector3 speed = Vector3.getRandomVec(0.01D);
+				ParticleUtil.spawnTunnelingPhoton(world, offset,
+						speed, 0x49FFFF, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
+			}
 		}
 	};
 

@@ -8,13 +8,11 @@
 package arekkuusu.solar.api.entanglement.quantum;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.common.network.PacketHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by <Arekkuusu> on 02/09/2017.
@@ -31,7 +29,7 @@ public class QuantumHandler {
 	 * @return If the key is entangled.
 	 */
 	public static boolean isEntangled(UUID uuid) {
-		return SolarApi.getEntangledStacks().containsKey(uuid);
+		return SolarApi.getQuantumData().isEntangled(uuid);
 	}
 
 	/**
@@ -40,47 +38,34 @@ public class QuantumHandler {
 	 *
 	 * @param uuid Key to the group of entangled items.
 	 * @param slot Position in the list.
-	 * @return The original ItemStack.
+	 * @return The copy of ItemStack.
 	 */
-	public static ItemStack getQuantumStack(UUID uuid, int slot) {
-		Map<UUID, List<ItemStack>> map = SolarApi.getEntangledStacks();
-		if(map.containsKey(uuid) && hasSlot(uuid, slot)) {
-			return map.get(uuid).get(slot);
-		}
-		return ItemStack.EMPTY;
+	public static ItemStack getEntanglementStack(UUID uuid, int slot) {
+		return SolarApi.getQuantumData().getEntanglementStack(uuid, slot);
 	}
 
 	/**
 	 * Set a {@param stack} to the given {@param uuid}
 	 * in the specified {@param slot}
 	 *
-	 * @param uuid Key to the group of entangled items.
+	 * @param uuid  Key to the group of entangled items.
 	 * @param stack {@link ItemStack}
-	 * @param slot Position in the list.
+	 * @param slot  Position in the list.
 	 */
-	public static void setQuantumAsync(UUID uuid, ItemStack stack, int slot) {
-		List<ItemStack> list = getQuantumStacks(uuid);
-		if(!hasSlot(uuid, slot)) {
-			if(!stack.isEmpty()) {
-				list.add(stack);
-			}
-		} else if(!stack.isEmpty()) {
-			list.set(slot, stack);
-		} else {
-			list.remove(slot);
-		}
+	public static void setEntanglementStack(UUID uuid, ItemStack stack, int slot) {
+		SolarApi.getQuantumData().setEntanglementStack(uuid, stack, slot);
 	}
 
 	/**
 	 * Add a {@param stack} to the item
 	 * group of the specified {@param uuid}
 	 *
-	 * @param uuid Key to the group of entangled items.
+	 * @param uuid  Key to the group of entangled items.
 	 * @param stack {@link ItemStack}
 	 */
-	public static void addQuantumAsync(UUID uuid, ItemStack stack){
+	public static void addEntanglementStack(UUID uuid, ItemStack stack) {
 		if(!stack.isEmpty()) {
-			getQuantumStacks(uuid).add(stack);
+			SolarApi.getQuantumData().setEntanglementStack(uuid, stack, -1);
 		}
 	}
 
@@ -91,55 +76,20 @@ public class QuantumHandler {
 	 * @param uuid Key to the group of entangled items.
 	 * @param slot Position in the list.
 	 */
-	public static void removeQuantumAsync(UUID uuid, int slot) {
+	public static void removeEntanglementStack(UUID uuid, int slot) {
 		if(hasSlot(uuid, slot)) {
-			getQuantumStacks(uuid).remove(slot);
+			SolarApi.getQuantumData().setEntanglementStack(uuid, ItemStack.EMPTY, slot);
 		}
 	}
 
 	/**
-	 * Set and Sync to the item group of the specified {@param uuid}
-	 * <p>
-	 *     See {@code QuantumHandler.setQuantumAsync()}
-	 * </p>
-	 *
-	 * @param uuid Key to the group of entangled items.
-	 * @param stack {@link ItemStack}
-	 * @param slot Position in the list.
-	 */
-	public static void setQuantumStack(UUID uuid, ItemStack stack, int slot) {
-		PacketHelper.syncQuantumChange(uuid, stack, slot);
-		setQuantumAsync(uuid, stack, slot);
-	}
-
-	/**
-	 * Add and Sync to the item group of the specified {@param uuid}
-	 * <p>
-	 *     See {@code QuantumHandler.addQuantumAsync()}
-	 * </p>
-	 *
-	 * @param uuid Key to the group of entangled items.
-	 * @param stack {@link ItemStack}
-	 */
-	public static void addQuantumStack(UUID uuid, ItemStack stack) {
-		if(!stack.isEmpty()) {
-			setQuantumStack(uuid, stack, -1);
-		}
-	}
-
-	/**
-	 * Remove and Sync to the item group of the specified {@param uuid}
-	 * <p>
-	 *     See {@code QuantumHandler.removeQuantumAsync()}
-	 * </p>
+	 * If the specified {@param slot} exists.
 	 *
 	 * @param uuid Key to the group of entangled items.
 	 * @param slot Position in the list.
 	 */
-	public static void removeQuantumStack(UUID uuid, int slot) {
-		if(hasSlot(uuid, slot)) {
-			setQuantumStack(uuid, ItemStack.EMPTY, slot);
-		}
+	public static boolean hasSlot(UUID uuid, int slot) {
+		return SolarApi.getQuantumData().hasSlot(uuid, slot);
 	}
 
 	/**
@@ -148,12 +98,16 @@ public class QuantumHandler {
 	 * @param uuid Key to the group of entangled items.
 	 * @return {@link ArrayList}.
 	 */
-	public static List<ItemStack> getQuantumStacks(UUID uuid) {
-		return SolarApi.getEntangledStacks().computeIfAbsent(uuid, u -> new ArrayList<>());
+	public static List<ItemStack> getEntanglement(UUID uuid) {
+		return SolarApi.getQuantumData().getEntanglement(uuid);
 	}
 
-	private static boolean hasSlot(UUID uuid, int slot) {
-		List<ItemStack> stacks = getQuantumStacks(uuid);
-		return slot < 0 || stacks.size() - 1 >= slot;
+	/**
+	 * Map containing all Items linked to an uuid.
+	 *
+	 * @return {@link HashMap}
+	 */
+	public static Map<UUID, List<ItemStack>> getEntanglements() {
+		return SolarApi.getQuantumData().getEntanglements();
 	}
 }

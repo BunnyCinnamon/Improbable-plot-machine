@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.entity.EntityCrystalQuartzItem;
@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 public class PacketHelper {
 
-	public static void syncQuantumChange(UUID uuid, ItemStack stack, int slot) {
+	public static void sendQuantumChange(UUID uuid, ItemStack stack, int slot) {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setTag("stack", stack.writeToNBT(new NBTTagCompound()));
 		tag.setUniqueId("uuid", uuid);
@@ -37,20 +37,21 @@ public class PacketHelper {
 		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.Q_SYNC_CHANGE, tag));
 	}
 
-	public static void syncQuantumChanges(UUID uuid) {
+	public static void sendQuantumChanges(UUID uuid) {
 		NBTTagCompound tag = new NBTTagCompound();
 		NBTTagList list = new NBTTagList();
-		SolarApi.getEntangledStacks().get(uuid).forEach(stack -> {
+		QuantumHandler.getEntanglement(uuid).forEach(stack -> {
 			list.appendTag(stack.writeToNBT(new NBTTagCompound()));
 		});
 		tag.setTag("list", list);
 		tag.setUniqueId("uuid", uuid);
+		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.Q_SYNC_SOME, tag));
 	}
 
 	public static void syncQuantumTo(EntityPlayerMP player) {
 		NBTTagCompound compound = new NBTTagCompound();
 		NBTTagList tags = new NBTTagList();
-		SolarApi.getEntangledStacks().forEach((uuid, stacks) -> {
+		QuantumHandler.getEntanglements().forEach((uuid, stacks) -> {
 			NBTTagCompound tag = new NBTTagCompound();
 			NBTTagList list = new NBTTagList();
 			stacks.forEach(stack -> list.appendTag(stack.writeToNBT(new NBTTagCompound())));
@@ -65,7 +66,7 @@ public class PacketHelper {
 	public static void syncQuantumToAll() {
 		NBTTagCompound compound = new NBTTagCompound();
 		NBTTagList tags = new NBTTagList();
-		SolarApi.getEntangledStacks().forEach((uuid, stacks) -> {
+		QuantumHandler.getEntanglements().forEach((uuid, stacks) -> {
 			NBTTagCompound tag = new NBTTagCompound();
 			NBTTagList list = new NBTTagList();
 			stacks.forEach(stack -> list.appendTag(stack.writeToNBT(new NBTTagCompound())));

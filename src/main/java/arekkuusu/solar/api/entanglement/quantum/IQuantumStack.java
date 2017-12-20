@@ -30,7 +30,7 @@ public interface IQuantumStack extends IEntangledStack {
 		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline()
 				.condition(SHIFT_KEY_DOWN)
 				.ifAgrees(builder -> {
-					getDetailedInfo(builder, QuantumHandler.getQuantumStacks(uuid), uuid);
+					getDetailedInfo(builder, QuantumHandler.getEntanglement(uuid), uuid);
 				}).build(tooltip));
 	}
 

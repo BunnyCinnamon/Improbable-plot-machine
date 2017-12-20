@@ -64,7 +64,6 @@ public class ServerToClientPacket implements IMessage {
 
 		@Override
 		@Nullable
-		@SuppressWarnings("MethodCallSideOnly")
 		public IMessage onMessage(ServerToClientPacket message, MessageContext ctx) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				if(message.data != null && message.handler != null) {

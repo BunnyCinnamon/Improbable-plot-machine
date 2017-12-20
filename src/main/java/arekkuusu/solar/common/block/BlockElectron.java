@@ -38,7 +38,7 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockElectron extends BlockBase {
 
-	private static final AxisAlignedBB BB = new AxisAlignedBB(0.4D,0.4D,0.4D, 0.6D, 0.6D, 0.6D);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.3125D,0.3125D,0.3125D, 0.6875D, 0.6875D, 0.6875D);
 
 	public BlockElectron() {
 		super(LibNames.ELECTRON, FixedMaterial.BREAK);

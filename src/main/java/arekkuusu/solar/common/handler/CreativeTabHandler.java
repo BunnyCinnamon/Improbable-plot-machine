@@ -26,8 +26,7 @@ import javax.annotation.Nonnull;
  */
 public final class CreativeTabHandler {
 
-	public static final CreativeTab MISC_ITEMS = new MiscItems();
-	public static final CreativeTab MISC_BLOCKS = new MiscBlocks();
+	public static final CreativeTab MISC = new Bamboozled();
 
 	private static abstract class CreativeTab extends CreativeTabs {
 
@@ -55,32 +54,10 @@ public final class CreativeTabHandler {
 		}
 	}
 
-	private static class MiscItems extends CreativeTab {
+	private static class Bamboozled extends CreativeTab {
 
-		MiscItems() {
-			super("misc_items");
-			setBackgroundImageName("items.png");
-		}
-
-		@Override
-		@Nonnull
-		public ItemStack getIconItemStack() {
-			return new ItemStack(ModItems.QUINGENTILLIARD);
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> list) {
-			this.list = list;
-			addItem(ModItems.QUINGENTILLIARD);
-			addItem(ModItems.CRYSTAL_QUARTZ);
-		}
-	}
-
-	private static class MiscBlocks extends CreativeTab {
-
-		MiscBlocks() {
-			super("misc_blocks");
+		Bamboozled() {
+			super("misc_tab");
 			setBackgroundImageName("items.png");
 		}
 
@@ -110,6 +87,8 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.HYPER_CONDUCTOR);
 			addBlock(ModBlocks.ELECTRON);
 			addBlock(ModBlocks.GRAVITY_INHIBITOR);
+			addBlock(ModBlocks.QUINGENTILLIARD);
+			addItem(ModItems.CRYSTAL_QUARTZ);
 		}
 	}
 }

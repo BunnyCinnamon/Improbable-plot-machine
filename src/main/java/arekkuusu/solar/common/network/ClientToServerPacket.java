@@ -9,7 +9,6 @@ package arekkuusu.solar.common.network;
 
 import arekkuusu.solar.common.Solar;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -64,9 +63,9 @@ public class ClientToServerPacket implements IMessage {
 
 		@Override
 		@Nullable
-		@SuppressWarnings("MethodCallSideOnly")
+		@SuppressWarnings("ConstantConditions")
 		public IMessage onMessage(ClientToServerPacket message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			ctx.getServerHandler().player.getServer().addScheduledTask(() -> {
 				if(message.data != null && message.handler != null) {
 					message.handler.handleData(message.data, ctx);
 				}

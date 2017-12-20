@@ -9,7 +9,7 @@ package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.quantum.IQuantumTile;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
-import arekkuusu.solar.common.handler.data.QuantumTileWrapper;
+import arekkuusu.solar.api.entanglement.quantum.data.QuantumTileWrapper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -66,7 +66,7 @@ public abstract class TileQuantumBase<Q extends QuantumTileWrapper> extends Tile
 
 	@Override
 	public void setKey(@Nullable UUID key) {
-		if(!getKey().isPresent() || QuantumHandler.getQuantumStacks(this.key).isEmpty()) {
+		if(!getKey().isPresent() || QuantumHandler.getEntanglement(this.key).isEmpty()) {
 			this.key = key;
 		}
 	}

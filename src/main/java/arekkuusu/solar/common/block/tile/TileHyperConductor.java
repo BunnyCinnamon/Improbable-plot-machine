@@ -41,22 +41,6 @@ public class TileHyperConductor extends TileBase implements ITickable {
 	private boolean powered;
 	private int tick;
 
-	/*@Override
-	public void onLoad() {
-		BlockPos vec = new BlockPos(8, 8, 8);
-		BlockPos from = pos.add(vec);
-		BlockPos to = pos.subtract(vec);
-		BlockPos.getAllInBox(from, to).forEach(pos -> {
-			IBlockState state = world.getBlockState(pos);
-			if(state.getBlock() == ModBlocks.ELECTRON) {
-				double distance = getDistanceSq(pos.getX(), pos.getY(), pos.getZ());
-				if(distance <= 8D) {
-					addElectron(world.getBlockState(pos), pos);
-				}
-			}
-		});
-	}*/
-
 	@Override
 	public void update() {
 		if(!world.isRemote && needsUpdate) {
@@ -64,11 +48,11 @@ public class TileHyperConductor extends TileBase implements ITickable {
 			needsUpdate = false;
 		}
 		electrons.removeIf(pos -> world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() != ModBlocks.ELECTRON);
-		if(world.isRemote && isPoweredLazy() && !electrons.isEmpty() && tick++ % 2 == 0) {
+		if(world.isRemote && isPoweredLazy() && !electrons.isEmpty() && tick++ % 2 == 0 && world.rand.nextInt(6) == 0) {
 			List<BlockPos> list = electrons.stream()
 					.filter(world::isBlockLoaded)
 					.collect(Collectors.toList());
-			if(!list.isEmpty() && world.rand.nextInt(6) == 0) {
+			if(!list.isEmpty()) {
 				BlockPos pos = list.get(world.rand.nextInt(list.size()));
 				Vector3 from = new Vector3(getPos()).grow(0.5D);
 				Vector3 to = new Vector3(pos).add(Vector3.getRandomVec(0.1F)).grow(0.5D);

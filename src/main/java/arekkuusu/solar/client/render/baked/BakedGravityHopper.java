@@ -39,7 +39,6 @@ public class BakedGravityHopper extends BakedBrightness {
 		for(int i = 0; i < 6; i++) {
 			this.overlay[i] = getter.apply(ResourceLibrary.GRAVITY_HOPPER_OVERLAY[i]);
 		}
-
 		this.base = getter.apply(ResourceLibrary.GRAVITY_HOPPER);
 	}
 
@@ -75,12 +74,12 @@ public class BakedGravityHopper extends BakedBrightness {
 		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(5, 5, 5)
 				.setTo(11, 11, 11)
-				.addFace(UP, 6F, 11F, 6F, 11F, up)
-				.addFace(DOWN, 6F, 11F, 6F, 11F, down)
-				.addFace(NORTH, 6F, 11F, 6F, 11F, north)
-				.addFace(SOUTH, 6F, 11F, 6F, 11F, south)
-				.addFace(EAST, 6F, 11F, 6F, 11F, east)
-				.addFace(WEST, 6F, 11F, 6F, 11F, west)
+				.addFace(UP, 5F, 11F, 5F, 11F, up)
+				.addFace(DOWN, 5F, 11F, 5F, 11F, down)
+				.addFace(NORTH, 5F, 11F, 5F, 11F, north)
+				.addFace(SOUTH, 5F, 11F, 5F, 11F, south)
+				.addFace(EAST, 5F, 11F, 5F, 11F, east)
+				.addFace(WEST, 5F, 11F, 5F, 11F, west)
 				.setHasBrightness(shine)
 				.bake()
 		);

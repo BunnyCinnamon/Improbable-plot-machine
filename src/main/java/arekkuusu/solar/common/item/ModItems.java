@@ -24,7 +24,6 @@ public final class ModItems {
 
 	private static final Item PLACE_HOLDER = new Item();
 	//--------------------------------Items--------------------------------//
-	public static final Item QUINGENTILLIARD = PLACE_HOLDER;
 	public static final Item CRYSTAL_QUARTZ = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
@@ -34,7 +33,6 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.PRISM_FLOWER));
 		registry.register(new ItemQuantumMirror());
 		registry.register(new ItemGravityHopper());
-		registry.register(new ItemQuingentilliard());
 		registry.register(new ItemSchrodingerGlyph());
 		registry.register(new ItemBlinker());
 		registry.register(itemBlock(ModBlocks.PHENOMENA));
@@ -46,6 +44,7 @@ public final class ModItems {
 		registry.register(new ItemElectron());
 		registry.register(itemBlock(ModBlocks.ASHEN));
 		registry.register(itemBlock(ModBlocks.MONOLITHIC));
+		registry.register(new ItemQuingentilliard());
 	}
 
 	@SuppressWarnings("ConstantConditions")

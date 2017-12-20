@@ -7,14 +7,12 @@
  ******************************************************************************/
 package arekkuusu.solar.api;
 
+import arekkuusu.solar.api.entanglement.quantum.data.IQuantumData;
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.HashMap;
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,28 +22,12 @@ import java.util.UUID;
  * It's distributed as part of Solar under
  * the MIT license.
  */
+//If you modify any of these I will break your bones
 public class SolarApi {
 
-	private static final ImmutableMap<Side, Map<UUID, List<ItemStack>>> ENTANGLED_MAP = ImmutableMap.of(
-			Side.SERVER, Maps.newHashMap(),
-			Side.CLIENT, Maps.newHashMap()
-	);
 	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = Maps.newHashMap();
 	private static final Map<UUID, Integer> RELATIVITY_POWER_MAP = Maps.newHashMap();
-
-	/**
-	 * Map containing all Items linked to an uuid.
-	 * <p>
-	 *     Side sensitive.
-	 *     Do not modify unless you sync it yourself.
-	 * </p>
-	 *
-	 * @return {@link HashMap}
-	 */
-	public static Map<UUID, List<ItemStack>> getEntangledStacks() {
-		Side side = FMLCommonHandler.instance().getEffectiveSide();
-		return ENTANGLED_MAP.get(side);
-	}
+	private static IQuantumData quantumData;
 
 	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {
 		return RELATIVITY_MAP;
@@ -53,5 +35,13 @@ public class SolarApi {
 
 	public static Map<UUID, Integer> getRelativityPowerMap() {
 		return RELATIVITY_POWER_MAP;
+	}
+
+	public static IQuantumData getQuantumData() {
+		return quantumData;
+	}
+
+	public static void setQuantumData(IQuantumData quantumData) {
+		SolarApi.quantumData = quantumData; //*Bones begin to crack*
 	}
 }

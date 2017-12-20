@@ -24,7 +24,6 @@ public final class ModEntities {
 	public static void init() {
 		register(EntityFastItem.class, "fast_item");
 		register(EntitySingularityItem.class, "singularity_item");
-		register(EntityQuingentilliardItem.class, "quingentilliard_item");
 		register(EntityCrystalQuartzItem.class, "crystal_quartz");
 		register(EntityEyeOfSchrodinger.class, "eye_of_schrodinger", 0x222222);
 	}

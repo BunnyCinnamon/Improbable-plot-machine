@@ -12,17 +12,13 @@ import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.handler.recipe.ModRecipes;
 import arekkuusu.solar.common.item.ModItems;
-import arekkuusu.solar.common.network.PacketHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 /**
  * Created by <Arekkuusu> on 23/06/2017.
@@ -47,22 +43,10 @@ public final class CommonEvents {
 	}
 
 	@SubscribeEvent
-	public static void syncQuantumData(PlayerEvent.PlayerLoggedInEvent event) {
-		if(event.player instanceof EntityPlayerMP) {
-			PacketHelper.syncQuantumTo((EntityPlayerMP) event.player);
-		}
-	}
-
-	@SubscribeEvent
-	public static void unsyncQuantumData(PlayerEvent.PlayerLoggedOutEvent event) {
-		if(event.player instanceof EntityPlayerSP) {
-			SolarApi.getEntangledStacks().clear();
-		}
-	}
-
-	@SubscribeEvent
 	public static void loadQuantumData(WorldEvent.Load event) {
-		Solar.LOG.info("[WorldQuantumData] Loading Quantum Data");
-		WorldQuantumData.get(event.getWorld());
+		if(SolarApi.getQuantumData() == null) {
+			Solar.LOG.info("[WorldQuantumData] Loading Data");
+			SolarApi.setQuantumData(WorldQuantumData.get(event.getWorld()));
+		}
 	}
 }

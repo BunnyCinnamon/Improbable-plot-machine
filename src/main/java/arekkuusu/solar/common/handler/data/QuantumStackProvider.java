@@ -8,6 +8,9 @@
 package arekkuusu.solar.common.handler.data;
 
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
+import arekkuusu.solar.api.entanglement.quantum.data.QuantumDataHandler;
+import arekkuusu.solar.api.entanglement.quantum.data.QuantumStackWrapper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -20,7 +23,7 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumStackProvider implements ICapabilityProvider {
+public class QuantumStackProvider<T extends Item & IQuantumStack> implements ICapabilityProvider {
 
 	private final QuantumDataHandler handler;
 
@@ -28,8 +31,8 @@ public class QuantumStackProvider implements ICapabilityProvider {
 		this.handler = handler;
 	}
 
-	public QuantumStackProvider(IQuantumStack quantum, ItemStack stack, int size) {
-		handler = new QuantumStackWrapper(quantum, stack, size);
+	public QuantumStackProvider(T quantum, ItemStack stack, int size) {
+		handler = new QuantumStackWrapper<>(quantum, stack, size);
 	}
 
 	@Override

@@ -13,7 +13,6 @@ import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.*;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.solar.common.entity.EntityFastItem;
-import arekkuusu.solar.common.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -42,17 +41,17 @@ public final class ModRenders {
 		registerTESR(TileSingularity.class, new TileSingularityRenderer());
 		registerTESR(TilePrismFlower.class, new TilePrismFlowerRenderer());
 		registerTESR(TileQuantumMirror.class, new QuantumMirrorRenderer());
-		registerTESR(RenderDummy.Quingentilliard.class, new QuingentilliardRenderer());
 		registerTESR(TilePhenomena.class, new TilePhenomenaRenderer());
 		registerTESR(TileQSquared.class, new QSquaredRenderer());
 		registerTESR(TileTheorema.class, new TheoremaRenderer());
 		registerTESR(TileGravityInhibitor.class, new GravityInhibitorRenderer());
+		registerTESR(TileQuingentilliard.class, new QuingentilliardRenderer());
 
 		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
-		registerTESRItemStack(ModItems.QUINGENTILLIARD, RenderDummy.Quingentilliard.class);
 		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
 		registerTESRItemStack(ModBlocks.THEOREMA, TileTheorema.class);
 		registerTESRItemStack(ModBlocks.GRAVITY_INHIBITOR, TileGravityInhibitor.class);
+		registerTESRItemStack(ModBlocks.QUINGENTILLIARD, TileQuingentilliard.class);
 	}
 
 	private static <T extends TileEntity> void registerTESR(Class<T> tile, TileEntitySpecialRenderer<T> render) {

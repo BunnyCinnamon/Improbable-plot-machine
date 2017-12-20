@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.common.handler.data;
+package arekkuusu.solar.api.entanglement.quantum.data;
 
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
@@ -91,12 +91,12 @@ public abstract class QuantumDataHandler implements IItemHandlerModifiable {
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return getKey().map(uuid -> QuantumHandler.getQuantumStack(uuid, slot)).orElse(ItemStack.EMPTY);
+		return getKey().map(uuid -> QuantumHandler.getEntanglementStack(uuid, slot)).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
 	public void setStackInSlot(int slot, ItemStack stack) {
-		getKey().ifPresent(uuid -> QuantumHandler.setQuantumStack(uuid, stack, slot));
+		getKey().ifPresent(uuid -> QuantumHandler.setEntanglementStack(uuid, stack, slot));
 	}
 
 	@Override

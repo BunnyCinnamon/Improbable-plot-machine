@@ -37,6 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import static net.minecraft.block.BlockDirectional.FACING;
 
@@ -68,8 +69,11 @@ public class BlockBlinker extends BlockBase implements ITileEntityProvider {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				((IEntangledStack) stack.getItem()).getKey(stack).ifPresent(blinker::setKey);
-				blinker.add();
+				IEntangledStack entangled = (IEntangledStack) stack.getItem();
+				if(!entangled.getKey(stack).isPresent()) {
+					entangled.setKey(stack, UUID.randomUUID());
+				}
+				entangled.getKey(stack).ifPresent(blinker::setKey);
 			});
 		}
 	}

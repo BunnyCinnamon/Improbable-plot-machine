@@ -9,10 +9,11 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.material.FixedMaterial;
-import arekkuusu.solar.client.render.baked.BakedQuantumMirror;
+import arekkuusu.solar.client.render.baked.BakedPerspective;
+import arekkuusu.solar.client.render.baked.BakedRender;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.common.block.tile.TileQuantumMirror;
+import arekkuusu.solar.common.block.tile.TileQuingentilliard;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -32,59 +33,51 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Created by <Arekkuusu> on 17/07/2017.
+ * Created by <Arekkuusu> on 19/12/2017.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockQuantumMirror extends BlockBase {
+public class BlockQuingentilliard extends BlockBase {
 
 	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
 
-	public BlockQuantumMirror() {
-		super(LibNames.QUANTUM_MIRROR, FixedMaterial.BREAK);
+	public BlockQuingentilliard() {
+		super(LibNames.QUINGENTILLIARD, FixedMaterial.BREAK);
 		setSound(SoundType.GLASS);
 		setHardness(2F);
 	}
 
 	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if(!world.isRemote) {
+			getTile(TileQuingentilliard.class, world, pos).ifPresent(consumer -> {
+				IEntangledStack entangled = (IEntangledStack) stack.getItem();
+				if(!entangled.getKey(stack).isPresent()) {
+					entangled.setKey(stack, UUID.randomUUID());
+				}
+				entangled.getKey(stack).ifPresent(consumer::setKey);
+			});
+		}
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(!world.isRemote && !player.isSneaking()) {
-			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> mirror.handleItemTransfer(player, hand));
+		if(!world.isRemote) {
+			getTile(TileQuingentilliard.class, world, pos).ifPresent(consumer -> {
+				consumer.setLookup(player.getHeldItem(hand));
+			});
 		}
 		return true;
 	}
 
 	@Override
-	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
-		if(!world.isRemote) {
-			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
-				if(player.isSneaking()) {
-					mirror.takeItem(player);
-				}
-			});
-		}
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if(!world.isRemote) {
-			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
-				IEntangledStack entangled = (IEntangledStack) stack.getItem();
-				if(!entangled.getKey(stack).isPresent()) {
-					entangled.setKey(stack, UUID.randomUUID());
-				}
-				entangled.getKey(stack).ifPresent(mirror::setKey);
-			});
-		}
-	}
-
-	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
+		getTile(TileQuingentilliard.class, world, pos).ifPresent(consumer -> {
 			ItemStack stack = getItem(world, pos, state);
 			spawnAsEntity(world, pos, stack);
 		});
@@ -93,11 +86,11 @@ public class BlockQuantumMirror extends BlockBase {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileQuantumMirror> optional = getTile(TileQuantumMirror.class, world, pos);
+		Optional<TileQuingentilliard> optional = getTile(TileQuingentilliard.class, world, pos);
 		if(optional.isPresent()) {
-			TileQuantumMirror mirror = optional.get();
+			TileQuingentilliard consumer = optional.get();
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			mirror.getKey().ifPresent(uuid -> {
+			consumer.getKey().ifPresent(uuid -> {
 				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
 			});
 			return stack;
@@ -132,7 +125,7 @@ public class BlockQuantumMirror extends BlockBase {
 
 	@Override
 	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT_MIPPED;
+		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
@@ -140,15 +133,17 @@ public class BlockQuantumMirror extends BlockBase {
 		return true;
 	}
 
+	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileQuantumMirror();
+		return new TileQuingentilliard();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), (format, g) -> new BakedQuantumMirror());
-		ModelHandler.registerModel(this, 0);
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), (format, g) -> new BakedRender()
+				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS));
+		ModelHandler.registerModel(this, 0, "");
 	}
 }

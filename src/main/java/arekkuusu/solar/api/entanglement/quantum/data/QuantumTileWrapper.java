@@ -5,10 +5,10 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.common.handler.data;
+package arekkuusu.solar.api.entanglement.quantum.data;
 
-import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
-import net.minecraft.item.ItemStack;
+import arekkuusu.solar.api.entanglement.quantum.IQuantumTile;
+import net.minecraft.tileentity.TileEntity;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,19 +17,17 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumStackWrapper extends QuantumDataHandler {
+public class QuantumTileWrapper<T extends TileEntity & IQuantumTile> extends QuantumDataHandler {
 
-	private final IQuantumStack quantum;
-	private final ItemStack stack;
+	protected final T tile;
 
-	public QuantumStackWrapper(IQuantumStack quantum, ItemStack stack, int size) {
-		super(size);
-		this.quantum = quantum;
-		this.stack = stack;
+	public QuantumTileWrapper(T tile, int slots) {
+		super(slots);
+		this.tile = tile;
 	}
 
 	@Override
 	public Optional<UUID> getKey() {
-		return quantum.getKey(stack);
+		return tile.getKey();
 	}
 }

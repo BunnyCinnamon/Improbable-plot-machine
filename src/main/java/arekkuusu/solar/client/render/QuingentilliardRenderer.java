@@ -10,11 +10,10 @@ package arekkuusu.solar.client.render;
 import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
-import arekkuusu.solar.common.block.tile.RenderDummy;
+import arekkuusu.solar.common.block.tile.TileQuingentilliard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,12 +23,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class QuingentilliardRenderer extends TileEntitySpecialRenderer<RenderDummy.Quingentilliard> {
+public class QuingentilliardRenderer extends SpecialModelRenderer<TileQuingentilliard> {
 
 	@Override
-	@SuppressWarnings("ConstantConditions")
-	public void render(RenderDummy.Quingentilliard te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		int tick = Minecraft.getMinecraft().player.ticksExisted;
+	void renderTile(TileQuingentilliard te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		render(te.tick, x, y, z);
+	}
+
+	@Override
+	void renderStack(double x, double y, double z, float partialTicks) {
+		render( Minecraft.getMinecraft().player.ticksExisted, x, y, z);
+	}
+
+	public void render(int tick, double x, double y, double z) {
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 
@@ -39,12 +45,13 @@ public class QuingentilliardRenderer extends TileEntitySpecialRenderer<RenderDum
 		GlStateManager.color(0, 0.99609375F, 0.76171875F, 1F);
 		GLHelper.lightMap(255F, 255F);
 
-		GlStateManager.translate(x + 0.5, y + 0.35, z + 0.5);
+		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 		GlStateManager.scale(0.5F, 0.5F, 0.5F);
 		GlStateManager.rotate(tick, 1F, 0F, 1F);
 
 		GLHelper.disableDepth();
 		renderCube(tick);
+		GLHelper.BLEND_NORMAL.blend();
 		RenderBakery.renderBeams((float) tick * 0.01F, 25, 0x000000, 0x000000, 1F);
 		GLHelper.enableDepth();
 

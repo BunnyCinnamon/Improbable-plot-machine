@@ -1,5 +1,4 @@
-itemGroup.solar.misc_items=Solar Items
-itemGroup.solar.misc_blocks=Solar Blocks
+itemGroup.solar.misc_tab=Solar
 
 //Sound subtitles
 solar.sound.spark=spark!
@@ -7,7 +6,6 @@ solar.sound.spark=spark!
 //Items
 item.primal_stone.name=Primal Stone
 item.primal_glyph.name=Primal Glyph
-item.quingentilliard.name=Quingentilliard
 item.crystal_quartz.name=Crystal Quartz
 item.schrodinger_eye.name=Schrodinger's Eye
 
@@ -31,6 +29,7 @@ tile.hyper_conductor.name=Hyper Conductor
 tile.electron.name=Electron
 tile.ashen.name=Ashen
 tile.monolithic.name=Monolithic
+tile.quingentilliard.name=Quingentilliard
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger

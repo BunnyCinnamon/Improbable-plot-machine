@@ -35,25 +35,12 @@ import java.util.Optional;
  */
 public class BlockBase extends Block implements IModel {
 
-	private TooltipBuilder tooltip;
-
 	public BlockBase(String id, Material material) {
 		super(material);
 		this.setUnlocalizedName(id);
 		this.setDefaultState(defaultState());
 		this.setRegistryName(LibMod.MOD_ID, id);
-		this.setCreativeTab(CreativeTabHandler.MISC_BLOCKS);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-		if(this.tooltip != null) this.tooltip.build(tooltip);
-	}
-
-	public Block setTooltip(TooltipBuilder tooltip) {
-		this.tooltip = tooltip;
-		return this;
+		this.setCreativeTab(CreativeTabHandler.MISC);
 	}
 
 	public Block setSound(SoundType type) {

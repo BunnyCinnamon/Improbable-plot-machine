@@ -46,7 +46,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 			case 0:
 				Optional<UUID> optional = mirror.getKey();
 				if(optional.isPresent()) {
-					ItemStack stack = QuantumHandler.getQuantumStack(optional.get(), 0);
+					ItemStack stack = QuantumHandler.getEntanglementStack(optional.get(), 0);
 					if(stack.isEmpty()) break;
 
 					GlStateManager.pushMatrix();

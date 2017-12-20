@@ -46,7 +46,6 @@ public class ParticleNeutronBlast extends ParticleBase {
 		//No-OP
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onUpdate() {
 		if((particleAge++ >= particleMaxAge)) {
@@ -76,6 +75,7 @@ public class ParticleNeutronBlast extends ParticleBase {
 		if(collide) {
 			BlockPos pos = new BlockPos(posX, posY, posZ);
 			IBlockState state = world.getBlockState(pos);
+			//noinspection deprecation
 			AxisAlignedBB bounding = state.getBlock().getCollisionBoundingBox(state, world, pos);
 
 			if(bounding != null && !world.getCollisionBoxes(null, this.getBoundingBox().shrink(0.1D)).isEmpty()) {

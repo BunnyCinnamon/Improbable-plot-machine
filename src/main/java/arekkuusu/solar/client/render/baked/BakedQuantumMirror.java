@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render.baked;
 
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
+import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.client.render.SpecialModelRenderer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
@@ -47,7 +47,7 @@ public class BakedQuantumMirror extends BakedRender {
 		public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
 			Optional<UUID> optional = ((IQuantumStack) stack.getItem()).getKey(stack);
 			if(optional.isPresent()) {
-				ItemStack mirrored = QuantumHandler.getQuantumStack(optional.get(), 0);
+				ItemStack mirrored = QuantumHandler.getEntanglementStack(optional.get(), 0);
 				if(!mirrored.isEmpty()) {
 					SpecialModelRenderer.setTempItemRenderer(mirrored);
 				}

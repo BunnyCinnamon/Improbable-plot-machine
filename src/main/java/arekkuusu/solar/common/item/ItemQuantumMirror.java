@@ -40,6 +40,6 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IQuantumStack {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new QuantumStackProvider(this, stack, TileQuantumMirror.SLOTS);
+		return new QuantumStackProvider<>(this, stack, TileQuantumMirror.SLOTS);
 	}
 }

@@ -13,7 +13,6 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -21,7 +20,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 import static arekkuusu.solar.client.util.helper.TooltipBuilder.Condition.SHIFT_KEY_DOWN;
 
@@ -40,13 +38,6 @@ public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline().condition(SHIFT_KEY_DOWN)
 				.ifAgrees(builder -> getInfo(builder, uuid)).build(tooltip));
-	}
-
-	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-		if(!world.isRemote) {
-			setKey(stack, UUID.randomUUID());
-		}
 	}
 
 	@Override

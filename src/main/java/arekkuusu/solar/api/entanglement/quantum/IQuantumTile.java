@@ -15,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
@@ -46,6 +47,21 @@ public interface IQuantumTile extends IEntangledTile {
 						break;
 					}
 				}
+			}
+		}
+	}
+
+	default void takeItem(EntityPlayer player) {
+		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+		if(hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+			IItemHandler handler = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			if(handler == null) return;
+
+			ItemStack contained = handler.extractItem(0, Integer.MAX_VALUE, false);
+			if(stack.isEmpty()) {
+				player.setHeldItem(EnumHand.MAIN_HAND, contained);
+			} else {
+				ItemHandlerHelper.giveItemToPlayer(player, contained);
 			}
 		}
 	}

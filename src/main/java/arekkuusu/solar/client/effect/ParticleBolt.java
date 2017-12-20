@@ -62,8 +62,8 @@ public class ParticleBolt extends ParticleBase {
 				if(branch && rand.nextDouble() > 0.6D) {
 					Vector3 direction = mid.copy().subtract(from);
 					Vector3 splitEnd = direction
-							.rotate(EnumFacing.Axis.X,(0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
-							.rotate(EnumFacing.Axis.Z, (0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
+							.rotatePitchX((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
+							.rotatePitchZ((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
 							.multiply(0.7D)
 							.add(mid);
 

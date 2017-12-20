@@ -50,10 +50,4 @@ public class Solar {
 	public void init(FMLInitializationEvent event) {
 		PROXY.init(event);
 	}
-
-	@EventHandler
-	public void serverStop(FMLServerStoppedEvent event) {
-		SolarApi.getEntangledStacks().clear();
-		SolarApi.getRelativityMap().clear();
-	}
 }

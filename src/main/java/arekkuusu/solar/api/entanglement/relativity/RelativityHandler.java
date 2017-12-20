@@ -41,12 +41,10 @@ public class RelativityHandler {
 		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			list = list == null ? new ArrayList<>() : list;
 			if(list.contains(tile)) return list;
-
 			list.add(tile);
 			if(runnable != null) {
 				runnable.run();
 			}
-
 			return list;
 		}));
 	}
@@ -67,7 +65,6 @@ public class RelativityHandler {
 					runnable.run();
 				}
 			}
-
 			return list != null && !list.isEmpty() ? list : null;
 		}));
 	}
