@@ -8,6 +8,9 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
+import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.client.util.helper.TooltipBuilder;
+import arekkuusu.solar.client.util.helper.TooltipBuilder.Condition;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.TileQuingentilliard;
 import arekkuusu.solar.common.handler.data.QuantumStackProvider;
@@ -35,6 +38,15 @@ public class ItemQuingentilliard extends ItemBaseBlock implements IQuantumStack 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		TooltipBuilder.inline()
+				.condition(new Condition<>((a) -> NBTHelper.hasTag((ItemStack) a, "lookup"), (b) -> b))
+				.apply(stack, sub -> sub
+						.addI18("quingentilliard_filter", TooltipBuilder.DARK_GRAY_ITALIC)
+						.add(": ", TooltipBuilder.DARK_GRAY_ITALIC)
+						.add(new ItemStack(NBTHelper.<NBTTagCompound>getNBT(stack, "lookup").orElse(new NBTTagCompound())).getDisplayName(), TooltipBuilder.GRAY_ITALIC)
+						.end()
+						.skip()
+				).build(tooltip);
 		addTooltipInfo(stack, tooltip);
 	}
 

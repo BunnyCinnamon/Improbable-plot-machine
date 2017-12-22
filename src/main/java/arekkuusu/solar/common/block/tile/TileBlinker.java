@@ -27,12 +27,12 @@ import java.util.Map;
 public class TileBlinker extends TileRelativeBase implements IRelativePower, ITickable {
 
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, new Vector3(0.5D, 0.2D, 0.5D))
-			.put(EnumFacing.DOWN, new Vector3(0.5D, 0.8D, 0.5D))
-			.put(EnumFacing.NORTH, new Vector3(0.5D, 0.5D, 0.8D))
-			.put(EnumFacing.SOUTH, new Vector3(0.5D, 0.5D, 0.2D))
-			.put(EnumFacing.EAST, new Vector3(0.2D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, new Vector3(0.8D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.create(0.5D, 0.2D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.8D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.8D))
+			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.2D))
+			.put(EnumFacing.EAST, Vector3.create(0.2D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.create(0.8D, 0.5D, 0.5D))
 			.build();
 	private int tick;
 
@@ -43,7 +43,7 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 			Vector3 back = getOffSet(facing.getOpposite());
 
 			double speed = world.rand.nextDouble() * -0.01D;
-			Vector3 vec = new Vector3(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
+			Vector3 vec = Vector3.create(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
 
 			ParticleUtil.spawnLightParticle(world, back, vec, isPoweredLazy() ? 0x49FFFF : 0xFFFFFF, 60, 2.5F);
 		}

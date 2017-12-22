@@ -39,7 +39,7 @@ public class EntityCrystalQuartzItem extends EntityFastItem {
 	public void updateLogic() {
 		super.updateLogic();
 		if(!world.isRemote && rand.nextInt(100) == 0) {
-			Vector3 from = new Vector3(posX, posY, posZ);
+			Vector3 from = Vector3.create(posX, posY, posZ);
 			Vector3 to = Vector3.getRandomVec(4).add(from);
 
 			BlockPos pos = to.toBlockPos();

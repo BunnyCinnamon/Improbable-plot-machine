@@ -41,12 +41,12 @@ public class QuadBuilder {
 	}
 
 	public QuadBuilder setFrom(double x, double y, double z) {
-		this.from = new Vector3(x, y, z);
+		this.from = Vector3.create(x, y, z);
 		return this;
 	}
 
 	public QuadBuilder setTo(double x, double y, double z) {
-		this.to = new Vector3(x, y, z);
+		this.to = Vector3.create(x, y, z);
 		return this;
 	}
 
@@ -72,10 +72,10 @@ public class QuadBuilder {
 	public QuadBuilder addFace(EnumFacing facing, float uMin, float uMax, float vMin, float vMax, TextureAtlasSprite sprite) {
 		QuadHolder holder = new QuadHolder();
 		holder.uv = new Vector4f(uMin, uMax, vMin, vMax);
-		Vector3 a = new Vector3(0, 0, 0);
-		Vector3 b = new Vector3(0, 0, 0);
-		Vector3 c = new Vector3(0, 0, 0);
-		Vector3 d = new Vector3(0, 0, 0);
+		Vector3 a = Vector3.create(0, 0, 0);
+		Vector3 b = Vector3.create(0, 0, 0);
+		Vector3 c = Vector3.create(0, 0, 0);
+		Vector3 d = Vector3.create(0, 0, 0);
 		holder.sprite = sprite;
 		switch(facing) {
 			case DOWN:

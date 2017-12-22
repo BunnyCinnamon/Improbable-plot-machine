@@ -36,12 +36,12 @@ import java.util.Optional;
 public class TileGravityHopper extends TileBase implements ITickable {
 
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, new Vector3(0.5D, 0.75D, 0.5D))
-			.put(EnumFacing.DOWN, new Vector3(0.5D, 0.25D, 0.5D))
-			.put(EnumFacing.NORTH, new Vector3(0.5D, 0.5D, 0.25D))
-			.put(EnumFacing.SOUTH, new Vector3(0.5D, 0.5D, 0.75D))
-			.put(EnumFacing.EAST, new Vector3(0.75D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, new Vector3(0.25D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.create(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.25D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.25D))
+			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.75D))
+			.put(EnumFacing.EAST, Vector3.create(0.75D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.create(0.25D, 0.5D, 0.5D))
 			.build();
 	private final GravityHopperItemHandler handler;
 	private boolean powered;
@@ -134,7 +134,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 
 			Vector3 from = getOffSet(facing);
 			BlockPos target = pos.offset(facing.getOpposite(), 9);
-			Vector3 to = new Vector3(target).add(0.5D, 0.5D, 0.5D);
+			Vector3 to = Vector3.create(target).add(0.5D, 0.5D, 0.5D);
 
 			ParticleUtil.spawnNeutronBlast(world, from, 0.025D, to, 0xFF0303, 0.25F, true);
 		} else if(tick % 4 == 0 && world.rand.nextBoolean()) {
@@ -142,7 +142,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 back = getOffSet(facing.getOpposite());
 
 			double speed = world.rand.nextDouble() * -0.015D;
-			Vector3 vec = new Vector3(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
+			Vector3 vec = Vector3.create(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
 
 			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 30, 2F);
 		}

@@ -64,8 +64,6 @@ public final class ConfigHandler {
 
 				@Comment("Chance of 0-100% to generate")
 				public double rarity = 10;
-				@Comment("If obelisks should generate around the structure")
-				public boolean generateObelisks = true;
 			}
 
 			public static class ObeliskDecorator {

@@ -30,6 +30,7 @@ tile.electron.name=Electron
 tile.ashen.name=Ashen
 tile.monolithic.name=Monolithic
 tile.quingentilliard.name=Quingentilliard
+tile.angstrom.name=Ångström
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger

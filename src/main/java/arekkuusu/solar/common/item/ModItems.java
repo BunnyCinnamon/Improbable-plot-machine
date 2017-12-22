@@ -25,6 +25,7 @@ public final class ModItems {
 	private static final Item PLACE_HOLDER = new Item();
 	//--------------------------------Items--------------------------------//
 	public static final Item CRYSTAL_QUARTZ = PLACE_HOLDER;
+	public static final Item ANGSTROM = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -45,6 +46,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.ASHEN));
 		registry.register(itemBlock(ModBlocks.MONOLITHIC));
 		registry.register(new ItemQuingentilliard());
+		registry.register(new ItemAngstrom());
 	}
 
 	@SuppressWarnings("ConstantConditions")

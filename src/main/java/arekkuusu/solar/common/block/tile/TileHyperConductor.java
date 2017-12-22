@@ -54,8 +54,8 @@ public class TileHyperConductor extends TileBase implements ITickable {
 					.collect(Collectors.toList());
 			if(!list.isEmpty()) {
 				BlockPos pos = list.get(world.rand.nextInt(list.size()));
-				Vector3 from = new Vector3(getPos()).grow(0.5D);
-				Vector3 to = new Vector3(pos).add(Vector3.getRandomVec(0.1F)).grow(0.5D);
+				Vector3 from = Vector3.create(getPos()).grow(0.5D);
+				Vector3 to = Vector3.create(pos).add(Vector3.getRandomVec(0.1F)).grow(0.5D);
 				to.subtract(to.copy().subtract(from).multiply(0.1D));
 				double distance = Math.min(4D, from.distanceTo(to)) * 0.5;
 				ParticleUtil.spawnBolt(world, from, to, (int) distance + 3, (float) (0.45D * distance), 0x5194FF, true);

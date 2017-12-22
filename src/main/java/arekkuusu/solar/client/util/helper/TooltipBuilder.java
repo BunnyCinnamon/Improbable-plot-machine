@@ -15,8 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Created by <Arekkuusu> on 12/08/2017.
@@ -29,7 +28,8 @@ public class TooltipBuilder {
 	public static final TextFormatting[] GRAY_ITALIC = {TextFormatting.GRAY, TextFormatting.ITALIC};
 	private static final String FORMAT = "tlp.%s.name";
 
-	private TooltipBuilder(){}
+	private TooltipBuilder() {
+	}
 
 	public static TooltipBuilder inline() {
 		return new TooltipBuilder();
@@ -38,8 +38,12 @@ public class TooltipBuilder {
 	private StringBuilder builder = new StringBuilder();
 	private List<String> strings = new ArrayList<>();
 
-	public Condition condition(Condition condition) {
-		return condition.apply(this);
+	public Condition<Object> condition(Condition<Object> condition) {
+		return condition.setBuilder(this);
+	}
+
+	public Condition<TooltipBuilder> condition(KeyCondition keyCondition) {
+		return keyCondition.apply(this);
 	}
 
 	public TooltipBuilder add(Object object, TextFormatting... formats) {
@@ -69,38 +73,59 @@ public class TooltipBuilder {
 		tooltip.addAll(strings);
 	}
 
-	public enum Condition {
-		NOTHING(() -> true, builder -> {
-		}),
-		SHIFT_KEY_DOWN(GuiScreen::isShiftKeyDown
+	public enum KeyCondition {
+		NOTHING((a) -> true, builder -> builder),
+		SHIFT_KEY_DOWN((a) -> GuiScreen.isShiftKeyDown()
 				, builder -> builder.addI18("shift_for_info", TooltipBuilder.DARK_GRAY_ITALIC).end()),
-		CONTROL_KEY_DOWN(GuiScreen::isCtrlKeyDown
+		CONTROL_KEY_DOWN((a) -> GuiScreen.isCtrlKeyDown()
 				, builder -> builder.addI18("ctrl_for_info", TooltipBuilder.DARK_GRAY_ITALIC).end());
 
-		private final BooleanSupplier supplier;
-		private final Consumer<TooltipBuilder> consumer;
-		private TooltipBuilder builder;
+		private final Function<TooltipBuilder, Boolean> canApply;
+		private final Function<TooltipBuilder, TooltipBuilder> or;
 
-		Condition(BooleanSupplier supplier, Consumer<TooltipBuilder> consumer) {
-			this.supplier = supplier;
-			this.consumer = consumer;
+		KeyCondition(Function<TooltipBuilder, Boolean> canApply, Function<TooltipBuilder, TooltipBuilder> or) {
+			this.canApply = canApply;
+			this.or = or;
 		}
 
-		public Condition apply(TooltipBuilder builder) {
+		public Condition<TooltipBuilder> apply(TooltipBuilder builder) {
+			return new Condition<>(canApply, or).setBuilder(builder);
+		}
+	}
+
+	public static class Condition<T> {
+		private TooltipBuilder builder;
+		private final Function<T, Boolean> canApply;
+		private final Function<TooltipBuilder, TooltipBuilder> or;
+
+		public Condition(Function<T, Boolean> canApply, Function<TooltipBuilder, TooltipBuilder> or) {
+			this.canApply = canApply;
+			this.or = or;
+		}
+
+		public Condition<T> setBuilder(TooltipBuilder builder) {
 			this.builder = builder;
 			return this;
 		}
 
-		public boolean agrees() {
-			return supplier.getAsBoolean();
+		public boolean canApply(T t) {
+			return canApply.apply(t);
 		}
 
-		public TooltipBuilder ifAgrees(Consumer<TooltipBuilder> consumer) {
-			TooltipBuilder builder = this.builder;
-			this.builder = null;
-			if(agrees()) consumer.accept(builder);
-			else this.consumer.accept(builder);
-			return builder;
+		public TooltipBuilder apply(Function<TooltipBuilder, TooltipBuilder> apply) {
+			if(canApply(null)) {
+				apply.apply(builder);
+				return builder;
+			}
+			return or.apply(builder);
+		}
+
+		public TooltipBuilder apply(T t, Function<TooltipBuilder, TooltipBuilder> apply) {
+			if(canApply(t)) {
+				apply.apply(builder);
+				return builder;
+			}
+			return or.apply(builder);
 		}
 	}
 }

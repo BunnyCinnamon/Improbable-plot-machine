@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.Tuple;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,7 +28,33 @@ public class QuingentilliardRenderer extends SpecialModelRenderer<TileQuingentil
 
 	@Override
 	void renderTile(TileQuingentilliard te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		render(te.tick, x, y, z);
+		int layer = MinecraftForgeClient.getRenderPass();
+
+		final float prevU = OpenGlHelper.lastBrightnessX;
+		final float prevV = OpenGlHelper.lastBrightnessY;
+		switch(layer) {
+			case 0:
+				if(!te.getLookup().isEmpty()) {
+					GlStateManager.pushMatrix();
+					GlStateManager.disableLighting();
+
+					GLHelper.lightMap(255F, 255F);
+					GlStateManager.translate(x + 0.5, y + 1F, z + 0.5);
+					GlStateManager.scale(0.5F, 0.5F, 0.5F);
+					RenderBakery.makeUpDownTranslation(te.tick, 0.1F, 1F, 0F);
+
+					GlStateManager.rotate(partialTicks + (float) te.tick * 0.5F % 360F, 0F, 1F, 0F);
+					RenderBakery.renderItemStack(te.getLookup());
+
+					GlStateManager.enableLighting();
+					GlStateManager.popMatrix();
+				}
+				break;
+			case 1:
+				render(te.tick, x, y, z);
+				break;
+		}
+		GLHelper.lightMap(prevU, prevV);
 	}
 
 	@Override
@@ -36,9 +63,6 @@ public class QuingentilliardRenderer extends SpecialModelRenderer<TileQuingentil
 	}
 
 	public void render(int tick, double x, double y, double z) {
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
-
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
@@ -50,18 +74,19 @@ public class QuingentilliardRenderer extends SpecialModelRenderer<TileQuingentil
 		GlStateManager.rotate(tick, 1F, 0F, 1F);
 
 		GLHelper.disableDepth();
-		renderCube(tick);
+		GlStateManager.enableBlend();
 		GLHelper.BLEND_NORMAL.blend();
-		RenderBakery.renderBeams((float) tick * 0.01F, 25, 0x000000, 0x000000, 1F);
-		GLHelper.enableDepth();
 
+		RenderBakery.renderBeams((float) tick * 0.01F, 25, 0x000000, 0x000000, 1F);
 		renderCube(tick);
+
+		GlStateManager.disableBlend();
+		GLHelper.enableDepth();
 
 		GlStateManager.color(1F, 1F, 1F, 1F);
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
-		GLHelper.lightMap(prevU, prevV);
 	}
 
 	private void renderCube(int age) {

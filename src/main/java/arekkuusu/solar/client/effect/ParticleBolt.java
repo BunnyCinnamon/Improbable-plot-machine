@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -57,7 +56,7 @@ public class ParticleBolt extends ParticleBase {
 
 				Vector3 mid = average(from, to);
 				Vector3 midOffset = to.subtract(from);
-				mid.add(midOffset.normalize().cross(new Vector3(1, 1, 1)).multiply(Vector3.getRandomVec(offset)));
+				mid.add(midOffset.normalize().cross(Vector3.create(1, 1, 1)).multiply(Vector3.getRandomVec(offset)));
 
 				if(branch && rand.nextDouble() > 0.6D) {
 					Vector3 direction = mid.copy().subtract(from);

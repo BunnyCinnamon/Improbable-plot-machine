@@ -54,7 +54,7 @@ public class ObeliskDecorator extends BaseGen {
 				}
 				Template obelisk = obelisks.next().load(world);
 				Rotation rotation = Rotation.values()[random.nextInt(4)];
-				Vector3 vec = new Vector3(obelisk.getSize()).rotate(rotation);
+				Vector3 vec = Vector3.create(obelisk.getSize()).rotate(rotation);
 				AxisAlignedBB obeliskBB = new AxisAlignedBB(top, vec.add(top).toBlockPos()).grow(1);
 				if(occupied.stream().noneMatch(bb -> bb.intersects(obeliskBB))) {
 					PlacementSettings settings = new PlacementSettings();
@@ -69,8 +69,8 @@ public class ObeliskDecorator extends BaseGen {
 	}
 
 	private Vector3 randomVector() {
-		double x = 3 + random.nextInt(7);
-		double z = 3 + random.nextInt(7);
-		return new Vector3(x, 0, z);
+		double x = 4 + random.nextInt(7);
+		double z = 4 + random.nextInt(7);
+		return Vector3.create(x, 0, z);
 	}
 }

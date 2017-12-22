@@ -88,8 +88,8 @@ public class PacketHandler {
 		@SideOnly(Side.CLIENT)
 		public void handleData(NBTTagCompound compound, MessageContext context) {
 			World world = Minecraft.getMinecraft().player.world;
-			Vector3 from = new Vector3(compound.getCompoundTag("from"));
-			Vector3 to = new Vector3(compound.getCompoundTag("to"));
+			Vector3 from = Vector3.create(compound.getCompoundTag("from"));
+			Vector3 to = Vector3.create(compound.getCompoundTag("to"));
 			for(int i = 0; i < 15; i++) {
 				Vector3 offset = Vector3.getRandomVec(0.1D).add(from);
 				Vector3 speed = Vector3.getRandomVec(0.1D);

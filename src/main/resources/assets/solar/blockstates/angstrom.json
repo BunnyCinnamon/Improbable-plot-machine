@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:angstrom",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}]
+  }
+}

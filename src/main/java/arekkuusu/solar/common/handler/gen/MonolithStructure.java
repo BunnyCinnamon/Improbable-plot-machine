@@ -38,9 +38,6 @@ public class MonolithStructure extends BaseGen {
 			BlockPos top = world.getTopSolidOrLiquidBlock(origin.add(8, 0, 8));
 			BlockPos cube = origin.add(0, Math.max(top.getY() - (2 + random.nextInt(4)), 0), 0);
 			ModGen.Structure.MONOLITH_CUBE_HOLLOW.generate(world, cube, new PlacementSettings());
-			if(GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.generateObelisks) {
-
-			}
 		}
 	}
 }

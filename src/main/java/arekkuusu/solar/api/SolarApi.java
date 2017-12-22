@@ -37,11 +37,11 @@ public class SolarApi {
 		return RELATIVITY_POWER_MAP;
 	}
 
-	public static IQuantumData getQuantumData() {
+	public static synchronized IQuantumData getQuantumData() {
 		return quantumData;
 	}
 
-	public static void setQuantumData(IQuantumData quantumData) {
+	public static synchronized void setQuantumData(IQuantumData quantumData) {
 		SolarApi.quantumData = quantumData; //*Bones begin to crack*
 	}
 }

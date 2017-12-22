@@ -55,10 +55,10 @@ public class BakedGravityHopper extends BakedBrightness {
 				addCube(quads, overlay[5], overlay[3], overlay[1], overlay[2], overlay[0], overlay[4], true);
 				break;
 			case NORTH:
-				addCube(quads, overlay[1], overlay[0], overlay[5], overlay[3], overlay[2], overlay[4], true);
+				addCube(quads, overlay[2], overlay[0], overlay[3], overlay[5], overlay[1], overlay[4], true);
 				break;
 			case SOUTH:
-				addCube(quads, overlay[2], overlay[0], overlay[3], overlay[5], overlay[1], overlay[4], true);
+				addCube(quads, overlay[1], overlay[0], overlay[5], overlay[3], overlay[2], overlay[4], true);
 				break;
 			case WEST:
 				addCube(quads, overlay[4], overlay[0], overlay[1], overlay[2], overlay[3], overlay[5], true);

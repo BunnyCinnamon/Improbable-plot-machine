@@ -55,12 +55,17 @@ public class TileQuingentilliard extends TileQuantumBase<QuantumTileWrapper> imp
 	public void setLookup(ItemStack stack) {
 		lookup = stack;
 		markDirty();
+		updatePosition(world, pos);
+	}
+
+	public ItemStack getLookup() {
+		return lookup;
 	}
 
 	@Override
 	public void readNBT(NBTTagCompound compound) {
 		super.readNBT(compound);
-		lookup = new ItemStack(compound.getCompoundTag("lookup"));
+		lookup = new ItemStack((NBTTagCompound) compound.getTag("lookup"));
 	}
 
 	@Override
@@ -110,21 +115,16 @@ public class TileQuingentilliard extends TileQuantumBase<QuantumTileWrapper> imp
 
 			List<EntityFastItem> list = getItemsFiltered(new AxisAlignedBB(getPos()).grow(0.5F));
 			if(!list.isEmpty()) {
-				//boolean update = false;
 				for(EntityItem entity : list) {
 					ItemStack inserted = entity.getItem();
 					for(int i = 0; i < handler.getSlots(); i++) {
 						ItemStack test = handler.insert(i, inserted, false);
 						if(test != inserted) {
 							entity.setItem(test);
-							//update = true;
 							break;
 						}
 					}
 				}
-				//if(update) {
-
-				//}
 			}
 		}
 	}
@@ -159,7 +159,7 @@ public class TileQuingentilliard extends TileQuantumBase<QuantumTileWrapper> imp
 
 	@Override
 	public boolean shouldRenderInPass(int pass) {
-		return pass == 1;
+		return pass <= 1;
 	}
 
 	private static class QuingentilliardDataHandlerImpl extends QuantumTileWrapper<TileQuingentilliard> {
@@ -174,7 +174,7 @@ public class TileQuingentilliard extends TileQuantumBase<QuantumTileWrapper> imp
 
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			Solar.LOG.warn("[Quingentilliard] You cannot transfer items to it!");
+			tile.setLookup(stack);
 			return stack;
 		}
 	}

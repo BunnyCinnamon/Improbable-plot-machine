@@ -28,21 +28,23 @@ public class Vector3 {
 	public double y;
 	public double z;
 
-	public Vector3(NBTTagCompound tag) {
-		this.x = tag.getDouble("x");
-		this.y = tag.getDouble("y");
-		this.z = tag.getDouble("z");
+	public static Vector3 create(double x, double y, double z) {
+		return new Vector3(x, y, z);
 	}
 
-	public Vector3(Vec3d vec) {
-		this(vec.x, vec.y, vec.z);
+	public static Vector3 create(Vec3d vec) {
+		return new Vector3(vec.x, vec.y, vec.z);
 	}
 
-	public Vector3(Vec3i vec) {
-		this(vec.getX(), vec.getY(), vec.getZ());
+	public static Vector3 create(Vec3i vec) {
+		return new Vector3(vec.getX(), vec.getY(), vec.getZ());
 	}
 
-	public Vector3(double x, double y, double z) {
+	public static Vector3 create(NBTTagCompound tag) {
+		return new Vector3(tag.getDouble("x"), tag.getDouble("y"), tag.getDouble("z"));
+	}
+
+	private Vector3(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;

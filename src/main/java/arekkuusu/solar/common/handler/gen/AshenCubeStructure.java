@@ -82,7 +82,7 @@ public class AshenCubeStructure extends BaseGen {
 		for(int i = 0; i < GEN_CONFIG.ASHEN_CUBE_STRUCTURE.size; i++) {
 			Template cube = nuggets.next().load(world);
 			Rotation rotation = Rotation.values()[random.nextInt(4)];
-			Vector3 vec = new Vector3(cube.getSize()).rotate(rotation);
+			Vector3 vec = Vector3.create(cube.getSize()).rotate(rotation);
 			BlockPos offset = randomVector().add(pos).toBlockPos();
 			if(offset.getY() < 1  || (world.canSeeSky(offset) && GEN_CONFIG.ASHEN_CUBE_STRUCTURE.underground)) continue;
 			AxisAlignedBB nuggetBB = new AxisAlignedBB(offset, vec.add(offset).toBlockPos());
@@ -100,6 +100,6 @@ public class AshenCubeStructure extends BaseGen {
 		double x = 7D + (4D * (random.nextDouble() * 2D - 1D));
 		double y = GEN_CONFIG.ASHEN_CUBE_STRUCTURE.spread * (random.nextDouble() * 2D - 1D);
 		double z = 7D + (4D * (random.nextDouble() * 2D - 1D));
-		return new Vector3(x, y, z);
+		return Vector3.create(x, y, z);
 	}
 }

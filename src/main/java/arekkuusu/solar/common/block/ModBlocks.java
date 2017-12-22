@@ -42,6 +42,7 @@ public final class ModBlocks {
 	public static final Block ASHEN = PLACE_HOLDER;
 	public static final Block MONOLITHIC = PLACE_HOLDER;
 	public static final Block QUINGENTILLIARD = PLACE_HOLDER;
+	public static final Block ANGSTROM = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -61,6 +62,7 @@ public final class ModBlocks {
 		registry.register(new BlockAshen());
 		registry.register(new BlockMonolithic());
 		registry.register(new BlockQuingentilliard());
+		registry.register(new BlockAngstrom());
 		registerTiles();
 	}
 

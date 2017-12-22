@@ -32,4 +32,5 @@ public class LibNames {
 	public static final String ELECTRON = "electron";
 	public static final String ASHEN = "ashen";
 	public static final String MONOLITHIC = "monolithic";
+	public static final String ANGSTROM = "angstrom";
 }

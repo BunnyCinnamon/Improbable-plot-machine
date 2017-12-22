@@ -29,7 +29,7 @@ public class TileQuantumMirror extends TileQuantumBase<QuantumTileWrapper> imple
 	@Override
 	public void update() {
 		if(world.isRemote && world.rand.nextInt(10) == 0) {
-			Vector3 from = new Vector3(pos).add(0.5D, 0.5D, 0.5D);
+			Vector3 from = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
 
 			ParticleUtil.spawnQuorn(world, from, Vector3.getRandomVec(0.1F), 20, 0.1F, 0XFFFFFF);
 		}

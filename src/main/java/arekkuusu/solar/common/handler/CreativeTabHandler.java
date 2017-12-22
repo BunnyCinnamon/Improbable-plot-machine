@@ -88,6 +88,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.ELECTRON);
 			addBlock(ModBlocks.GRAVITY_INHIBITOR);
 			addBlock(ModBlocks.QUINGENTILLIARD);
+			addBlock(ModBlocks.ANGSTROM);
 			addItem(ModItems.CRYSTAL_QUARTZ);
 		}
 	}

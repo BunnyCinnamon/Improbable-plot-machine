@@ -44,7 +44,7 @@ public class EntitySingularityItem extends EntityFastItem {
 			dropSelf();
 		}
 		if(world.isRemote && rand.nextFloat() < 0.2F) {
-			ParticleUtil.spawnTunnelingPhoton(world, new Vector3(posX, posY + 0.21, posZ),
+			ParticleUtil.spawnTunnelingPhoton(world, Vector3.create(posX, posY + 0.21, posZ),
 					Vector3.ImmutableVector3.NULL, 0xFFFFFF, 10, 0.35F);
 		}
 	}

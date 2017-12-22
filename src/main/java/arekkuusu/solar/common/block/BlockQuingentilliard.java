@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.material.FixedMaterial;
 import arekkuusu.solar.client.render.baked.BakedPerspective;
 import arekkuusu.solar.client.render.baked.BakedRender;
@@ -21,6 +22,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -61,6 +63,9 @@ public class BlockQuingentilliard extends BlockBase {
 					entangled.setKey(stack, UUID.randomUUID());
 				}
 				entangled.getKey(stack).ifPresent(consumer::setKey);
+				NBTHelper.<NBTTagCompound>getNBT(stack, "lookup").ifPresent(tag -> {
+					consumer.setLookup(new ItemStack(tag));
+				});
 			});
 		}
 	}
@@ -93,6 +98,9 @@ public class BlockQuingentilliard extends BlockBase {
 			consumer.getKey().ifPresent(uuid -> {
 				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
 			});
+			if(!consumer.getLookup().isEmpty()) {
+				NBTHelper.setNBT(stack, "lookup", consumer.getLookup().writeToNBT(new NBTTagCompound()));
+			}
 			return stack;
 		}
 		return super.getItem(world, pos, state);

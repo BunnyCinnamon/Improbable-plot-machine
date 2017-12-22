@@ -8,8 +8,6 @@
 package arekkuusu.solar.api.entanglement.quantum.data;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,6 @@ public interface IQuantumData {
 		return ItemStack.EMPTY;
 	}
 
-	@SideOnly(Side.SERVER)
 	default void setEntanglementStack(UUID uuid, ItemStack stack, int slot) {
 		List<ItemStack> list = getEntanglement(uuid);
 		if(!hasSlot(uuid, slot)) {

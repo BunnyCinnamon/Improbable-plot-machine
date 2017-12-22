@@ -178,4 +178,12 @@ public final class RenderBakery {
 		RenderItem render = Minecraft.getMinecraft().getRenderItem();
 		render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 	}
+
+	public static void makeUpDownTranslation(float tick, float max, float speed, float angle) {
+		float toDegrees = (float) Math.PI / 180F;
+		angle += speed * tick;
+		if (angle > 360) angle -= 360;
+
+		GlStateManager.translate(0, max * Math.sin(angle * toDegrees), 0);
+	}
 }

@@ -110,7 +110,7 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 				GLHelper.lightMap(255F, 255F);
 			}
 			ParticleUtil.spawnTunnelingPhoton(schrodinger.world
-					, new Vector3(schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ)
+					, Vector3.create(schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ)
 					, Vector3.ImmutableVector3.NULL, rgb, 10, 1.5F);
 
 			Minecraft.getMinecraft().entityRenderer.setupFogColor(true);

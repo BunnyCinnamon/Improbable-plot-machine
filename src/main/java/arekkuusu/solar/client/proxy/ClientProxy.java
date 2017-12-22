@@ -31,6 +31,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -97,6 +98,7 @@ public class ClientProxy implements IProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
 				.registerReloadListener(SpriteLoader.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(new ClientEvents());
 		ModelLoaderRegistry.registerLoader(new DummyModelLoader());
 		ModRenders.preInit();
 	}

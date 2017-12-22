@@ -28,12 +28,12 @@ import java.util.Optional;
 public class TilePrismFlower extends TileBase implements ITickable {
 
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, new Vector3(0.5D, 0.25D, 0.5D))
-			.put(EnumFacing.DOWN, new Vector3(0.5D, 0.75D, 0.5D))
-			.put(EnumFacing.NORTH, new Vector3(0.5D, 0.75D, 0.55D))
-			.put(EnumFacing.SOUTH, new Vector3(0.5D, 0.75D, 0.4D))
-			.put(EnumFacing.EAST, new Vector3(0.4D, 0.75D, 0.5D))
-			.put(EnumFacing.WEST, new Vector3(0.55D, 0.75D, 0.5D))
+			.put(EnumFacing.UP, Vector3.create(0.5D, 0.25D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.75D, 0.55D))
+			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.75D, 0.4D))
+			.put(EnumFacing.EAST, Vector3.create(0.4D, 0.75D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.create(0.55D, 0.75D, 0.5D))
 			.build();
 	private final Comparator<EntityLivingBase> comparator = (compared, entity) -> {
 		double x = distanceTo(compared);

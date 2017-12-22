@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.UUID;
 
-import static arekkuusu.solar.client.util.helper.TooltipBuilder.Condition.SHIFT_KEY_DOWN;
+import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHIFT_KEY_DOWN;
 
 /**
  * Created by <Arekkuusu> on 09/08/2017.
@@ -29,20 +29,21 @@ public interface IQuantumStack extends IEntangledStack {
 	default void addTooltipInfo(ItemStack stack, List<String> tooltip) {
 		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline()
 				.condition(SHIFT_KEY_DOWN)
-				.ifAgrees(builder -> {
-					getDetailedInfo(builder, QuantumHandler.getEntanglement(uuid), uuid);
-				}).build(tooltip));
+				.apply(builder ->
+					getDetailedInfo(builder, QuantumHandler.getEntanglement(uuid), uuid)
+				).build(tooltip));
 	}
 
 	@SideOnly(Side.CLIENT)
-	default void getDetailedInfo(TooltipBuilder builder, List<ItemStack> stacks, UUID uuid) {
-		builder.addI18("quantum_data", TooltipBuilder.DARK_GRAY_ITALIC).end();
+	default TooltipBuilder getDetailedInfo(TooltipBuilder builder, List<ItemStack> stacks, UUID uuid) {
+		builder.addI18("quantum_data", TooltipBuilder.DARK_GRAY_ITALIC)
+				.add(": ", TooltipBuilder.DARK_GRAY_ITALIC).end();
 		stacks.forEach(item -> builder
 				.add("    - ", TextFormatting.DARK_GRAY)
 				.add(item.getDisplayName(), TooltipBuilder.GRAY_ITALIC)
 				.add(" x " + item.getCount()).end()
 		);
 		builder.skip();
-		getInfo(builder, uuid);
+		return getInfo(builder, uuid);
 	}
 }

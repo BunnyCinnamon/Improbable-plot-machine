@@ -56,7 +56,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 
 	@Override
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
-		Vector3 vec = new Vector3(pos).add(0.5D, 0.5D, 0.5D);
+		Vector3 vec = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
 		Megumin.chant(world, vec, 5F, false)
 				.Oh_blackness_shrouded_in_light()
 				.Frenzied_blaze_clad_in_night()
@@ -109,8 +109,8 @@ public class BlockSchrodingerGlyph extends BlockBase {
 			for(EnumFacing facing : EnumFacing.values()) {
 				BlockPos target = pos.offset(facing);
 
-				Vector3 from = new Vector3(pos).add(0.5D, 0.5D, 0.5D);
-				Vector3 to = new Vector3(target).add(0.5D, 0.5D, 0.5D);
+				Vector3 from = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
+				Vector3 to = Vector3.create(target).add(0.5D, 0.5D, 0.5D);
 				double speed = 0.025D;
 
 				ParticleUtil.spawnNeutronBlast(world, from, speed, to, 0xFF0303, 0.25F, false);

@@ -55,7 +55,7 @@ public class TileSingularity extends TileBase implements ITickable {
 			world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(pos).grow(6)).forEach(this::applyGravity);
 			orbitAll();
 		} else if(world.rand.nextInt(10) == 0) {
-			Vector3 from = new Vector3(pos).add(0.5D, 0.5D, 0.5D);
+			Vector3 from = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
 			Vector3 to = Vector3.getRandomVec(1F).add(from);
 
 			ParticleUtil.spawnNeutronBlast(world, from, 0.01D, to, 0xFFFFFF, 0.1F, false);

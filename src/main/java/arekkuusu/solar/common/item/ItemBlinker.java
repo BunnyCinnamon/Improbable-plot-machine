@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static arekkuusu.solar.client.util.helper.TooltipBuilder.Condition.SHIFT_KEY_DOWN;
+import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHIFT_KEY_DOWN;
 
 /**
  * Created by <Arekkuusu> on 03/09/2017.
@@ -37,7 +37,7 @@ public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline().condition(SHIFT_KEY_DOWN)
-				.ifAgrees(builder -> getInfo(builder, uuid)).build(tooltip));
+				.apply(builder -> getInfo(builder, uuid)).build(tooltip));
 	}
 
 	@Override
