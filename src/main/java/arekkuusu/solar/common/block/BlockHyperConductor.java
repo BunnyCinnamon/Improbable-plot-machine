@@ -41,6 +41,7 @@ public class BlockHyperConductor extends BlockBase {
 	public BlockHyperConductor() {
 		super(LibNames.HYPER_CONDUCTOR, FixedMaterial.DONT_MOVE);
 		setDefaultState(getDefaultState().withProperty(State.POWER, 0));
+		setHarvestLevel(Tool.PICK, ToolLevel.IRON);
 		setHardness(1F);
 		setTickRandomly(true);
 	}

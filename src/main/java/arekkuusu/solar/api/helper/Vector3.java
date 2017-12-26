@@ -40,6 +40,10 @@ public class Vector3 {
 		return new Vector3(vec.getX(), vec.getY(), vec.getZ());
 	}
 
+	public static Vector3 create(EnumFacing facing) {
+		return new Vector3(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ());
+	}
+
 	public static Vector3 create(NBTTagCompound tag) {
 		return new Vector3(tag.getDouble("x"), tag.getDouble("y"), tag.getDouble("z"));
 	}

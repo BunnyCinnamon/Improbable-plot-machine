@@ -21,7 +21,6 @@ public class LibNames {
 	public static final String GRAVITY_HOPPER = "gravity_hopper";
 	public static final String QUINGENTILLIARD = "quingentilliard";
 	public static final String SCHRODINGER_GLYPH = "schrodinger_glyph";
-	public static final String ATOMIC_VOID = "atomic_void";
 	public static final String BLINKER = "blinker";
 	public static final String PHENOMENA = "phenomena";
 	public static final String CRYSTAL_QUARTZ = "crystal_quartz";
@@ -33,4 +32,5 @@ public class LibNames {
 	public static final String ASHEN = "ashen";
 	public static final String MONOLITHIC = "monolithic";
 	public static final String ANGSTROM = "angstrom";
+	public static final String QIMRANUT = "qimranut";
 }

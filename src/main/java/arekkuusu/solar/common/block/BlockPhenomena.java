@@ -38,7 +38,7 @@ public class BlockPhenomena extends BlockBase {
 	public BlockPhenomena() {
 		super(LibNames.PHENOMENA, FixedMaterial.BREAK);
 		setDefaultState(getDefaultState().withProperty(State.ACTIVE, true));
-		setHarvestLevel("pickaxe", 3);
+		setHarvestLevel(Tool.PICK, ToolLevel.DIAMOND);
 		setHardness(4F);
 	}
 

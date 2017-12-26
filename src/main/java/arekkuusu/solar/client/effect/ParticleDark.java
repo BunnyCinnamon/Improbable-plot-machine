@@ -10,20 +10,16 @@ package arekkuusu.solar.client.effect;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Created by <Arekkuusu> on 26/07/2017.
+ * Created by <Arekkuusu> on 28/07/2017.
  * It's distributed as part of Solar.
  */
-@SideOnly(Side.CLIENT)
-public class ParticleNeutron extends ParticleBase {
+public class ParticleDark extends ParticleBase {
 
 	private final float initScale;
-	private final boolean dark;
 
-	ParticleNeutron(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
+	ParticleDark(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
 		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
 		float r = (rgb >>> 16 & 0xFF) / 256.0F;
 		float g = (rgb >>> 8 & 0xFF) / 256.0F;
@@ -32,39 +28,36 @@ public class ParticleNeutron extends ParticleBase {
 		particleMaxAge = age;
 		particleScale = scale;
 		initScale = particleScale;
+		particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
 		canCollide = false;
 
 		motionX = speed.x;
 		motionY = speed.y;
 		motionZ = speed.z;
 
-		dark = rgb == 0x000000;
-		setSprite(dark ? SpriteLibrary.DARK_PARTICLE : SpriteLibrary.NEUTRON_PARTICLE);
+		setSprite(SpriteLibrary.DARK_PARTICLE);
 	}
 
 	@Override
 	public void onUpdate() {
-		if(this.particleAge++ >= this.particleMaxAge) {
-			this.setExpired();
+		super.onUpdate();
+		if(rand.nextInt(6) == 0) {
+			particleAge++;
 		}
-		float life = (float) particleAge / (float) particleMaxAge;
+		float life = (float) this.particleAge / (float) this.particleMaxAge;
 		this.particleScale = initScale - initScale * life;
-		this.particleAlpha = 0.25F * (1F - life);
-
-		this.prevPosX = this.posX;
-		this.prevPosY = this.posY;
-		this.prevPosZ = this.posZ;
-
-		this.move(this.motionX, this.motionY, this.motionZ);
-	}
-
-	@Override
-	public int getBrightnessForRender(float idk) {
-		return dark ? 0 : 255;
+		this.particleAlpha = 0.5F * (1.0f - life);
+		this.prevParticleAngle = particleAngle;
+		particleAngle += 1.0f;
 	}
 
 	@Override
 	public boolean isAdditive() {
-		return !dark;
+		return false;
+	}
+
+	@Override
+	public int getBrightnessForRender(float p_189214_1_) {
+		return 0;
 	}
 }

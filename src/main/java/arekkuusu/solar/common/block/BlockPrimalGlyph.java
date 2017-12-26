@@ -32,7 +32,7 @@ public class BlockPrimalGlyph extends BlockBase {
 	public BlockPrimalGlyph() {
 		super(LibNames.PRIMAL_GLYPH, Material.ROCK);
 		setDefaultState(defaultState().withProperty(State.GLYPH, 0));
-		setHarvestLevel("pickaxe", 1);
+		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(4F);
 		setResistance(2000F);
 	}

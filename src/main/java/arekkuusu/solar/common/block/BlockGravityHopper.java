@@ -41,7 +41,7 @@ public class BlockGravityHopper extends BlockBase {
 	public BlockGravityHopper() {
 		super(LibNames.GRAVITY_HOPPER, FixedMaterial.DONT_MOVE);
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.DOWN));
-		setHarvestLevel("pickaxe", 1);
+		setHarvestLevel(Tool.PICK, ToolLevel.IRON);
 		setHardness(2F);
 	}
 

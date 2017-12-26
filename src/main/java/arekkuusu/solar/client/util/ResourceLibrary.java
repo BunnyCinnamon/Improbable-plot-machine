@@ -53,6 +53,9 @@ public final class ResourceLibrary {
 	public static final ResourceLocation HYPER_CONDUCTOR_OVERLAY = getAtlas(BLOCKS, "hyper_conductor/overlay");
 	public static final ResourceLocation ELECTRON_ON = getAtlas(BLOCKS, "electron/on");
 	public static final ResourceLocation ELECTRON_OFF = getAtlas(BLOCKS, "electron/off");
+	public static final ResourceLocation QIMRANUT_BASE = getAtlas(BLOCKS, "qimranut/base");
+	public static final ResourceLocation QIMRANUT_OVERLAY_FRONT = getAtlas(BLOCKS, "qimranut/overlay_front");
+	public static final ResourceLocation QIMRANUT_OVERLAY_BACK = getAtlas(BLOCKS, "qimranut/overlay_back");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
 		StringBuilder builder = new StringBuilder();

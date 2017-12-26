@@ -37,9 +37,9 @@ public final class ConfigHandler {
 			@Comment("If the structure should generate underground only --Debug stuff--")
 			public boolean underground = true;
 			@Comment("Max amount of \"nuggets\" allowed in one Structure")
-			public double size = 25;
-			@Comment("Spread of \"nuggets\" in the structure")
-			public int spread = 15;
+			public int size = 25;
+			@Comment("Spread of \"nuggets\" in the Structure")
+			public double spread = 15;
 			@Comment("Chance of 0-100% for loot")
 			public double loot = 15;
 			@Comment("Chance of 0-100% to generate")
@@ -57,13 +57,17 @@ public final class ConfigHandler {
 
 		public static class MonolithConfig {
 
-			public final HollowMonolithStructure MONOLITH_STRUCTURE = new HollowMonolithStructure();
+			public final MonolithStructure MONOLITH_STRUCTURE = new MonolithStructure();
 			public final ObeliskDecorator OBELISK_DECORATOR = new ObeliskDecorator();
 
-			public static class HollowMonolithStructure {
+			public static class MonolithStructure {
 
 				@Comment("Chance of 0-100% to generate")
-				public double rarity = 10;
+				public double rarity = 0.001;
+				@Comment("Max amount of \"pillars\" allowed in one Structure")
+				public int size = 25;
+				@Comment("Spread of \"pillars\" in the Structure")
+				public double spread = 15;
 			}
 
 			public static class ObeliskDecorator {
@@ -71,9 +75,9 @@ public final class ConfigHandler {
 				public final ObeliskWeights WEIGHTS = new ObeliskWeights();
 
 				@Comment("Chance of 0-100% to generate")
-				public double rarity = 10;
+				public double rarity = 0.05;
 				@Comment("Max amount of obelisks allowed in one chunk")
-				public double size = 1;
+				public int size = 1;
 
 				public static class ObeliskWeights {
 					@Comment("Weight of monolithic obelisk")

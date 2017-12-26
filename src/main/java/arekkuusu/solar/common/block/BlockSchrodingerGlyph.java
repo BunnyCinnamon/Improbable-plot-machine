@@ -39,7 +39,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 
 	public BlockSchrodingerGlyph() {
 		super(LibNames.SCHRODINGER_GLYPH, Material.ROCK);
-		setHarvestLevel("pickaxe", 1);
+		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(4F);
 		setResistance(2000F);
 	}
@@ -105,15 +105,12 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		if(world.isRemote && rand.nextInt(5) == 0 && getClosestPlayer(world, pos).isPresent()) {
+		if(world.isRemote && rand.nextInt(15) == 0 && getClosestPlayer(world, pos).isPresent()) {
 			for(EnumFacing facing : EnumFacing.values()) {
-				BlockPos target = pos.offset(facing);
-
 				Vector3 from = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
-				Vector3 to = Vector3.create(target).add(0.5D, 0.5D, 0.5D);
 				double speed = 0.025D;
-
-				ParticleUtil.spawnNeutronBlast(world, from, speed, to, 0xFF0303, 0.25F, false);
+				Vector3 vec = Vector3.create(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
+				ParticleUtil.spawnNeutronBlast(world, from, vec, 0xFF0303, 60, 0.25F, false);
 			}
 		}
 	}

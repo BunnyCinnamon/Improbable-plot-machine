@@ -30,15 +30,15 @@ public class SolarApi {
 	private static IQuantumData quantumData;
 
 	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {
-		return RELATIVITY_MAP;
+		return RELATIVITY_MAP; //Goodbye arms!
 	}
 
 	public static Map<UUID, Integer> getRelativityPowerMap() {
-		return RELATIVITY_POWER_MAP;
+		return RELATIVITY_POWER_MAP; //Goodbye legs!
 	}
 
 	public static synchronized IQuantumData getQuantumData() {
-		return quantumData;
+		return quantumData; //Goodbye whatever is left of you
 	}
 
 	public static synchronized void setQuantumData(IQuantumData quantumData) {

@@ -9,9 +9,11 @@ package arekkuusu.solar.common.proxy;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.Solar;
+import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHelper;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
@@ -25,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.SERVER)
-@Mod.EventBusSubscriber(Side.SERVER)
+@EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.SERVER)
 public class ServerProxy implements IProxy {
 
 	@Override
@@ -39,7 +41,7 @@ public class ServerProxy implements IProxy {
 	}
 
 	@SubscribeEvent
-	public static void bindQuantumData(PlayerEvent.PlayerLoggedInEvent event) {
+	public static void playerServerJoin(PlayerEvent.PlayerLoggedInEvent event) {
 		if(event.player instanceof EntityPlayerMP) {
 			Solar.LOG.info("[WorldQuantumData] Binding Data to player:", event.player.getName());
 			PacketHelper.syncQuantumTo((EntityPlayerMP) event.player);

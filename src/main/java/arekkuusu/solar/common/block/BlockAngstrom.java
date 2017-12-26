@@ -32,6 +32,8 @@ public class BlockAngstrom extends BlockBase {
 
 	public BlockAngstrom() {
 		super(LibNames.ANGSTROM, Material.IRON);
+		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
+		setHardness(2F);
 	}
 
 	@Override
@@ -44,12 +46,16 @@ public class BlockAngstrom extends BlockBase {
 			Block block = Block.getBlockFromItem(item);
 			int meta = item.getMetadata(stack);
 			IBlockState inState = block.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, player, hand);
+			world.setBlockState(pos, inState);
+			block.onBlockPlacedBy(world, pos, inState, player, stack);
 			SoundType sound = block.getSoundType(inState, world, pos, player);
 			world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), sound.getPlaceSound(), SoundCategory.BLOCKS, 0.75F, 0.8F);
-			world.setBlockState(pos, inState);
 			//Exchange
 			ItemStack drop = new ItemStack(Item.getItemFromBlock(this));
 			ItemHandlerHelper.giveItemToPlayer(player, drop);
+			if(!player.capabilities.isCreativeMode) {
+				stack.shrink(1);
+			}
 		}
 		return isBlock;
 	}

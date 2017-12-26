@@ -22,20 +22,17 @@ import net.minecraft.world.World;
  */
 public class ParticleNeutronBlast extends ParticleBase {
 
-	private final Vector3 point;
-	private final double speed;
 	private final boolean collide;
 	private final int rgb;
 
-	ParticleNeutronBlast(World world, Vector3 from, double speed, Vector3 to, int rgb, float scale, boolean collide) {
-		super(world, from.x, from.y, from.z, 0, 0, 0);
+	ParticleNeutronBlast(World world, Vector3 pos, Vector3 speed, int age, int rgb, float scale, boolean collide) {
+		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
 		this.rgb = rgb;
-		this.point = to;
-		this.speed = speed;
+		motionX = speed.x;
+		motionY = speed.y;
+		motionZ = speed.z;
 
-		double distance = from.distanceTo(to);
-
-		this.particleMaxAge = (int) (distance / speed);
+		this.particleMaxAge = age;
 		this.particleScale = scale;
 		this.collide = collide;
 		this.canCollide = !this.collide;
@@ -51,22 +48,11 @@ public class ParticleNeutronBlast extends ParticleBase {
 		if((particleAge++ >= particleMaxAge)) {
 			setExpired();
 		}
+		this.prevPosX = this.posX;
+		this.prevPosY = this.posY;
+		this.prevPosZ = this.posZ;
 
-		double x = posX - point.x;
-		double y = posY - point.y;
-		double z = posZ - point.z;
-
-		double square = x * x + y * y + z * z;
-		double distance = Math.sqrt(square);
-
-		motionX = speed * (x / distance);
-		motionY = speed * (y / distance);
-		motionZ = speed * (z / distance);
-
-		prevPosX = posX += motionX;
-		prevPosY = posY += motionY;
-		prevPosZ = posZ += motionZ;
-		move(motionX, motionY, motionZ);
+		this.move(this.motionX, this.motionY, this.motionZ);
 
 		spawnNeutron(-motionX * 0.35, -motionY * 0.35, -motionZ * 0.35);
 		spawnNeutron(0, 0, 0);

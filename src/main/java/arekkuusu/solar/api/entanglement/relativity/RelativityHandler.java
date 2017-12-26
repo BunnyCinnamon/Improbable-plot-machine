@@ -8,10 +8,14 @@
 package arekkuusu.solar.api.entanglement.relativity;
 
 import arekkuusu.solar.api.SolarApi;
+import com.google.common.collect.Lists;
 import net.minecraft.tileentity.TileEntity;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 03/09/2017.
@@ -27,6 +31,20 @@ public class RelativityHandler {
 	 */
 	public static <T extends TileEntity & IRelativeTile> boolean isRelative(T tile) {
 		return tile.getKey().map(uuid -> SolarApi.getRelativityMap().containsKey(uuid)).orElse(false);
+	}
+
+	public static <T extends TileEntity & IRelativeTile> List<IRelativeTile> getRelatives(T tile) {
+		if(isRelative(tile)) {
+			return Lists.newArrayList(SolarApi.getRelativityMap().get(tile.getKey().orElseThrow(NullPointerException::new))); //bamboozled
+		}
+		return Collections.emptyList();
+	}
+
+	public static List<IRelativeTile> getRelatives(UUID uuid) {
+		if(SolarApi.getRelativityMap().containsKey(uuid)) {
+			return Lists.newArrayList(SolarApi.getRelativityMap().get(uuid)); //bamboozled
+		}
+		return Collections.emptyList();
 	}
 
 	/**

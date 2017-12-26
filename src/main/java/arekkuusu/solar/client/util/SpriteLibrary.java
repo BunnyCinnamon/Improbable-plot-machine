@@ -26,6 +26,7 @@ public final class SpriteLibrary {
 	public static final FrameSpriteResource QUORN_PARTICLE = SpriteLoader.load(EFFECT, "quorn_particle", 7, 1);
 	public static final SpriteResource NEUTRON_PARTICLE = SpriteLoader.load(EFFECT, "neutron_particle");
 	public static final SpriteResource LIGHT_PARTICLE = SpriteLoader.load(EFFECT, "light_particle");
+	public static final SpriteResource DARK_PARTICLE = SpriteLoader.load(EFFECT, "dark_particle");
 	public static final SpriteResource CHARGED_ICE = SpriteLoader.load(EFFECT, "charged_ice");
 	//Other
 	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteLoader.load(BLOCKS, "quantum_mirror", 9, 1);

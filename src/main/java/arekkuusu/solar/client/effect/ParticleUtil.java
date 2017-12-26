@@ -36,9 +36,9 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 		}
 	}
 
-	public static void spawnNeutronBlast(World world, Vector3 from, double speed, Vector3 to, int rgb, float scale, boolean collide) {
+	public static void spawnNeutronBlast(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale, boolean collide) {
 		if(doParticle()) {
-			ParticleNeutronBlast particle = new ParticleNeutronBlast(world, from, speed, to, rgb, scale, collide);
+			ParticleNeutronBlast particle = new ParticleNeutronBlast(world, pos, speed, age, rgb, scale, collide);
 			ClientProxy.PARTICLE_RENDERER.add(particle);
 		}
 	}
@@ -68,6 +68,13 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 		if(doParticle()) {
 			ParticleBolt bolt = new ParticleBolt(world, from, to, generations, offset, rgb, branch);
 			ClientProxy.PARTICLE_RENDERER.add(bolt);
+		}
+	}
+
+	public static void spawnDarkParticle(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
+		if(doParticle()) {
+			ParticleDark particle = new ParticleDark(world, pos, speed, rgb, age, scale);
+			ClientProxy.PARTICLE_RENDERER.add(particle);
 		}
 	}
 

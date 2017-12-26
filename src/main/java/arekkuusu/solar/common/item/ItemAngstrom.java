@@ -10,11 +10,11 @@ package arekkuusu.solar.common.item;
 import arekkuusu.solar.api.helper.RayTraceHelper;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.common.block.ModBlocks;
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -36,8 +36,8 @@ public class ItemAngstrom extends ItemBaseBlock {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
-		RayTraceResult result = RayTraceHelper.tracePlayerHighlight((EntityPlayerMP) player);
+		ItemStack stack = player.getHeldItem(hand); //Not entirely convinced it works
+		RayTraceResult result = world.isRemote ? RayTraceHelper.tracePlayerHighlight((EntityPlayerSP) player) : RayTraceHelper.tracePlayerHighlight((EntityPlayerMP) player);
 		if(result.typeOfHit != RayTraceResult.Type.BLOCK) {
 			if(!world.isRemote) {
 				Vector3 vec = Vector3.create(player.posX, player.posY + player.getEyeHeight(), player.posZ);
@@ -45,9 +45,13 @@ public class ItemAngstrom extends ItemBaseBlock {
 				BlockPos pos = new BlockPos(vec.toVec3d());
 				IBlockState replaced = world.getBlockState(pos);
 				if(world.isAirBlock(pos) || replaced.getBlock().isReplaceable(world, pos)) {
-					IBlockState state = Block.getBlockFromItem(this).getDefaultState();
+					IBlockState state = ModBlocks.ANGSTROM.getDefaultState();
+					SoundType type = ModBlocks.ANGSTROM.getSoundType(state, world, pos, player);
 					world.setBlockState(pos, state);
-					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 0.75F, 0.8F);
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), type.getPlaceSound(), SoundCategory.BLOCKS, 0.75F, 0.8F);
+				}
+				if(!player.capabilities.isCreativeMode) {
+					stack.shrink(1);
 				}
 			}
 			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);

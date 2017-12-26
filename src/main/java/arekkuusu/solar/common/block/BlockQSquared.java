@@ -33,7 +33,7 @@ public class BlockQSquared extends BlockBase {
 
 	public BlockQSquared() {
 		super(LibNames.Q_SQUARED, FixedMaterial.DONT_MOVE);
-		setHarvestLevel("pickaxe", 1);
+		setHarvestLevel(Tool.PICK, ToolLevel.DIAMOND);
 		setLightLevel(1F);
 		setHardness(2F);
 		setSound(SoundType.GLASS);

@@ -14,7 +14,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -31,7 +30,7 @@ public class BlockAshen extends BlockBase {
 
 	public BlockAshen() {
 		super(LibNames.ASHEN, Material.SAND);
-		setHarvestLevel("shovel", 1);
+		setHarvestLevel(Tool.SHOVEL, ToolLevel.WOOD_GOLD);
 		setHardness(0.1F);
 		setTickRandomly(true);
 		setSound(SoundType.SAND);

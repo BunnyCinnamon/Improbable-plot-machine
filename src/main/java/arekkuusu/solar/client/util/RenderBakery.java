@@ -10,15 +10,18 @@ package arekkuusu.solar.client.util;
 import arekkuusu.solar.client.render.baked.model.Cube;
 import arekkuusu.solar.client.util.helper.BlockBaker;
 import arekkuusu.solar.common.Solar;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -177,6 +180,32 @@ public final class RenderBakery {
 		}
 		RenderItem render = Minecraft.getMinecraft().getRenderItem();
 		render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
+	}
+
+	public static void renderItemBlock(BlockPos pos, Item item, double partialTicks) {
+		GlStateManager.pushMatrix();
+		GlStateManager.enableBlend();
+		GlStateManager.enableAlpha();
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		IBlockState state = Block.getBlockFromItem(item).getDefaultState();
+
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buff = tessellator.getBuffer();
+		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		assert entity != null;
+		double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
+		double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
+		double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
+		buff.setTranslation(-d0, -d1, -d2);
+		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+		BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
+		renderer.getBlockModelRenderer().renderModel(entity.world, renderer.getModelForState(state), state, pos, buff, false);
+		tessellator.draw();
+		buff.setTranslation(0, 0, 0);
+
+		GlStateManager.disableAlpha();
+		GlStateManager.disableBlend();
+		GlStateManager.popMatrix();
 	}
 
 	public static void makeUpDownTranslation(float tick, float max, float speed, float angle) {

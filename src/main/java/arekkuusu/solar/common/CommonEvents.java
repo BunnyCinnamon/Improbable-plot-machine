@@ -8,23 +8,27 @@
 package arekkuusu.solar.common;
 
 import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.client.effect.SoundBase;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.handler.recipe.ModRecipes;
 import arekkuusu.solar.common.item.ModItems;
+import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 
 /**
  * Created by <Arekkuusu> on 23/06/2017.
  * It's distributed as part of Solar.
  */
-@Mod.EventBusSubscriber
+@EventBusSubscriber(modid = LibMod.MOD_ID)
 public final class CommonEvents {
 
 	@SubscribeEvent
@@ -40,6 +44,12 @@ public final class CommonEvents {
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		ModRecipes.register(event.getRegistry());
+	}
+
+	@SubscribeEvent
+	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+		IForgeRegistry<SoundEvent> registry = event.getRegistry();
+		registry.register(new SoundBase("spark"));
 	}
 
 	@SubscribeEvent

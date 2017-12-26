@@ -17,6 +17,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -106,7 +107,7 @@ public enum Direction implements IStringSerializable { //Forgive me... CTM, Opti
 
 	@Override
 	public String getName() {
-		return name().toLowerCase();
+		return name().toLowerCase(Locale.ROOT);
 	}
 
 	public static Direction getDirectionForState(IBlockState state, IBlockAccess world, BlockPos origin) {

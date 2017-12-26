@@ -31,6 +31,8 @@ public class BlockTheorema extends BlockBase {
 
 	public BlockTheorema() {
 		super(LibNames.THEOREMA, FixedMaterial.DONT_MOVE);
+		setHarvestLevel(Tool.PICK, ToolLevel.DIAMOND);
+		setHardness(5F);
 	}
 
 	@Override

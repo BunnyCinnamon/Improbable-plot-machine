@@ -32,9 +32,8 @@ public class BlockSingularity extends BlockBase {
 
 	public BlockSingularity() {
 		super(LibNames.SINGULARITY, FixedMaterial.BREAK);
-		setHarvestLevel("pickaxe", 3);
 		setLightLevel(1F);
-		setHardness(10F);
+		setHardness(2F);
 		setResistance(2000F);
 	}
 

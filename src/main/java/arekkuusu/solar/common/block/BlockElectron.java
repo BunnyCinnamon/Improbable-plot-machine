@@ -43,9 +43,9 @@ public class BlockElectron extends BlockBase {
 	public BlockElectron() {
 		super(LibNames.ELECTRON, FixedMaterial.BREAK);
 		setDefaultState(getDefaultState().withProperty(State.POWER, 0));
+		setSound(SoundType.CLOTH);
 		setLightLevel(0.2F);
 		setHardness(1F);
-		setSound(SoundType.CLOTH);
 	}
 
 	@Override

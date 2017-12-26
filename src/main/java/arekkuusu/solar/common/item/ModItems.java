@@ -47,6 +47,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.MONOLITHIC));
 		registry.register(new ItemQuingentilliard());
 		registry.register(new ItemAngstrom());
+		registry.register(new ItemQimranut());
 	}
 
 	@SuppressWarnings("ConstantConditions")

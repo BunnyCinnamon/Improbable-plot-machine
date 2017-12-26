@@ -131,19 +131,14 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	private void spawnParticles() {
 		if(tick % 180 == 0) {
 			EnumFacing facing = getFacing();
-
-			Vector3 from = getOffSet(facing);
-			BlockPos target = pos.offset(facing.getOpposite(), 9);
-			Vector3 to = Vector3.create(target).add(0.5D, 0.5D, 0.5D);
-
-			ParticleUtil.spawnNeutronBlast(world, from, 0.025D, to, 0xFF0303, 0.25F, true);
+			Vector3 back = getOffSet(facing);
+			Vector3 vec = Vector3.create(facing).multiply(0.005D);
+			ParticleUtil.spawnNeutronBlast(world, back, vec, 0xFF0303, 40, 0.25F, true);
 		} else if(tick % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing.getOpposite());
-
 			double speed = world.rand.nextDouble() * -0.015D;
-			Vector3 vec = Vector3.create(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
-
+			Vector3 vec = Vector3.create(facing).multiply(speed);
 			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 30, 2F);
 		}
 	}
