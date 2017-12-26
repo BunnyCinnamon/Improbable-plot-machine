@@ -54,6 +54,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation ELECTRON_ON = getAtlas(BLOCKS, "electron/on");
 	public static final ResourceLocation ELECTRON_OFF = getAtlas(BLOCKS, "electron/off");
 	public static final ResourceLocation QIMRANUT_BASE = getAtlas(BLOCKS, "qimranut/base");
+	public static final ResourceLocation QIMRANUT_BASE_ = getAtlas(BLOCKS, "qimranut/base_");
 	public static final ResourceLocation QIMRANUT_OVERLAY_FRONT = getAtlas(BLOCKS, "qimranut/overlay_front");
 	public static final ResourceLocation QIMRANUT_OVERLAY_BACK = getAtlas(BLOCKS, "qimranut/overlay_back");
 

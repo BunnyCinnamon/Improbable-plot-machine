@@ -62,7 +62,7 @@ public class QuadBuilder {
 		return this;
 	}
 
-	public QuadBuilder addAll(TextureAtlasSprite sprite, float uMin, float uMax, float vMin, float vMax) {
+	public QuadBuilder addAll(float uMin, float uMax, float vMin, float vMax, TextureAtlasSprite sprite) {
 		for(EnumFacing facing : EnumFacing.values()) {
 			addFace(facing, uMin, uMax, vMin, vMax, sprite);
 		}

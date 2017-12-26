@@ -53,14 +53,14 @@ public class BakedBlinker extends BakedBrightness {
 		QuadBuilder base_quads = QuadBuilder.withFormat(format)
 				.setFrom(2, 0, 2)
 				.setTo(14, 1, 14)
-				.addAll(base, 2F, 14F, 2F, 2F)
+				.addAll(2F, 14F, 2F, 2F, base)
 				.addFace(UP, 2F, 14F, 3F, 14F, base)
 				.addFace(DOWN, 2F, 14F, 2F, 14F, base);
 		//Overlay
 		QuadBuilder overlay_quads = QuadBuilder.withFormat(format)
 				.setFrom(2, 0, 2)
 				.setTo(14, 1, 14)
-				.addAll(on ? top_on : top_off, 2F, 14F, 2F, 2F)
+				.addAll(2F, 14F, 2F, 2F, on ? top_on : top_off)
 				.addFace(UP, 2F, 14F, 2F, 14F, on ? top_on : top_off)
 				.addFace(DOWN, 2F, 14F, 2F, 14F, on ? bottom_on : bottom_off)
 				.setHasBrightness(true);

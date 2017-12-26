@@ -8,12 +8,12 @@
 package arekkuusu.solar.common.handler.gen;
 
 import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.common.handler.gen.ModGen.Structure;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
 
 import static arekkuusu.solar.common.handler.ConfigHandler.GEN_CONFIG;
 
@@ -38,10 +38,13 @@ public class MonolithStructure extends BaseGen {
 			BlockPos origin = new BlockPos(x, 0, z);
 			//Gen Monolith
 			BlockPos floor = world.getTopSolidOrLiquidBlock(origin.add(8, 0, 8));
-			BlockPos cube = origin.add(5, Math.max(floor.getY() - (7 + random.nextInt(5)), 1), 4);
-			Template template = ModGen.Structure.MONOLITH_CUBE_MEDIUM.load(world);
-			template.addBlocksToWorld(world, cube, new PlacementSettings());
-			//Gen Pillars
+			BlockPos cube = origin.add(5, Math.max(floor.getY() - (14 + random.nextInt(5)), 1), 4);
+			Structure.MONOLITH_CUBE.generate(world, cube, new PlacementSettings());
+			//Gen ruin
+			if(GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.size >= 1) {
+				Structure.MONOLITH_RUIN.generate(world, origin.add(5, Math.max(floor.getY() - (1 + random.nextInt(3)), 1), 4), new PlacementSettings());
+			}
+			//Gen sub ruins
 			for(int i = 0; i < GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.size; i++) {
 				BlockPos top = world.getTopSolidOrLiquidBlock(randomVector().add(x, 0, z).toBlockPos());
 				int below = random.nextInt(3);
@@ -51,8 +54,7 @@ public class MonolithStructure extends BaseGen {
 				PlacementSettings settings = new PlacementSettings();
 				settings.setIntegrity(random.nextFloat());
 				settings.setRandom(random);
-
-				ModGen.Structure.MONOLITH_CUBE_SMALL.generate(world, top, settings);
+				Structure.MONOLITH_RUIN_.generate(world, top, settings);
 			}
 		}
 	}

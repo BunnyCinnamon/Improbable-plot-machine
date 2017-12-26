@@ -29,12 +29,14 @@ import static net.minecraft.util.EnumFacing.*;
 public class BakedQimranut extends BakedBrightness {
 
 	private final TextureAtlasSprite base;
+	private final TextureAtlasSprite base_;
 	private final TextureAtlasSprite overlay_front;
 	private final TextureAtlasSprite overlay_back;
 
 	public BakedQimranut(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
 		super(format);
 		base = getter.apply(ResourceLibrary.QIMRANUT_BASE);
+		base_ = getter.apply(ResourceLibrary.QIMRANUT_BASE_);
 		overlay_front = getter.apply(ResourceLibrary.QIMRANUT_OVERLAY_FRONT);
 		overlay_back = getter.apply(ResourceLibrary.QIMRANUT_OVERLAY_BACK);
 	}
@@ -45,18 +47,18 @@ public class BakedQimranut extends BakedBrightness {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		//Base
 		QuadBuilder base_quads = QuadBuilder.withFormat(format)
-				.setFrom(4, 4, 4)
-				.setTo(12, 5, 12)
-				.addAll(base, 0F, 7F, 15F, 16F)
-				.addFace(UP, 0F, 7F, 9F, 16F, base)
-				.addFace(DOWN, 0F, 7F, 9F, 16F, base);
+				.setFrom(3, 3, 3)
+				.setTo(13, 4, 13)
+				.addAll(0F, 9F, 7F, 7F, base)
+				.addFace(UP, 0F, 9F, 7F, 16F, base_)
+				.addFace(DOWN, 0F, 9F, 7F, 16F, base);
 		//Overlay
 		QuadBuilder overlay_quads = QuadBuilder.withFormat(format)
-				.setFrom(4, 4, 4)
-				.setTo(12, 5, 12)
-				.addAll(overlay_front, 0F, 7F, 15F, 16F)
-				.addFace(DOWN, 0F, 7F, 9F, 16F, overlay_front)
-				.addFace(UP, 0F, 7F, 9F, 16F, overlay_back)
+				.setFrom(3, 3, 3)
+				.setTo(13, 4, 13)
+				.addAll(0F, 9F, 15F, 16F, overlay_front)
+				.addFace(DOWN, 0F, 9F, 7F, 16F, overlay_front)
+				.addFace(UP, 0F, 9F, 7F, 16F, overlay_back)
 				.setHasBrightness(true);
 		switch(facing) {
 			case DOWN:

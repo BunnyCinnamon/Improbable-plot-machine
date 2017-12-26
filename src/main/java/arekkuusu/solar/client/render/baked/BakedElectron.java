@@ -45,7 +45,7 @@ public class BakedElectron extends BakedBrightness {
 		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(5.5D, 5.5D, 5.5D)
 				.setTo(10.5D, 10.5D, 10.5D)
-				.addAll(on ? base_on : base_off, 0F, 5F, 0, 5F)
+				.addAll(0F, 5F, 0, 5F, on ? base_on : base_off)
 				.setHasBrightness(on)
 				.bake()
 		);

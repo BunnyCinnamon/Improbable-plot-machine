@@ -47,12 +47,12 @@ import static net.minecraft.block.BlockDirectional.FACING;
 public class BlockQimranut extends BlockBase {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.125, 0.9375, 0.125, 0.875, 1, 0.875))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.0625, 0.875))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0.125, 0, 0.875, 0.875, 0.0625))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0.125, 0.9375, 0.875, 0.875, 1))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.9375, 0.125, 0.875, 1, 0.875, 0.125))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0.125, 0.125, 0.0625, 0.875, 0.875))
+			.put(EnumFacing.UP, new AxisAlignedBB(0.1875, 0.75, 0.1875, 0.8125, 0.8125, 0.8125))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.1875, 0.1875, 0.1875, 0.8125, 0.25, 0.8125))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.1875, 0.1875, 0.25, 0.8125, 0.8125, 0.1875))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.1875, 0.1875, 0.75, 0.8125, 0.8125, 0.8125))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.8125, 0.1875, 0.1875, 0.75, 0.8125, 0.8125))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.25, 0.1875, 0.1875, 0.1875, 0.8125, 0.8125))
 			.build();
 
 	public BlockQimranut() {
@@ -148,14 +148,6 @@ public class BlockQimranut extends BlockBase {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-				.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.6875, 0.25, 0.75, 0.75, 0.75))
-				.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.3125, 0.75))
-				.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.3125, 0.75, 0.75, 0.25))
-				.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.6875, 0.75, 0.75, 0.75))
-				.put(EnumFacing.EAST, new AxisAlignedBB(0.75, 0.25, 0.25, 0.6875, 0.75, 0.75))
-				.put(EnumFacing.WEST, new AxisAlignedBB(0.3125, 0.25, 0.25, 0.25, 0.75, 0.75))
-				.build();
 		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 
