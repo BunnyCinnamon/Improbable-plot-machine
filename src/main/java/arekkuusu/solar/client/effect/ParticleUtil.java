@@ -64,9 +64,9 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 		}
 	}
 
-	public static void spawnBolt(World world, Vector3 from, Vector3 to, int generations, float offset, int rgb, boolean branch) {
+	public static void spawnBolt(World world, Vector3 from, Vector3 to, int generations, float offset, int rgb, boolean branch, boolean fade) {
 		if(doParticle()) {
-			ParticleBolt bolt = new ParticleBolt(world, from, to, generations, offset, rgb, branch);
+			ParticleBolt bolt = new ParticleBolt(world, from, to, generations, offset, rgb, branch, fade);
 			ClientProxy.PARTICLE_RENDERER.add(bolt);
 		}
 	}

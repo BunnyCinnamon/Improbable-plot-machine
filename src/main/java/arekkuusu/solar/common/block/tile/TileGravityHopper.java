@@ -12,20 +12,18 @@ import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.ItemStackHandler;
+import org.apache.commons.lang3.tuple.Pair;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
@@ -43,34 +41,20 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			.put(EnumFacing.EAST, Vector3.create(0.75D, 0.5D, 0.5D))
 			.put(EnumFacing.WEST, Vector3.create(0.25D, 0.5D, 0.5D))
 			.build();
-	private final GravityHopperItemHandler handler;
 	private boolean powered;
 	private boolean inverse;
 	private int tick;
-
-	public TileGravityHopper() {
-		handler = new GravityHopperItemHandler(this);
-	}
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public void update() {
 		if(!world.isRemote) {
 			if(tick % 2 == 0) {
-				EnumFacing facing = getFacing();
-
-				Optional<BlockPos> positionOut = traceBlock(facing.getOpposite());
-				positionOut.ifPresent(posOut -> {
-					Optional<IItemHandler> inventoryOut = getInventory(posOut, facing);
-					inventoryOut.ifPresent(handlerOut -> {
-						Optional<BlockPos> positionIn = traceBlock(facing);
-						positionIn.ifPresent(posIn -> {
-							Optional<IItemHandler> inventoryIn = getInventory(posIn, facing.getOpposite());
-							inventoryIn.ifPresent(this::transferIn);
-						});
-
-						if(!getStack().isEmpty()) {
-							transferOut(handlerOut);
+				traceBlock(getFacing()).ifPresent(out -> {
+					traceBlock(getFacing().getOpposite()).ifPresent(in -> {
+						ItemStack stack = transferOut(out, true);
+						if(!stack.isEmpty() && transferIn(in, stack, true)) {
+							transferIn(in, transferOut(out, false), false);
 						}
 					});
 				});
@@ -86,46 +70,61 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			BlockPos target = pos.offset(facing, forward + 1);
 			IBlockState state = world.getBlockState(target);
 			if(state.getBlock().hasTileEntity(state)) {
-				return Optional.of(target);
+				TileEntity tile = world.getTileEntity(target);
+				if(tile != null && (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)
+						|| tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))) {
+					return Optional.of(target);
+				}
 			}
 		}
 		return Optional.empty();
 	}
 
-	private Optional<IItemHandler> getInventory(BlockPos target, EnumFacing facing) {
+	private Pair<ISidedInventory, IItemHandler> getInventory(BlockPos target, EnumFacing facing) {
 		if(world.isBlockLoaded(target, false)) {
 			TileEntity tile = world.getTileEntity(target);
 			if(tile != null) {
 				IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-				return handler != null ? Optional.of(handler)
-						: Optional.ofNullable(tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
+				if(handler == null) handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+				return Pair.of(tile instanceof ISidedInventory ? (ISidedInventory) tile : null, handler);
 			}
 		}
-		return Optional.empty();
+		return Pair.of(null, null);
 	}
 
-	private void transferIn(IItemHandler handler) {
-		for(int slot = 0; slot < handler.getSlots(); slot++) {
-			ItemStack inserted = handler.getStackInSlot(slot);
-			if(!inserted.isEmpty() && !handler.extractItem(slot, Integer.MAX_VALUE, true).isEmpty()) {
-				setStack(handler.extractItem(slot, Integer.MAX_VALUE, false));
-				break;
+	private ItemStack transferOut(BlockPos pos, boolean test) {
+		EnumFacing facing = getFacing().getOpposite();
+		Pair<ISidedInventory, IItemHandler> inv = getInventory(pos, facing);
+		if(inv.getValue() != null) {
+			IItemHandler handler = inv.getValue();
+			ISidedInventory tile = inv.getKey();
+
+			for(int slot = 0; slot < handler.getSlots(); slot++) {
+				ItemStack in = handler.getStackInSlot(slot);
+				if(!in.isEmpty() && (tile == null || tile.canExtractItem(slot, in, facing))) {
+					return handler.extractItem(slot, Integer.MAX_VALUE, test);
+				}
 			}
 		}
+		return ItemStack.EMPTY;
 	}
 
-	private void transferOut(IItemHandler handler) {
-		ItemStack inserted = getStack().copy();
+	private boolean transferIn(BlockPos pos, ItemStack inserted, boolean test) {
+		EnumFacing facing = getFacing();
+		Pair<ISidedInventory, IItemHandler> inv = getInventory(pos, facing);
+		if(inv.getValue() != null) {
+			IItemHandler handler = inv.getValue();
+			ISidedInventory tile = inv.getKey();
 
-		for(int slot = 0; slot < handler.getSlots(); slot++) {
-			ItemStack inSlot = handler.getStackInSlot(slot);
-
-			if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted) && (inSlot.getCount() < inSlot.getMaxStackSize() && inSlot.getCount() < handler.getSlotLimit(slot)))) {
-				inserted = handler.insertItem(slot, inserted, false);
-				setStack(inserted);
-				break;
+			for(int slot = 0; slot < handler.getSlots(); slot++) {
+				ItemStack inSlot = handler.getStackInSlot(slot);
+				if(tile != null && !tile.canInsertItem(slot, inserted, facing)) return false;
+				if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted) && (inSlot.getCount() < inSlot.getMaxStackSize() && inSlot.getCount() < handler.getSlotLimit(slot)))) {
+					return handler.insertItem(slot, inserted, test) != inserted;
+				}
 			}
 		}
+		return false;
 	}
 
 	private void spawnParticles() {
@@ -141,25 +140,6 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 vec = Vector3.create(facing).multiply(speed);
 			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 30, 2F);
 		}
-	}
-
-	public void remove() {
-		if(!world.isRemote) {
-			ItemStack stack = getStack();
-			if(!stack.isEmpty()) {
-				EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
-				world.spawnEntity(item);
-				setStack(ItemStack.EMPTY);
-			}
-		}
-	}
-
-	private ItemStack getStack() {
-		return handler.getStackInSlot(0);
-	}
-
-	private void setStack(ItemStack stack) {
-		handler.setStackInSlot(0, stack);
 	}
 
 	public boolean isInverse() {
@@ -190,45 +170,9 @@ public class TileGravityHopper extends TileBase implements ITickable {
 
 	@Override
 	void readNBT(NBTTagCompound cmp) {
-		handler.deserializeNBT(cmp);
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound cmp) {
-		NBTTagCompound tag = handler.serializeNBT();
-		cmp.merge(tag);
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
-	}
-
-	@Nullable
-	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
-				? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler)
-				: super.getCapability(capability, facing);
-	}
-
-	private static class GravityHopperItemHandler extends ItemStackHandler {
-
-		private final TileGravityHopper tile;
-
-		GravityHopperItemHandler(TileGravityHopper tile) {
-			super(1);
-			this.tile = tile;
-		}
-
-		@Override
-		public int getSlotLimit(int slot) {
-			return Integer.MAX_VALUE;
-		}
-
-		@Override
-		protected void onContentsChanged(int slot) {
-			tile.markDirty();
-		}
 	}
 }

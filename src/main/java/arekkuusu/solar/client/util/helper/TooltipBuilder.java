@@ -15,7 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 
 /**
  * Created by <Arekkuusu> on 12/08/2017.
@@ -38,11 +39,11 @@ public class TooltipBuilder {
 	private StringBuilder builder = new StringBuilder();
 	private List<String> strings = new ArrayList<>();
 
-	public Condition<Object> condition(Condition<Object> condition) {
-		return condition.setBuilder(this);
+	public Condition condition(BooleanSupplier condition) {
+		return new Condition(condition).setBuilder(this);
 	}
 
-	public Condition<TooltipBuilder> condition(KeyCondition keyCondition) {
+	public Condition condition(KeyCondition keyCondition) {
 		return keyCondition.apply(this);
 	}
 
@@ -74,58 +75,63 @@ public class TooltipBuilder {
 	}
 
 	public enum KeyCondition {
-		NOTHING((a) -> true, builder -> builder),
-		SHIFT_KEY_DOWN((a) -> GuiScreen.isShiftKeyDown()
+		NOTHING(() -> true, builder -> {
+		}),
+		SHIFT_KEY_DOWN(GuiScreen::isShiftKeyDown
 				, builder -> builder.addI18("shift_for_info", TooltipBuilder.DARK_GRAY_ITALIC).end()),
-		CONTROL_KEY_DOWN((a) -> GuiScreen.isCtrlKeyDown()
+		CONTROL_KEY_DOWN(GuiScreen::isCtrlKeyDown
 				, builder -> builder.addI18("ctrl_for_info", TooltipBuilder.DARK_GRAY_ITALIC).end());
 
-		private final Function<TooltipBuilder, Boolean> canApply;
-		private final Function<TooltipBuilder, TooltipBuilder> or;
+		private final BooleanSupplier condition;
+		private final Consumer<TooltipBuilder> or;
 
-		KeyCondition(Function<TooltipBuilder, Boolean> canApply, Function<TooltipBuilder, TooltipBuilder> or) {
-			this.canApply = canApply;
+		KeyCondition(BooleanSupplier condition, Consumer<TooltipBuilder> or) {
+			this.condition = condition;
 			this.or = or;
 		}
 
-		public Condition<TooltipBuilder> apply(TooltipBuilder builder) {
-			return new Condition<>(canApply, or).setBuilder(builder);
+		public Condition apply(TooltipBuilder builder) {
+			return new Condition(condition).setBuilder(builder).orElse(or);
 		}
 	}
 
-	public static class Condition<T> {
+	public static class Condition {
+		private final BooleanSupplier condition;
+		private Consumer<TooltipBuilder> present;
+		private Consumer<TooltipBuilder> or;
 		private TooltipBuilder builder;
-		private final Function<T, Boolean> canApply;
-		private final Function<TooltipBuilder, TooltipBuilder> or;
 
-		public Condition(Function<T, Boolean> canApply, Function<TooltipBuilder, TooltipBuilder> or) {
-			this.canApply = canApply;
-			this.or = or;
+		public Condition(BooleanSupplier condition) {
+			this.condition = condition;
 		}
 
-		public Condition<T> setBuilder(TooltipBuilder builder) {
+		public Condition setBuilder(TooltipBuilder builder) {
 			this.builder = builder;
 			return this;
 		}
 
-		public boolean canApply(T t) {
-			return canApply.apply(t);
+		public Condition ifPresent(Consumer<TooltipBuilder> present) {
+			this.present = present;
+			return this;
 		}
 
-		public TooltipBuilder apply(Function<TooltipBuilder, TooltipBuilder> apply) {
-			if(canApply(null)) {
-				apply.apply(builder);
-				return builder;
-			}
-			return or.apply(builder);
+		public Condition orElse(Consumer<TooltipBuilder> or) {
+			this.or = or;
+			return this;
 		}
 
-		public TooltipBuilder apply(T t, Function<TooltipBuilder, TooltipBuilder> apply) {
-			if(canApply(t)) {
-				apply.apply(builder);
-				return builder;
-			}
-			return or.apply(builder);
+		public boolean canApply() {
+			return condition.getAsBoolean();
+		}
+
+		public TooltipBuilder apply() {
+			if(canApply() && present != null) present.accept(builder);
+			else if(or != null) or.accept(builder);
+			return builder;
+		}
+
+		public void build(List<String> tooltip) {
+			apply().build(tooltip);
 		}
 	}
 }

@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.render.baked.BakedHyperConductor;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
@@ -22,8 +22,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -98,8 +96,8 @@ public class BlockHyperConductor extends BlockBase {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT_MIPPED;
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
 	}
 
 	@Override

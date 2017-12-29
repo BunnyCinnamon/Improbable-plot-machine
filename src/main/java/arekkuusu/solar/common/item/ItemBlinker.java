@@ -37,7 +37,7 @@ public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline().condition(SHIFT_KEY_DOWN)
-				.apply(builder -> getInfo(builder, uuid)).build(tooltip));
+				.ifPresent(builder -> getInfo(builder, uuid)).build(tooltip));
 	}
 
 	@Override

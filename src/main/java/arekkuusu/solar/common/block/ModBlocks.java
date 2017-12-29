@@ -79,6 +79,7 @@ public final class ModBlocks {
 		GameRegistry.registerTileEntity(TileTheorema.class, LibMod.MOD_ID + ":theorema");
 		GameRegistry.registerTileEntity(TileGravityInhibitor.class, LibMod.MOD_ID + ":gravity_inhibitor");
 		GameRegistry.registerTileEntity(TileHyperConductor.class, LibMod.MOD_ID + ":hyper_conductor");
+		GameRegistry.registerTileEntity(TileElectron.class, LibMod.MOD_ID + ":electron");
 		GameRegistry.registerTileEntity(TileQuingentilliard.class, LibMod.MOD_ID + ":quingentilliard");
 		GameRegistry.registerTileEntity(TileQimranut.class, LibMod.MOD_ID + ":qimranut");
 	}

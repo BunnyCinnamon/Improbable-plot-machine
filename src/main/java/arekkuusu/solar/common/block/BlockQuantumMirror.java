@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.render.baked.BakedQuantumMirror;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;

@@ -51,7 +51,7 @@ public class QuingentilliardRenderer extends SpecialModelRenderer<TileQuingentil
 				}
 				break;
 			case 1:
-				render(te.tick, x, y, z);
+				render(te.tick, x, y, z, false);
 				break;
 		}
 		GLHelper.lightMap(prevU, prevV);
@@ -59,28 +59,31 @@ public class QuingentilliardRenderer extends SpecialModelRenderer<TileQuingentil
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		render( Minecraft.getMinecraft().player.ticksExisted, x, y, z);
+		final float prevU = OpenGlHelper.lastBrightnessX;
+		final float prevV = OpenGlHelper.lastBrightnessY;
+		render(Minecraft.getMinecraft().player.ticksExisted, x, y, z, true);
+		GLHelper.lightMap(prevU, prevV);
 	}
 
-	public void render(int tick, double x, double y, double z) {
+	public void render(int tick, double x, double y, double z, boolean isGui) {
+		GLHelper.lightMap(255F, 255F);
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
 		GlStateManager.color(0, 0.99609375F, 0.76171875F, 1F);
-		GLHelper.lightMap(255F, 255F);
 
 		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 		GlStateManager.scale(0.5F, 0.5F, 0.5F);
 		GlStateManager.rotate(tick, 1F, 0F, 1F);
 
 		GLHelper.disableDepth();
-		GlStateManager.enableBlend();
+		if(!isGui)
+			GlStateManager.enableBlend();
 		GLHelper.BLEND_NORMAL.blend();
-
 		RenderBakery.renderBeams((float) tick * 0.01F, 25, 0x000000, 0x000000, 1F);
 		renderCube(tick);
-
-		GlStateManager.disableBlend();
+		if(!isGui)
+			GlStateManager.disableBlend();
 		GLHelper.enableDepth();
 
 		GlStateManager.color(1F, 1F, 1F, 1F);

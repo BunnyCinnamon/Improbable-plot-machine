@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.lib.LibNames;

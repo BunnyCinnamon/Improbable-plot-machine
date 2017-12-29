@@ -63,18 +63,6 @@ public class TileQuingentilliard extends TileQuantumBase<QuantumTileWrapper> imp
 	}
 
 	@Override
-	public void readNBT(NBTTagCompound compound) {
-		super.readNBT(compound);
-		lookup = new ItemStack((NBTTagCompound) compound.getTag("lookup"));
-	}
-
-	@Override
-	public void writeNBT(NBTTagCompound compound) {
-		super.writeNBT(compound);
-		compound.setTag("lookup", lookup.writeToNBT(new NBTTagCompound()));
-	}
-
-	@Override
 	public void update() {
 		if(!world.isRemote && !lookup.isEmpty() && getKey().isPresent()) {
 			attractItems();
@@ -155,6 +143,18 @@ public class TileQuingentilliard extends TileQuantumBase<QuantumTileWrapper> imp
 		world.spawnEntity(item);
 		entity.setDead();
 		return item;
+	}
+
+	@Override
+	public void readNBT(NBTTagCompound compound) {
+		super.readNBT(compound);
+		lookup = new ItemStack((NBTTagCompound) compound.getTag("lookup"));
+	}
+
+	@Override
+	public void writeNBT(NBTTagCompound compound) {
+		super.writeNBT(compound);
+		compound.setTag("lookup", lookup.writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override

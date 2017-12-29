@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.render.baked.BakedPerspective;
 import arekkuusu.solar.client.render.baked.BakedRender;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;

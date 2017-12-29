@@ -73,6 +73,10 @@ public class Vector3 {
 		return subtract(vec.getX(), vec.getY(), vec.getZ());
 	}
 
+	public Vector3 subtract(double amount) {
+		return subtract(amount, amount, amount);
+	}
+
 	public Vector3 subtract(double x, double y, double z) {
 		return add(-x, -y, -z);
 	}
@@ -87,6 +91,10 @@ public class Vector3 {
 
 	public Vector3 add(Vec3i vec) {
 		return add(vec.getX(), vec.getY(), vec.getZ());
+	}
+
+	public Vector3 add(double amount) {
+		return add(amount, amount, amount);
 	}
 
 	public Vector3 add(double x, double y, double z) {
@@ -115,14 +123,6 @@ public class Vector3 {
 
 	public Vector3 divide(double x, double y, double z) {
 		return setVec(this.x / x, this.y / y, this.z / z);
-	}
-
-	public Vector3 grow(double amount) {
-		return add(amount, amount, amount);
-	}
-
-	public Vector3 shrink(double amount) {
-		return subtract(amount, amount, amount);
 	}
 
 	public Vector3 rotate(EnumFacing.Axis axis, float degrees) {

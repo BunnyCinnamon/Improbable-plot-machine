@@ -32,20 +32,27 @@ import java.util.List;
 public class ParticleBolt extends ParticleBase {
 
 	private List<BoltSegment> segments = Lists.newArrayList();
+	private final int generations;
+	private final boolean branch;
+	private final boolean fade;
+	private float offset;
 
-	ParticleBolt(World world, Vector3 from, Vector3 to, int generations, float offset, int rgb, boolean branch) {
+	ParticleBolt(World world, Vector3 from, Vector3 to, int generations, float offset, int rgb, boolean branch, boolean fade) {
 		super(world, (from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2, 0, 0, 0);
 		float r = (rgb >>> 16 & 0xFF) / 256.0F;
 		float g = (rgb >>> 8 & 0xFF) / 256.0F;
 		float b = (rgb & 0xFF) / 256.0F;
 		setRBGColorF(r, g, b);
-		segments.add(new BoltSegment(from, to));
-		calculateBolts(generations, offset, branch);
-
-		particleMaxAge = 20;
+		this.segments.add(new BoltSegment(from, to));
+		this.generations = generations;
+		this.particleMaxAge = 25;
+		this.branch = branch;
+		this.offset = offset;
+		this.fade = fade;
+		calculateBolts();
 	}
 
-	private void calculateBolts(int generations, float offset, boolean branch) {
+	private void calculateBolts() {
 		ProfilerHelper.begin("[Particle Bolt] Calculating Bolts");
 		List<BoltSegment> branched = Lists.newArrayList();
 		for(int i = 0; i < generations; i++) {
@@ -53,11 +60,9 @@ public class ParticleBolt extends ParticleBase {
 			for(BoltSegment segment : segments) {
 				ImmutableVector3 from = segment.from.toImmutable();
 				ImmutableVector3 to = segment.to.toImmutable();
-
 				Vector3 mid = average(from, to);
 				Vector3 midOffset = to.subtract(from);
 				mid.add(midOffset.normalize().cross(Vector3.create(1, 1, 1)).multiply(Vector3.getRandomVec(offset)));
-
 				if(branch && rand.nextDouble() > 0.6D) {
 					Vector3 direction = mid.copy().subtract(from);
 					Vector3 splitEnd = direction
@@ -65,17 +70,18 @@ public class ParticleBolt extends ParticleBase {
 							.rotatePitchZ((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
 							.multiply(0.7D)
 							.add(mid);
-
 					BoltSegment sub = new BoltSegment(mid, splitEnd);
-					sub.alpha = segment.alpha * 0.25F;
+					sub.alpha = segment.alpha;
 					temp.add(sub);
 				}
-
 				BoltSegment one = new BoltSegment(from, mid);
 				BoltSegment two = new BoltSegment(mid, to);
+				if(fade) {
+					one.alpha = segment.alpha * 0.5F;
+					two.alpha = segment.alpha;
+				}
 				temp.add(one);
 				temp.add(two);
-
 				if(branched.isEmpty() || branched.contains(segment)) {
 					branched.add(two);
 				}
@@ -104,12 +110,7 @@ public class ParticleBolt extends ParticleBase {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if(rand.nextInt(6) == 0) {
-			particleAge++;
-		}
-		float life = (float) this.particleAge / (float) this.particleMaxAge;
-		this.particleAlpha = 0.5F * (1.0F - life);
-		if(particleAlpha < 0) particleAlpha = 0;
+		segments.forEach(r -> r.alpha *= 0.9F);
 	}
 
 	private class BoltSegment {

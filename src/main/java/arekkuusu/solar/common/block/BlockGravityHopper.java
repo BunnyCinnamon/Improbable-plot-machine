@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.render.baked.BakedGravityHopper;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -63,15 +63,9 @@ public class BlockGravityHopper extends BlockBase {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileGravityHopper.class, world, pos).ifPresent(TileGravityHopper::remove);
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		EnumFacing side = EnumFacing.getDirectionFromEntityLiving(pos, placer);
-		return defaultState().withProperty(FACING, side.getOpposite());
+		return defaultState().withProperty(FACING, side);
 	}
 
 	@Override
@@ -115,8 +109,8 @@ public class BlockGravityHopper extends BlockBase {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT_MIPPED;
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
 	}
 
 	@Override

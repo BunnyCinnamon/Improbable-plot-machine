@@ -9,7 +9,7 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
-import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.render.baked.BakedQimranut;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
@@ -152,8 +152,8 @@ public class BlockQimranut extends BlockBase {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
 	}
 
 	@Override

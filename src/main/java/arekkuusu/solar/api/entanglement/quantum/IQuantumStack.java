@@ -29,8 +29,8 @@ public interface IQuantumStack extends IEntangledStack {
 	default void addTooltipInfo(ItemStack stack, List<String> tooltip) {
 		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline()
 				.condition(SHIFT_KEY_DOWN)
-				.apply(builder ->
-					getDetailedInfo(builder, QuantumHandler.getEntanglement(uuid), uuid)
+				.ifPresent(builder ->
+						getDetailedInfo(builder, QuantumHandler.getEntanglement(uuid), uuid)
 				).build(tooltip));
 	}
 

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,25 +47,33 @@ public class BakedGravityHopper extends BakedBrightness {
 	protected List<BakedQuad> getQuads(IBlockState state) {
 		EnumFacing face = state.getValue(BlockDirectional.FACING);
 		List<BakedQuad> quads = new ArrayList<>();
-		addCube(quads, base, base, base, base, base, base, false);
-		switch(face) {
-			case DOWN:
-				addCube(quads, overlay[3], overlay[5], overlay[1], overlay[2], overlay[0], overlay[4], true);
+		switch(MinecraftForgeClient.getRenderLayer()) {
+			case SOLID:
+				//Base
+				addCube(quads, base, base, base, base, base, base, false);
 				break;
-			case UP:
-				addCube(quads, overlay[5], overlay[3], overlay[1], overlay[2], overlay[0], overlay[4], true);
-				break;
-			case NORTH:
-				addCube(quads, overlay[2], overlay[0], overlay[3], overlay[5], overlay[1], overlay[4], true);
-				break;
-			case SOUTH:
-				addCube(quads, overlay[1], overlay[0], overlay[5], overlay[3], overlay[2], overlay[4], true);
-				break;
-			case WEST:
-				addCube(quads, overlay[4], overlay[0], overlay[1], overlay[2], overlay[3], overlay[5], true);
-				break;
-			case EAST:
-				addCube(quads, overlay[4], overlay[0], overlay[1], overlay[2], overlay[5], overlay[3], true);
+			case CUTOUT_MIPPED:
+				//Overlay
+				switch(face) {
+					case DOWN:
+						addCube(quads, overlay[3], overlay[5], overlay[1], overlay[2], overlay[0], overlay[4], true);
+						break;
+					case UP:
+						addCube(quads, overlay[5], overlay[3], overlay[1], overlay[2], overlay[0], overlay[4], true);
+						break;
+					case NORTH:
+						addCube(quads, overlay[2], overlay[0], overlay[3], overlay[5], overlay[1], overlay[4], true);
+						break;
+					case SOUTH:
+						addCube(quads, overlay[1], overlay[0], overlay[5], overlay[3], overlay[2], overlay[4], true);
+						break;
+					case WEST:
+						addCube(quads, overlay[4], overlay[0], overlay[1], overlay[2], overlay[3], overlay[5], true);
+						break;
+					case EAST:
+						addCube(quads, overlay[4], overlay[0], overlay[1], overlay[2], overlay[5], overlay[3], true);
+						break;
+				}
 				break;
 		}
 		return quads;

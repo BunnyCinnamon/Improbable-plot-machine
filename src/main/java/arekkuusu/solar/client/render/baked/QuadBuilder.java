@@ -16,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import org.lwjgl.util.vector.Vector4f;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -189,21 +190,40 @@ public class QuadBuilder {
 		return this;
 	}
 
+	public QuadBuilder rotate(EnumFacing facing, EnumFacing... exclude) {
+		//noinspection ConstantConditions
+		if(exclude == null || !Arrays.asList(exclude).contains(facing)) {
+			switch(facing) {
+				case DOWN:
+					rotate(EnumFacing.Axis.X, 180F);
+					break;
+				case UP:
+					rotate(EnumFacing.Axis.X, 180F);
+					break;
+				default:
+					rotate(EnumFacing.Axis.X, 90F);
+					rotate(EnumFacing.Axis.Y, -facing.getHorizontalAngle());
+					rotate(EnumFacing.Axis.Y, -90F);
+			}
+		}
+		return this;
+	}
+
 	public QuadBuilder rotate(EnumFacing.Axis axis, float angle) {
 		facingMap.values().forEach(holder -> {
-			holder.a.shrink(0.5D).rotate(axis, angle).grow(0.5D);
-			holder.b.shrink(0.5D).rotate(axis, angle).grow(0.5D);
-			holder.c.shrink(0.5D).rotate(axis, angle).grow(0.5D);
-			holder.d.shrink(0.5D).rotate(axis, angle).grow(0.5D);
+			holder.a.subtract(0.5D).rotate(axis, angle).add(0.5D);
+			holder.b.subtract(0.5D).rotate(axis, angle).add(0.5D);
+			holder.c.subtract(0.5D).rotate(axis, angle).add(0.5D);
+			holder.d.subtract(0.5D).rotate(axis, angle).add(0.5D);
 		});
 		return this;
 	}
 
 	public List<BakedQuad> bake() {
-		return facingMap.values().stream().map(this::createQuad).collect(Collectors.toList());
+		return facingMap.entrySet().stream().map(e -> createQuad(e.getValue(), e.getKey())).collect(Collectors.toList());
 	}
 
-	private BakedQuad createQuad(QuadHolder holder) {
+	private BakedQuad createQuad(QuadHolder holder, EnumFacing facing) {
 		Vector4f uv = holder.uv;
 		Vector3 a = holder.a;
 		Vector3 b = holder.b;
@@ -216,6 +236,7 @@ public class QuadBuilder {
 		putVertex(builder, normal, b.x, b.y, b.z, holder.sprite, uv.y, uv.z, hasBrightness);
 		putVertex(builder, normal, c.x, c.y, c.z, holder.sprite, uv.x, uv.z, hasBrightness);
 		putVertex(builder, normal, d.x, d.y, d.z, holder.sprite, uv.x, uv.w, hasBrightness);
+		builder.setQuadOrientation(facing);
 		builder.setTexture(holder.sprite);
 		return builder.build();
 	}
@@ -234,14 +255,15 @@ public class QuadBuilder {
 						if(hasBrightness) {
 							builder.put(e, 1F, 1F);
 						} else {
-							builder.put(e);
+							builder.put(e, 0F, 0F);
 						}
-					} else {
+						break;
+					} else if(format.getElement(e).getIndex() == 0) {
 						u = sprite.getInterpolatedU(u);
 						v = sprite.getInterpolatedV(v);
 						builder.put(e, u, v, 0F, 1F);
+						break;
 					}
-					break;
 				case NORMAL:
 					if(hasBrightness) {
 						builder.put(e, 0F, 1F, 0F);

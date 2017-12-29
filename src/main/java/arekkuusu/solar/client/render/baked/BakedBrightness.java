@@ -19,9 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by <Arekkuusu> on 03/08/2017.
@@ -30,8 +28,7 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public abstract class BakedBrightness implements IBakedModel {
 
-	private static final Map<IBlockState, List<BakedQuad>> BAKED_CACHE = new HashMap<>();
-
+	//private static final Map<IBlockState, List<BakedQuad>> BAKED_CACHE = new HashMap<>();
 	protected final VertexFormat format;
 
 	public BakedBrightness(VertexFormat format) {
@@ -41,7 +38,7 @@ public abstract class BakedBrightness implements IBakedModel {
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing facing, long rand) {
 		if(state == null || facing != null) return Collections.emptyList();
-		return BAKED_CACHE.computeIfAbsent(state, this::getQuads);
+		return getQuads(state); //BAKED_CACHE.computeIfAbsent(state, this::getQuads);
 	}
 
 	protected abstract List<BakedQuad> getQuads(IBlockState state);

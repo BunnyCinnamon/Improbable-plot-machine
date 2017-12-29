@@ -8,20 +8,25 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.helper.Vector3;
-import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.api.sound.SolarSounds;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.client.render.baked.BakedElectron;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.common.block.tile.TileElectron;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -29,6 +34,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 /**
@@ -72,6 +78,18 @@ public class BlockElectron extends BlockBase {
 				ParticleUtil.spawnChargedIce(world, vec,
 						Vector3.ImmutableVector3.NULL, 0xFFFFFF, 45, 0.45F * rand.nextFloat());
 			}
+		}
+		if(state.getValue(State.POWER) > 0 && world.rand.nextBoolean()) {
+			for(int i = 0; i < 1 + world.rand.nextInt(3); i++) {
+				Vector3 from = Vector3.create(pos).add(0.5D);
+				Vector3 to = Vector3.create(0, 1, 0)
+						.rotate(EnumFacing.Axis.X, world.rand.nextFloat() * 360)
+						.rotate(EnumFacing.Axis.Y, world.rand.nextFloat() * 360)
+						.rotate(EnumFacing.Axis.Z, world.rand.nextFloat() * 360)
+						.add(from);
+				ParticleUtil.spawnBolt(world, from, to, 4, 0.25F, 0x5194FF, true, true);
+			}
+			((WorldClient) world).playSound(pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F, 1F, false);
 		}
 	}
 
@@ -118,6 +136,17 @@ public class BlockElectron extends BlockBase {
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		return BlockRenderLayer.CUTOUT_MIPPED;
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileElectron();
 	}
 
 	@Override

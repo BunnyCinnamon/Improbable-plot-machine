@@ -15,12 +15,14 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import static net.minecraft.util.EnumFacing.*;
+import static net.minecraft.util.EnumFacing.DOWN;
+import static net.minecraft.util.EnumFacing.UP;
 
 /**
  * Created by <Arekkuusu> on 05/09/2017.
@@ -45,38 +47,31 @@ public class BakedQimranut extends BakedBrightness {
 	protected List<BakedQuad> getQuads(IBlockState state) {
 		List<BakedQuad> quads = new ArrayList<>();
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		//Base
-		QuadBuilder base_quads = QuadBuilder.withFormat(format)
-				.setFrom(3, 3, 3)
-				.setTo(13, 4, 13)
-				.addAll(0F, 9F, 7F, 7F, base)
-				.addFace(UP, 0F, 9F, 7F, 16F, base_)
-				.addFace(DOWN, 0F, 9F, 7F, 16F, base);
-		//Overlay
-		QuadBuilder overlay_quads = QuadBuilder.withFormat(format)
-				.setFrom(3, 3, 3)
-				.setTo(13, 4, 13)
-				.addAll(0F, 9F, 15F, 16F, overlay_front)
-				.addFace(DOWN, 0F, 9F, 7F, 16F, overlay_front)
-				.addFace(UP, 0F, 9F, 7F, 16F, overlay_back)
-				.setHasBrightness(true);
-		switch(facing) {
-			case DOWN:
+		switch(MinecraftForgeClient.getRenderLayer()) {
+			case SOLID:
+				//Base
+				QuadBuilder base_quads = QuadBuilder.withFormat(format)
+						.setFrom(3, 3, 3)
+						.setTo(13, 4, 13)
+						.addAll(0F, 9F, 7F, 7F, base)
+						.addFace(UP, 0F, 9F, 7F, 16F, base_)
+						.addFace(DOWN, 0F, 9F, 7F, 16F, base)
+						.rotate(facing, DOWN);
+				quads.addAll(base_quads.bake());
 				break;
-			case UP:
-				base_quads.rotate(Axis.X, 180F);
-				overlay_quads.rotate(Axis.X, 180F);
+			case CUTOUT_MIPPED:
+				//Overlay
+				QuadBuilder overlay_quads = QuadBuilder.withFormat(format)
+						.setFrom(3, 3, 3)
+						.setTo(13, 4, 13)
+						.addAll(0F, 9F, 15F, 16F, overlay_front)
+						.addFace(DOWN, 0F, 9F, 7F, 16F, overlay_front)
+						.addFace(UP, 0F, 9F, 7F, 16F, overlay_back)
+						.setHasBrightness(true)
+						.rotate(facing, DOWN);
+				quads.addAll(overlay_quads.bake());
 				break;
-			default:
-				base_quads.rotate(Axis.X, 90F);
-				base_quads.rotate(Axis.Y, -facing.getHorizontalAngle());
-				base_quads.rotate(Axis.Y, -90F);
-				overlay_quads.rotate(Axis.X, 90F);
-				overlay_quads.rotate(Axis.Y, -facing.getHorizontalAngle());
-				overlay_quads.rotate(Axis.Y, -90F);
 		}
-		quads.addAll(base_quads.bake());
-		quads.addAll(overlay_quads.bake());
 		return quads;
 	}
 

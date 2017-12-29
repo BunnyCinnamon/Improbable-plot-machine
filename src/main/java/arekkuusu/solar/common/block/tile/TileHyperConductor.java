@@ -39,7 +39,6 @@ public class TileHyperConductor extends TileBase implements ITickable {
 	private HashSet<BlockPos> electrons = Sets.newHashSet();
 	private boolean needsUpdate;
 	private boolean powered;
-	private int tick;
 
 	@Override
 	public void update() {
@@ -48,20 +47,6 @@ public class TileHyperConductor extends TileBase implements ITickable {
 			needsUpdate = false;
 		}
 		electrons.removeIf(pos -> world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() != ModBlocks.ELECTRON);
-		if(world.isRemote && isPoweredLazy() && !electrons.isEmpty() && tick++ % 2 == 0 && world.rand.nextInt(6) == 0) {
-			List<BlockPos> list = electrons.stream()
-					.filter(world::isBlockLoaded)
-					.collect(Collectors.toList());
-			if(!list.isEmpty()) {
-				BlockPos pos = list.get(world.rand.nextInt(list.size()));
-				Vector3 from = Vector3.create(getPos()).grow(0.5D);
-				Vector3 to = Vector3.create(pos).add(Vector3.getRandomVec(0.1F)).grow(0.5D);
-				to.subtract(to.copy().subtract(from).multiply(0.1D));
-				double distance = Math.min(4D, from.distanceTo(to)) * 0.5;
-				ParticleUtil.spawnBolt(world, from, to, (int) distance + 3, (float) (0.45D * distance), 0x5194FF, true);
-				((WorldClient) world).playSound(getPos(), SolarSounds.SPARK, SoundCategory.NEUTRAL, 0.1F, 1F, false);
-			}
-		}
 	}
 
 	public void hyperInduceAtmosphere() {

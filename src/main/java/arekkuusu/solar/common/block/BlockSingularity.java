@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.material.FixedMaterial;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.common.block.tile.TileSingularity;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.state.IBlockState;

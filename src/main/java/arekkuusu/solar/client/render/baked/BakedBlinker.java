@@ -16,12 +16,14 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import static net.minecraft.util.EnumFacing.*;
+import static net.minecraft.util.EnumFacing.DOWN;
+import static net.minecraft.util.EnumFacing.UP;
 
 /**
  * Created by <Arekkuusu> on 05/09/2017.
@@ -48,39 +50,31 @@ public class BakedBlinker extends BakedBrightness {
 	protected List<BakedQuad> getQuads(IBlockState state) {
 		List<BakedQuad> quads = new ArrayList<>();
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		boolean on = state.getValue(State.ACTIVE);
-		//Base
-		QuadBuilder base_quads = QuadBuilder.withFormat(format)
-				.setFrom(2, 0, 2)
-				.setTo(14, 1, 14)
-				.addAll(2F, 14F, 2F, 2F, base)
-				.addFace(UP, 2F, 14F, 3F, 14F, base)
-				.addFace(DOWN, 2F, 14F, 2F, 14F, base);
-		//Overlay
-		QuadBuilder overlay_quads = QuadBuilder.withFormat(format)
-				.setFrom(2, 0, 2)
-				.setTo(14, 1, 14)
-				.addAll(2F, 14F, 2F, 2F, on ? top_on : top_off)
-				.addFace(UP, 2F, 14F, 2F, 14F, on ? top_on : top_off)
-				.addFace(DOWN, 2F, 14F, 2F, 14F, on ? bottom_on : bottom_off)
-				.setHasBrightness(true);
-		switch(facing) {
-			case DOWN:
+		switch(MinecraftForgeClient.getRenderLayer()) {
+			case SOLID:
+				QuadBuilder base_quads = QuadBuilder.withFormat(format)
+						.setFrom(2, 0, 2)
+						.setTo(14, 1, 14)
+						.addAll(2F, 14F, 2F, 2F, base)
+						.addFace(UP, 2F, 14F, 3F, 14F, base)
+						.addFace(DOWN, 2F, 14F, 2F, 14F, base)
+						.rotate(facing, DOWN);
+				quads.addAll(base_quads.bake());
 				break;
-			case UP:
-				base_quads.rotate(Axis.X, 180F);
-				overlay_quads.rotate(Axis.X, 180F);
+			case CUTOUT_MIPPED:
+				boolean on = state.getValue(State.ACTIVE);
+				//Overlay
+				QuadBuilder overlay_quads = QuadBuilder.withFormat(format)
+						.setFrom(2, 0, 2)
+						.setTo(14, 1, 14)
+						.addAll(2F, 14F, 2F, 2F, on ? top_on : top_off)
+						.addFace(UP, 2F, 14F, 2F, 14F, on ? top_on : top_off)
+						.addFace(DOWN, 2F, 14F, 2F, 14F, on ? bottom_on : bottom_off)
+						.setHasBrightness(true)
+						.rotate(facing, DOWN);
+				quads.addAll(overlay_quads.bake());
 				break;
-			default:
-				base_quads.rotate(Axis.X, 90F);
-				base_quads.rotate(Axis.Y, -facing.getHorizontalAngle());
-				base_quads.rotate(Axis.Y, -90F);
-				overlay_quads.rotate(Axis.X, 90F);
-				overlay_quads.rotate(Axis.Y, -facing.getHorizontalAngle());
-				overlay_quads.rotate(Axis.Y, -90F);
 		}
-		quads.addAll(base_quads.bake());
-		quads.addAll(overlay_quads.bake());
 		return quads;
 	}
 
