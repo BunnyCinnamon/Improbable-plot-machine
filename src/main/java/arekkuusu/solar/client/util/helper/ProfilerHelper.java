@@ -28,12 +28,6 @@ public class ProfilerHelper {
 		}
 	}
 
-	public static void begin(Class... sections) {
-		for(Class section : sections) {
-			profiler.startSection(section);
-		}
-	}
-
 	public static void end() {
 		profiler.endSection();
 	}

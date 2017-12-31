@@ -22,9 +22,8 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * This class was created by <Arekkuusu> on 25/06/2017.
- * It's distributed as part of Solar under
- * the MIT license.
+ * Created by <Arekkuusu> on 25/06/2017.
+ * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
 public class BakedHyperConductor extends BakedBrightness {

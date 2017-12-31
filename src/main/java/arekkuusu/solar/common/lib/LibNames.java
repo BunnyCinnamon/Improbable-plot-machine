@@ -33,4 +33,5 @@ public class LibNames {
 	public static final String MONOLITHIC = "monolithic";
 	public static final String ANGSTROM = "angstrom";
 	public static final String QIMRANUT = "qimranut";
+	public static final String CELESTIAL_RESONATOR = "celestial_resonator";
 }

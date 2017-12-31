@@ -14,17 +14,21 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.util.vector.Vector4f;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by <Arekkuusu> on 13/12/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public class QuadBuilder {
 
 	private final Map<EnumFacing, QuadHolder> facingMap = Maps.newEnumMap(EnumFacing.class);
@@ -32,6 +36,7 @@ public class QuadBuilder {
 	private boolean hasBrightness;
 	private Vector3 from;
 	private Vector3 to;
+	private EnumFacing last;
 
 	private QuadBuilder(VertexFormat format) {
 		this.format = format;
@@ -187,6 +192,39 @@ public class QuadBuilder {
 		holder.c = c.divide(16D);
 		holder.d = d.divide(16D);
 		facingMap.put(facing, holder);
+		last = facing;
+		return this;
+	}
+
+	public QuadBuilder mirror() {
+		if(facingMap.containsKey(last)) {
+			Stream<Vector3> stream = Arrays.stream(facingMap.get(last).getVectors());
+			switch(last) {
+				case DOWN:
+				case UP:
+					stream.forEach(vec -> {
+						vec.subtract(0.5D).rotate(EnumFacing.Axis.Y, 180).add(0.5D);
+					});
+					break;
+				case NORTH:
+				case SOUTH:
+					stream.forEach(vec -> {
+						vec.subtract(0.5D).rotate(EnumFacing.Axis.X, 180).add(0.5D);
+					});
+					break;
+				case EAST:
+				case WEST:
+					stream.forEach(vec -> {
+						vec.subtract(0.5D).rotate(EnumFacing.Axis.Z, 180).add(0.5D);
+					});
+					break;
+			}
+		}
+		return this;
+	}
+
+	public QuadBuilder clear() {
+		facingMap.clear();
 		return this;
 	}
 
@@ -211,10 +249,9 @@ public class QuadBuilder {
 
 	public QuadBuilder rotate(EnumFacing.Axis axis, float angle) {
 		facingMap.values().forEach(holder -> {
-			holder.a.subtract(0.5D).rotate(axis, angle).add(0.5D);
-			holder.b.subtract(0.5D).rotate(axis, angle).add(0.5D);
-			holder.c.subtract(0.5D).rotate(axis, angle).add(0.5D);
-			holder.d.subtract(0.5D).rotate(axis, angle).add(0.5D);
+			Arrays.stream(holder.getVectors()).forEach(vec -> {
+				vec.subtract(0.5D).rotate(axis, angle).add(0.5D);
+			});
 		});
 		return this;
 	}
@@ -285,5 +322,9 @@ public class QuadBuilder {
 		Vector3 c;
 		Vector3 d;
 		Vector4f uv;
+
+		Vector3[] getVectors() {
+			return new Vector3[]{a, b, c, d};
+		}
 	}
 }

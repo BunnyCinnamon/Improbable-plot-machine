@@ -71,7 +71,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			IBlockState state = world.getBlockState(target);
 			if(state.getBlock().hasTileEntity(state)) {
 				TileEntity tile = world.getTileEntity(target);
-				if(tile != null && (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)
+				if(tile != null && (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
 						|| tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))) {
 					return Optional.of(target);
 				}

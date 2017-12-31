@@ -7,28 +7,18 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.helper.Vector3;
-import arekkuusu.solar.api.sound.SolarSounds;
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.block.ModBlocks;
-import arekkuusu.solar.common.network.PacketHandler;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by <Arekkuusu> on 25/10/2017.

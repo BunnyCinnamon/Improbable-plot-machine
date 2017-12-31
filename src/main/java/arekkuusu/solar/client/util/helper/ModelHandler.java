@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.helper;
 
+import arekkuusu.solar.common.Solar;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
@@ -35,6 +36,7 @@ public class ModelHandler {
 			if(item instanceof IModel)
 				((IModel) item).registerModel();
 		}
+		Solar.LOG.info("[BAKING CHOCOLATE COOKIES!]");
 	}
 
 	public static void registerModel(Block block, int meta, ModelResourceLocation location) {

@@ -31,28 +31,13 @@ public class BlockAshen extends BlockBase {
 	public BlockAshen() {
 		super(LibNames.ASHEN, Material.SAND);
 		setHarvestLevel(Tool.SHOVEL, ToolLevel.WOOD_GOLD);
-		setHardness(0.1F);
-		setTickRandomly(true);
 		setSound(SoundType.SAND);
+		setHardness(0.1F);
 	}
 
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 		entityIn.motionX *= 0.8D;
 		entityIn.motionZ *= 0.8D;
-	}
-
-	@Override
-	public void onFallenUpon(World world, BlockPos pos, Entity entity, float fallDistance) {
-		super.onFallenUpon(world, pos, entity, fallDistance);
-		/*if(fallDistance >= 1.5F + world.rand.nextFloat() * 1.5F) {
-			world.setBlockToAir(pos);
-			entity.playSound(SoundEvents.BLOCK_SNOW_BREAK, 1F, 1F);
-		}*/
-	}
-
-	@Override
-	public void onLanded(World worldIn, Entity entity) {
-		entity.motionY = 0.0D;
 	}
 
 	@Override

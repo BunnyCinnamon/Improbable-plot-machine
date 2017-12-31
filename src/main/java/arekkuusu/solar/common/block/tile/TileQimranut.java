@@ -62,12 +62,12 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 	}
 
 	@Nullable
-	public <T> T accessCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <T> T accessCapability(Capability<T> capability) {
 		BlockPos offset = pos.offset(getFacing());
 		IBlockState state = world.getBlockState(pos);
 		if(state.getBlock().hasTileEntity(state)) {
 			TileEntity tile = world.getTileEntity(offset);
-			return tile != null && !(tile instanceof TileQimranut) ? tile.getCapability(capability, facing) : null;
+			return tile != null && !(tile instanceof TileQimranut) ? tile.getCapability(capability, getFacing()) : null;
 		}
 		return null;
 	}
@@ -82,14 +82,14 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return getFacing() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability, facing) != null)
+		return getFacing() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability) != null)
 				.orElse(super.hasCapability(capability, facing)) : false;
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return getFacing() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability, facing))
+		return getFacing() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability))
 				.orElse(super.getCapability(capability, facing)) : null;
 	}
 

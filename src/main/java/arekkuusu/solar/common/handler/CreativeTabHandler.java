@@ -90,6 +90,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.QUINGENTILLIARD);
 			addBlock(ModBlocks.ANGSTROM);
 			addBlock(ModBlocks.QIMRANUT);
+			addBlock(ModBlocks.CELESTIAL_RESONATOR);
 			addItem(ModItems.CRYSTAL_QUARTZ);
 		}
 	}

@@ -48,6 +48,7 @@ public final class ModItems {
 		registry.register(new ItemQuingentilliard());
 		registry.register(new ItemAngstrom());
 		registry.register(new ItemQimranut());
+		registry.register(new ItemCelestialResonator());
 	}
 
 	@SuppressWarnings("ConstantConditions")

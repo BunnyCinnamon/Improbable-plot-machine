@@ -17,6 +17,8 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ import static net.minecraft.util.EnumFacing.UP;
  * Created by <Arekkuusu> on 05/09/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public class BakedBlinker extends BakedBrightness {
 
 	private final TextureAtlasSprite base;

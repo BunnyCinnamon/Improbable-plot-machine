@@ -7,9 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util;
 
+import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.client.util.resource.Location;
-import arekkuusu.solar.client.util.resource.ResourceBuilder;
+import arekkuusu.solar.client.util.resource.ResourceUtil;
 import arekkuusu.solar.common.lib.LibMod;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.ResourceLocation;
@@ -33,11 +35,11 @@ public final class ResourceLibrary {
 	//Textures
 	public static final ResourceLocation TRANSPARENT = getAtlas(BLOCKS, "transparent");
 	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");
-	public static final ResourceLocation[] PRIMAL_GLYPH_OVERLAY = ResourceBuilder.toArray(16, "glyph/glyph_overlay_", name ->
+	public static final ResourceLocation[] PRIMAL_GLYPH_OVERLAY = ResourceUtil.from(16, "glyph/glyph_overlay_", name ->
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation GRAVITY_HOPPER = getAtlas(BLOCKS, "gravity_hopper/side");
-	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = ResourceBuilder.toArray(6, "gravity_hopper/glyph_", name ->
+	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = ResourceUtil.from(6, "gravity_hopper/glyph_", name ->
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
@@ -57,6 +59,9 @@ public final class ResourceLibrary {
 	public static final ResourceLocation QIMRANUT_BASE_ = getAtlas(BLOCKS, "qimranut/base_");
 	public static final ResourceLocation QIMRANUT_OVERLAY_FRONT = getAtlas(BLOCKS, "qimranut/overlay_front");
 	public static final ResourceLocation QIMRANUT_OVERLAY_BACK = getAtlas(BLOCKS, "qimranut/overlay_back");
+	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = ResourceUtil.from(MoonPhase.class, "moon_phase/", name ->
+			getAtlas(BLOCKS, name)
+	);
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
 		StringBuilder builder = new StringBuilder();

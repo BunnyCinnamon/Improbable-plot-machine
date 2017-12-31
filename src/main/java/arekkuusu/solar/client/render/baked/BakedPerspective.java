@@ -11,6 +11,8 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.vecmath.Matrix4f;
@@ -21,6 +23,7 @@ import java.util.Map;
  * Created by <Arekkuusu> on 31/08/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public abstract class BakedPerspective implements IBakedModel {
 
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> ITEM_TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
