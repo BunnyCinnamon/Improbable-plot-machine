@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,7 +67,9 @@ public class EntityFastItem extends EntityItem {
 
 			float rest = this.rest;
 			if (!noClip && onGround) {
-				rest = this.world.getBlockState(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ))).getBlock().slipperiness * 0.98F;
+				BlockPos pos = new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.getEntityBoundingBox().minY) - 1, MathHelper.floor(this.posZ));
+				IBlockState state = world.getBlockState(pos);
+				rest = state.getBlock().getSlipperiness(state, world, pos, this) * 0.98F;
 			}
 
 			if (!hasNoGravity() && !onGround) {
@@ -80,6 +83,7 @@ public class EntityFastItem extends EntityItem {
 	}
 
 	public void updateLogic() {
+		//noinspection ConstantConditions
 		if(!world.isRemote && pickup > 0 && pickup != -1) {
 			pickup--;
 		}
