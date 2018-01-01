@@ -14,7 +14,6 @@ tile.primal_stone.name=Primal Stone
 tile.primal_glyph.name=Primal Glyph
 tile.black_hole.name=Black Hole
 tile.singularity.name=Singularity
-tile.prism_flower.name=Prism Flower
 tile.quantum_mirror.name=Quantum Mirror
 tile.light_particle.name=Light Particle
 tile.gravity_hopper.name=Gravity Hopper
@@ -32,6 +31,7 @@ tile.monolithic.name=Monolithic
 tile.quingentilliard.name=Quingentilliard
 tile.angstrom.name=Ångström
 tile.qimranut.name=Qimranut
+tile.celestial_resonator.name=Celestial Resonator
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger

@@ -15,7 +15,6 @@ public class LibNames {
 
 	public static final String PRIMAL_STONE = "primal_stone";
 	public static final String SINGULARITY = "singularity";
-	public static final String PRISM_FLOWER = "prism_flower";
 	public static final String QUANTUM_MIRROR = "quantum_mirror";
 	public static final String GRAVITY_HOPPER = "gravity_hopper";
 	public static final String QUINGENTILLIARD = "quingentilliard";

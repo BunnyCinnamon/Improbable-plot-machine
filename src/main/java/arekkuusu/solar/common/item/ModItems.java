@@ -30,7 +30,6 @@ public final class ModItems {
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
 		registry.register(itemBlock(ModBlocks.SINGULARITY));
-		registry.register(itemBlock(ModBlocks.PRISM_FLOWER));
 		registry.register(new ItemQuantumMirror());
 		registry.register(new ItemGravityHopper());
 		registry.register(new ItemSchrodingerGlyph());

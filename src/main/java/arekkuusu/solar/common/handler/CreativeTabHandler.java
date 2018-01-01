@@ -80,7 +80,6 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.Q_SQUARED);
 			addBlock(ModBlocks.THEOREMA);
 			addBlock(ModBlocks.SINGULARITY);
-			addBlock(ModBlocks.PRISM_FLOWER);
 			addBlock(ModBlocks.QUANTUM_MIRROR);
 			addBlock(ModBlocks.GRAVITY_HOPPER);
 			addBlock(ModBlocks.BLINKER);
