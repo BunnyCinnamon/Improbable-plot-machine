@@ -72,9 +72,9 @@ public final class CreativeTabHandler {
 		public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> list) {
 			this.list = list;
 			addBlock(ModBlocks.PRIMAL_STONE);
-			addBlock(ModBlocks.PRIMAL_GLYPH);
-			addBlock(ModBlocks.ASHEN);
 			addBlock(ModBlocks.MONOLITHIC);
+			addBlock(ModBlocks.MONOLITHIC_GLYPH);
+			addBlock(ModBlocks.ASHEN);
 			addBlock(ModBlocks.SCHRODINGER_GLYPH);
 			addBlock(ModBlocks.PHENOMENA);
 			addBlock(ModBlocks.Q_SQUARED);

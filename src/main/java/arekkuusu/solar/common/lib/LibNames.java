@@ -14,7 +14,6 @@ package arekkuusu.solar.common.lib;
 public class LibNames {
 
 	public static final String PRIMAL_STONE = "primal_stone";
-	public static final String PRIMAL_GLYPH = "primal_glyph";
 	public static final String SINGULARITY = "singularity";
 	public static final String PRISM_FLOWER = "prism_flower";
 	public static final String QUANTUM_MIRROR = "quantum_mirror";
@@ -31,6 +30,7 @@ public class LibNames {
 	public static final String ELECTRON = "electron";
 	public static final String ASHEN = "ashen";
 	public static final String MONOLITHIC = "monolithic";
+	public static final String MONOLITHIC_GLYPH = "monolithic_glyph";
 	public static final String ANGSTROM = "angstrom";
 	public static final String QIMRANUT = "qimranut";
 	public static final String CELESTIAL_RESONATOR = "celestial_resonator";

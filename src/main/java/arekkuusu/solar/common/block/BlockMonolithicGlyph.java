@@ -8,36 +8,53 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.client.render.baked.BakedPrimalGlyph;
+import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.client.render.baked.BakedMonolithicGlyph;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.lib.LibNames;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * Created by <Arekkuusu> on 24/06/2017.
  * It's distributed as part of Solar.
  */
-public class BlockPrimalGlyph extends BlockBase {
+@SuppressWarnings("deprecation")
+public class BlockMonolithicGlyph extends BlockBase {
 
-	public BlockPrimalGlyph() {
-		super(LibNames.PRIMAL_GLYPH, Material.ROCK);
-		setDefaultState(defaultState().withProperty(State.GLYPH, 0));
-		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
-		setHardness(4F);
-		setResistance(2000F);
+	public BlockMonolithicGlyph() {
+		super(LibNames.MONOLITHIC_GLYPH, FixedMaterial.DONT_MOVE);
+		setBlockUnbreakable();
 	}
 
-	@SuppressWarnings("deprecation")
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+		TooltipBuilder.inline().addI18("monolithic_description", TooltipBuilder.DARK_GRAY_ITALIC).build(tooltip);
+	}
+
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
+		return false;
+	}
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(State.GLYPH, meta);
@@ -54,8 +71,8 @@ public class BlockPrimalGlyph extends BlockBase {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
 	@Override
@@ -73,7 +90,7 @@ public class BlockPrimalGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedPrimalGlyph::new);
+		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedMonolithicGlyph::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

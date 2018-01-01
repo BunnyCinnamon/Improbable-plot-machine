@@ -29,7 +29,6 @@ public final class ModItems {
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
-		registry.register(new ItemPrimalGlyph());
 		registry.register(itemBlock(ModBlocks.SINGULARITY));
 		registry.register(itemBlock(ModBlocks.PRISM_FLOWER));
 		registry.register(new ItemQuantumMirror());
@@ -45,6 +44,7 @@ public final class ModItems {
 		registry.register(new ItemElectron());
 		registry.register(itemBlock(ModBlocks.ASHEN));
 		registry.register(itemBlock(ModBlocks.MONOLITHIC));
+		registry.register(new ItemMonolithicGlyph());
 		registry.register(new ItemQuingentilliard());
 		registry.register(new ItemAngstrom());
 		registry.register(new ItemQimranut());

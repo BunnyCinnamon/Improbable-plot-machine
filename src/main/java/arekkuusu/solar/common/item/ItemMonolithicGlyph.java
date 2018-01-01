@@ -17,10 +17,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Created by <Arekkuusu> on 25/06/2017.
  * It's distributed as part of Solar.
  */
-public class ItemPrimalGlyph extends ItemBaseBlock {
+public class ItemMonolithicGlyph extends ItemBaseBlock {
 
-	public ItemPrimalGlyph() {
-		super(ModBlocks.PRIMAL_GLYPH);
+	public ItemMonolithicGlyph() {
+		super(ModBlocks.MONOLITHIC_GLYPH);
 		setHasSubtypes(true);
 		setMaxDamage(0);
 	}
@@ -34,7 +34,7 @@ public class ItemPrimalGlyph extends ItemBaseBlock {
 	@Override
 	public void registerModel() {
 		for(int i = 0; i < 16; i++) {
-			ModelHandler.registerModel(this, i, ResourceLibrary.getModel("primal_glyph_", "glyph=" + i));
+			ModelHandler.registerModel(this, i, ResourceLibrary.getModel("monolithic_", "glyph=" + i));
 		}
 	}
 }

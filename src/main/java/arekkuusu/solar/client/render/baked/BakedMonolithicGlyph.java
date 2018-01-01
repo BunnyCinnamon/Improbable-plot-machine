@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,39 +28,44 @@ import java.util.function.Function;
  * the MIT license.
  */
 @SideOnly(Side.CLIENT)
-public class BakedPrimalGlyph extends BakedBrightness {
+public class BakedMonolithicGlyph extends BakedBrightness {
 
 	private final TextureAtlasSprite[] overlay = new TextureAtlasSprite[16];
 	private final TextureAtlasSprite base;
 
-	public BakedPrimalGlyph(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
+	public BakedMonolithicGlyph(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
 		super(format);
 		for(int i = 0; i < 16; i++) {
-			this.overlay[i] = getter.apply(ResourceLibrary.PRIMAL_GLYPH_OVERLAY[i]);
+			this.overlay[i] = getter.apply(ResourceLibrary.MONOLITHIC_OVERLAY[i]);
 		}
-
-		this.base = getter.apply(ResourceLibrary.PRIMAL_STONE);
+		this.base = getter.apply(ResourceLibrary.MONOLITHIC);
 	}
 
 	@Override
 	protected List<BakedQuad> getQuads(IBlockState state) {
 		List<BakedQuad> quads = new ArrayList<>();
-		//Base
-		quads.addAll(QuadBuilder.withFormat(format)
-				.setFrom(0, 0, 0)
-				.setTo(16, 16, 16)
-				.addAll(base)
-				.bake()
-		);
-		//Overlay
-		int glyph = state.getValue(State.GLYPH);
-		quads.addAll(QuadBuilder.withFormat(format)
-				.setFrom(0, 0, 0)
-				.setTo(16, 16, 16)
-				.setHasBrightness(true)
-				.addAll(overlay[glyph])
-				.bake()
-		);
+		switch(MinecraftForgeClient.getRenderLayer()) {
+			case SOLID:
+				//Base
+				quads.addAll(QuadBuilder.withFormat(format)
+						.setFrom(0, 0, 0)
+						.setTo(16, 16, 16)
+						.addAll(base)
+						.bake()
+				);
+				break;
+			case CUTOUT_MIPPED:
+				//Overlay
+				int glyph = state.getValue(State.GLYPH);
+				quads.addAll(QuadBuilder.withFormat(format)
+						.setFrom(0, 0, 0)
+						.setTo(16, 16, 16)
+						.setHasBrightness(true)
+						.addAll(overlay[glyph])
+						.bake()
+				);
+				break;
+		}
 		return quads;
 	}
 

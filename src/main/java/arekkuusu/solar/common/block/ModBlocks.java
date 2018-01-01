@@ -26,7 +26,6 @@ public final class ModBlocks {
 	private static final Block PLACE_HOLDER = new Block(Material.AIR);
 	//--------------------------------Blocks--------------------------------//
 	public static final Block PRIMAL_STONE = PLACE_HOLDER;
-	public static final Block PRIMAL_GLYPH = PLACE_HOLDER;
 	public static final Block SINGULARITY = PLACE_HOLDER;
 	public static final Block PRISM_FLOWER = PLACE_HOLDER;
 	public static final Block QUANTUM_MIRROR = PLACE_HOLDER;
@@ -41,6 +40,7 @@ public final class ModBlocks {
 	public static final Block ELECTRON = PLACE_HOLDER;
 	public static final Block ASHEN = PLACE_HOLDER;
 	public static final Block MONOLITHIC = PLACE_HOLDER;
+	public static final Block MONOLITHIC_GLYPH = PLACE_HOLDER;
 	public static final Block QUINGENTILLIARD = PLACE_HOLDER;
 	public static final Block ANGSTROM = PLACE_HOLDER;
 	public static final Block QIMRANUT = PLACE_HOLDER;
@@ -48,7 +48,7 @@ public final class ModBlocks {
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
-		registry.register(new BlockPrimalGlyph());
+		registry.register(new BlockMonolithicGlyph());
 		registry.register(new BlockSingularity());
 		registry.register(new BlockPrismFlower());
 		registry.register(new BlockQuantumMirror());

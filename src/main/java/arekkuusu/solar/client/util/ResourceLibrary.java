@@ -34,15 +34,15 @@ public final class ResourceLibrary {
 
 	//Textures
 	public static final ResourceLocation TRANSPARENT = getAtlas(BLOCKS, "transparent");
-	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");
-	public static final ResourceLocation[] PRIMAL_GLYPH_OVERLAY = ResourceUtil.from(16, "glyph/glyph_overlay_", name ->
+	public static final ResourceLocation MONOLITHIC = getAtlas(BLOCKS, "monolithic/base");
+	public static final ResourceLocation[] MONOLITHIC_OVERLAY = ResourceUtil.from(16, "monolithic/glyph_overlay_", name ->
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation GRAVITY_HOPPER = getAtlas(BLOCKS, "gravity_hopper/side");
 	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = ResourceUtil.from(6, "gravity_hopper/glyph_", name ->
 			getAtlas(BLOCKS, name)
 	);
-	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
+	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");
 	public static final ResourceLocation SCHRODINGER_GLYPH = getAtlas(BLOCKS, "schrodinger_glyph");
 	public static final ResourceLocation BLINKER_BASE = getAtlas(BLOCKS, "blinker/blinker_base");
 	public static final ResourceLocation BLINKER_TOP_ON = getAtlas(BLOCKS, "blinker/blinker_top_on");
@@ -50,7 +50,6 @@ public final class ResourceLibrary {
 	public static final ResourceLocation BLINKER_TOP_OFF = getAtlas(BLOCKS, "blinker/blinker_top_off");
 	public static final ResourceLocation BLINKER_BOTTOM_OFF = getAtlas(BLOCKS, "blinker/blinker_bottom_off");
 	public static final ResourceLocation Q_SQUARED = getAtlas(BLOCKS, "q_squared");
-	public static final ResourceLocation THEOREMA = getTexture(BLOCKS, "theorema");
 	public static final ResourceLocation HYPER_CONDUCTOR = getAtlas(BLOCKS, "hyper_conductor/base");
 	public static final ResourceLocation HYPER_CONDUCTOR_OVERLAY = getAtlas(BLOCKS, "hyper_conductor/overlay");
 	public static final ResourceLocation ELECTRON_ON = getAtlas(BLOCKS, "electron/on");
@@ -62,6 +61,9 @@ public final class ResourceLibrary {
 	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = ResourceUtil.from(MoonPhase.class, "moon_phase/", name ->
 			getAtlas(BLOCKS, name)
 	);
+
+	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
+	public static final ResourceLocation THEOREMA = getTexture(BLOCKS, "theorema");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
 		StringBuilder builder = new StringBuilder();
