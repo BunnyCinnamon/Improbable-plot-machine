@@ -26,8 +26,9 @@ public class BlockLargePot extends BlockBase {
 	public static final RandomCollection<Item> DROPS = new RandomCollection<Item>()
 			.add(10, Items.BONE)
 			.add(8, Items.BOWL)
+			.add(6, Items.BREAD)
 			.add(5, Items.GOLD_NUGGET)
-			.add(1, Items.GOLD_INGOT)
+			.add(2, Items.GOLD_INGOT)
 			.add(0.1, Items.EMERALD)
 			.add(0.01, Items.DIAMOND);
 
