@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "solar:ashen"
+  },
+  "pattern": [
+    "AAA",
+    "AAA",
+    "AAA"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "A": {
+      "item": "solar:ash"
+    }
+  }
+}

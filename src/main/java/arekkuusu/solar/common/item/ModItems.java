@@ -9,6 +9,7 @@ package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.lib.LibMod;
+import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -26,6 +27,7 @@ public final class ModItems {
 	//--------------------------------Items--------------------------------//
 	public static final Item CRYSTAL_QUARTZ = PLACE_HOLDER;
 	public static final Item ANGSTROM = PLACE_HOLDER;
+	public static final Item ASH = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -48,6 +50,8 @@ public final class ModItems {
 		registry.register(new ItemAngstrom());
 		registry.register(new ItemQimranut());
 		registry.register(new ItemCelestialResonator());
+		registry.register(itemBlock(ModBlocks.LARGE_POT));
+		registry.register(new ItemBase(LibNames.ASH));
 	}
 
 	@SuppressWarnings("ConstantConditions")

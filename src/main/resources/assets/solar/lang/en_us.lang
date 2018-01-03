@@ -2,12 +2,12 @@ itemGroup.solar.misc_tab=Solar
 
 //Sound subtitles
 solar.sound.spark=spark!
+//Deaths
+solar.death.electricity.player=%1$s was sentenced to the electric chair
 
 //Items
-item.primal_stone.name=Primal Stone
-item.primal_glyph.name=Primal Glyph
 item.crystal_quartz.name=Crystal Quartz
-item.schrodinger_eye.name=Schrodinger's Eye
+item.ash.name=Ash
 
 //Blocks
 tile.primal_stone.name=Primal Stone
@@ -32,6 +32,7 @@ tile.quingentilliard.name=Quingentilliard
 tile.angstrom.name=Ångström
 tile.qimranut.name=Qimranut
 tile.celestial_resonator.name=Celestial Resonator
+tile.large_pot.name=Large Pot
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger

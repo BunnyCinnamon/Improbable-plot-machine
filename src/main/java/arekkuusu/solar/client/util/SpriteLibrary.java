@@ -29,9 +29,9 @@ public final class SpriteLibrary {
 	public static final SpriteResource DARK_PARTICLE = SpriteLoader.load(EFFECT, "dark_particle");
 	public static final SpriteResource CHARGED_ICE = SpriteLoader.load(EFFECT, "charged_ice");
 	//Other
-	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteLoader.load(BLOCKS, "quantum_mirror", 9, 1);
 	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteLoader.load(MODEL, "eye_of_schrodinger_layer");
-	public static final FrameSpriteResource QUINGENTILLIARD = SpriteLoader.load(ITEMS, "quingentilliard", 8, 1);
+	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteLoader.load(BLOCKS, "quantum_mirror", 9, 1);
+	public static final FrameSpriteResource QUINGENTILLIARD = SpriteLoader.load(BLOCKS, "quingentilliard", 8, 1);
 	public static final SpriteResource Q_SQUARED = SpriteLoader.load(BLOCKS, "q_squared");
 	public static final FrameSpriteResource GRAVITY_INHIBITOR_OVERLAY = SpriteLoader.load(BLOCKS, "gravity_inhibitor_overlay", 4, 2);
 	public static final SpriteResource GRAVITY_INHIBITOR = SpriteLoader.load(BLOCKS, "gravity_inhibitor");

@@ -1,0 +1,33 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:large_pot",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+		"textures": {
+			"0": "solar:blocks/pottery/large_pot/base_0"
+		}
+	}],
+	"variant": {
+	  "0": {
+		"textures": {
+			"0": "solar:blocks/pottery/large_pot/base_0"
+		}
+	  },
+	  "1": {
+		"textures": {
+			"0": "solar:blocks/pottery/large_pot/base_1"
+		}
+	  },
+	  "2": {
+		"textures": {
+			"0": "solar:blocks/pottery/large_pot/base_2"
+		}
+	  }
+	}
+  }
+}

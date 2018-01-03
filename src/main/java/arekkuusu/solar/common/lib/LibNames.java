@@ -33,4 +33,6 @@ public class LibNames {
 	public static final String ANGSTROM = "angstrom";
 	public static final String QIMRANUT = "qimranut";
 	public static final String CELESTIAL_RESONATOR = "celestial_resonator";
+	public static final String LARGE_POT = "large_pot";
+	public static final String ASH = "ash";
 }

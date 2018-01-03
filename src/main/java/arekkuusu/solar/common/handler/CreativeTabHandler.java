@@ -75,6 +75,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.MONOLITHIC);
 			addBlock(ModBlocks.MONOLITHIC_GLYPH);
 			addBlock(ModBlocks.ASHEN);
+			addBlock(ModBlocks.LARGE_POT);
 			addBlock(ModBlocks.SCHRODINGER_GLYPH);
 			addBlock(ModBlocks.PHENOMENA);
 			addBlock(ModBlocks.Q_SQUARED);
@@ -91,6 +92,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.QIMRANUT);
 			addBlock(ModBlocks.CELESTIAL_RESONATOR);
 			addItem(ModItems.CRYSTAL_QUARTZ);
+			addItem(ModItems.ASH);
 		}
 	}
 }

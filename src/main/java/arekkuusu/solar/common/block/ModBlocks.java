@@ -44,6 +44,7 @@ public final class ModBlocks {
 	public static final Block ANGSTROM = PLACE_HOLDER;
 	public static final Block QIMRANUT = PLACE_HOLDER;
 	public static final Block CELESTIAL_RESONATOR = PLACE_HOLDER;
+	public static final Block LARGE_POT = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -65,6 +66,7 @@ public final class ModBlocks {
 		registry.register(new BlockAngstrom());
 		registry.register(new BlockQimranut());
 		registry.register(new BlockCelestialResonator());
+		registry.register(new BlockLargePot());
 		registerTiles();
 	}
 

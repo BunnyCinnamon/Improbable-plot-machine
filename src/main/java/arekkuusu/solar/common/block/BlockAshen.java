@@ -8,16 +8,20 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.Direction;
+import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 /**
  * Created by <Arekkuusu> on 02/11/2017.
@@ -33,6 +37,16 @@ public class BlockAshen extends BlockBase {
 		setHarvestLevel(Tool.SHOVEL, ToolLevel.WOOD_GOLD);
 		setSound(SoundType.SAND);
 		setHardness(0.1F);
+	}
+
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return ModItems.ASH;
+	}
+
+	@Override
+	public int quantityDropped(Random random) {
+		return 4;
 	}
 
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
