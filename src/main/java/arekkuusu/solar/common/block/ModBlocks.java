@@ -26,7 +26,6 @@ public final class ModBlocks {
 	private static final Block PLACE_HOLDER = new Block(Material.AIR);
 	//--------------------------------Blocks--------------------------------//
 	public static final Block PRIMAL_STONE = PLACE_HOLDER;
-	public static final Block SINGULARITY = PLACE_HOLDER;
 	public static final Block QUANTUM_MIRROR = PLACE_HOLDER;
 	public static final Block GRAVITY_HOPPER = PLACE_HOLDER;
 	public static final Block SCHRODINGER_GLYPH = PLACE_HOLDER;
@@ -49,7 +48,6 @@ public final class ModBlocks {
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
 		registry.register(new BlockMonolithicGlyph());
-		registry.register(new BlockSingularity());
 		registry.register(new BlockQuantumMirror());
 		registry.register(new BlockGravityHopper());
 		registry.register(new BlockSchrodingerGlyph());
@@ -71,7 +69,6 @@ public final class ModBlocks {
 	}
 
 	private static void registerTiles() {
-		GameRegistry.registerTileEntity(TileSingularity.class, LibMod.MOD_ID + ":singularity");
 		GameRegistry.registerTileEntity(TileQuantumMirror.class, LibMod.MOD_ID + ":quantum_mirror");
 		GameRegistry.registerTileEntity(TileGravityHopper.class, LibMod.MOD_ID + ":gravity_hopper");
 		GameRegistry.registerTileEntity(TileBlinker.class, LibMod.MOD_ID + ":blinker");

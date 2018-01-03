@@ -38,7 +38,6 @@ public final class ModRenders {
 	}
 
 	public static void init() {
-		registerTESR(TileSingularity.class, new TileSingularityRenderer());
 		registerTESR(TileQuantumMirror.class, new QuantumMirrorRenderer());
 		registerTESR(TilePhenomena.class, new TilePhenomenaRenderer());
 		registerTESR(TileQSquared.class, new QSquaredRenderer());
