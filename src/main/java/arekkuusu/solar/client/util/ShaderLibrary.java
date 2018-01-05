@@ -26,8 +26,6 @@ import java.io.IOException;
 @SideOnly(Side.CLIENT)
 public final class ShaderLibrary {
 
-	public static final ShaderGroup REFRACTION = loadShader("refraction");
-
 	@SuppressWarnings("ConstantConditions")
 	private static ShaderGroup loadShader(String name) {
 		if(ShaderLinkHelper.getStaticShaderLinkHelper() == null) {

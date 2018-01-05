@@ -10,6 +10,7 @@ package arekkuusu.solar.client.proxy;
 import arekkuusu.solar.api.helper.RayTraceHelper;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.util.RenderBakery;
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.block.state.IBlockState;

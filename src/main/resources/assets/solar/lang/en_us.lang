@@ -8,12 +8,12 @@ solar.death.electricity.player=%1$s was sentenced to the electric chair
 //Items
 item.crystal_quartz.name=Crystal Quartz
 item.ash.name=Ash
+item.singularity.name=Singularity
 
 //Blocks
 tile.primal_stone.name=Primal Stone
 tile.primal_glyph.name=Primal Glyph
 tile.black_hole.name=Black Hole
-tile.singularity.name=Singularity
 tile.quantum_mirror.name=Quantum Mirror
 tile.light_particle.name=Light Particle
 tile.gravity_hopper.name=Gravity Hopper

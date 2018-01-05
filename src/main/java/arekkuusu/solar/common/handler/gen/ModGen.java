@@ -24,7 +24,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public final class ModGen {
 
 	public static final ResourceLocation SCHRODINGER_LOOT = load("schrodinger_eye");
-	public static final ResourceLocation ASHEN_CUBE_LOOT = load("ashen_cube");
 
 	public static void init() {
 		//World generators
@@ -32,7 +31,6 @@ public final class ModGen {
 		GameRegistry.registerWorldGenerator(new MonolithStructure(), 5);
 		GameRegistry.registerWorldGenerator(new ObeliskDecorator(), 5);
 		//Loot tables
-		LootTableList.register(ASHEN_CUBE_LOOT);
 		LootTableList.register(SCHRODINGER_LOOT);
 	}
 
@@ -48,7 +46,6 @@ public final class ModGen {
 		ASHEN_NUGGET_SPAWN("ashen_nugget_spawn"),
 		MONOLITH_CUBE("monolith_cube"),
 		MONOLITH_RUIN("monolith_ruin"),
-		MONOLITH_RUIN_("monolith_ruin_"),
 		MONOLITH_OBELISK("monolith_obelisk"),
 		MONOLITH_OBELISK_FRAGMENTED("monolith_obelisk_fragmented"),;
 

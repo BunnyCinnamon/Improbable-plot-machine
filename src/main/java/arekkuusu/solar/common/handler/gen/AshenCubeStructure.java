@@ -9,9 +9,9 @@ package arekkuusu.solar.common.handler.gen;
 
 import arekkuusu.solar.api.helper.RandomCollection;
 import arekkuusu.solar.api.helper.Vector3;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
+import arekkuusu.solar.api.state.State;
+import arekkuusu.solar.common.block.ModBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -64,17 +64,12 @@ public class AshenCubeStructure extends BaseGen {
 		integrity.setIntegrity(!loot && random.nextFloat() > 0.45F ? 1F : random.nextFloat());
 		Structure.ASHEN_CUBE_.generate(world, origin, integrity);
 		//Add loot
-		if(loot) {
-			BlockPos center = origin.add(
-					template.getSize().getX() / 2,
-					template.getSize().getY() / 2,
-					template.getSize().getZ() / 2
-			);
-			Rotation rotation = Rotation.values()[random.nextInt(4)];
-			world.setBlockState(center, Blocks.CHEST.getDefaultState().withRotation(rotation));
-			TileEntity tile = world.getTileEntity(center);
-			if(tile instanceof TileEntityChest) {
-				((TileEntityChest) tile).setLootTable(ModGen.ASHEN_CUBE_LOOT, world.getSeed());
+		for (int i = 0; i < 6 + random.nextInt(6); i++) {
+			loot = GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.loot / 100D > random.nextDouble();
+			if (loot) {
+				BlockPos inside = origin.add(1 + random.nextInt(4), 1, 1 + random.nextInt(4));
+				IBlockState pot = ModBlocks.LARGE_POT.getDefaultState().withProperty(State.POT_VARIANT, random.nextInt(3));
+				world.setBlockState(inside, pot);
 			}
 		}
 		//Gen Cubes

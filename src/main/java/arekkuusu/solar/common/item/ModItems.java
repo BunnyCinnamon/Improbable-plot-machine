@@ -28,6 +28,7 @@ public final class ModItems {
 	public static final Item CRYSTAL_QUARTZ = PLACE_HOLDER;
 	public static final Item ANGSTROM = PLACE_HOLDER;
 	public static final Item ASH = PLACE_HOLDER;
+	public static final Item SINGULARITY = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -51,6 +52,7 @@ public final class ModItems {
 		registry.register(new ItemCelestialResonator());
 		registry.register(itemBlock(ModBlocks.LARGE_POT));
 		registry.register(new ItemBase(LibNames.ASH));
+		registry.register(new ItemBase(LibNames.SINGULARITY));
 	}
 
 	@SuppressWarnings("ConstantConditions")

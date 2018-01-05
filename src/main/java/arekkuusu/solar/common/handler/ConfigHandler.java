@@ -34,7 +34,7 @@ public final class ConfigHandler {
 
 			public final AshenWeights WEIGHTS = new AshenWeights();
 
-			@Comment("If the structure should generate underground only --Debug stuff--")
+			@Comment("If the structure should generate underground only")
 			public boolean underground = true;
 			@Comment("Max amount of \"nuggets\" allowed in one Structure")
 			public int size = 25;
@@ -64,10 +64,12 @@ public final class ConfigHandler {
 
 				@Comment("Chance of 0-100% to generate")
 				public double rarity = 0.001;
-				@Comment("Max amount of \"pillars\" allowed in one Structure")
-				public int size = 25;
-				@Comment("Spread of \"pillars\" in the Structure")
-				public double spread = 15;
+				@Comment("If the well generates")
+				public boolean well = true;
+				@Comment("How buried in ruins is this structure")
+				public int size = 65;
+				@Comment("Chance of 0-100% for loot")
+				public double loot = 15;
 			}
 
 			public static class ObeliskDecorator {

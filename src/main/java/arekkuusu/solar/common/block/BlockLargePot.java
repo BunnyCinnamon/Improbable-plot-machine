@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Arekkuusu / Solar 2017
+ *
+ * This project is licensed under the MIT.
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
+ ******************************************************************************/
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.helper.RandomCollection;
@@ -19,6 +26,10 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
+/**
+ * Created by <Arekkuusu> on 02/01/2017.
+ * It's distributed as part of Solar.
+ */
 @SuppressWarnings("deprecation")
 public class BlockLargePot extends BlockBase {
 
