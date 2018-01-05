@@ -29,6 +29,7 @@ public final class ModItems {
 	public static final Item ANGSTROM = PLACE_HOLDER;
 	public static final Item ASH = PLACE_HOLDER;
 	public static final Item SINGULARITY = PLACE_HOLDER;
+	public static final Item PLASMON = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -53,6 +54,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.LARGE_POT));
 		registry.register(new ItemBase(LibNames.ASH));
 		registry.register(new ItemBase(LibNames.SINGULARITY));
+		registry.register(new ItemBase(LibNames.PLASMON));
 	}
 
 	@SuppressWarnings("ConstantConditions")

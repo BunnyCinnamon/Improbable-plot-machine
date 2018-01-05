@@ -9,10 +9,10 @@ solar.death.electricity.player=%1$s was sentenced to the electric chair
 item.crystal_quartz.name=Crystal Quartz
 item.ash.name=Ash
 item.singularity.name=Singularity
+item.plasmon.name=Plasmon
 
 //Blocks
 tile.primal_stone.name=Primal Stone
-tile.primal_glyph.name=Primal Glyph
 tile.black_hole.name=Black Hole
 tile.quantum_mirror.name=Quantum Mirror
 tile.light_particle.name=Light Particle
@@ -28,17 +28,17 @@ tile.hyper_conductor.name=Hyper Conductor
 tile.electron.name=Electron
 tile.ashen.name=Ashen
 tile.monolithic.name=Monolithic
+tile.monolithic_glyph.name=Monolithic Glyph
 tile.quingentilliard.name=Quingentilliard
 tile.angstrom.name=Ångström
 tile.qimranut.name=Qimranut
 tile.celestial_resonator.name=Celestial Resonator
-tile.large_pot.name=Large Pot
+tile.large_pot.name=Ancient Pot
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger
 entity.fast_item.name=Entity Item
 entity.quingentilliard_item.name=Entity Item
-entity.singularity_item.name=Entity Item
 entity.quantum_quartz.name=Entity Item
 
 //Tooltip
