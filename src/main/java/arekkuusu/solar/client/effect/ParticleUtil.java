@@ -78,6 +78,13 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 		}
 	}
 
+	public static void spawnSquared(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
+		if(doParticle()) {
+			ParticleSquared particle = new ParticleSquared(world, pos, speed, rgb, scale, age);
+			ClientProxy.PARTICLE_RENDERER.add(particle);
+		}
+	}
+
 	@SideOnly(Side.CLIENT)
 	private static boolean doParticle() {
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer()) return false;

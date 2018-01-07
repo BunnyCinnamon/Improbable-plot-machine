@@ -90,7 +90,7 @@ public class BlockMonolithicGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedMonolithicGlyph::new);
+		DummyBakedRegistry.register(this, BakedMonolithicGlyph::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

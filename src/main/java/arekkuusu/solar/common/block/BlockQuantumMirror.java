@@ -148,7 +148,7 @@ public class BlockQuantumMirror extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), (format, g) -> new BakedQuantumMirror());
+		DummyBakedRegistry.register(this, (format, g) -> new BakedQuantumMirror());
 		ModelHandler.registerModel(this, 0);
 	}
 }

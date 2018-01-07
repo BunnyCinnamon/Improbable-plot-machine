@@ -38,7 +38,7 @@ public class ParticleBolt extends ParticleBase {
 	private float offset;
 
 	ParticleBolt(World world, Vector3 from, Vector3 to, int generations, float offset, int rgb, boolean branch, boolean fade) {
-		super(world, (from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2, 0, 0, 0);
+		super(world, from.copy().add(to).divide(2D), ImmutableVector3.NULL, rgb);
 		float r = (rgb >>> 16 & 0xFF) / 256.0F;
 		float g = (rgb >>> 8 & 0xFF) / 256.0F;
 		float b = (rgb & 0xFF) / 256.0F;

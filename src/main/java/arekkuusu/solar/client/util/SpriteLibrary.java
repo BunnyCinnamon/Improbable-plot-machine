@@ -28,6 +28,7 @@ public final class SpriteLibrary {
 	public static final SpriteResource LIGHT_PARTICLE = SpriteLoader.load(EFFECT, "light_particle");
 	public static final SpriteResource DARK_PARTICLE = SpriteLoader.load(EFFECT, "dark_particle");
 	public static final SpriteResource CHARGED_ICE = SpriteLoader.load(EFFECT, "charged_ice");
+	public static final FrameSpriteResource SQUARED = SpriteLoader.load(EFFECT, "squared", 11, 1);
 	//Other
 	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteLoader.load(MODEL, "eye_of_schrodinger_layer");
 	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteLoader.load(BLOCKS, "quantum_mirror", 9, 1);

@@ -7,15 +7,14 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.state.State;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -113,10 +112,5 @@ public class BlockPhenomena extends BlockBase {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TilePhenomena();
-	}
-
-	@Override
-	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, EntityLiving.SpawnPlacementType type) {
-		return super.canCreatureSpawn(state, world, pos, type);
 	}
 }

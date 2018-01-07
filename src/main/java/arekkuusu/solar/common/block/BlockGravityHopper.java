@@ -17,7 +17,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -126,7 +125,7 @@ public class BlockGravityHopper extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedGravityHopper::new);
+		DummyBakedRegistry.register(this, BakedGravityHopper::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

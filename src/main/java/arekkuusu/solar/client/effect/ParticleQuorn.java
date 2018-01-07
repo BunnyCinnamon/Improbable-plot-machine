@@ -21,19 +21,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ParticleQuorn extends ParticleBase {
 
 	ParticleQuorn(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
-		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
-		float r = (rgb >>> 16 & 0xFF) / 256.0F;
-		float g = (rgb >>> 8 & 0xFF) / 256.0F;
-		float b = (rgb & 0xFF) / 256.0F;
-		setRBGColorF(r, g, b);
-
+		super(world, pos, speed, rgb);
 		this.particleMaxAge = age;
 		this.particleScale = scale;
 		this.canCollide = false;
-
-		motionX = speed.x;
-		motionY = speed.y;
-		motionZ = speed.z;
 
 		setSprite(SpriteLibrary.QUORN_PARTICLE);
 	}

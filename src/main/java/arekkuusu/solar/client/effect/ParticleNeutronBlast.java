@@ -26,12 +26,8 @@ public class ParticleNeutronBlast extends ParticleBase {
 	private final int rgb;
 
 	ParticleNeutronBlast(World world, Vector3 pos, Vector3 speed, int age, int rgb, float scale, boolean collide) {
-		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
+		super(world, pos, speed, rgb);
 		this.rgb = rgb;
-		motionX = speed.x;
-		motionY = speed.y;
-		motionZ = speed.z;
-
 		this.particleMaxAge = age;
 		this.particleScale = scale;
 		this.collide = collide;

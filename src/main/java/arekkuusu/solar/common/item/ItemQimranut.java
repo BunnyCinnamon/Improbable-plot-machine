@@ -10,8 +10,6 @@ package arekkuusu.solar.common.item;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.client.util.ResourceLibrary;
-import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
@@ -31,7 +29,7 @@ import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHI
  * Created by <Arekkuusu> on 24/12/2017.
  * It's distributed as part of Solar.
  */
-public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
+public class ItemQimranut extends ItemBlockBaked implements IEntangledStack {
 
 	public ItemQimranut(){
 		super(ModBlocks.QIMRANUT);
@@ -48,11 +46,5 @@ public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
 	@Override
 	public void setKey(ItemStack stack, UUID uuid) { //Can override uuid directly
 		NBTHelper.getOrCreate(stack, QuantumHandler.NBT_TAG, NBTTagCompound::new).setUniqueId("key", uuid);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelHandler.registerModel(this, 0, ResourceLibrary.getModel("qimranut_", ""));
 	}
 }

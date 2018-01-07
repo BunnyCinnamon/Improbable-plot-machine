@@ -17,7 +17,6 @@ import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -111,7 +110,7 @@ public class BlockCelestialResonator extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedCosmicResonator::new);
+		DummyBakedRegistry.register(this, BakedCosmicResonator::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

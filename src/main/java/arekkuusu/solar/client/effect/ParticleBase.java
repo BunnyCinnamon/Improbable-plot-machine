@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
+import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.util.resource.FrameSpriteResource;
 import arekkuusu.solar.client.util.resource.SpriteResource;
 import net.minecraft.client.particle.Particle;
@@ -25,8 +26,15 @@ public class ParticleBase extends Particle {
 
 	private SpriteResource sprite;
 
-	ParticleBase(World world, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed) {
-		super(world, xCoord, yCoord, zCoord, xSpeed, ySpeed, zSpeed);
+	ParticleBase(World world, Vector3 pos, Vector3 speed, int rgb) {
+		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
+		this.motionX = speed.x;
+		this.motionY = speed.y;
+		this.motionZ = speed.z;
+		float r = (rgb >>> 16 & 0xFF) / 256.0F;
+		float g = (rgb >>> 8 & 0xFF) / 256.0F;
+		float b = (rgb & 0xFF) / 256.0F;
+		setRBGColorF(r, g, b);
 	}
 
 	@Override

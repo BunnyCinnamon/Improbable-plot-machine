@@ -12,22 +12,20 @@ import arekkuusu.solar.client.util.SpriteLibrary;
 import net.minecraft.world.World;
 
 /**
- * Created by <Arekkuusu> on 04/08/2017.
+ * Created by <Snack> on 06/01/2018.
  * It's distributed as part of Solar.
  */
-public class ParticleTunnelingPhoton extends ParticleBase {
+public class ParticleSquared extends ParticleBase {
 
-	private final float initScale;
+	//private final float initScale;
 
-	ParticleTunnelingPhoton(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
+	ParticleSquared(World world, Vector3 pos, Vector3 speed, int rgb, float scale, int age) {
 		super(world, pos, speed, rgb);
 		particleMaxAge = age;
 		particleScale = scale;
-		initScale = particleScale;
-		particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
-		canCollide = false;
+		//initScale = particleScale;
 
-		setSprite(SpriteLibrary.NEUTRON_PARTICLE);
+		setSprite(SpriteLibrary.SQUARED);
 	}
 
 	@Override
@@ -37,19 +35,12 @@ public class ParticleTunnelingPhoton extends ParticleBase {
 			particleAge++;
 		}
 		float life = (float) this.particleAge / (float) this.particleMaxAge;
-		this.particleScale = initScale - initScale * life;
+		//this.particleScale = initScale - initScale * life;
 		this.particleAlpha = 0.5F * (1.0f - life);
-		this.prevParticleAngle = particleAngle;
-		particleAngle += 1.0f;
 	}
 
 	@Override
-	public boolean shouldDisableDepth() {
-		return true;
-	}
-
-	@Override
-	public int getBrightnessForRender(float idk) {
+	public int getBrightnessForRender(float p_189214_1_) {
 		return 255;
 	}
 }

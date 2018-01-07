@@ -61,6 +61,12 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 		}
 	}
 
+	public void notifyUpdate() {
+		getLinkedQimranut().ifPresent(qimranut -> {
+			qimranut.world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
+		});
+	}
+
 	@Nullable
 	public <T> T accessCapability(Capability<T> capability) {
 		BlockPos offset = pos.offset(getFacing());

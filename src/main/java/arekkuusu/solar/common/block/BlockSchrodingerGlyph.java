@@ -143,7 +143,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedSchrodingerGlyph::new);
+		DummyBakedRegistry.register(this, BakedSchrodingerGlyph::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

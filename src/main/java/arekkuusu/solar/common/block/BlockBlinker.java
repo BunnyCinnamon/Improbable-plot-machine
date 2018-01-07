@@ -9,8 +9,8 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
-import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.state.State;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.render.baked.BakedBlinker;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -210,7 +210,7 @@ public class BlockBlinker extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedBlinker::new);
+		DummyBakedRegistry.register(this, BakedBlinker::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

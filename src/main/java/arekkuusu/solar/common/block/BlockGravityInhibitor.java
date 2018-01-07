@@ -15,7 +15,6 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileGravityInhibitor;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -83,7 +82,7 @@ public class BlockGravityInhibitor extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), (format, g) -> new BakedRender()
+		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
 				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS));
 		ModelHandler.registerModel(this, 0);
 	}

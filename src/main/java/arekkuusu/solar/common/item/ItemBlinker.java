@@ -8,8 +8,6 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.client.util.ResourceLibrary;
-import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
@@ -27,7 +25,7 @@ import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHI
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
+public class ItemBlinker extends ItemBlockBaked implements IEntangledStack {
 
 	ItemBlinker() {
 		super(ModBlocks.BLINKER);
@@ -38,11 +36,5 @@ public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline().condition(SHIFT_KEY_DOWN)
 				.ifPresent(builder -> getInfo(builder, uuid)).build(tooltip));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-		ModelHandler.registerModel(this, 0, ResourceLibrary.getModel("blinker_", ""));
 	}
 }

@@ -24,19 +24,11 @@ public class ParticleNeutron extends ParticleBase {
 	private final boolean dark;
 
 	ParticleNeutron(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
-		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
-		float r = (rgb >>> 16 & 0xFF) / 256.0F;
-		float g = (rgb >>> 8 & 0xFF) / 256.0F;
-		float b = (rgb & 0xFF) / 256.0F;
-		setRBGColorF(r, g, b);
+		super(world, pos, speed, rgb);
 		particleMaxAge = age;
 		particleScale = scale;
 		initScale = particleScale;
 		canCollide = false;
-
-		motionX = speed.x;
-		motionY = speed.y;
-		motionZ = speed.z;
 
 		dark = rgb == 0x000000;
 		setSprite(dark ? SpriteLibrary.DARK_PARTICLE : SpriteLibrary.NEUTRON_PARTICLE);

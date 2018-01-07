@@ -21,7 +21,6 @@ import static net.minecraftforge.common.config.Config.*;
 public final class ConfigHandler {
 
 	@Comment("Enable/Disable/Play with structure spawn rates")
-	@RequiresMcRestart
 	@LangKey(LibMod.MOD_ID + ".config.gen")
 	public static Gen GEN_CONFIG = new Gen();
 

@@ -7,6 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker;
 
+import arekkuusu.solar.client.util.ResourceLibrary;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -32,6 +34,14 @@ public class DummyBakedRegistry {
 	public static void register(Item item, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel> function) {
 		ResourceLocation location = item.getRegistryName();
 		BAKERS.putIfAbsent(location, function);
+	}
+
+	public static void register(Block block, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel> function) {
+		register(Item.getItemFromBlock(block), function);
+	}
+
+	public static void register(String name, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel> function) {
+		BAKERS.put(ResourceLibrary.getSimpleLocation(name), function);
 	}
 
 	public static IBakedModel getBaked(ResourceLocation location, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> function) {

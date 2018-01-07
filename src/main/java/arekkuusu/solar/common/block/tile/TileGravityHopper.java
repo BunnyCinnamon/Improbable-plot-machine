@@ -33,7 +33,7 @@ import java.util.Optional;
  */
 public class TileGravityHopper extends TileBase implements ITickable {
 
-	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
+	private static final Map<EnumFacing, Vector3> FF = ImmutableMap.<EnumFacing, Vector3>builder()
 			.put(EnumFacing.UP, Vector3.create(0.5D, 0.75D, 0.5D))
 			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.25D, 0.5D))
 			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.25D))
@@ -80,13 +80,13 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		return Optional.empty();
 	}
 
-	private Pair<ISidedInventory, IItemHandler> getInventory(BlockPos target, EnumFacing facing) {
+	private Pair<IItemHandler, ISidedInventory> getInventory(BlockPos target, EnumFacing facing) {
 		if(world.isBlockLoaded(target, false)) {
 			TileEntity tile = world.getTileEntity(target);
 			if(tile != null) {
 				IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
 				if(handler == null) handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-				return Pair.of(tile instanceof ISidedInventory ? (ISidedInventory) tile : null, handler);
+				return Pair.of(handler, tile instanceof ISidedInventory ? (ISidedInventory) tile : null);
 			}
 		}
 		return Pair.of(null, null);
@@ -94,10 +94,10 @@ public class TileGravityHopper extends TileBase implements ITickable {
 
 	private ItemStack transferOut(BlockPos pos, boolean test) {
 		EnumFacing facing = getFacing().getOpposite();
-		Pair<ISidedInventory, IItemHandler> inv = getInventory(pos, facing);
-		if(inv.getValue() != null) {
-			IItemHandler handler = inv.getValue();
-			ISidedInventory tile = inv.getKey();
+		Pair<IItemHandler, ISidedInventory> inv = getInventory(pos, facing);
+		if(inv.getKey() != null) {
+			IItemHandler handler = inv.getKey();
+			ISidedInventory tile = inv.getValue();
 
 			for(int slot = 0; slot < handler.getSlots(); slot++) {
 				ItemStack in = handler.getStackInSlot(slot);
@@ -111,10 +111,10 @@ public class TileGravityHopper extends TileBase implements ITickable {
 
 	private boolean transferIn(BlockPos pos, ItemStack inserted, boolean test) {
 		EnumFacing facing = getFacing();
-		Pair<ISidedInventory, IItemHandler> inv = getInventory(pos, facing);
-		if(inv.getValue() != null) {
-			IItemHandler handler = inv.getValue();
-			ISidedInventory tile = inv.getKey();
+		Pair<IItemHandler, ISidedInventory> inv = getInventory(pos, facing);
+		if(inv.getKey() != null) {
+			IItemHandler handler = inv.getKey();
+			ISidedInventory tile = inv.getValue();
 
 			for(int slot = 0; slot < handler.getSlots(); slot++) {
 				ItemStack inSlot = handler.getStackInSlot(slot);
@@ -165,7 +165,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private Vector3 getOffSet(EnumFacing facing) {
-		return FACING_MAP.get(facing).copy().add(pos);
+		return FF.get(facing).copy().add(pos);
 	}
 
 	@Override

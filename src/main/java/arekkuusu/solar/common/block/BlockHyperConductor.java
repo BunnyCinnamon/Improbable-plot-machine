@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.state.State;
+import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.render.baked.BakedHyperConductor;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -18,7 +18,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -114,7 +113,7 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(Item.getItemFromBlock(this), BakedHyperConductor::new);
+		DummyBakedRegistry.register(this, BakedHyperConductor::new);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

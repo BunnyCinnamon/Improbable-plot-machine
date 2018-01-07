@@ -39,11 +39,11 @@ public final class ModBlocks {
 	public static final Block ASHEN = PLACE_HOLDER;
 	public static final Block MONOLITHIC = PLACE_HOLDER;
 	public static final Block MONOLITHIC_GLYPH = PLACE_HOLDER;
-	public static final Block QUINGENTILLIARD = PLACE_HOLDER;
 	public static final Block ANGSTROM = PLACE_HOLDER;
 	public static final Block QIMRANUT = PLACE_HOLDER;
 	public static final Block CELESTIAL_RESONATOR = PLACE_HOLDER;
 	public static final Block LARGE_POT = PLACE_HOLDER;
+	public static final Block VACUUM_CONVEYOR = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -60,11 +60,11 @@ public final class ModBlocks {
 		registry.register(new BlockElectron());
 		registry.register(new BlockAshen());
 		registry.register(new BlockMonolithic());
-		registry.register(new BlockQuingentilliard());
 		registry.register(new BlockAngstrom());
 		registry.register(new BlockQimranut());
 		registry.register(new BlockCelestialResonator());
 		registry.register(new BlockLargePot());
+		registry.register(new BlockVacuumConveyor());
 		registerTiles();
 	}
 
@@ -78,7 +78,6 @@ public final class ModBlocks {
 		GameRegistry.registerTileEntity(TileGravityInhibitor.class, LibMod.MOD_ID + ":gravity_inhibitor");
 		GameRegistry.registerTileEntity(TileHyperConductor.class, LibMod.MOD_ID + ":hyper_conductor");
 		GameRegistry.registerTileEntity(TileElectron.class, LibMod.MOD_ID + ":electron");
-		GameRegistry.registerTileEntity(TileQuingentilliard.class, LibMod.MOD_ID + ":quingentilliard");
 		GameRegistry.registerTileEntity(TileQimranut.class, LibMod.MOD_ID + ":qimranut");
 		GameRegistry.registerTileEntity(TileCelestialResonator.class, LibMod.MOD_ID + ":celestial_resonator");
 	}
