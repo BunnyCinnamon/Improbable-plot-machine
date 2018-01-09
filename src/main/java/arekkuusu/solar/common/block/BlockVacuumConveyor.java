@@ -9,7 +9,9 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.tool.FixedMaterial;
-import arekkuusu.solar.client.render.baked.BakedVacuumConveyor;
+import arekkuusu.solar.client.render.baked.BakedPerspective;
+import arekkuusu.solar.client.render.baked.BakedRender;
+import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
@@ -172,7 +174,10 @@ public class BlockVacuumConveyor extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, (format, g) -> new BakedVacuumConveyor());
+		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
+				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
+				.setParticle(ResourceLibrary.VACUUM_CONVEYOR)
+		);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

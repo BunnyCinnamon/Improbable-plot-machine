@@ -22,6 +22,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 23/12/2017.
@@ -104,6 +105,12 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 				RelativityHandler.addRelative(this, null);
 			});
 		}
+	}
+
+	@Override
+	public void setKey(@Nullable UUID key) {
+		super.setKey(key);
+		notifyUpdate();
 	}
 
 	private EnumFacing getFacingLazy() {

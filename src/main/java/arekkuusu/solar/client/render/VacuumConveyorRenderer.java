@@ -7,7 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.helper.BlockBaker;
 import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
@@ -15,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
 /**
@@ -26,15 +24,15 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 
 	@Override
 	void renderTile(TileVacuumConveyor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		renderModel(te.getFacingLazy(), x, y, z, te.getLookup(), partialTicks);
+		renderModel(te.getFacingLazy(), x, y, z, partialTicks);
 	}
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		renderModel(null, x, y, z, SpecialModelRenderer.getTempItemRenderer(), partialTicks);
+		renderModel(null, x, y, z, partialTicks);
 	}
 
-	private void renderModel(EnumFacing facing, double x, double y, double z, ItemStack lookup, float partialTicks) {
+	private void renderModel(EnumFacing facing, double x, double y, double z, float partialTicks) {
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 		int tick = (int) Minecraft.getMinecraft().world.getTotalWorldTime();
@@ -60,17 +58,6 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 		GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, -1F, 0F);
 		BlockBaker.render(BlockBaker.VACUUM_BOTTOM);
 		GlStateManager.popMatrix();
-		//ItemStack lookup
-		if(!lookup.isEmpty()) {
-			GlStateManager.pushMatrix();
-			GLHelper.lightMap(255F, 255F);
-			GlStateManager.translate(0, y + 0.3D, 0);
-			GlStateManager.rotate(90F, 1F, 0F, 0F);
-
-			RenderBakery.renderItemStack(lookup);
-			GLHelper.lightMap(prevU, prevV);
-			GlStateManager.popMatrix();
-		}
 		GlStateManager.popMatrix();
 	}
 }
