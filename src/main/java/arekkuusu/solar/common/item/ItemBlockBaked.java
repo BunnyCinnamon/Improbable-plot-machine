@@ -27,6 +27,7 @@ public class ItemBlockBaked extends ItemBaseBlock {
 	@Override
 	public void registerModel() {
 		Block block = Block.getBlockFromItem(this);
-		ModelHandler.registerModel(this, 0, ResourceLibrary.getModel(block.getUnlocalizedName() + '_', ""));
+		//noinspection ConstantConditions
+		ModelHandler.registerModel(this, 0, ResourceLibrary.getModel(block.getRegistryName().getResourcePath() + '_', ""));
 	}
 }

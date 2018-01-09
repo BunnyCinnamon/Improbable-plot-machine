@@ -29,7 +29,6 @@ public class ParticleNeutron extends ParticleBase {
 		particleScale = scale;
 		initScale = particleScale;
 		canCollide = false;
-
 		dark = rgb == 0x000000;
 		setSprite(dark ? SpriteLibrary.DARK_PARTICLE : SpriteLibrary.NEUTRON_PARTICLE);
 	}

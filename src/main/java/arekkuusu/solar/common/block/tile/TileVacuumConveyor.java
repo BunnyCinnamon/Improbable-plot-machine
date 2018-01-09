@@ -10,7 +10,9 @@ package arekkuusu.solar.common.block.tile;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.entity.EntityFastItem;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.ISidedInventory;
@@ -21,12 +23,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -35,71 +39,126 @@ import java.util.stream.Collectors;
  */
 public class TileVacuumConveyor extends TileBase implements ITickable {
 
-	private Pair<IItemHandler, ISidedInventory> to;
+	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
+			.put(EnumFacing.UP, Vector3.create(0.5D, 0.1D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.9D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.9D))
+			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.1D))
+			.put(EnumFacing.EAST, Vector3.create(0.1D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.create(09D, 0.5D, 0.5D))
+			.build();
+	private Pair<IItemHandler, ISidedInventory> to,from;
 	private ItemStack lookup = ItemStack.EMPTY;
+	private AxisAlignedBB attract, repulse;
+	private AxisAlignedBB absorptionRange;
 
-	public TileVacuumConveyor(EnumFacing except) {
-		this.to = getInventory(except);
+	@Override
+	public void onLoad() {
+		if(!world.isRemote) {
+			this.absorptionRange = new AxisAlignedBB(getPos()).grow(0.5D);
+			this.attract = new AxisAlignedBB(getPos().offset(getFacingLazy(), 5)).grow(10D);
+			this.repulse = new AxisAlignedBB(getPos().offset(getFacingLazy())).grow(1D);
+			updateInventoryAccess();
+		}
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		return oldState != newState;
 	}
 
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			absorb();
+			if(to.getKey() != null && world.isAirBlock(pos.offset(getFacingLazy().getOpposite()))) {
+				collectItems();
+			} else if(from.getKey() != null && world.isAirBlock(pos.offset(getFacingLazy()))) {
+				dropItems();
+			}
 		} else {
-			ParticleUtil.spawnSquared(world, Vector3.create(pos).add(0.5D), Vector3.ImmutableVector3.NULL, 0x000000, 10, 2F);
+			if(world.getTotalWorldTime() % 20 == 0 && world.rand.nextBoolean()) {
+
+			} else if(world.getTotalWorldTime() % 2 == 0) {
+
+			}
 		}
 	}
 
-	private void absorb() {
-		if(to.getValue() != null) {
-			attractItems();
-			IItemHandler handler = to.getKey();
-			ISidedInventory tile = to.getValue();
-			world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getPos()).grow(0.5D)).forEach(e -> {
-				for(int slot = 0; slot < handler.getSlots(); slot++) {
-					ItemStack inSlot = handler.getStackInSlot(slot);
-					ItemStack in = e.getItem();
-					if(tile == null || tile.canInsertItem(slot, in, getFacing())) {
-						if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, in) && (inSlot.getCount() < inSlot.getMaxStackSize() && inSlot.getCount() < handler.getSlotLimit(slot)))) {
-							ItemStack out = handler.insertItem(slot, in, false);
-							if(out != in) {
-								e.setItem(out);
-								break;
-							}
+	private void spawnLightParticles(EnumFacing facing, boolean inverse) {
+		Vector3 back = getOffSet(facing);
+		double speed = world.rand.nextDouble() * 0.03D;
+		Vector3 vec = Vector3.create(facing.getOpposite()).multiply(speed);
+		ParticleUtil.spawnLightParticle(world, back, vec, inverse ? 0xFFFFFF : 0x000000, 100, 2.5F);
+	}
+
+	private void spawnNeutronParticles(EnumFacing facing, boolean inverse) {
+		Vector3 back = getOffSet(facing);
+		double speed = 0.010D + world.rand.nextDouble() * 0.010D;
+		Vector3 vec = Vector3.create(facing.getOpposite())
+				.multiply(speed)
+				.rotatePitchX((world.rand.nextFloat() * 2 - 1) * 0.25F)
+				.rotatePitchZ((world.rand.nextFloat() * 2 - 1) * 0.25F);
+		ParticleUtil.spawnNeutronBlast(world, back, vec, inverse ? 0xFFFFFF : 0x000000, 60, 0.1F, true);
+	}
+
+	private void collectItems() {
+		applyGravity(true);
+		IItemHandler handler = to.getKey();
+		ISidedInventory sidedInv = to.getValue();
+		getItemsFiltered(absorptionRange).forEach(e -> {
+			for(int slot = 0; slot < handler.getSlots(); slot++) {
+				ItemStack inSlot = handler.getStackInSlot(slot);
+				ItemStack in = e.getItem();
+				if(sidedInv == null || sidedInv.canInsertItem(slot, in, getFacingLazy())) {
+					if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, in)
+							&& (inSlot.getCount() < inSlot.getMaxStackSize()
+							&& inSlot.getCount() < handler.getSlotLimit(slot)))) {
+						ItemStack out = handler.insertItem(slot, in, false);
+						if(out != in) {
+							e.setItem(out);
+							break;
 						}
 					}
 				}
-			});
+			}
+		});
+	}
+
+	private void dropItems() {
+		applyGravity(false);
+		IItemHandler handler = from.getKey();
+		ISidedInventory sidedInv = from.getValue();
+		Vector3 spawnPos = Vector3.create(getPos()).add(0.5D).offset(getFacingLazy(), 1);
+		for(int slot = 0; slot < handler.getSlots(); slot++) {
+			ItemStack inSlot = handler.getStackInSlot(slot);
+			if(!inSlot.isEmpty() && (sidedInv == null || sidedInv.canExtractItem(slot, inSlot, getFacingLazy()))) {
+				ItemStack out = handler.extractItem(slot, Integer.MAX_VALUE, false);
+				EntityFastItem fastItem = new EntityFastItem(world, spawnPos.x, spawnPos.y, spawnPos.z, out);
+				world.spawnEntity(fastItem);
+			}
 		}
 	}
 
-	public void attractItems() {
-		List<EntityFastItem> list = getItemsFiltered(new AxisAlignedBB(getPos()).grow(10F));
-		for(EntityFastItem item : list) {
-			applyGravity(getPos().getX(), getPos().getY(), getPos().getZ(), item);
-		}
+	private void applyGravity(boolean in) {
+		getItemsFiltered(in ? attract : repulse).forEach(item -> {
+			double x = getPos().getX() + 0.5D - item.posX;
+			double y = getPos().getY() + 0.5D - item.posY;
+			double z = getPos().getZ() + 0.5D - item.posZ;
+			double sqrt = Math.sqrt(x * x + y * y + z * z);
+			double v = sqrt / 9;
+
+			if(sqrt <= 10D) {
+				double strength = (1 - v) * (1 - v);
+				double power = 0.075D * (in ? 2D : -2D);
+
+				item.motionX += (x / sqrt) * strength * power;
+				item.motionY += (y / sqrt) * strength * power;
+				item.motionZ += (z / sqrt) * strength * power;
+			}
+		});
 	}
 
-	private void applyGravity(double x, double y, double z, Entity sucked) {
-		x += 0.5D - sucked.posX;
-		y += 0.5D - sucked.posY;
-		z += 0.5D - sucked.posZ;
-
-		double sqrt = Math.sqrt(x * x + y * y + z * z);
-		double v = sqrt / 9;
-
-		if(sqrt <= 9) {
-			double strength = (1 - v) * (1 - v);
-			double power = 0.075D * 2D;
-
-			sucked.motionX += (x / sqrt) * strength * power;
-			sucked.motionY += (y / sqrt) * strength * power;
-			sucked.motionZ += (z / sqrt) * strength * power;
-		}
-	}
-
-	private List<EntityFastItem> getItemsFiltered(AxisAlignedBB box) {
+	private List<EntityItem> getItemsFiltered(AxisAlignedBB box) {
 		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, box, Entity::isEntityAlive);
 		return list.stream().filter(entity -> {
 			ItemStack stack = entity.getItem();
@@ -108,8 +167,8 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		}).map(this::replace).collect(Collectors.toList());
 	}
 
-	private EntityFastItem replace(EntityItem entity) {
-		if(entity instanceof EntityFastItem) return (EntityFastItem) entity;
+	private EntityItem replace(EntityItem entity) {
+		if(entity instanceof EntityFastItem) return entity;
 		EntityFastItem item = new EntityFastItem(entity);
 		item.setAgeToCreativeDespawnTime();
 		item.setNoGravity(true);
@@ -120,7 +179,8 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	public void updateInventoryAccess() {
-		this.to = getInventory(getFacing());
+		this.from = getInventory(getFacingLazy().getOpposite());
+		this.to = getInventory(getFacingLazy());
 	}
 
 	private Pair<IItemHandler, ISidedInventory> getInventory(EnumFacing facing) {
@@ -136,7 +196,11 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		return Pair.of(null, null);
 	}
 
-	private EnumFacing getFacing() {
+	private Vector3 getOffSet(EnumFacing facing) {
+		return FACING_MAP.get(facing).copy().add(pos);
+	}
+
+	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 

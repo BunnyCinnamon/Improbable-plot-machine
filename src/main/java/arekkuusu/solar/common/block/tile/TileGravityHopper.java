@@ -43,13 +43,12 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			.build();
 	private boolean powered;
 	private boolean inverse;
-	private int tick;
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public void update() {
 		if(!world.isRemote) {
-			if(tick % 2 == 0) {
+			if(world.getTotalWorldTime() % 2 == 0) {
 				traceBlock(getFacing()).ifPresent(out -> {
 					traceBlock(getFacing().getOpposite()).ifPresent(in -> {
 						ItemStack stack = transferOut(out, true);
@@ -62,7 +61,6 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		} else {
 			spawnParticles();
 		}
-		tick++;
 	}
 
 	private Optional<BlockPos> traceBlock(EnumFacing facing) { //Oh boy, I cant wait to use raytrace! ♪~ ᕕ(ᐛ)ᕗ
@@ -128,12 +126,12 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private void spawnParticles() {
-		if(tick % 180 == 0) {
+		if(world.getTotalWorldTime() % 180 == 0) {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing);
 			Vector3 vec = Vector3.create(facing).multiply(0.005D);
 			ParticleUtil.spawnNeutronBlast(world, back, vec, 0xFF0303, 40, 0.25F, true);
-		} else if(tick % 4 == 0 && world.rand.nextBoolean()) {
+		} else if(world.getTotalWorldTime() % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing.getOpposite());
 			double speed = world.rand.nextDouble() * -0.015D;

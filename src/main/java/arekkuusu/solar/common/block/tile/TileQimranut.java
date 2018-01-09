@@ -37,13 +37,12 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 			.put(EnumFacing.EAST, Vector3.create(0.4D, 0.5D, 0.5D))
 			.put(EnumFacing.WEST, Vector3.create(0.6D, 0.5D, 0.5D))
 			.build();
-	private int tick;
 
 	@Override
 	public void update() {
 		if(world.isRemote) {
-			EnumFacing facing = getFacing();
-			if(tick % 20 == 0 && world.rand.nextBoolean()) {
+			EnumFacing facing = getFacingLazy();
+			if(world.getTotalWorldTime() % 20 == 0 && world.rand.nextBoolean()) {
 				Vector3 back = getOffSet(facing.getOpposite());
 				double speed = -0.010D - world.rand.nextDouble() * 0.010D;
 				Vector3 vec = Vector3.create(facing)
@@ -51,13 +50,12 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 						.rotatePitchX((world.rand.nextFloat() * 2 - 1) * 0.25F)
 						.rotatePitchZ((world.rand.nextFloat() * 2 - 1) * 0.25F);
 				ParticleUtil.spawnNeutronBlast(world, back, vec, 0x000000, 60, 0.1F, true);
-			} else if(tick % 2 == 0) {
+			} else if(world.getTotalWorldTime() % 2 == 0) {
 				Vector3 back = getOffSet(facing.getOpposite());
 				double speed = world.rand.nextDouble() * -0.03D;
 				Vector3 vec = Vector3.create(facing).multiply(speed);
 				ParticleUtil.spawnDarkParticle(world, back, vec, 0x000000, 100, 2.5F);
 			}
-			tick++;
 		}
 	}
 
@@ -69,11 +67,11 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 
 	@Nullable
 	public <T> T accessCapability(Capability<T> capability) {
-		BlockPos offset = pos.offset(getFacing());
+		BlockPos offset = pos.offset(getFacingLazy());
 		IBlockState state = world.getBlockState(pos);
 		if(state.getBlock().hasTileEntity(state)) {
 			TileEntity tile = world.getTileEntity(offset);
-			return tile != null && !(tile instanceof TileQimranut) ? tile.getCapability(capability, getFacing()) : null;
+			return tile != null && !(tile instanceof TileQimranut) ? tile.getCapability(capability, getFacingLazy()) : null;
 		}
 		return null;
 	}
@@ -88,14 +86,14 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return getFacing() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability) != null)
+		return getFacingLazy() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability) != null)
 				.orElse(super.hasCapability(capability, facing)) : false;
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return getFacing() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability))
+		return getFacingLazy() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability))
 				.orElse(super.getCapability(capability, facing)) : null;
 	}
 
@@ -108,7 +106,7 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 		}
 	}
 
-	private EnumFacing getFacing() {
+	private EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 

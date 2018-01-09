@@ -14,6 +14,7 @@ import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
 import arekkuusu.solar.common.lib.LibNames;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -23,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -41,6 +43,15 @@ import static net.minecraft.block.BlockDirectional.FACING;
 @SuppressWarnings("deprecation")
 public class BlockVacuumConveyor extends BlockBase {
 
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0.1875, 0.15625, 0.1875, 0.8125, 0.84375, 0.8125))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.1875, 0.15625, 0.1875, 0.8125, 0.84375, 0.8125))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.1875, 0.1875, 0.15625, 0.8125, 0.8125, 0.84375))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.1875, 0.1875, 0.15625, 0.8125, 0.8125, 0.84375))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.15625, 0.1875, 0.1875, 0.84375, 0.8125, 0.8125))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.15625, 0.1875, 0.1875, 0.84375, 0.8125, 0.8125))
+			.build();
+
 	public BlockVacuumConveyor() {
 		super(LibNames.VACUUM_CONVEYOR, FixedMaterial.BREAK);
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.DOWN));
@@ -54,9 +65,9 @@ public class BlockVacuumConveyor extends BlockBase {
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
-			getTile(TileVacuumConveyor.class, world, pos).ifPresent(consumer -> {
+			getTile(TileVacuumConveyor.class, world, pos).ifPresent(vacuum -> {
 				NBTHelper.<NBTTagCompound>getNBT(stack, "lookup").ifPresent(tag -> {
-					consumer.setLookup(new ItemStack(tag));
+					vacuum.setLookup(new ItemStack(tag));
 				});
 			});
 		}
@@ -69,7 +80,7 @@ public class BlockVacuumConveyor extends BlockBase {
 				vacuum.setLookup(player.getHeldItem(hand));
 			});
 		}
-		return state.getValue(FACING) != facing;
+		return true;
 	}
 
 	@Override
@@ -98,7 +109,7 @@ public class BlockVacuumConveyor extends BlockBase {
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		EnumFacing side = EnumFacing.getDirectionFromEntityLiving(pos, placer);
-		return defaultState().withProperty(FACING, side);
+		return defaultState().withProperty(FACING, side.getOpposite());
 	}
 
 	@Override
@@ -137,8 +148,14 @@ public class BlockVacuumConveyor extends BlockBase {
 	}
 
 	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT_MIPPED;
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing facing = state.getValue(FACING);
+		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
+	}
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
@@ -149,13 +166,13 @@ public class BlockVacuumConveyor extends BlockBase {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileVacuumConveyor(state.getValue(FACING));
+		return new TileVacuumConveyor();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedVacuumConveyor::new);
+		DummyBakedRegistry.register(this, (format, g) -> new BakedVacuumConveyor());
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

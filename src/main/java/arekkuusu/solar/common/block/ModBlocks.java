@@ -80,5 +80,6 @@ public final class ModBlocks {
 		GameRegistry.registerTileEntity(TileElectron.class, LibMod.MOD_ID + ":electron");
 		GameRegistry.registerTileEntity(TileQimranut.class, LibMod.MOD_ID + ":qimranut");
 		GameRegistry.registerTileEntity(TileCelestialResonator.class, LibMod.MOD_ID + ":celestial_resonator");
+		GameRegistry.registerTileEntity(TileVacuumConveyor.class, LibMod.MOD_ID + ":vacuum_conveyor");
 	}
 }

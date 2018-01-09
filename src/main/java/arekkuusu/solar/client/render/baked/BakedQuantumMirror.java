@@ -32,6 +32,10 @@ public class BakedQuantumMirror extends BakedRender {
 
 	private final ItemOverrides overrides = new ItemOverrides();
 
+	public BakedQuantumMirror() {
+		setTransforms(BakedPerspective.BLOCK_TRANSFORMS);
+	}
+
 	@Override
 	public ItemOverrideList getOverrides() {
 		return overrides;

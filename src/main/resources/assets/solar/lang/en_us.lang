@@ -29,11 +29,11 @@ tile.electron.name=Electron
 tile.ashen.name=Ashen
 tile.monolithic.name=Monolithic
 tile.monolithic_glyph.name=Monolithic Glyph
-tile.quingentilliard.name=Quingentilliard
 tile.angstrom.name=Ångström
 tile.qimranut.name=Qimranut
 tile.celestial_resonator.name=Celestial Resonator
 tile.large_pot.name=Ancient Pot
+tile.vacuum_conveyor.name=Vacuum Conveyor
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger
@@ -47,6 +47,6 @@ tlp.ctrl_for_info.name=<ctrl for info>
 tlp.list_more.name=more
 tlp.quantum_data.name=Quantum Data
 tlp.uuid_key.name=Uuid
-tlp.quingentilliard_filter.name=Gravity Filter
+tlp.item_filter.name=Item Filter
 tlp.valid_entangler.name=Valid Entangler
 tlp.monolithic_description.name=Immovable Object

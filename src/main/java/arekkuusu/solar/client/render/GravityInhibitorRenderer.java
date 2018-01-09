@@ -25,16 +25,16 @@ public class GravityInhibitorRenderer extends SpecialModelRenderer<TileGravityIn
 
 	@Override
 	void renderTile(TileGravityInhibitor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		renderModel(te.tick, x, y, z, partialTicks);
+		renderModel(x, y, z, partialTicks);
 	}
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		int time = Minecraft.getMinecraft().player.ticksExisted;
-		renderModel(time, x, y, z, partialTicks);
+		renderModel(x, y, z, partialTicks);
 	}
 
-	private void renderModel(int tick, double x, double y, double z, float partialTicks) {
+	private void renderModel(double x, double y, double z, float partialTicks) {
+		int tick = (int) Minecraft.getMinecraft().world.getTotalWorldTime();
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -46,8 +46,8 @@ public class GravityInhibitorRenderer extends SpecialModelRenderer<TileGravityIn
 
 			float size = MathHelper.sin(relativeTime);
 			size = (size < 0 ? -size : size);
-			size += 0.1F;
-			size *= 0.2F;
+			size += 0.2F;
+			size *= 0.4F;
 
 			double uvMin = 0.3125D;
 			SpriteLibrary.GRAVITY_INHIBITOR.bindManager();

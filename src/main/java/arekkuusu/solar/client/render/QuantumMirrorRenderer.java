@@ -38,6 +38,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 	@Override
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		int tick = (int) Minecraft.getMinecraft().world.getTotalWorldTime();
 		int layer = MinecraftForgeClient.getRenderPass();
 
 		final float prevU = OpenGlHelper.lastBrightnessX;
@@ -53,14 +54,14 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 					GLHelper.lightMap(255F, 255F);
 					GlStateManager.translate(x + 0.5, y + 0.38, z + 0.5);
 
-					GlStateManager.rotate(partialTicks + (float) mirror.tick * 0.5F % 360F, 0F, 1F, 0F);
+					GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
 					RenderBakery.renderItemStack(stack);
 
 					GlStateManager.popMatrix();
 				}
 				break;
 			case 1:
-				renderModel(mirror.tick, x, y, z);
+				renderModel(tick, x, y, z);
 				break;
 		}
 		GLHelper.lightMap(prevU, prevV);
@@ -68,15 +69,15 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 	@Override
 	public void renderStack(double x, double y, double z, float partialTicks) {
-		int tick = Minecraft.getMinecraft().player.ticksExisted;
+		int tick = (int) Minecraft.getMinecraft().world.getTotalWorldTime();
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 
 		ItemStack stack = SpecialModelRenderer.getTempItemRenderer();
-		if(stack != null) {
+		if(!stack.isEmpty()) {
 			GlStateManager.pushMatrix();
 			GLHelper.lightMap(255F, 255F);
-			GlStateManager.translate(x + 0.5D, y + 0.4D, z + 0.5D);
+			GlStateManager.translate(x + 0.5D, y + 0.38D, z + 0.5D);
 
 			GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
 			RenderBakery.renderItemStack(stack);

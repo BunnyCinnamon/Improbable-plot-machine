@@ -18,16 +18,18 @@ import net.minecraft.world.World;
 public class ParticleLight extends ParticleBase {
 
 	private final float initScale;
+	private final boolean dark;
 
 	ParticleLight(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
 		super(world, pos, speed, rgb);
-		particleMaxAge = age;
-		particleScale = scale;
-		initScale = particleScale;
-		particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
-		canCollide = false;
+		this.particleMaxAge = age;
+		this.particleScale = scale;
+		this.initScale = particleScale;
+		this.particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
+		this.canCollide = false;
+		this.dark = rgb == 0x000000;
 
-		setSprite(SpriteLibrary.LIGHT_PARTICLE);
+		setSprite(dark ? SpriteLibrary.DARK_PARTICLE : SpriteLibrary.LIGHT_PARTICLE);
 	}
 
 	@Override
@@ -44,7 +46,12 @@ public class ParticleLight extends ParticleBase {
 	}
 
 	@Override
-	public int getBrightnessForRender(float p_189214_1_) {
-		return 255;
+	public int getBrightnessForRender(float idk) {
+		return dark ? 0 : 255;
+	}
+
+	@Override
+	public boolean isAdditive() {
+		return !dark;
 	}
 }

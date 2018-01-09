@@ -61,9 +61,7 @@ public final class ResourceLibrary {
 	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = ResourceUtil.from(MoonPhase.class, "moon_phase/", name ->
 			getAtlas(BLOCKS, name)
 	);
-	public static final ResourceLocation VACUUM_CONVEYOR = getAtlas(BLOCKS, "vacuum_conveyor/base");
-	public static final ResourceLocation VACUUM_CONVEYOR_OVERLAY_ON = getAtlas(BLOCKS, "vacuum_conveyor/overlay_on");
-	public static final ResourceLocation VACUUM_CONVEYOR_OVERLAY_OFF = getAtlas(BLOCKS, "vacuum_conveyor/overlay_off");
+	public static final ResourceLocation VACUUM_CONVEYOR = getAtlas(BLOCKS, "vacuum_conveyor");
 
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
 	public static final ResourceLocation THEOREMA = getTexture(BLOCKS, "theorema");
@@ -98,6 +96,7 @@ public final class ResourceLibrary {
 	public enum ModelLocation implements Location {
 		BLOCK("block"),
 		ITEM("item"),
+		OTHER("other"),
 		OBJ("obj");
 
 		private final String path;

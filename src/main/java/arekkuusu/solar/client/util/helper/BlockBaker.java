@@ -32,7 +32,9 @@ import java.util.List;
  */
 @SideOnly(Side.CLIENT)
 public enum BlockBaker {
-	;
+	VACUUM_TOP("vacuum_top"),
+	VACUUM_PIECE("vacuum_piece"),
+	VACUUM_BOTTOM("vacuum_bottom");
 
 	ResourceLocation location;
 
@@ -41,7 +43,7 @@ public enum BlockBaker {
 	IBakedModel baked;
 
 	BlockBaker(String name) {
-		location = ResourceLibrary.getLocation(null, ResourceLibrary.ModelLocation.BLOCK, name, "");
+		location = ResourceLibrary.getLocation(null, ResourceLibrary.ModelLocation.OTHER, name, "");
 	}
 
 	public void bake() throws Exception {

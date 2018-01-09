@@ -97,6 +97,7 @@ public final class RenderBakery {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buff = tessellator.getBuffer();
 		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		size = 0.5F * size;
 		//Front
 		buff.pos(size, -size, -size).tex(uMax, vMin).endVertex();
 		buff.pos(size, size, -size).tex(uMax, vMax).endVertex();

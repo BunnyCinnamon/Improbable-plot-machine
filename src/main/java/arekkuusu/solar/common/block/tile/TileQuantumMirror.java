@@ -19,7 +19,6 @@ import net.minecraft.util.ITickable;
 public class TileQuantumMirror extends TileQuantumBase<QuantumTileWrapper> implements ITickable {
 
 	public static final int SLOTS = 1;
-	public int tick;
 
 	@Override
 	public QuantumTileWrapper createHandler() {
@@ -33,7 +32,6 @@ public class TileQuantumMirror extends TileQuantumBase<QuantumTileWrapper> imple
 
 			ParticleUtil.spawnQuorn(world, from, Vector3.getRandomVec(0.1F), 20, 0.1F, 0XFFFFFF);
 		}
-		++tick;
 	}
 
 	@Override

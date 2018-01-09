@@ -54,7 +54,7 @@ public final class ModItems {
 		registry.register(new ItemBase(LibNames.ASH));
 		registry.register(new ItemBase(LibNames.SINGULARITY));
 		registry.register(new ItemBase(LibNames.PLASMON));
-		registry.register(new ItemBlockBaked(ModBlocks.VACUUM_CONVEYOR));
+		registry.register(new ItemVacuumConveyor());
 	}
 
 	@SuppressWarnings("ConstantConditions")

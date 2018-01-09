@@ -22,12 +22,11 @@ import javax.annotation.Nullable;
 @SideOnly(Side.CLIENT)
 public abstract class SpecialModelRenderer<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
 
-	private static ItemStack tempItemStack;
+	private static ItemStack tempItemStack = ItemStack.EMPTY;
 
-	@Nullable
 	public static ItemStack getTempItemRenderer() {
 		ItemStack stack = SpecialModelRenderer.tempItemStack;
-		SpecialModelRenderer.tempItemStack = null;
+		SpecialModelRenderer.tempItemStack = ItemStack.EMPTY;
 		return stack;
 	}
 
