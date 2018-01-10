@@ -60,8 +60,8 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 			EnumFacing facing = getFacingLazy();
 			this.attract = new AxisAlignedBB(getPos().offset(facing, 2)).grow(10D);
 			this.repulse = new AxisAlignedBB(getPos().offset(facing)).grow(1D);
-			this.attractInverse = new AxisAlignedBB(getPos().offset(facing, 4)).grow(5);
-			this.repulseInverse = new AxisAlignedBB(getPos().offset(facing.getOpposite(), 4)).grow(5);
+			this.attractInverse = new AxisAlignedBB(getPos().offset(facing.getOpposite(), 4)).grow(5);
+			this.repulseInverse = new AxisAlignedBB(getPos().offset(facing, 4)).grow(5);
 			updateInventoryAccess();
 		}
 	}
@@ -74,6 +74,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote) {
+			updateInventoryAccess();
 			if(to.getKey() != null && world.isAirBlock(pos.offset(getFacingLazy().getOpposite()))) {
 				collectItems();
 			} else if(from.getKey() != null && world.isAirBlock(pos.offset(getFacingLazy()))) {
@@ -199,7 +200,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 
 			if(sqrt <= 10D) {
 				double strength = (1 - v) * (1 - v);
-				double power = 0.075D * (in ? 4D : -4D);
+				double power = 0.085D * (in ? 4D : -2D);
 
 				item.motionX += (x / sqrt) * strength * power;
 				item.motionY += (y / sqrt) * strength * power;

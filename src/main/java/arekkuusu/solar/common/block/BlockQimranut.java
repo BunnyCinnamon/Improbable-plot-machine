@@ -64,11 +64,6 @@ public class BlockQimranut extends BlockBase {
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		getTile(TileQimranut.class, world, pos).ifPresent(TileQimranut::notifyUpdate);
-	}
-
-	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileQimranut.class, world, pos).ifPresent(qimranut -> {

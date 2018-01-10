@@ -60,11 +60,6 @@ public class BlockVacuumConveyor extends BlockBase {
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		getTile(TileVacuumConveyor.class, world, pos).ifPresent(TileVacuumConveyor::updateInventoryAccess);
-	}
-
-	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileVacuumConveyor.class, world, pos).ifPresent(vacuum -> {

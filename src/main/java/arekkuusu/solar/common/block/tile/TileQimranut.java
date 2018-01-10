@@ -22,7 +22,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 23/12/2017.
@@ -58,12 +57,6 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 				ParticleUtil.spawnDarkParticle(world, back, vec, 0x000000, 100, 2.5F);
 			}
 		}
-	}
-
-	public void notifyUpdate() {
-		getLinkedQimranut().ifPresent(qimranut -> {
-			qimranut.world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
-		});
 	}
 
 	@Nullable
@@ -105,12 +98,6 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 				RelativityHandler.addRelative(this, null);
 			});
 		}
-	}
-
-	@Override
-	public void setKey(@Nullable UUID key) {
-		super.setKey(key);
-		notifyUpdate();
 	}
 
 	private EnumFacing getFacingLazy() {
