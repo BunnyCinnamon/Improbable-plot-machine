@@ -202,6 +202,13 @@ public class Vector3 {
 		return MathHelper.sqrt(xDiff * xDiff + yDiff * yDiff + zDiff * zDiff);
 	}
 
+	public Vector3 limit(double max) {
+		double x = this.x > max ? max : this.x < -max ? -max : this.x;
+		double y = this.y > max ? max : this.y < -max ? -max : this.y;
+		double z = this.z > max ? max : this.z < -max ? -max : this.z;
+		return setVec(x, y, z);
+	}
+
 	public Vector3 copy() {
 		return new Vector3(x, y, z);
 	}

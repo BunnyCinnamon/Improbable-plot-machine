@@ -7,8 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render.entity;
 
-import arekkuusu.solar.api.helper.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
@@ -73,8 +71,6 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 	private static class BrightLayer implements LayerRenderer<EntityEyeOfSchrodinger> {
 
 		private final EyeOfSchrodingerRenderer render;
-		private static final int blue = 0x1EF2FF;
-		private static final int red = 0xFF1000;
 
 		private BrightLayer(EyeOfSchrodingerRenderer render) {
 			this.render = render;
@@ -94,7 +90,7 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 			}
 
 			boolean hasTarget = schrodinger.hasTargetedEntity();
-			int rgb = hasTarget ? red : blue;
+			int rgb = hasTarget ? EntityEyeOfSchrodinger.RED : EntityEyeOfSchrodinger.BLUE;
 
 			float r = (rgb >>> 16 & 0xFF) / 256.0F;
 			float g = (rgb >>> 8 & 0xFF) / 256.0F;
@@ -109,9 +105,6 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 			} else {
 				GLHelper.lightMap(255F, 255F);
 			}
-			ParticleUtil.spawnTunnelingPhoton(schrodinger.world
-					, Vector3.create(schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ)
-					, Vector3.ImmutableVector3.NULL, rgb, 10, 1.5F);
 
 			Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
 
@@ -122,6 +115,34 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 			GlStateManager.enableLighting();
 			GlStateManager.disableBlend();
 			GlStateManager.enableAlpha();
+
+			Entity entity = schrodinger.getTargetedEntity();
+			if(entity != null) { //FIXME: GLLine cannot be seen?
+				/*Vector3 from = Vector3.create(schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ);
+				Vector3 to = Vector3.create(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+				//Render laser
+				GlStateManager.pushMatrix();
+				GlStateManager.enableAlpha();
+				GlStateManager.enableBlend();
+				GlStateManager.alphaFunc(516, 0.003921569F);
+				GlStateManager.disableCull();
+				GlStateManager.depthMask(false);
+				GLHelper.BLEND_SRC_ALPHA$ONE.blend();
+				Tessellator tessellator = Tessellator.getInstance();
+				BufferBuilder buff = tessellator.getBuffer();
+				buff.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+				buff.pos(from.x, from.y, from.z).color(r, g, b, 1F)
+						.endVertex();
+				buff.pos(to.x, to.y, to.z).color(r, g, b, 1F)
+						.endVertex();
+				tessellator.draw();
+				GlStateManager.enableCull();
+				GlStateManager.depthMask(true);
+				GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+				GlStateManager.disableBlend();
+				GlStateManager.alphaFunc(516, 0.1F);
+				GlStateManager.popMatrix();*/
+			}
 		}
 
 		@Override

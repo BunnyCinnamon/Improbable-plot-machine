@@ -7,6 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
+import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.entity.ai.FlightMoveHelper;
 import arekkuusu.solar.common.entity.ai.FlightPathNavigate;
 import arekkuusu.solar.common.handler.gen.ModGen;
@@ -43,6 +45,9 @@ import java.util.Collections;
 public class EntityEyeOfSchrodinger extends EntityMob {
 
 	private static final DataParameter<Boolean> HAS_TARGET = EntityDataManager.createKey(EntityEyeOfSchrodinger.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntityEyeOfSchrodinger.class, DataSerializers.VARINT);
+	public static final int BLUE = 0x1EF2FF;
+	public static final int RED = 0xFF1000;
 
 	public EntityEyeOfSchrodinger(World worldIn) {
 		super(worldIn);
@@ -55,23 +60,50 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 	protected void entityInit() {
 		super.entityInit();
 		this.dataManager.register(HAS_TARGET, false);
+		this.dataManager.register(TARGET, -1);
 	}
 
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		onGround = false;
-		onGroundSpeedFactor = 0;
-		prevOnGroundSpeedFactor = 0;
+		this.onGround = false;
+		this.isJumping = false;
+		this.onGroundSpeedFactor = 0;
+		this.prevOnGroundSpeedFactor = 0;
+		//Spawn Particles
+		if(world.isRemote) {
+			int rgb = hasTargetedEntity() ? RED : BLUE;
+			ParticleUtil.spawnTunnelingPhoton(world
+					, Vector3.create(posX, posY + 0.25D, posZ)
+					, Vector3.ImmutableVector3.NULL, rgb, 10, 1.5F);
+			Entity entity = getTargetedEntity();
+			if(entity != null) {
+				Vector3 speed = Vector3.create(posX, posY + 0.25D, posZ)
+						.subtract(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)
+						.multiply(-0.1D)
+						.limit(0.25D);
+				ParticleUtil.spawnSquared(world, Vector3.create(posX, posY + 0.25D, posZ), speed, RED, 10, 4F);
+			}
+		}
 	}
 
 	private void setTargetedEntity(boolean hasTarget) {
 		dataManager.set(HAS_TARGET, hasTarget);
 		dataManager.setDirty(HAS_TARGET);
+		if(!hasTarget || getAttackTarget() == null) {
+			dataManager.set(TARGET, -1);
+		} else {
+			dataManager.set(TARGET, getAttackTarget().getEntityId());
+		}
 	}
 
 	public boolean hasTargetedEntity() {
 		return dataManager.get(HAS_TARGET);
+	}
+
+	@Nullable
+	public Entity getTargetedEntity() {
+		return world.getEntityByID(dataManager.get(TARGET));
 	}
 
 	@Override

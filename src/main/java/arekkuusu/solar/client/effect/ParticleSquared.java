@@ -17,13 +17,13 @@ import net.minecraft.world.World;
  */
 public class ParticleSquared extends ParticleBase {
 
-	//private final float initScale;
+	private final float initScale;
 
 	ParticleSquared(World world, Vector3 pos, Vector3 speed, int rgb, float scale, int age) {
 		super(world, pos, speed, rgb);
 		particleMaxAge = age;
 		particleScale = scale;
-		//initScale = particleScale;
+		initScale = particleScale;
 
 		setSprite(SpriteLibrary.SQUARED);
 	}
@@ -31,12 +31,15 @@ public class ParticleSquared extends ParticleBase {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if(rand.nextInt(6) == 0) {
-			particleAge++;
-		}
 		float life = (float) this.particleAge / (float) this.particleMaxAge;
-		//this.particleScale = initScale - initScale * life;
+		this.particleScale = initScale - initScale * life;
 		this.particleAlpha = 0.5F * (1.0f - life);
+		if(particleAlpha <= 0.1) setExpired();
+	}
+
+	@Override
+	public boolean shouldRender() {
+		return particleAlpha > 0.1;
 	}
 
 	@Override
