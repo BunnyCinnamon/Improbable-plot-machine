@@ -7,11 +7,13 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
+import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.entity.ai.FlightMoveHelper;
 import arekkuusu.solar.common.entity.ai.FlightPathNavigate;
 import arekkuusu.solar.common.handler.gen.ModGen;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -37,6 +39,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 04/08/2017.
@@ -44,8 +47,7 @@ import java.util.Collections;
  */
 public class EntityEyeOfSchrodinger extends EntityMob {
 
-	private static final DataParameter<Boolean> HAS_TARGET = EntityDataManager.createKey(EntityEyeOfSchrodinger.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntityEyeOfSchrodinger.class, DataSerializers.VARINT);
+	private static final DataParameter<Optional<UUID>> TARGET = EntityDataManager.createKey(EntityEyeOfSchrodinger.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 	public static final int BLUE = 0x1EF2FF;
 	public static final int RED = 0xFF1000;
 
@@ -59,8 +61,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(HAS_TARGET, false);
-		this.dataManager.register(TARGET, -1);
+		this.dataManager.register(TARGET, Optional.absent());
 	}
 
 	@Override
@@ -81,29 +82,29 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 				Vector3 speed = Vector3.create(posX, posY + 0.25D, posZ)
 						.subtract(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)
 						.multiply(-0.1D)
-						.limit(0.25D);
+						.limit(0.15D);
 				ParticleUtil.spawnSquared(world, Vector3.create(posX, posY + 0.25D, posZ), speed, RED, 10, 4F);
 			}
 		}
 	}
 
 	private void setTargetedEntity(boolean hasTarget) {
-		dataManager.set(HAS_TARGET, hasTarget);
-		dataManager.setDirty(HAS_TARGET);
 		if(!hasTarget || getAttackTarget() == null) {
-			dataManager.set(TARGET, -1);
+			dataManager.set(TARGET, Optional.absent());
 		} else {
-			dataManager.set(TARGET, getAttackTarget().getEntityId());
+			//noinspection Guava
+			dataManager.set(TARGET, Optional.of(getAttackTarget().getUniqueID()));
 		}
+		dataManager.setDirty(TARGET);
 	}
 
 	public boolean hasTargetedEntity() {
-		return dataManager.get(HAS_TARGET);
+		return getTargetedEntity() != null;
 	}
 
 	@Nullable
 	public Entity getTargetedEntity() {
-		return world.getEntityByID(dataManager.get(TARGET));
+		return NBTHelper.getEntityByUUID(Entity.class, dataManager.get(TARGET).orNull(), world).orElse(null);
 	}
 
 	@Override

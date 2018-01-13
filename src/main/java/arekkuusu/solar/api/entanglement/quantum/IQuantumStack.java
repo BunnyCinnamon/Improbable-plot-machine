@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.UUID;
 
+import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.CONTROL_KEY_DOWN;
 import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHIFT_KEY_DOWN;
 
 /**
@@ -44,6 +45,6 @@ public interface IQuantumStack extends IEntangledStack {
 				.add(" x " + item.getCount()).end()
 		);
 		builder.skip();
-		return getInfo(builder, uuid);
+		return builder.condition(CONTROL_KEY_DOWN).ifPresent(b -> getInfo(builder, uuid)).apply();
 	}
 }

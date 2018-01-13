@@ -7,34 +7,38 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
-import arekkuusu.solar.api.helper.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
  * Created by <Arekkuusu> on 18/09/2017.
  * It's distributed as part of Solar.
  */
-public class EntitySingularityItem extends EntityFastItem {
+public class EntityTemporalItem extends EntityStaticItem {
 
-	private int lifeTime = 10;
-	public boolean isBound;
+	public int lifeTime = 20;
 
-	public EntitySingularityItem(EntityItem item) {
-		super(item);
-		setPickupDelay(150);
+	public EntityTemporalItem(World world, double x, double y, double z, ItemStack stack) {
+		super(world, x, y, z, stack);
+		setDefaultPickupDelay();
 		setNoGravity(true);
 		setNoDespawn();
-		noClip = true;
 	}
 
-	public EntitySingularityItem(World worldIn) {
-		super(worldIn);
-		setPickupDelay(150);
+	public EntityTemporalItem(EntityItem item) {
+		super(item);
+		setDefaultPickupDelay();
 		setNoGravity(true);
 		setNoDespawn();
-		noClip = true;
+		setMotion(item.motionX, item.motionY, item.motionZ);
+	}
+
+	public EntityTemporalItem(World worldIn) {
+		super(worldIn);
+		setDefaultPickupDelay();
+		setNoGravity(true);
+		setNoDespawn();
 	}
 
 	@Override
@@ -42,10 +46,6 @@ public class EntitySingularityItem extends EntityFastItem {
 		super.updateLogic();
 		if(!world.isRemote && --lifeTime <= 0 && !isDead) {
 			dropSelf();
-		}
-		if(world.isRemote && rand.nextFloat() < 0.2F) {
-			ParticleUtil.spawnTunnelingPhoton(world, Vector3.create(posX, posY + 0.21, posZ),
-					Vector3.ImmutableVector3.NULL, 0xFFFFFF, 10, 0.35F);
 		}
 	}
 
@@ -55,11 +55,7 @@ public class EntitySingularityItem extends EntityFastItem {
 		setDead();
 	}
 
-	public void setLifeTime(int lifeTime) {
-		this.lifeTime = lifeTime;
-	}
-
-	public int getLifeTime() {
-		return lifeTime;
+	public void setNoClip(boolean clip) {
+		this.noClip = clip;
 	}
 }

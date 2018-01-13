@@ -7,12 +7,10 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.render.entity.CustomItemRenderer;
 import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.*;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
-import arekkuusu.solar.common.entity.EntityFastItem;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -33,7 +31,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public final class ModRenders {
 
 	public static void preInit() {
-		registerEntity(EntityFastItem.class, CustomItemRenderer::new);
 		registerEntity(EntityEyeOfSchrodinger.class, EyeOfSchrodingerRenderer::new);
 	}
 

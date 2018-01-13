@@ -20,7 +20,7 @@ import net.minecraft.world.World;
  * Created by <Arekkuusu> on 21/09/2017.
  * It's distributed as part of Solar.
  */
-public class EntityCrystalQuartzItem extends EntityFastItem {
+public class EntityCrystalQuartzItem extends EntityStaticItem {
 
 	private Vec3d vec;
 

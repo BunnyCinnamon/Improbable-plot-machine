@@ -42,7 +42,7 @@ public class QuantumStackProvider<T extends Item & IQuantumStack> implements ICa
 
 	@Nullable
 	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+	public <C> C getCapability(Capability<C> capability, @Nullable EnumFacing facing) {
 		return facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 				? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler)
 				: null;

@@ -63,7 +63,7 @@ public class BlockVacuumConveyor extends BlockBase {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileVacuumConveyor.class, world, pos).ifPresent(vacuum -> {
-				NBTHelper.<NBTTagCompound>getNBT(stack, "lookup").ifPresent(tag -> {
+				NBTHelper.getNBTTag(stack, "lookup").ifPresent(tag -> {
 					vacuum.setLookup(new ItemStack(tag));
 				});
 			});

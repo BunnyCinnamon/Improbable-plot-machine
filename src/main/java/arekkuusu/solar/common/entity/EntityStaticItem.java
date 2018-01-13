@@ -15,35 +15,32 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 /**
  * Created by <Arekkuusu> on 08/07/2017.
  * It's distributed as part of Solar.
  */
-public class EntityFastItem extends EntityItem {
+public class EntityStaticItem extends EntityItem {
 
 	private float rest = 0.98F;
 	private int despawn;
 	private int pickup;
 
-	public EntityFastItem(World world, double x, double y, double z, ItemStack stack) {
+	public EntityStaticItem(World world, double x, double y, double z, ItemStack stack) {
 		super(world, x, y, z, stack);
 		despawn = stack.getItem().getEntityLifespan(stack, world);
 		setEntityInvulnerable(true);
 		setDefaultPickupDelay();
 	}
 
-	public EntityFastItem(EntityItem item) {
+	public EntityStaticItem(EntityItem item) {
 		this(item.world, item.posX, item.posY, item.posZ, item.getItem());
 	}
 
-	public EntityFastItem(World worldIn) {
+	public EntityStaticItem(World worldIn) {
 		super(worldIn);
 		setAgeToCreativeDespawnTime();
 		setEntityInvulnerable(true);

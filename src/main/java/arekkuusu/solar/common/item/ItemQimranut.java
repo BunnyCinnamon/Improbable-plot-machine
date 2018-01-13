@@ -10,6 +10,7 @@ package arekkuusu.solar.common.item;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.api.helper.NBTHelper.NBTType;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
@@ -45,6 +46,6 @@ public class ItemQimranut extends ItemBlockBaked implements IEntangledStack {
 
 	@Override
 	public void setKey(ItemStack stack, UUID uuid) { //Can override uuid directly
-		NBTHelper.getOrCreate(stack, QuantumHandler.NBT_TAG, NBTTagCompound::new).setUniqueId("key", uuid);
+		NBTHelper.<NBTTagCompound>getOrCreate(stack, QuantumHandler.NBT_TAG, NBTType.COMPOUND).setUniqueId("key", uuid);
 	}
 }

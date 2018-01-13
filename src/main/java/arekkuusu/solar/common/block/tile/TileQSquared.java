@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.common.entity.EntityFastItem;
+import arekkuusu.solar.common.entity.EntityTemporalItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,16 +36,17 @@ public class TileQSquared extends TileBase implements ITickable {
 
 	private void suspendNearbyItems() {
 		world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getPos()).grow(5), Entity::isEntityAlive)
-				.stream().filter(entity -> !(entity instanceof EntityFastItem)).forEach(this::replace);
+				.forEach(this::map);
 	}
 
-	private void replace(EntityItem entity) {
-		EntityFastItem item = new EntityFastItem(entity);
-		item.setNoDespawn();
-		item.setNoGravity(true);
-		item.setMotionRest(0.85F);
+	private void map(EntityItem entity) {
+		if(entity instanceof EntityTemporalItem) {
+			((EntityTemporalItem) entity).lifeTime = 10;
+			return;
+		}
+		EntityTemporalItem item = new EntityTemporalItem(entity);
 		item.setMotion(entity.motionX, entity.motionY, entity.motionZ);
-
+		item.setMotionRest(0.85F);
 		world.spawnEntity(item);
 		entity.setDead();
 	}

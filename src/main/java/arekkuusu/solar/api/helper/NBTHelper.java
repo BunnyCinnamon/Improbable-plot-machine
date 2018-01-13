@@ -9,14 +9,12 @@ package arekkuusu.solar.api.helper;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.*;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 /**
  * This class was created by Arekkuusu on 02/03/2017.
@@ -91,26 +89,34 @@ public final class NBTHelper {
 		return base;
 	}
 
-	@SuppressWarnings({"ConstantConditions", "unchecked"})
-	public static <T extends NBTBase> Optional<T> getNBT(ItemStack stack, String tag) {
-		return Optional.ofNullable((T) fixNBT(stack).getTag(tag));
+	public static <T extends NBTBase> Optional<T> getNBT(ItemStack stack, String tag, NBTType type) {
+		//noinspection unchecked
+		return hasTag(stack, tag, type) ? Optional.of((T) fixNBT(stack).getTag(tag)) : Optional.empty();
 	}
 
-	public static <T extends NBTBase> T getOrCreate(ItemStack stack, String tag, Supplier<T> supplier) {
-		return NBTHelper.<T>getNBT(stack, tag).orElseGet(() -> setNBT(stack, tag, supplier.get()));
+	public static Optional<NBTTagCompound> getNBTTag(ItemStack stack, String tag) {
+		return hasTag(stack, tag, NBTType.COMPOUND) ? Optional.of(fixNBT(stack).getCompoundTag(tag)) : Optional.empty();
+	}
+
+	public static Optional<NBTTagList> getNBTList(ItemStack stack, String tag) {
+		return hasTag(stack, tag, NBTType.COMPOUND) ? Optional.of(fixNBT(stack).getTagList(tag, NBTType.LIST.ordinal())) : Optional.empty();
+	}
+
+	public static <T extends NBTBase> T getOrCreate(ItemStack stack, String tag, NBTType type) {
+		//noinspection unchecked
+		return NBTHelper.<T>getNBT(stack, tag, type).orElseGet(() -> NBTHelper.setNBT(stack, tag, (T) NBTType.create(type)));
 	}
 
 	public static <T extends Entity> Optional<T> getEntityByUUID(Class<T> clazz, UUID uuid, World world) {
 		for (Entity entity : world.loadedEntityList) {
 			if (clazz.isInstance(entity) && entity.getUniqueID().equals(uuid)) return Optional.of(clazz.cast(entity));
 		}
-
 		return Optional.empty();
 	}
 
-	public static boolean hasTag(ItemStack stack, String tag, int type) {
+	public static boolean hasTag(ItemStack stack, String tag, NBTType type) {
 		NBTTagCompound tagCompound = stack.getTagCompound();
-		return tagCompound != null && tagCompound.hasKey(tag, type);
+		return tagCompound != null && tagCompound.hasKey(tag, type.ordinal());
 	}
 
 	public static boolean hasTag(ItemStack stack, String tag) {
@@ -122,6 +128,40 @@ public final class NBTHelper {
 		NBTTagCompound tagCompound = stack.getTagCompound();
 		if (tagCompound != null && tagCompound.hasKey(tag)) {
 			tagCompound.removeTag(tag);
+		}
+	}
+
+	public enum NBTType {
+		END,
+		BYTE,
+		SHORT,
+		INT,
+		LONG,
+		FLOAT,
+		DOUBLE,
+		BYTE_ARRAY,
+		STRING,
+		LIST,
+		COMPOUND,
+		INT_ARRAY,
+		LONG_ARRAY;
+
+		@Nullable
+		public static NBTBase create(NBTType type) {
+			switch(type.ordinal()) {
+				case 0:
+					return new NBTTagEnd();
+				case 2:
+					return new NBTTagShort();
+				case 8:
+					return new NBTTagString();
+				case 9:
+					return new NBTTagList();
+				case 10:
+					return new NBTTagCompound();
+				default:
+					return null;
+			}
 		}
 	}
 }

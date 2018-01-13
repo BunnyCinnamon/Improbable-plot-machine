@@ -8,11 +8,11 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.api.helper.NBTHelper.NBTType;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,7 +38,7 @@ public class ItemVacuumConveyor extends ItemBaseBlock {
 				.ifPresent(sub -> sub
 						.addI18("item_filter", TooltipBuilder.DARK_GRAY_ITALIC)
 						.add(": ", TooltipBuilder.DARK_GRAY_ITALIC)
-						.add(new ItemStack(NBTHelper.<NBTTagCompound>getNBT(stack, "lookup").orElse(new NBTTagCompound())).getDisplayName(), TooltipBuilder.GRAY_ITALIC)
+						.add(new ItemStack(NBTHelper.getOrCreate(stack, "lookup", NBTType.COMPOUND)).getDisplayName(), TooltipBuilder.GRAY_ITALIC)
 						.end()
 						.skip()
 				).build(tooltip);

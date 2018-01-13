@@ -115,34 +115,6 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 			GlStateManager.enableLighting();
 			GlStateManager.disableBlend();
 			GlStateManager.enableAlpha();
-
-			Entity entity = schrodinger.getTargetedEntity();
-			if(entity != null) { //FIXME: GLLine cannot be seen?
-				/*Vector3 from = Vector3.create(schrodinger.posX, schrodinger.posY + 0.25D, schrodinger.posZ);
-				Vector3 to = Vector3.create(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
-				//Render laser
-				GlStateManager.pushMatrix();
-				GlStateManager.enableAlpha();
-				GlStateManager.enableBlend();
-				GlStateManager.alphaFunc(516, 0.003921569F);
-				GlStateManager.disableCull();
-				GlStateManager.depthMask(false);
-				GLHelper.BLEND_SRC_ALPHA$ONE.blend();
-				Tessellator tessellator = Tessellator.getInstance();
-				BufferBuilder buff = tessellator.getBuffer();
-				buff.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-				buff.pos(from.x, from.y, from.z).color(r, g, b, 1F)
-						.endVertex();
-				buff.pos(to.x, to.y, to.z).color(r, g, b, 1F)
-						.endVertex();
-				tessellator.draw();
-				GlStateManager.enableCull();
-				GlStateManager.depthMask(true);
-				GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-				GlStateManager.disableBlend();
-				GlStateManager.alphaFunc(516, 0.1F);
-				GlStateManager.popMatrix();*/
-			}
 		}
 
 		@Override

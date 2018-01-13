@@ -9,7 +9,7 @@ package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
-import arekkuusu.solar.common.entity.EntityFastItem;
+import arekkuusu.solar.common.entity.EntityTemporalItem;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -150,44 +150,42 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		applyGravity(repulse, false);
 		IItemHandler handler = from.getKey();
 		ISidedInventory sidedInv = from.getValue();
-		Vector3 spawnPos = Vector3.create(getPos()).add(0.5D).offset(getFacingLazy(), 1);
+		Vector3 spawn = Vector3.create(getPos()).add(0.5D).offset(getFacingLazy(), 1);
 		for(int slot = 0; slot < handler.getSlots(); slot++) {
 			ItemStack inSlot = handler.getStackInSlot(slot);
 			if(!inSlot.isEmpty()
 					&& (lookup.isEmpty() || ItemHandlerHelper.canItemStacksStack(lookup, inSlot))
 					&& (sidedInv == null || sidedInv.canExtractItem(slot, inSlot, getFacingLazy()))) {
 				ItemStack out = handler.extractItem(slot, Integer.MAX_VALUE, false);
-				EntityFastItem fastItem = new EntityFastItem(world, spawnPos.x, spawnPos.y, spawnPos.z, out);
-				double speed = 0.1D + world.rand.nextDouble() * 0.25D;
-				Vector3 vec = Vector3.create(getFacingLazy())
-						.multiply(speed)
-						.rotatePitchX((world.rand.nextFloat() * 2 - 1) * 0.25F)
-						.rotatePitchZ((world.rand.nextFloat() * 2 - 1) * 0.25F);
-				fastItem.setMotion(vec.x, vec.y, vec.z);
-				fastItem.setNoGravity(true);
-				world.spawnEntity(fastItem);
+				EntityTemporalItem entity = new EntityTemporalItem(world, spawn.x, spawn.y, spawn.z, out);
+				impulseEntityItem(spawn, entity);
+				world.spawnEntity(entity);
 				break;
 			}
 		}
 	}
 
 	private void transposeItems() {
-		applyGravity(attractInverse, true);
-		EnumFacing facing = getFacingLazy();
-		Vector3 spawn = Vector3.create(getPos().offset(facing)).add(0.5D);
-		getItemsFiltered(new AxisAlignedBB(getPos()).grow(0.5D)).forEach(e -> {
-			Vector3 fuzzy = spawn.copy().add(Vector3.getRandomVec(0.2D));
-			double speed = 0.1D + world.rand.nextDouble() * 0.25D;
-			Vector3 vec = Vector3.create(facing)
-					.multiply(speed)
-					.rotatePitchX((world.rand.nextFloat() - 0.5F) * 0.25F)
-					.rotatePitchZ((world.rand.nextFloat() - 0.5F) * 0.25F);
-			e.setPositionAndUpdate(fuzzy.x, fuzzy.y, fuzzy.z);
-			e.motionX = vec.x;
-			e.motionY = vec.y;
-			e.motionZ = vec.z;
-		});
-		applyGravity(repulseInverse, false);
+		boolean impulse = false;
+		if(world.isAirBlock(pos.offset(getFacingLazy().getOpposite()))) {
+			applyGravity(attractInverse, true);
+			impulse = true;
+		}
+		if(world.isAirBlock(pos.offset(getFacingLazy()))) {
+			if(impulse) {
+				Vector3 spawn = Vector3.create(getPos().offset(getFacingLazy())).add(0.5D);
+				getItemsFiltered(new AxisAlignedBB(getPos()).grow(0.5D)).forEach(entity -> {
+					impulseEntityItem(spawn, entity);
+				});
+			}
+			applyGravity(repulseInverse, false);
+		}
+	}
+
+	private void impulseEntityItem(Vector3 pos, EntityTemporalItem item) {
+		Vector3 fuzzy = pos.copy().add(Vector3.getRandomVec(0.1D));
+		item.setPositionAndUpdate(fuzzy.x, fuzzy.y, fuzzy.z);
+		item.setMotion(0, 0, 0);
 	}
 
 	private void applyGravity(AxisAlignedBB box, boolean in) {
@@ -209,21 +207,21 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		});
 	}
 
-	private List<EntityItem> getItemsFiltered(AxisAlignedBB box) {
+	private List<EntityTemporalItem> getItemsFiltered(AxisAlignedBB box) {
 		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, box, Entity::isEntityAlive);
 		return list.stream().filter(entity -> {
 			ItemStack stack = entity.getItem();
 
 			return lookup.isEmpty() || ItemHandlerHelper.canItemStacksStack(lookup, stack);
-		}).map(this::replace).collect(Collectors.toList());
+		}).map(this::map).collect(Collectors.toList());
 	}
 
-	private EntityItem replace(EntityItem entity) {
-		if(entity instanceof EntityFastItem) return entity;
-		EntityFastItem item = new EntityFastItem(entity);
-		item.setAgeToCreativeDespawnTime();
-		item.setNoGravity(true);
-
+	private EntityTemporalItem map(EntityItem entity) {
+		if(entity instanceof EntityTemporalItem) {
+			((EntityTemporalItem) entity).lifeTime = 40;
+			return (EntityTemporalItem) entity;
+		}
+		EntityTemporalItem item = new EntityTemporalItem(entity);
 		world.spawnEntity(item);
 		entity.setDead();
 		return item;
@@ -267,11 +265,15 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		lookup = new ItemStack((NBTTagCompound) compound.getTag("lookup"));
+		if(compound.hasKey("lookup")) {
+			lookup = new ItemStack((NBTTagCompound) compound.getTag("lookup"));
+		} else lookup = ItemStack.EMPTY;
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setTag("lookup", lookup.writeToNBT(new NBTTagCompound()));
+		if(!lookup.isEmpty()) {
+			compound.setTag("lookup", lookup.writeToNBT(new NBTTagCompound()));
+		}
 	}
 }
