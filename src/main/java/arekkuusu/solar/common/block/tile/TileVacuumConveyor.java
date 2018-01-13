@@ -47,7 +47,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 			.put(EnumFacing.EAST, Vector3.create(0.1D, 0.5D, 0.5D))
 			.put(EnumFacing.WEST, Vector3.create(0.9D, 0.5D, 0.5D))
 			.build();
-	private Pair<IItemHandler, ISidedInventory> to,from;
+	private Pair<IItemHandler, ISidedInventory> to, from;
 	private ItemStack lookup = ItemStack.EMPTY;
 	private AxisAlignedBB attract, repulse;
 	private AxisAlignedBB attractInverse, repulseInverse;
