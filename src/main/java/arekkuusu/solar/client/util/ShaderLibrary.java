@@ -7,17 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util;
 
-import arekkuusu.solar.client.util.ResourceLibrary.AssetLocation;
-import arekkuusu.solar.client.util.ResourceLibrary.ShaderLocation;
+import arekkuusu.solar.client.util.resource.ShaderManager;
+import arekkuusu.solar.client.util.resource.shader.ShaderResource;
 import arekkuusu.solar.common.Solar;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.client.shader.ShaderLinkHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.io.IOException;
 
 /**
  * Created by <Arekkuusu> on 08/10/2017.
@@ -26,26 +20,9 @@ import java.io.IOException;
 @SideOnly(Side.CLIENT)
 public final class ShaderLibrary {
 
-	@SuppressWarnings("ConstantConditions")
-	private static ShaderGroup loadShader(String name) {
-		if(ShaderLinkHelper.getStaticShaderLinkHelper() == null) {
-			ShaderLinkHelper.setNewStaticShaderLinkHelper();
-		}
+	public static final ShaderResource ALPHA = ShaderManager.load("alpha", "alpha");
 
-		ResourceLocation location = ResourceLibrary.getLocation(AssetLocation.SHADERS, ShaderLocation.POST, name, ".json");
-		Minecraft mc = Minecraft.getMinecraft();
-
-		ShaderGroup shader = null;
-		try {
-			shader = new ShaderGroup(mc.renderEngine, mc.getResourceManager(), mc.getFramebuffer(), location);
-			shader.createBindFramebuffers(mc.displayWidth, mc.displayHeight);
-		} catch(IOException e) {
-			Solar.LOG.fatal("[ShaderLibrary] Failed to load shader: " + location.toString());
-			e.printStackTrace();
-		}
-
-		return shader;
+	public static void init() {
+		Solar.LOG.info("[SOMEBODY TOUCHA MY SPAGUET!]");
 	}
-
-	public static void init() {}
 }

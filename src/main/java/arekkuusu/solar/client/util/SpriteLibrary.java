@@ -7,9 +7,9 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util;
 
-import arekkuusu.solar.client.util.resource.FrameSpriteResource;
-import arekkuusu.solar.client.util.resource.SpriteLoader;
-import arekkuusu.solar.client.util.resource.SpriteResource;
+import arekkuusu.solar.client.util.resource.SpriteManager;
+import arekkuusu.solar.client.util.resource.sprite.FrameSpriteResource;
+import arekkuusu.solar.client.util.resource.sprite.SpriteResource;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,18 +23,18 @@ import static arekkuusu.solar.client.util.ResourceLibrary.TextureLocation.*;
 public final class SpriteLibrary {
 
 	//Particle
-	public static final FrameSpriteResource QUORN_PARTICLE = SpriteLoader.load(EFFECT, "quorn_particle", 7, 1);
-	public static final SpriteResource NEUTRON_PARTICLE = SpriteLoader.load(EFFECT, "neutron_particle");
-	public static final SpriteResource LIGHT_PARTICLE = SpriteLoader.load(EFFECT, "light_particle");
-	public static final SpriteResource DARK_PARTICLE = SpriteLoader.load(EFFECT, "dark_particle");
-	public static final SpriteResource CHARGED_ICE = SpriteLoader.load(EFFECT, "charged_ice");
-	public static final FrameSpriteResource SQUARED = SpriteLoader.load(EFFECT, "squared", 11, 1);
+	public static final FrameSpriteResource QUORN_PARTICLE = SpriteManager.load(EFFECT, "quorn_particle", 7, 1);
+	public static final SpriteResource NEUTRON_PARTICLE = SpriteManager.load(EFFECT, "neutron_particle");
+	public static final SpriteResource LIGHT_PARTICLE = SpriteManager.load(EFFECT, "light_particle");
+	public static final SpriteResource DARK_PARTICLE = SpriteManager.load(EFFECT, "dark_particle");
+	public static final SpriteResource CHARGED_ICE = SpriteManager.load(EFFECT, "charged_ice");
+	public static final FrameSpriteResource SQUARED = SpriteManager.load(EFFECT, "squared", 11, 1);
 	//Other
-	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteLoader.load(MODEL, "eye_of_schrodinger_layer");
-	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteLoader.load(BLOCKS, "quantum_mirror", 9, 1);
-	public static final SpriteResource Q_SQUARED = SpriteLoader.load(BLOCKS, "q_squared");
-	public static final FrameSpriteResource GRAVITY_INHIBITOR_OVERLAY = SpriteLoader.load(BLOCKS, "gravity_inhibitor_overlay", 4, 2);
-	public static final SpriteResource GRAVITY_INHIBITOR = SpriteLoader.load(BLOCKS, "gravity_inhibitor");
+	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteManager.load(MODEL, "eye_of_schrodinger_layer");
+	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteManager.load(BLOCKS, "quantum_mirror", 9, 1);
+	public static final SpriteResource Q_SQUARED = SpriteManager.load(BLOCKS, "q_squared");
+	public static final FrameSpriteResource GRAVITY_INHIBITOR_OVERLAY = SpriteManager.load(BLOCKS, "gravity_inhibitor_overlay", 4, 2);
+	public static final SpriteResource GRAVITY_INHIBITOR = SpriteManager.load(BLOCKS, "gravity_inhibitor");
 
 	public static void init() {}
 }

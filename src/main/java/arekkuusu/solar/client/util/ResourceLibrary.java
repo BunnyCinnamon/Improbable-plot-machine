@@ -8,17 +8,18 @@
 package arekkuusu.solar.client.util;
 
 import arekkuusu.solar.api.state.MoonPhase;
-import arekkuusu.solar.client.util.resource.Location;
-import arekkuusu.solar.client.util.resource.ResourceUtil;
+import arekkuusu.solar.client.util.resource.sprite.Location;
 import arekkuusu.solar.common.lib.LibMod;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Set;
+import java.util.function.Function;
 
 import static arekkuusu.solar.client.util.ResourceLibrary.TextureLocation.BLOCKS;
 import static arekkuusu.solar.client.util.ResourceLibrary.TextureLocation.MODEL;
@@ -35,11 +36,11 @@ public final class ResourceLibrary {
 	//Textures
 	public static final ResourceLocation TRANSPARENT = getAtlas(BLOCKS, "transparent");
 	public static final ResourceLocation MONOLITHIC = getAtlas(BLOCKS, "monolithic/base");
-	public static final ResourceLocation[] MONOLITHIC_OVERLAY = ResourceUtil.from(16, "monolithic/glyph_overlay_", name ->
+	public static final ResourceLocation[] MONOLITHIC_OVERLAY = from(16, "monolithic/glyph_overlay_", name ->
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation GRAVITY_HOPPER = getAtlas(BLOCKS, "gravity_hopper/side");
-	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = ResourceUtil.from(6, "gravity_hopper/glyph_", name ->
+	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = from(6, "gravity_hopper/glyph_", name ->
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");
@@ -58,11 +59,10 @@ public final class ResourceLibrary {
 	public static final ResourceLocation QIMRANUT_BASE_ = getAtlas(BLOCKS, "qimranut/base_");
 	public static final ResourceLocation QIMRANUT_OVERLAY_FRONT = getAtlas(BLOCKS, "qimranut/overlay_front");
 	public static final ResourceLocation QIMRANUT_OVERLAY_BACK = getAtlas(BLOCKS, "qimranut/overlay_back");
-	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = ResourceUtil.from(MoonPhase.class, "moon_phase/", name ->
+	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = from(MoonPhase.class, "moon_phase/", name ->
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation VACUUM_CONVEYOR = getAtlas(BLOCKS, "vacuum_conveyor");
-
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
 	public static final ResourceLocation THEOREMA = getTexture(BLOCKS, "theorema");
 
@@ -91,6 +91,23 @@ public final class ResourceLibrary {
 
 	public static ResourceLocation getSimpleLocation(String name) {
 		return getLocation(null, null, name, "");
+	}
+
+	public static ResourceLocation[] from(int amount, String name, Function<String, ResourceLocation> function) {
+		ResourceLocation[] locations = new ResourceLocation[amount];
+		for(int i = 0; i < amount; i++) {
+			locations[i] = function.apply(name + i);
+		}
+		return locations;
+	}
+
+	public static <T extends Enum<T> & IStringSerializable> ImmutableMap<T, ResourceLocation> from(Class<T> clazz, String name, Function<String, ResourceLocation> function) {
+		ImmutableMap.Builder<T, ResourceLocation> builder = ImmutableMap.builder();
+		T[] enums = clazz.getEnumConstants();
+		for(T enu : enums) {
+			builder.put(enu, function.apply(name + enu.getName()));
+		}
+		return builder.build();
 	}
 
 	public enum ModelLocation implements Location {

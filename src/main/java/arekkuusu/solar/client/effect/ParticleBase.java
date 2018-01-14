@@ -8,8 +8,8 @@
 package arekkuusu.solar.client.effect;
 
 import arekkuusu.solar.api.helper.Vector3;
-import arekkuusu.solar.client.util.resource.FrameSpriteResource;
-import arekkuusu.solar.client.util.resource.SpriteResource;
+import arekkuusu.solar.client.util.resource.sprite.FrameSpriteResource;
+import arekkuusu.solar.client.util.resource.sprite.SpriteResource;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;

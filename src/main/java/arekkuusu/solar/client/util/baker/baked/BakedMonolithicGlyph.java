@@ -5,8 +5,9 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.render.baked;
+package arekkuusu.solar.client.util.baker.baked;
 
+import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -27,15 +28,17 @@ import java.util.function.Function;
  * the MIT license.
  */
 @SideOnly(Side.CLIENT)
-public class BakedSchrodingerGlyph extends BakedBrightness {
+public class BakedMonolithicGlyph extends BakedBrightness {
 
-	private final TextureAtlasSprite overlay;
+	private final TextureAtlasSprite[] overlay = new TextureAtlasSprite[16];
 	private final TextureAtlasSprite base;
 
-	public BakedSchrodingerGlyph(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
+	public BakedMonolithicGlyph(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
 		super(format);
-		this.overlay = getter.apply(ResourceLibrary.SCHRODINGER_GLYPH);
-		this.base = getter.apply(ResourceLibrary.PRIMAL_STONE);
+		for(int i = 0; i < 16; i++) {
+			this.overlay[i] = getter.apply(ResourceLibrary.MONOLITHIC_OVERLAY[i]);
+		}
+		this.base = getter.apply(ResourceLibrary.MONOLITHIC);
 	}
 
 	@Override
@@ -53,11 +56,12 @@ public class BakedSchrodingerGlyph extends BakedBrightness {
 				break;
 			case CUTOUT_MIPPED:
 				//Overlay
+				int glyph = state.getValue(State.GLYPH);
 				quads.addAll(QuadBuilder.withFormat(format)
 						.setFrom(0, 0, 0)
 						.setTo(16, 16, 16)
 						.setHasBrightness(true)
-						.addAll(overlay)
+						.addAll(overlay[glyph])
 						.bake()
 				);
 				break;

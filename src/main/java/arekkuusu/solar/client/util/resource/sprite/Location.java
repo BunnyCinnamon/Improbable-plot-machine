@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.util.resource;
+package arekkuusu.solar.client.util.resource.sprite;
 
 /**
  * Created by <Arekkuusu> on 05/07/2017.

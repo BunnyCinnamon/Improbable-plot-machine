@@ -12,7 +12,7 @@ import arekkuusu.solar.api.sound.SolarSounds;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.effect.ParticleUtil;
-import arekkuusu.solar.client.render.baked.BakedElectron;
+import arekkuusu.solar.client.util.baker.baked.BakedElectron;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileElectron;

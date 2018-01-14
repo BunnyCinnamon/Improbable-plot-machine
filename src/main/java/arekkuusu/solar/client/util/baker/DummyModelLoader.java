@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker;
 
-import arekkuusu.solar.client.render.baked.model.DummyModel;
+import arekkuusu.solar.client.util.baker.model.DummyModel;
 import com.google.common.collect.Maps;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;

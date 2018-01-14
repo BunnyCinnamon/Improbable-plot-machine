@@ -9,22 +9,25 @@ package arekkuusu.solar.client.proxy;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.client.render.ModRenders;
-import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.baker.DummyModelLoader;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.ParticleRenderer;
-import arekkuusu.solar.client.util.resource.SpriteLoader;
+import arekkuusu.solar.client.util.helper.RenderHelper;
+import arekkuusu.solar.client.util.resource.ShaderManager;
+import arekkuusu.solar.client.util.resource.SpriteManager;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.proxy.IProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -43,6 +46,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ClientProxy implements IProxy {
 
 	public static final ParticleRenderer PARTICLE_RENDERER = new ParticleRenderer();
+	private static boolean isOptifineInstalled;
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
@@ -57,8 +61,8 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
-				.registerReloadListener(SpriteLoader.INSTANCE);
+		registerResourceReloadListener(SpriteManager.INSTANCE);
+		registerResourceReloadListener(ShaderManager.INSTANCE);
 		ModelLoaderRegistry.registerLoader(new DummyModelLoader());
 		ModRenders.preInit();
 	}
@@ -67,7 +71,7 @@ public class ClientProxy implements IProxy {
 	public void init(FMLInitializationEvent event) {
 		SpriteLibrary.init();
 		ShaderLibrary.init();
-		RenderBakery.bake();
+		RenderHelper.bake();
 		ModRenders.init();
 	}
 
@@ -76,5 +80,18 @@ public class ClientProxy implements IProxy {
 		SolarApi.getRelativityPowerMap().clear();
 		SolarApi.getRelativityMap().clear();
 		SolarApi.setQuantumData(null);
+	}
+
+	public static void registerResourceReloadListener(IResourceManagerReloadListener listener) {
+		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
+				.registerReloadListener(listener);
+	}
+
+	public static boolean isOptifineInstalled() {
+		if(!isOptifineInstalled) {
+			isOptifineInstalled = Loader.isModLoaded("optifine");
+		}
+
+		return isOptifineInstalled;
 	}
 }

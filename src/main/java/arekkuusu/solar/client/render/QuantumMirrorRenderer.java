@@ -8,9 +8,9 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
-import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
+import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -55,7 +55,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 					GlStateManager.translate(x + 0.5, y + 0.38, z + 0.5);
 
 					GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
-					RenderBakery.renderItemStack(stack);
+					RenderHelper.renderItemStack(stack);
 
 					GlStateManager.popMatrix();
 				}
@@ -80,7 +80,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 			GlStateManager.translate(x + 0.5D, y + 0.38D, z + 0.5D);
 
 			GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
-			RenderBakery.renderItemStack(stack);
+			RenderHelper.renderItemStack(stack);
 
 			GlStateManager.popMatrix();
 		}

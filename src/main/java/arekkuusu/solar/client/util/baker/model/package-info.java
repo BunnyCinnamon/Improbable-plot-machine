@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package arekkuusu.solar.client.render.baked.model;
+package arekkuusu.solar.client.util.baker.model;
 
 import mcp.MethodsReturnNonnullByDefault;
 

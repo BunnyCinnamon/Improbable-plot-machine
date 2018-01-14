@@ -9,7 +9,7 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.client.render.baked.BakedCosmicResonator;
+import arekkuusu.solar.client.util.baker.baked.BakedCosmicResonator;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileCelestialResonator;

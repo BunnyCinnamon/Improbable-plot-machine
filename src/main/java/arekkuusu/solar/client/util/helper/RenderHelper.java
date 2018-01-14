@@ -5,12 +5,12 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.util;
+package arekkuusu.solar.client.util.helper;
 
-import arekkuusu.solar.client.render.baked.model.Cube;
-import arekkuusu.solar.client.util.helper.BlockBaker;
+import arekkuusu.solar.client.util.ShaderLibrary;
+import arekkuusu.solar.client.util.baker.BlockBaker;
+import arekkuusu.solar.client.util.baker.model.Cube;
 import arekkuusu.solar.common.Solar;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -38,7 +37,7 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("SameParameterValue")
 @SideOnly(Side.CLIENT)
-public final class RenderBakery {
+public final class RenderHelper {
 
 	private static final Random BEAM_RAND = new Random();
 	private static int sphere;
@@ -183,30 +182,29 @@ public final class RenderBakery {
 		render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 	}
 
-	public static void renderItemBlock(BlockPos pos, Item item, double partialTicks) {
-		GlStateManager.pushMatrix();
-		GlStateManager.enableBlend();
-		GlStateManager.enableAlpha();
-		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		IBlockState state = Block.getBlockFromItem(item).getDefaultState();
-
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buff = tessellator.getBuffer();
+	public static void renderGhostBlock(BlockPos pos, IBlockState state) {
 		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-		assert entity != null;
-		double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
-		double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
-		double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
-		buff.setTranslation(-d0, -d1, -d2);
-		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-		BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
-		renderer.getBlockModelRenderer().renderModel(entity.world, renderer.getModelForState(state), state, pos, buff, false);
-		tessellator.draw();
-		buff.setTranslation(0, 0, 0);
+		if(entity != null) {
+			double x = Minecraft.getMinecraft().getRenderManager().viewerPosX;
+			double y = Minecraft.getMinecraft().getRenderManager().viewerPosY;
+			double z = Minecraft.getMinecraft().getRenderManager().viewerPosZ;
 
-		GlStateManager.disableAlpha();
-		GlStateManager.disableBlend();
-		GlStateManager.popMatrix();
+			GlStateManager.pushMatrix();
+			GlStateManager.enableBlend();
+			ShaderLibrary.ALPHA.begin();
+			ShaderLibrary.ALPHA.setF("alpha", 0.4F);
+			GLHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
+			Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+			GlStateManager.translate(-x, -y, -z);
+			GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ() + 1);
+			BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
+			renderer.renderBlockBrightness(state, 1F);
+
+			ShaderLibrary.ALPHA.end();
+			GlStateManager.disableBlend();
+			GlStateManager.popMatrix();
+		}
 	}
 
 	public static void makeUpDownTranslation(float tick, float max, float speed, float angle) {

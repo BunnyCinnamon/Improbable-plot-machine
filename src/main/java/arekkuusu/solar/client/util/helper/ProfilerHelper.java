@@ -14,7 +14,7 @@ import net.minecraft.profiler.Profiler;
  * Created by <Arekkuusu> on 30/11/2017.
  * It's distributed as part of Solar.
  */
-public class ProfilerHelper {
+public final class ProfilerHelper {
 
 	public static final Profiler profiler = Minecraft.getMinecraft().mcProfiler;
 

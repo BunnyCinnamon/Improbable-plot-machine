@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.helper.BlockBaker;
+import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
 import net.minecraft.client.Minecraft;
@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
+
+import static arekkuusu.solar.client.util.baker.BlockBaker.*;
 
 /**
  * Created by <Snack> on 07/01/2018.
@@ -45,18 +47,18 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 		}
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
-		BlockBaker.render(BlockBaker.VACUUM_TOP);
+		BlockBaker.render(VACUUM_TOP);
 		GlStateManager.popMatrix();
 		//Middle
 		GlStateManager.disableLighting();
 		GLHelper.lightMap(255F, 255F);
-		BlockBaker.render(BlockBaker.VACUUM_PIECE);
+		BlockBaker.render(VACUUM_PIECE);
 		GLHelper.lightMap(prevU, prevV);
 		GlStateManager.enableLighting();
 		//Bottom
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, -1F, 0F);
-		BlockBaker.render(BlockBaker.VACUUM_BOTTOM);
+		BlockBaker.render(VACUUM_BOTTOM);
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 	}

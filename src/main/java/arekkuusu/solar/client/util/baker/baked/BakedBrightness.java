@@ -5,8 +5,9 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.render.baked;
+package arekkuusu.solar.client.util.baker.baked;
 
+import arekkuusu.solar.client.proxy.ClientProxy;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -28,17 +29,19 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public abstract class BakedBrightness implements IBakedModel {
 
-	//private static final Map<IBlockState, List<BakedQuad>> BAKED_CACHE = new HashMap<>();
 	protected final VertexFormat format;
 
 	public BakedBrightness(VertexFormat format) {
-		this.format = new VertexFormat(format).addElement(DefaultVertexFormats.TEX_2S);
+		this.format = new VertexFormat(format);
+		if(!ClientProxy.isOptifineInstalled()) {
+			this.format.addElement(DefaultVertexFormats.TEX_2S);
+		}
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing facing, long rand) {
 		if(state == null || facing != null) return Collections.emptyList();
-		return getQuads(state); //BAKED_CACHE.computeIfAbsent(state, this::getQuads);
+		return getQuads(state);
 	}
 
 	protected abstract List<BakedQuad> getQuads(IBlockState state);

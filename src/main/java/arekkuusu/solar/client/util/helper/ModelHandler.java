@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SuppressWarnings("ConstantConditions")
 @SideOnly(Side.CLIENT)
-public class ModelHandler {
+public final class ModelHandler {
 
 	public static void registerModels() {
 		for(Block block : Block.REGISTRY) {

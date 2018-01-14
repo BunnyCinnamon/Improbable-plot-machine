@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.util.resource;
+package arekkuusu.solar.client.util.resource.sprite;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;

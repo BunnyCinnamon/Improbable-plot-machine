@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.tool.FixedMaterial;
-import arekkuusu.solar.client.render.baked.BakedGravityHopper;
+import arekkuusu.solar.client.util.baker.baked.BakedGravityHopper;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileGravityHopper;

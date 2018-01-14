@@ -7,9 +7,9 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.RenderBakery;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
+import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileGravityInhibitor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -51,7 +51,7 @@ public class GravityInhibitorRenderer extends SpecialModelRenderer<TileGravityIn
 
 			double uvMin = 0.3125D;
 			SpriteLibrary.GRAVITY_INHIBITOR.bindManager();
-			RenderBakery.renderCube(size, uvMin, 1 - uvMin, uvMin, 1 - uvMin);
+			RenderHelper.renderCube(size, uvMin, 1 - uvMin, uvMin, 1 - uvMin);
 
 			SpriteLibrary.GRAVITY_INHIBITOR_OVERLAY.bindManager();
 			Tuple<Double, Double> uv = SpriteLibrary.GRAVITY_INHIBITOR_OVERLAY.getUVFrame((int) ((float) tick * 0.45F));
@@ -69,7 +69,7 @@ public class GravityInhibitorRenderer extends SpecialModelRenderer<TileGravityIn
 			final float prevV = OpenGlHelper.lastBrightnessY;
 			GlStateManager.disableLighting();
 			GLHelper.lightMap(255F, 255F);
-			RenderBakery.renderCube(size, uMin, uMax, vMin, vMax);
+			RenderHelper.renderCube(size, uMin, uMax, vMin, vMax);
 			GLHelper.lightMap(prevU, prevV);
 			GlStateManager.enableLighting();
 		}

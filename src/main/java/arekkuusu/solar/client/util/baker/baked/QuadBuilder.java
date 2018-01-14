@@ -5,9 +5,10 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.render.baked;
+package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.client.proxy.ClientProxy;
 import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -288,7 +289,7 @@ public class QuadBuilder {
 					builder.put(e, 1F, 1F, 1F, 1F);
 					break;
 				case UV:
-					if(format.getElement(e).getIndex() == 1) {
+					if(!ClientProxy.isOptifineInstalled() && format.getElement(e).getIndex() == 1) {
 						if(hasBrightness) {
 							builder.put(e, 1F, 1F);
 						} else {
@@ -302,7 +303,7 @@ public class QuadBuilder {
 						break;
 					}
 				case NORMAL:
-					if(hasBrightness) {
+					if(!ClientProxy.isOptifineInstalled() && hasBrightness) {
 						builder.put(e, 0F, 1F, 0F);
 					} else {
 						builder.put(e, (float) normal.x, (float) normal.y, (float) normal.z);

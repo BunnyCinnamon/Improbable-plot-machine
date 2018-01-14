@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.render.baked;
+package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.client.util.ResourceLibrary;

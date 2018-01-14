@@ -5,8 +5,9 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.util.resource;
+package arekkuusu.solar.client.util.resource.sprite;
 
+import arekkuusu.solar.client.util.resource.SpriteManager;
 import arekkuusu.solar.common.Solar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -38,17 +39,17 @@ public class SpriteResource {
 	}
 
 	public void bind() {
-		if(texture == null || SpriteLoader.reloading) return;
+		if(texture == null || SpriteManager.isReloading()) return;
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getGlTextureId());
 	}
 
 	public void bindManager() {
-		if(texture == null || SpriteLoader.reloading) return;
+		if(texture == null || SpriteManager.isReloading()) return;
 		GlStateManager.bindTexture(texture.getGlTextureId());
 	}
 
 	public void reload() {
-		if(!SpriteLoader.reloading) return;
+		if(!SpriteManager.isReloading()) return;
 		unLoad();
 		load();
 	}

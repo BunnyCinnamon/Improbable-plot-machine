@@ -75,13 +75,13 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	public void update() {
 		if(!world.isRemote) {
 			updateInventoryAccess();
-			if(to.getKey() != null && world.isAirBlock(pos.offset(getFacingLazy().getOpposite()))) {
+			boolean isAir = false;
+			if(to.getKey() != null && (isAir = world.isAirBlock(pos.offset(getFacingLazy().getOpposite())))) {
 				collectItems();
-			} else if(from.getKey() != null && world.isAirBlock(pos.offset(getFacingLazy()))) {
+			} else if(from.getKey() != null && (isAir = world.isAirBlock(pos.offset(getFacingLazy())))) {
 				dropItems();
-			} else {
-				transposeItems();
-			}
+			} else //noinspection ConstantConditions
+				if(isAir) transposeItems();
 		} else spawnParticles();
 	}
 
@@ -237,7 +237,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		if(world.isBlockLoaded(target, false)) {
 			TileEntity tile = world.getTileEntity(target);
 			if(tile != null) {
-				IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+				IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite());
 				if(handler == null) handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 				return Pair.of(handler, tile instanceof ISidedInventory ? (ISidedInventory) tile : null);
 			}

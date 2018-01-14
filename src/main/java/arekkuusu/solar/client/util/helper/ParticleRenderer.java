@@ -29,7 +29,7 @@ import java.util.List;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class ParticleRenderer {
+public final class ParticleRenderer {
 
 	private final List<ParticleBase> particles = new ArrayList<>();
 
