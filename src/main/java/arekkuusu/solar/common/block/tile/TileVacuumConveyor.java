@@ -147,6 +147,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	private void dropItems() {
+		if(world.getTotalWorldTime() % 10 != 0) return;
 		applyGravity(repulse, false);
 		IItemHandler handler = from.getKey();
 		ISidedInventory sidedInv = from.getValue();
