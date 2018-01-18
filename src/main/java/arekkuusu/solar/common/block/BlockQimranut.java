@@ -37,8 +37,6 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-import static net.minecraft.block.BlockDirectional.FACING;
-
 /**
  * Created by <Arekkuusu> on 23/12/2017.
  * It's distributed as part of Solar.
@@ -122,12 +120,12 @@ public class BlockQimranut extends BlockBase {
 
 	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+		return state.withProperty(BlockDirectional.FACING, rot.rotate(state.getValue(BlockDirectional.FACING)));
 	}
 
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirror) {
-		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
+		return state.withRotation(mirror.toRotation(state.getValue(BlockDirectional.FACING)));
 	}
 
 	@Override

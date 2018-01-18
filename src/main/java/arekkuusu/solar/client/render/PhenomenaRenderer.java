@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class TilePhenomenaRenderer extends AnimationTESR<TilePhenomena> {
+public class PhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 
 	@Override
 	public void renderTileEntityFast(@Nonnull TilePhenomena phenomena, double x, double y, double z, float partialTick, int breakStage, float partial, @Nullable BufferBuilder renderer) {

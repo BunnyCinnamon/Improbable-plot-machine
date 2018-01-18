@@ -36,4 +36,8 @@ public class LibNames {
 	public static final String ASH = "ash";
 	public static final String PLASMON = "plasmon";
 	public static final String VACUUM_CONVEYOR = "vacuum_conveyor";
+	public static final String MECHANICAL_TRANSLOCATOR = "mechanical_translocator";
+	public static final String ALTERNATOR = "alternator";
+	public static final String QELAION = "qelaion";
+	public static final String POCKET_STAR = "pocket_star";
 }

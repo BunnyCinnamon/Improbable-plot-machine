@@ -64,7 +64,6 @@ public final class ResourceLibrary {
 	);
 	public static final ResourceLocation VACUUM_CONVEYOR = getAtlas(BLOCKS, "vacuum_conveyor");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
-	public static final ResourceLocation THEOREMA = getTexture(BLOCKS, "theorema");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
 		StringBuilder builder = new StringBuilder();

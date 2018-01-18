@@ -74,15 +74,20 @@ public abstract class TileRelativeBase extends TileBase implements IRelativeTile
 
 	@Override
 	public void setKey(@Nullable UUID key) {
-		this.key = key;
 		remove();
+		this.key = key;
 		add();
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
 		if(compound.hasUniqueId("key")) {
-			key = compound.getUniqueId("key");
+			UUID key = compound.getUniqueId("key");
+			if(world != null) {
+				remove();
+				this.key = key;
+				add();
+			} else this.key = key;
 		}
 	}
 

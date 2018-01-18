@@ -8,31 +8,27 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
-import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedBlinker;
-import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.common.block.tile.TileBlinker;
+import arekkuusu.solar.common.block.tile.TileMechanicalTranslocator;
 import arekkuusu.solar.common.lib.LibNames;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -40,45 +36,35 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * Created by <Arekkuusu> on 03/09/2017.
+ * Created by <Snack> on 16/01/2018.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockBlinker extends BlockBase {
+public class BlockMechanicalTranslocator extends BlockBase {
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.125, 0.9375, 0.125, 0.875, 1, 0.875))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.0625, 0.875))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0.125, 0, 0.875, 0.875, 0.0625))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0.125, 0.9375, 0.875, 0.875, 1))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.9375, 0.125, 0.875, 1, 0.875, 0.125))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0.125, 0.125, 0.0625, 0.875, 0.875))
-			.build();
-
-	public BlockBlinker()  {
-		super(LibNames.BLINKER, FixedMaterial.BREAK);
+	public BlockMechanicalTranslocator() {
+		super(LibNames.MECHANICAL_TRANSLOCATOR, FixedMaterial.BREAK);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(State.ACTIVE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
-		setLightLevel(0.2F);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
-			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
+			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> {
 				IEntangledStack entangled = (IEntangledStack) stack.getItem();
 				if(!entangled.getKey(stack).isPresent()) {
 					entangled.setKey(stack, UUID.randomUUID());
 				}
-				entangled.getKey(stack).ifPresent(blinker::setKey);
+				entangled.getKey(stack).ifPresent(tile::setKey);
 			});
 		}
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
+		getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> {
 			ItemStack stack = getItem(world, pos, state);
 			spawnAsEntity(world, pos, stack);
 		});
@@ -87,11 +73,11 @@ public class BlockBlinker extends BlockBase {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileBlinker> optional = getTile(TileBlinker.class, world, pos);
+		Optional<TileMechanicalTranslocator> optional = getTile(TileMechanicalTranslocator.class, world, pos);
 		if(optional.isPresent()) {
-			TileBlinker blinker = optional.get();
+			TileMechanicalTranslocator tile = optional.get();
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			blinker.getKey().ifPresent(uuid -> {
+			tile.getKey().ifPresent(uuid -> {
 				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
 			});
 			return stack;
@@ -102,48 +88,38 @@ public class BlockBlinker extends BlockBase {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this && !pos.offset(state.getValue(BlockDirectional.FACING)).equals(fromPos)) {
-			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				boolean wasPowered = RelativityHandler.isPowered(blinker);
-				boolean isPowered = world.isBlockPowered(pos);
-				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-					RelativityHandler.setPower(blinker, blinker.getRedstonePower());
-				}
-			});
+			getTile(TileMechanicalTranslocator.class, world, pos)
+					.filter(TileMechanicalTranslocator::isTransferable)
+					.ifPresent(tile -> {
+						boolean wasPowered = tile.isPowered();
+						boolean isPowered = world.isBlockPowered(pos);
+						if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
+							tile.setPowered(isPowered);
+							if(isPowered) {
+								tile.translocate();
+							}
+						}
+					});
 		}
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		getTile(TileBlinker.class, world, pos).ifPresent(tile ->
-				world.setBlockState(pos, state.withProperty(State.ACTIVE, RelativityHandler.isPowered(tile)))
-		);
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
 	}
 
 	@Override
-	public boolean canProvidePower(IBlockState state) {
-		return true;
-	}
-
-	@Override
-	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
-		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		return facing.getOpposite() != side && facing != side;
-	}
-
-	@Override
-	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return state.getValue(BlockDirectional.FACING).getOpposite() == side
-				? getTile(TileBlinker.class, world, pos).map(RelativityHandler::getPower).orElse(0) : 0;
-	}
-
-	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-		return super.getStrongPower(blockState, blockAccess, pos, side);
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		boolean success = state.getValue(BlockDirectional.FACING).getOpposite() == facing && player.getHeldItem(hand).isEmpty();
+		if(!world.isRemote && success) {
+			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> tile.setTransferable(!tile.isTransferable()));
+		}
+		return success;
 	}
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(State.ACTIVE, false);
+		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(State.ACTIVE, true);
 	}
 
 	@Override
@@ -177,6 +153,11 @@ public class BlockBlinker extends BlockBase {
 	}
 
 	@Override
+	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+		return super.rotateBlock(world, pos, axis);
+	}
+
+	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
 		return state.getValue(BlockDirectional.FACING) == facing ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
 	}
@@ -192,17 +173,6 @@ public class BlockBlinker extends BlockBase {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
-	}
-
-	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
-	}
-
-	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
@@ -210,13 +180,6 @@ public class BlockBlinker extends BlockBase {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileBlinker();
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedBlinker::new);
-		ModelHandler.registerModel(this, 0, "");
+		return new TileMechanicalTranslocator();
 	}
 }

@@ -35,6 +35,7 @@ public final class SpriteLibrary {
 	public static final SpriteResource Q_SQUARED = SpriteManager.load(BLOCKS, "q_squared");
 	public static final FrameSpriteResource GRAVITY_INHIBITOR_OVERLAY = SpriteManager.load(BLOCKS, "gravity_inhibitor_overlay", 4, 2);
 	public static final SpriteResource GRAVITY_INHIBITOR = SpriteManager.load(BLOCKS, "gravity_inhibitor");
+	public static final SpriteResource THEOREMA = SpriteManager.load(EFFECT, "theorema");
 
 	public static void init() {}
 }
