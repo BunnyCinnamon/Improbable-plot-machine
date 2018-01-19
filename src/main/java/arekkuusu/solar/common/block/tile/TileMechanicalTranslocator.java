@@ -90,7 +90,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 							if(from.getAxis().isVertical()) {
 								actual = rotateXY(actual, from.getAxisDirection(), to);
 							} else {
-								actual = rotateXY(actual, to.getOpposite().getAxisDirection(), from);
+								actual = rotateXY(actual, to.getOpposite().getAxisDirection(), from.getOpposite());
 							}
 						} else actual = actual.getOpposite();
 					}
@@ -112,11 +112,11 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 				switch(b) {
 					case NORTH:
 					case SOUTH:
-						actual = rotateX(actual, b == NORTH);
+						actual = rotateX(actual, b == SOUTH);
 						break;
 					case WEST:
 					case EAST:
-						actual = rotateZ(actual, b == WEST);
+						actual = rotateZ(actual, b == EAST);
 						break;
 				}
 				break;
@@ -124,11 +124,11 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 				switch(b) {
 					case NORTH:
 					case SOUTH:
-						actual = rotateX(actual, b == SOUTH);
+						actual = rotateX(actual, b == NORTH);
 						break;
 					case WEST:
 					case EAST:
-						actual = rotateZ(actual, b == EAST);
+						actual = rotateZ(actual, b == WEST);
 						break;
 				}
 				break;
