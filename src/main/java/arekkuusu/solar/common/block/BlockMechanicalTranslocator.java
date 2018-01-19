@@ -153,11 +153,6 @@ public class BlockMechanicalTranslocator extends BlockBase {
 	}
 
 	@Override
-	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
-		return super.rotateBlock(world, pos, axis);
-	}
-
-	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
 		return state.getValue(BlockDirectional.FACING) == facing ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
 	}
