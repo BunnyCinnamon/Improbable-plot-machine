@@ -88,9 +88,11 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 					} else {
 						if(actual == from || actual == from.getOpposite()) {
 							if(from.getAxis().isVertical()) {
+								to = to == EAST || to == WEST ? to.getOpposite() : to;
 								actual = rotateXY(actual, from.getAxisDirection(), to);
 							} else {
-								actual = rotateXY(actual, to.getOpposite().getAxisDirection(), from.getOpposite());
+								from = from == EAST || from == WEST ? from.getOpposite() : from;
+								actual = rotateXY(actual, to.getOpposite().getAxisDirection(), from);
 							}
 						} else actual = actual.getOpposite();
 					}
