@@ -5,22 +5,25 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.relativity;
+package arekkuusu.solar.api.entanglement.linked;
 
 import arekkuusu.solar.api.entanglement.IEntangledTile;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Optional;
+
 /**
- * Created by <Arekkuusu> on 03/09/2017.
+ * Created by <Snack> on 20/01/2018.
  * It's distributed as part of Solar.
  */
-public interface IRelativeTile extends IEntangledTile {
+public interface ISimpleLinkedTile extends IEntangledTile {
 
 	void add();
 
 	void remove();
+
+	Optional<ISimpleLinkedTile> getInverse();
 
 	default boolean isLoaded() {
 		return getRelativeWorld().isBlockLoaded(getRelativePos());

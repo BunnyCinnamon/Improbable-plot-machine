@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * Created by <Arekkuusu> on 03/11/2017.
  * It's distributed as part of Solar.
  */
-public enum Direction implements IStringSerializable { //Forgive me... CTM, Optifine, I wanted to test myself, and this is the result. *thumbs up*
+public enum Direction implements IStringSerializable { //Forgive me...
 	//NONE
 	NON(false, false, false, false, false, false),
 	//Single

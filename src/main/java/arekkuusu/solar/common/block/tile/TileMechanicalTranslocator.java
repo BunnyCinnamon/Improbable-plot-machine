@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
+import arekkuusu.solar.api.helper.FacingHelper;
 import arekkuusu.solar.api.state.State;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.properties.IProperty;
@@ -15,12 +16,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static net.minecraft.util.EnumFacing.*;
@@ -65,7 +66,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 		EnumFacing from = data.getMiddle();
 		EnumFacing to = getFacingLazy();
 		if(state.getBlock().canPlaceBlockAt(world, pos)) {
-			world.setBlockState(pos, getRotationState(state, from, to).withRotation(getHorizontalRotation(from, to)));
+			world.setBlockState(pos, getRotationState(state, from, to));
 			getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 				NBTTagCompound tag = data.getRight();
 				tag.setInteger("x", pos.getX());
@@ -76,11 +77,11 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
 		if(from.getAxis().isVertical() || to.getAxis().isVertical()) {
 			for(IProperty<?> p : original.getPropertyKeys()) {
-				if(p.getValueClass().equals(EnumFacing.class)) {
+				if(p.getValueClass().equals(EnumFacing.class) && p.getName().toLowerCase(Locale.ROOT).contains("facing")) {
+					//noinspection unchecked
 					IProperty<EnumFacing> property = (IProperty<EnumFacing>) p;
 					EnumFacing actual = original.getValue(property);
 					if(from.getOpposite() == to) {
@@ -88,11 +89,11 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 					} else {
 						if(actual == from || actual == from.getOpposite()) {
 							if(from.getAxis().isVertical()) {
-								to = to == EAST || to == WEST ? to.getOpposite() : to;
-								actual = rotateXY(actual, from.getAxisDirection(), to);
+								EnumFacing facing = to == EAST || to == WEST ? to.getOpposite() : to;
+								actual = FacingHelper.rotateXY(actual, from.getAxisDirection(), facing);
 							} else {
-								from = from == EAST || from == WEST ? from.getOpposite() : from;
-								actual = rotateXY(actual, to.getOpposite().getAxisDirection(), from);
+								EnumFacing facing = from == EAST || from == WEST ? from.getOpposite() : from;
+								actual = FacingHelper.rotateXY(actual, to.getOpposite().getAxisDirection(), facing);
 							}
 						} else actual = actual.getOpposite();
 					}
@@ -101,98 +102,11 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 				}
 			}
 		}
-		return original;
+		return original.withRotation(FacingHelper.getHorizontalRotation(from, to));
 	}
 
 	private static IBlockState apply(IProperty<EnumFacing> property, IBlockState state, EnumFacing facing) {
 		return property.getAllowedValues().contains(facing) ? state.withProperty(property, facing) : state;
-	}
-
-	private static EnumFacing rotateXY(EnumFacing actual, AxisDirection direction, EnumFacing b) {
-		switch(direction) {
-			case POSITIVE:
-				switch(b) {
-					case NORTH:
-					case SOUTH:
-						actual = rotateX(actual, b == SOUTH);
-						break;
-					case WEST:
-					case EAST:
-						actual = rotateZ(actual, b == EAST);
-						break;
-				}
-				break;
-			case NEGATIVE:
-				switch(b) {
-					case NORTH:
-					case SOUTH:
-						actual = rotateX(actual, b == NORTH);
-						break;
-					case WEST:
-					case EAST:
-						actual = rotateZ(actual, b == WEST);
-						break;
-				}
-				break;
-		}
-		return actual;
-	}
-
-	private static EnumFacing rotateX(EnumFacing facing, boolean inverse) {
-		if(!inverse) {
-			return facing.rotateAround(Axis.X);
-		} else {
-			switch(facing) {
-				case NORTH:
-					return UP;
-				case SOUTH:
-					return DOWN;
-				case UP:
-					return SOUTH;
-				case DOWN:
-					return NORTH;
-				case EAST:
-				case WEST:
-				default:
-					throw new IllegalStateException("Unable to get X-rotated facing of " + facing);
-			}
-		}
-	}
-
-	private static EnumFacing rotateZ(EnumFacing facing, boolean inverse) {
-		if(!inverse) {
-			return facing.rotateAround(Axis.Z);
-		} else {
-			switch(facing) {
-				case EAST:
-					return UP;
-				case WEST:
-					return DOWN;
-				case UP:
-					return WEST;
-				case DOWN:
-					return EAST;
-				case SOUTH:
-				default:
-					throw new IllegalStateException("Unable to get Z-rotated facing of " + facing);
-			}
-		}
-	}
-
-	private static Rotation getHorizontalRotation(EnumFacing from, EnumFacing to) {
-		if(from.getAxis().isVertical() || to.getAxis().isVertical()) return Rotation.NONE;
-		if(from.getOpposite() == to) {
-			return Rotation.CLOCKWISE_180;
-		} else if(from != to) {
-			int indexFrom = from.getHorizontalIndex();
-			int indexTo = to.getHorizontalIndex();
-			if(indexFrom < indexTo || (indexFrom == 3 && indexTo == 0)) {
-				return Rotation.CLOCKWISE_90;
-			} else {
-				return Rotation.COUNTERCLOCKWISE_90;
-			}
-		}
-		return Rotation.NONE;
 	}
 
 	private Triple<IBlockState, EnumFacing, NBTTagCompound> getRelativeState() {

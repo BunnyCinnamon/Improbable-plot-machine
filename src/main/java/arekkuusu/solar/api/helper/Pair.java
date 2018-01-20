@@ -71,4 +71,8 @@ public class Pair<T> {
 		}
 		return false;
 	}
+
+	public static <T> Pair<T> empty() {
+		return new Pair<>(null, null);
+	}
 }

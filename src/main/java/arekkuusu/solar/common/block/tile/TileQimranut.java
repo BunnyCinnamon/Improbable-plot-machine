@@ -7,7 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
@@ -21,13 +20,12 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Created by <Arekkuusu> on 23/12/2017.
  * It's distributed as part of Solar.
  */
-public class TileQimranut extends TileRelativeBase implements ITickable {
+public class TileQimranut extends TileSimpleLinkBase implements ITickable {
 
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
 			.put(EnumFacing.UP, Vector3.create(0.5D, 0.4D, 0.5D))
@@ -70,34 +68,19 @@ public class TileQimranut extends TileRelativeBase implements ITickable {
 		return null;
 	}
 
-	public Optional<TileQimranut> getLinkedQimranut() {
-		return RelativityHandler.getRelatives(this)
-				.stream()
-				.limit(2)
-				.filter(t -> t.isLoaded() && t instanceof TileQimranut && t != this)
-				.map(t -> (TileQimranut) t).findFirst();
-	}
-
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return getFacingLazy() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability) != null)
+		return getFacingLazy() == facing ? getInverse().filter(t -> t.isLoaded() && t instanceof TileQimranut)
+				.map(t -> ((TileQimranut) t).accessCapability(capability) != null)
 				.orElse(super.hasCapability(capability, facing)) : false;
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return getFacingLazy() == facing ? getLinkedQimranut().map(t -> t.accessCapability(capability))
+		return getFacingLazy() == facing ? getInverse().filter(t -> t.isLoaded() && t instanceof TileQimranut)
+				.map(t -> ((TileQimranut) t).accessCapability(capability))
 				.orElse(super.getCapability(capability, facing)) : null;
-	}
-
-	@Override
-	public void add() {
-		if(!world.isRemote) {
-			getKey().filter(key -> RelativityHandler.getRelatives(this).size() < 2).ifPresent(key -> {
-				RelativityHandler.addRelative(this, null);
-			});
-		}
 	}
 
 	private EnumFacing getFacingLazy() {

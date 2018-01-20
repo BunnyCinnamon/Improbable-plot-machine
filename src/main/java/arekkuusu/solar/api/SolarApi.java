@@ -7,12 +7,12 @@
  ******************************************************************************/
 package arekkuusu.solar.api;
 
+import arekkuusu.solar.api.entanglement.linked.ISimpleLinkedTile;
 import arekkuusu.solar.api.entanglement.quantum.data.IQuantumData;
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
+import arekkuusu.solar.api.helper.Pair;
 import com.google.common.collect.Maps;
-import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +27,7 @@ public class SolarApi {
 
 	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = Maps.newHashMap();
 	private static final Map<UUID, Integer> RELATIVITY_POWER_MAP = Maps.newHashMap();
+	private static final Map<UUID, Pair<ISimpleLinkedTile>> LINKED_MAP = Maps.newHashMap();
 	private static IQuantumData quantumData;
 
 	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {
@@ -37,11 +38,15 @@ public class SolarApi {
 		return RELATIVITY_POWER_MAP; //Goodbye legs!
 	}
 
+	public static Map<UUID, Pair<ISimpleLinkedTile>> getSimpleLinkMap() {
+		return LINKED_MAP; //Goodbye head!
+	}
+
 	public static synchronized IQuantumData getQuantumData() {
 		return quantumData; //Goodbye whatever is left of you
 	}
 
 	public static synchronized void setQuantumData(IQuantumData quantumData) {
-		SolarApi.quantumData = quantumData; //*Bones begin to crack*
+		SolarApi.quantumData = quantumData; //Do you hear that? That's the sound of forgiveness...
 	}
 }

@@ -18,7 +18,7 @@ import java.util.*;
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumHandler {
+public final class QuantumHandler {
 
 	public static final String NBT_TAG = "quantum_data";
 
