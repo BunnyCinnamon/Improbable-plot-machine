@@ -10,6 +10,7 @@ package arekkuusu.solar.common.block.tile;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.helper.FacingHelper;
 import arekkuusu.solar.api.state.State;
+import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -78,6 +79,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 	}
 
 	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
+		ProfilerHelper.begin("[Mechanical Translocator] Rotating block");
 		if(from.getAxis().isVertical() || to.getAxis().isVertical()) {
 			for(IProperty<?> p : original.getPropertyKeys()) {
 				if(p.getValueClass().equals(EnumFacing.class) && p.getName().toLowerCase(Locale.ROOT).contains("facing")) {
@@ -102,6 +104,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 				}
 			}
 		}
+		ProfilerHelper.end();
 		return original.withRotation(FacingHelper.getHorizontalRotation(from, to));
 	}
 

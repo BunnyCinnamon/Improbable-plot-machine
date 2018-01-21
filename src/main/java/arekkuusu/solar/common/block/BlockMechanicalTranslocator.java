@@ -10,6 +10,11 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.client.util.ResourceLibrary;
+import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
+import arekkuusu.solar.client.util.baker.baked.BakedRender;
+import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileMechanicalTranslocator;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
@@ -29,6 +34,8 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -171,5 +178,15 @@ public class BlockMechanicalTranslocator extends BlockBase {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileMechanicalTranslocator();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerModel() {
+		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
+				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
+				.setParticle(ResourceLibrary.VACUUM_CONVEYOR)
+		);
+		ModelHandler.registerModel(this, 0, "");
 	}
 }

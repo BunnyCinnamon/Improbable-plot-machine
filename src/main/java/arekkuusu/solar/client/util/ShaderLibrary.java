@@ -23,6 +23,6 @@ public final class ShaderLibrary {
 	public static final ShaderResource ALPHA = ShaderManager.load("alpha", "alpha");
 
 	public static void init() {
-		Solar.LOG.info("[SOMEBODY TOUCHA MY SPAGUET!]");
+		Solar.LOG.info("[PUDDING' PIE IN THA BAKE!]");
 	}
 }

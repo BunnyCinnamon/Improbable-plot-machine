@@ -179,7 +179,11 @@ public final class RenderHelper {
 			GlStateManager.translate(0F, -0.1F, 0F);
 		}
 		RenderItem render = Minecraft.getMinecraft().getRenderItem();
+		GlStateManager.pushAttrib();
+		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
 		render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
+		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+		GlStateManager.popAttrib();
 	}
 
 	public static void renderGhostBlock(BlockPos pos, IBlockState state) {
