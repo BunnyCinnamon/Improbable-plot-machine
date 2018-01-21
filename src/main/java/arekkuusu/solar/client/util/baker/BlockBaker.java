@@ -34,7 +34,11 @@ import java.util.List;
 public enum BlockBaker {
 	VACUUM_TOP("vacuum_top"),
 	VACUUM_PIECE("vacuum_piece"),
-	VACUUM_BOTTOM("vacuum_bottom");
+	VACUUM_BOTTOM("vacuum_bottom"),
+	TRANSLOCATOR_BASE("translocator_base"),
+	TRANSLOCATOR_CENTER("translocator_center"),
+	TRANSLOCATOR_PIECE_RING("translocator_piece_ring"),
+	TRANSLOCATOR_PIECE_DOT("translocator_piece_dot");
 
 	ResourceLocation location;
 

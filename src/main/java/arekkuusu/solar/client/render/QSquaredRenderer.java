@@ -35,11 +35,10 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		int tick = Minecraft.getMinecraft().player.ticksExisted;
-		renderModel(tick, x, y, z);
+		renderModel(Minecraft.getSystemTime(), x, y, z);
 	}
 
-	private void renderModel(int tick, double x, double y, double z) {
+	private void renderModel(float tick, double x, double y, double z) {
 		ProfilerHelper.begin("[Q²] - Rendering waves");
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;

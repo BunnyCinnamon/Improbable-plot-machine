@@ -63,6 +63,7 @@ public final class ResourceLibrary {
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation VACUUM_CONVEYOR = getAtlas(BLOCKS, "vacuum_conveyor");
+	public static final ResourceLocation MECHANICAL_TRANSLOCATOR = getAtlas(BLOCKS, "mechanical_translocator");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {

@@ -185,7 +185,7 @@ public class BlockMechanicalTranslocator extends BlockBase {
 	public void registerModel() {
 		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
 				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
-				.setParticle(ResourceLibrary.VACUUM_CONVEYOR)
+				.setParticle(ResourceLibrary.MECHANICAL_TRANSLOCATOR)
 		);
 		ModelHandler.registerModel(this, 0, "");
 	}

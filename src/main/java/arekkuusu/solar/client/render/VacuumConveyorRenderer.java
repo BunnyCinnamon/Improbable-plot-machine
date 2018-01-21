@@ -16,8 +16,6 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
 
-import static arekkuusu.solar.client.util.baker.BlockBaker.*;
-
 /**
  * Created by <Snack> on 07/01/2018.
  * It's distributed as part of Solar.
@@ -37,7 +35,7 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 	private void renderModel(EnumFacing facing, double x, double y, double z, float partialTicks) {
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
-		int tick = (int) Minecraft.getMinecraft().world.getTotalWorldTime();
+		float tick = Minecraft.getSystemTime();
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		//Top
 		GlStateManager.pushMatrix();
@@ -46,19 +44,19 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 			GlStateManager.rotate(90F, facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 1F : 0F, 0F, facing == EnumFacing.EAST || facing == EnumFacing.WEST ? 1F : 0F);
 		}
 		GlStateManager.pushMatrix();
-		GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
-		BlockBaker.render(VACUUM_TOP);
+		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
+		BlockBaker.render(BlockBaker.VACUUM_TOP);
 		GlStateManager.popMatrix();
 		//Middle
 		GlStateManager.disableLighting();
 		GLHelper.lightMap(255F, 255F);
-		BlockBaker.render(VACUUM_PIECE);
+		BlockBaker.render(BlockBaker.VACUUM_PIECE);
 		GLHelper.lightMap(prevU, prevV);
 		GlStateManager.enableLighting();
 		//Bottom
 		GlStateManager.pushMatrix();
-		GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, -1F, 0F);
-		BlockBaker.render(VACUUM_BOTTOM);
+		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, -1F, 0F);
+		BlockBaker.render(BlockBaker.VACUUM_BOTTOM);
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 	}

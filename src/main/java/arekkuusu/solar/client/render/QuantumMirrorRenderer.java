@@ -38,7 +38,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 	@Override
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		int tick = (int) Minecraft.getMinecraft().world.getTotalWorldTime();
+		float tick = Minecraft.getSystemTime();
 		int layer = MinecraftForgeClient.getRenderPass();
 
 		final float prevU = OpenGlHelper.lastBrightnessX;
@@ -91,7 +91,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GLHelper.lightMap(prevU, prevV);
 	}
 
-	private void renderModel(int tick, double x, double y, double z) {
+	private void renderModel(float tick, double x, double y, double z) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
@@ -116,7 +116,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.popMatrix();
 	}
 
-	private void renderMirror(int age, float offset, float scale) {
+	private void renderMirror(float age, float offset, float scale) {
 		GlStateManager.pushMatrix();
 		Tuple<Double, Double> uv = SpriteLibrary.QUANTUM_MIRROR.getUVFrame((int) (age * 0.25F));
 		double vOffset = SpriteLibrary.QUANTUM_MIRROR.getV();

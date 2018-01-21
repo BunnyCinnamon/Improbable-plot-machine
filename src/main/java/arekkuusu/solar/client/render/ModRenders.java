@@ -41,12 +41,14 @@ public final class ModRenders {
 		registerTESR(TileTheorema.class, new TheoremaRenderer());
 		registerTESR(TileGravityInhibitor.class, new GravityInhibitorRenderer());
 		registerTESR(TileVacuumConveyor.class, new VacuumConveyorRenderer());
+		registerTESR(TileMechanicalTranslocator.class, new MechanicalTranslocatorRenderer());
 
 		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
 		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
 		registerTESRItemStack(ModBlocks.THEOREMA, TileTheorema.class);
 		registerTESRItemStack(ModBlocks.GRAVITY_INHIBITOR, TileGravityInhibitor.class);
 		registerTESRItemStack(ModBlocks.VACUUM_CONVEYOR, TileVacuumConveyor.class);
+		registerTESRItemStack(ModBlocks.MECHANICAL_TRANSLOCATOR, TileMechanicalTranslocator.class);
 	}
 
 	private static <T extends TileEntity> void registerTESR(Class<T> tile, TileEntitySpecialRenderer<T> render) {
