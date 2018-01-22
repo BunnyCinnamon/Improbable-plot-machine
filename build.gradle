@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "${mc_version}-${build_name}-${build_number}"
+version = "${mc_version}-${mayor}.${minor}.${patch}${extra}"
 group = "arekkuusu.solar"
 archivesBaseName = "Solar"
 
