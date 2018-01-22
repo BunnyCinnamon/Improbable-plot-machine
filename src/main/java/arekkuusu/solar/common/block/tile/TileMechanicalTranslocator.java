@@ -18,6 +18,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.Collections;
@@ -36,7 +38,10 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 	private boolean powered;
 	private int index = -1;
 
-	public void translocate() {
+	@SideOnly(Side.CLIENT)
+	public float temp = -1;
+
+	public void activate() {
 		if(!world.isRemote && canSend()) {
 			List<TileMechanicalTranslocator> list = RelativityHandler.getRelatives(this).stream()
 					.filter(tile -> tile.isLoaded() && tile instanceof TileMechanicalTranslocator)

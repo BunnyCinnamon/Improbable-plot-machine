@@ -38,7 +38,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 	@Override
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		float tick = Minecraft.getSystemTime();
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		int layer = MinecraftForgeClient.getRenderPass();
 
 		final float prevU = OpenGlHelper.lastBrightnessX;
@@ -54,7 +54,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 					GLHelper.lightMap(255F, 255F);
 					GlStateManager.translate(x + 0.5, y + 0.38, z + 0.5);
 
-					GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
+					GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
 					RenderHelper.renderItemStack(stack);
 
 					GlStateManager.popMatrix();
@@ -69,7 +69,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 
 	@Override
 	public void renderStack(double x, double y, double z, float partialTicks) {
-		int tick = (int) Minecraft.getMinecraft().world.getTotalWorldTime();
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 
@@ -79,7 +79,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 			GLHelper.lightMap(255F, 255F);
 			GlStateManager.translate(x + 0.5D, y + 0.38D, z + 0.5D);
 
-			GlStateManager.rotate(partialTicks + (float) tick * 0.5F % 360F, 0F, 1F, 0F);
+			GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
 			RenderHelper.renderItemStack(stack);
 
 			GlStateManager.popMatrix();
@@ -98,7 +98,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.enableBlend();
 		GLHelper.BLEND_SRC_ALPHA$ONE.blend();
 
-		float brigthness = MathHelper.cos(tick * 0.05F);
+		float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
 		if(brigthness < 0) brigthness *= -1;
 		brigthness *= 255F;
 		GLHelper.lightMap(brigthness, brigthness);

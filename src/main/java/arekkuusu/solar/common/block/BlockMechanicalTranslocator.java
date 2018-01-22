@@ -17,6 +17,7 @@ import arekkuusu.solar.client.util.baker.baked.BakedRender;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileMechanicalTranslocator;
 import arekkuusu.solar.common.lib.LibNames;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockFaceShape;
@@ -31,6 +32,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -39,7 +41,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -48,6 +49,16 @@ import java.util.UUID;
  */
 @SuppressWarnings("deprecation")
 public class BlockMechanicalTranslocator extends BlockBase {
+
+	public static final AxisAlignedBB BB_PIECE = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0.1875, 0.75, 0.1875, 0.8125, 0.8125, 0.8125))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.1875, 0.1875, 0.1875, 0.8125, 0.25, 0.8125))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.1875, 0.1875, 0.25, 0.8125, 0.8125, 0.1875))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.1875, 0.1875, 0.75, 0.8125, 0.8125, 0.8125))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.8125, 0.1875, 0.1875, 0.75, 0.8125, 0.8125))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.25, 0.1875, 0.1875, 0.1875, 0.8125, 0.8125))
+			.build();
 
 	public BlockMechanicalTranslocator() {
 		super(LibNames.MECHANICAL_TRANSLOCATOR, FixedMaterial.BREAK);
@@ -103,7 +114,7 @@ public class BlockMechanicalTranslocator extends BlockBase {
 						if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
 							tile.setPowered(isPowered);
 							if(isPowered) {
-								tile.translocate();
+								tile.activate();
 							}
 						}
 					});

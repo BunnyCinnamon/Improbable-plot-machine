@@ -9,8 +9,8 @@ package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.client.util.helper.GLHelper;
+import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileMechanicalTranslocator;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -26,18 +26,23 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 
 	@Override
 	void renderTile(TileMechanicalTranslocator translocator, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		renderModel(translocator.getFacingLazy(), x, y, z, partialTicks);
+		boolean active = translocator.isTransferable();
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
+		if(!active) {
+			if(translocator.temp == -1) translocator.temp = RenderHelper.getRenderWorldTime(partialTicks);
+		} else if(translocator.temp != -1) translocator.temp = -1;
+		renderModel(translocator.getFacingLazy(), active ? tick : translocator.temp, active, x, y, z, partialTicks);
 	}
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		renderModel(null, x, y, z, partialTicks);
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
+		renderModel(null, tick, true, x, y, z, partialTicks);
 	}
 
-	private void renderModel(@Nullable EnumFacing facing, double x, double y, double z, float partialTicks) {
+	private void renderModel(@Nullable EnumFacing facing, float tick, boolean active, double x, double y, double z, float partialTicks) {
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
-		float tick = Minecraft.getSystemTime();
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -53,10 +58,10 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 					GlStateManager.rotate(90F, -1F, 0F, 0F);
 					break;
 				case WEST:
-					GlStateManager.rotate(90F, 0F, 0F, 1F);
+					GlStateManager.rotate(90F, 0F, 0F, -1F);
 					break;
 				case EAST:
-					GlStateManager.rotate(90F, -1F, 0F, 0F);
+					GlStateManager.rotate(90F, 0F, 0F, 1F);
 					break;
 			}
 		}
@@ -65,23 +70,41 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
 		BlockBaker.render(BlockBaker.TRANSLOCATOR_BASE);
 		GlStateManager.popMatrix();
+		if(active) {
+			GlStateManager.disableLighting();
+			GLHelper.lightMap(255F, 255F);
+		}
 		//Middle
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, -1F, 0F);
-		GlStateManager.disableLighting();
-		GLHelper.lightMap(255F, 255F);
 		BlockBaker.render(BlockBaker.TRANSLOCATOR_CENTER);
-		GLHelper.lightMap(prevU, prevV);
-		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 		//Piece
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(0, 0.75F, 0F);
+		GlStateManager.translate(0, 0.25F, 0F);
+		RenderHelper.makeUpDownTranslation(tick, 0.05F, 1F, 0F);
+		/*--- Outwards ---*/
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(0.425F, 0.425F, 0.425F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 1F, 0F);
-		GlStateManager.rotate(partialTicks + tick * 0.75F % 270F, 1F, 0F, 0F);
-		GlStateManager.rotate(partialTicks + tick * 0.75F % 180F, 0F, 0F, 1F);
+		GlStateManager.rotate(partialTicks + tick * 0.75F % 720F, 1F, 0F, 0F);
+		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 0F, 1F);
 		BlockBaker.render(BlockBaker.TRANSLOCATOR_PIECE_RING);
 		GlStateManager.popMatrix();
+
+		GlStateManager.pushMatrix();
+		GlStateManager.scale(0.75F, 0.75F, 0.75F);
+		GlStateManager.rotate(partialTicks + tick % 360F, 0F, -1F, 0F);
+		GlStateManager.rotate(partialTicks + tick % 720F, -1F, 0F, 0F);
+		GlStateManager.rotate(partialTicks + tick % 360F, 0F, 0F, -1F);
+		BlockBaker.render(BlockBaker.TRANSLOCATOR_PIECE_RING);
+		GlStateManager.popMatrix();
+		/*--- Inwards ---*/
+		GlStateManager.popMatrix();
+		if(active) {
+			GLHelper.lightMap(prevU, prevV);
+			GlStateManager.enableLighting();
+		}
 		GlStateManager.popMatrix();
 	}
 }

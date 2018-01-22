@@ -92,6 +92,10 @@ public final class RenderHelper {
 		GL11.glCallList(cube);
 	}
 
+	public static float getRenderWorldTime(float partialTicks) {
+		return (Minecraft.getSystemTime() + partialTicks) / 20F;
+	}
+
 	public static void renderCube(float size, double uMin, double uMax, double vMin, double vMax) {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buff = tessellator.getBuffer();

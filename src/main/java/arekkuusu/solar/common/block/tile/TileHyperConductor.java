@@ -84,7 +84,8 @@ public class TileHyperConductor extends TileBase implements ITickable {
 	public void setPowered(boolean powered) {
 		this.powered = powered;
 		IBlockState state = world.getBlockState(pos);
-		world.setBlockState(pos, state.withProperty(State.POWER, getRedstonePower()));
+		if(state.getBlock() == ModBlocks.HYPER_CONDUCTOR)
+			world.setBlockState(pos, state.withProperty(State.POWER, getRedstonePower()));
 		this.hyperInduceAtmosphere();
 	}
 

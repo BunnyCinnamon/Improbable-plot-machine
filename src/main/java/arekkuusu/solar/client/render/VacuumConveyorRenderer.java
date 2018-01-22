@@ -9,8 +9,8 @@ package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.client.util.helper.GLHelper;
+import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -33,9 +33,9 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 	}
 
 	private void renderModel(EnumFacing facing, double x, double y, double z, float partialTicks) {
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
-		float tick = Minecraft.getSystemTime();
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		//Top
 		GlStateManager.pushMatrix();
