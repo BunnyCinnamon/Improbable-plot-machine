@@ -40,7 +40,7 @@ public final class ResourceLibrary {
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation GRAVITY_HOPPER = getAtlas(BLOCKS, "gravity_hopper/side");
-	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = from(6, "gravity_hopper/glyph_", name ->
+	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = from(3, "gravity_hopper/glyph_", name ->
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");

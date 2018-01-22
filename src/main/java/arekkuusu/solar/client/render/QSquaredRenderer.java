@@ -35,7 +35,7 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		renderModel(Minecraft.getSystemTime(), x, y, z);
+		renderModel(Minecraft.getMinecraft().player.ticksExisted, x, y, z);
 	}
 
 	private void renderModel(float tick, double x, double y, double z) {
