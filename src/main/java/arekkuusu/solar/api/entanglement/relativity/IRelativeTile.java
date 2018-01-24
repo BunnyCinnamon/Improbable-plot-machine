@@ -23,7 +23,7 @@ public interface IRelativeTile extends IEntangledTile {
 	void remove();
 
 	default boolean isLoaded() {
-		return getRelativeWorld().isBlockLoaded(getRelativePos());
+		return getRelativeWorld().isValid(getRelativePos()) && getRelativeWorld().isBlockLoaded(getRelativePos());
 	}
 
 	World getRelativeWorld();

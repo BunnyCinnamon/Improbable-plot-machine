@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api.helper;
 
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,12 +19,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * Created by <Arekkuusu> on 21/12/2017.
  * It's distributed as part of Solar.
  */
 public final class RayTraceHelper {
+
+	@Nullable
+	public static RayTraceResult rayTraceAllAABB(List<AxisAlignedBB> boxes, BlockPos pos, Vec3d start, Vec3d end) {
+		List<RayTraceResult> list = Lists.newArrayList();
+		boxes.forEach(box -> list.add(rayTraceAABB(box, pos, start, end)));
+		RayTraceResult result = null;
+		double d1 = 0.0D;
+		for(RayTraceResult raytraceresult : list) {
+			if(raytraceresult != null) {
+				double d0 = raytraceresult.hitVec.squareDistanceTo(end);
+
+				if(d0 > d1) {
+					result = raytraceresult;
+					d1 = d0;
+				}
+			}
+		}
+		return result;
+	}
 
 	@Nullable
 	public static RayTraceResult rayTraceAABB(AxisAlignedBB box, BlockPos pos, Vec3d start, Vec3d end) {
@@ -33,10 +54,7 @@ public final class RayTraceHelper {
 		Vec3d a = start.subtract(x, y, z);
 		Vec3d b = end.subtract(x, y, z);
 		RayTraceResult result = box.calculateIntercept(a, b);
-		if(result != null && result.typeOfHit == RayTraceResult.Type.BLOCK) {
-			return result;
-		}
-		return null;
+		return result == null ? null : new RayTraceResult(result.hitVec.addVector(x, y, z), result.sideHit, pos);
 	}
 
 	public static RayTraceResult tracePlayerHighlight(EntityPlayerMP player) {

@@ -56,6 +56,7 @@ public final class ModItems {
 		registry.register(new ItemBase(LibNames.PLASMON));
 		registry.register(new ItemVacuumConveyor());
 		registry.register(new ItemMechanicalTranslocator());
+		registry.register(new ItemAlternator());
 	}
 
 	@SuppressWarnings("ConstantConditions")

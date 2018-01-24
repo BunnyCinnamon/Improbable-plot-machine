@@ -38,7 +38,7 @@ public class BakedGravityHopper extends BakedBrightness {
 
 	public BakedGravityHopper(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
 		super(format);
-		for(int i = 0; i < 6; i++) {
+		for(int i = 0; i < 3; i++) {
 			this.overlay[i] = getter.apply(ResourceLibrary.GRAVITY_HOPPER_OVERLAY[i]);
 		}
 		this.base = getter.apply(ResourceLibrary.GRAVITY_HOPPER);

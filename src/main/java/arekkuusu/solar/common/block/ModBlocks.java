@@ -45,6 +45,7 @@ public final class ModBlocks {
 	public static final Block LARGE_POT = PLACE_HOLDER;
 	public static final Block VACUUM_CONVEYOR = PLACE_HOLDER;
 	public static final Block MECHANICAL_TRANSLOCATOR = PLACE_HOLDER;
+	public static final Block ALTERNATOR = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -67,6 +68,7 @@ public final class ModBlocks {
 		registry.register(new BlockLargePot());
 		registry.register(new BlockVacuumConveyor());
 		registry.register(new BlockMechanicalTranslocator());
+		registry.register(new BlockAlternator());
 		registerTiles();
 	}
 
@@ -84,5 +86,6 @@ public final class ModBlocks {
 		GameRegistry.registerTileEntity(TileCelestialResonator.class, LibMod.MOD_ID + ":celestial_resonator");
 		GameRegistry.registerTileEntity(TileVacuumConveyor.class, LibMod.MOD_ID + ":vacuum_conveyor");
 		GameRegistry.registerTileEntity(TileMechanicalTranslocator.class, LibMod.MOD_ID + ":mechanical_translocator");
+		GameRegistry.registerTileEntity(TileAlternator.class, LibMod.MOD_ID + ":alternator");
 	}
 }

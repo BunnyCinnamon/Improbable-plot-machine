@@ -52,6 +52,7 @@ public class ServerProxy implements IProxy {
 	public static void serverStop(FMLServerStoppedEvent event) {
 		SolarApi.getRelativityPowerMap().clear();
 		SolarApi.getRelativityMap().clear();
+		SolarApi.getSimpleLinkMap().clear();
 		SolarApi.setQuantumData(null);
 	}
 }

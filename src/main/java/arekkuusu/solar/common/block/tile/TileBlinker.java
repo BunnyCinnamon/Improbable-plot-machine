@@ -49,8 +49,10 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 
 	@Override
 	public void onPowerUpdate() {
-		IBlockState state = world.getBlockState(pos);
-		world.scheduleUpdate(getPos(), state.getBlock(), 0);
+		if(!world.isRemote) {
+			IBlockState state = world.getBlockState(pos);
+			world.scheduleUpdate(getPos(), state.getBlock(), 0);
+		}
 	}
 
 	public int getRedstonePower() {

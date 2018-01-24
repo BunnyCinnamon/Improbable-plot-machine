@@ -36,12 +36,15 @@ public class TileHyperConductor extends TileBase implements ITickable {
 			updatePosition(world, pos);
 			needsUpdate = false;
 		}
-		electrons.removeIf(pos -> world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() != ModBlocks.ELECTRON);
+		electrons.removeIf(pos -> world.isValid(pos) && world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() != ModBlocks.ELECTRON);
 	}
 
 	public void hyperInduceAtmosphere() {
 		if(!world.isRemote) {
-			electrons.forEach(this::inverseElectron);
+			electrons.stream().filter(e -> world.isValid(e)
+					&& world.isBlockLoaded(pos)
+					&& world.getBlockState(pos).getBlock() == ModBlocks.ELECTRON
+			).forEach(this::inverseElectron);
 		}
 	}
 

@@ -22,13 +22,13 @@ import java.util.List;
 import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHIFT_KEY_DOWN;
 
 /**
- * Created by <Snack> on 17/01/2018.
+ * Created by <Snack> on 23/01/2018.
  * It's distributed as part of Solar.
  */
-public class ItemMechanicalTranslocator extends ItemBaseBlock implements IEntangledStack {
+public class ItemAlternator extends ItemBaseBlock implements IEntangledStack {
 
-	public ItemMechanicalTranslocator() {
-		super(ModBlocks.MECHANICAL_TRANSLOCATOR);
+	public ItemAlternator() {
+		super(ModBlocks.ALTERNATOR);
 	}
 
 	@Override

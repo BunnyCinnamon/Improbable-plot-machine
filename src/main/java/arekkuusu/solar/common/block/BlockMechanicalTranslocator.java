@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.helper.RayTraceHelper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.util.ResourceLibrary;
@@ -18,11 +19,13 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileMechanicalTranslocator;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -34,12 +37,15 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,14 +56,30 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class BlockMechanicalTranslocator extends BlockBase {
 
-	public static final AxisAlignedBB BB_PIECE = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
+
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_BODY_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.59375, 0.25, 0.75, 0.90625, 0.75))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.09375, 0.25, 0.75, 0.40625, 0.75))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.40625, 0.75, 0.75, 0.09375))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.59375, 0.75, 0.75, 0.90625))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.90625, 0.25, 0.25, 0.59375, 0.75, 0.75))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.09375, 0.25, 0.25, 0.40625, 0.75, 0.75))
+			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_CRYSTAL_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
+			.build();
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.1875, 0.75, 0.1875, 0.8125, 0.8125, 0.8125))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.1875, 0.1875, 0.1875, 0.8125, 0.25, 0.8125))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.1875, 0.1875, 0.25, 0.8125, 0.8125, 0.1875))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.1875, 0.1875, 0.75, 0.8125, 0.8125, 0.8125))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.8125, 0.1875, 0.1875, 0.75, 0.8125, 0.8125))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.25, 0.1875, 0.1875, 0.1875, 0.8125, 0.8125))
+			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.28125, 0.25, 0.75, 0.90625, 0.75))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.09375, 0.25, 0.75, 0.71875, 0.75))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.71875, 0.75, 0.75, 0.09375))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.28125, 0.75, 0.75, 0.90625))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.90625, 0.25, 0.25, 0.28125, 0.75, 0.75))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.09375, 0.25, 0.25, 0.71875, 0.75, 0.75))
 			.build();
 
 	public BlockMechanicalTranslocator() {
@@ -178,6 +200,33 @@ public class BlockMechanicalTranslocator extends BlockBase {
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
+		getCollisionBoxList(state).forEach(box -> addCollisionBoxToList(pos, entityBox, collidingBoxes, box));
+	}
+
+	@Nullable
+	@Override
+	public RayTraceResult collisionRayTrace(IBlockState state, World world, BlockPos pos, Vec3d start, Vec3d end) {
+		return RayTraceHelper.rayTraceAllAABB(getCollisionBoxList(state), pos, start, end);
+	}
+
+	private List<AxisAlignedBB> getCollisionBoxList(IBlockState state) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		return Lists.newArrayList(BB_BODY_MAP.get(facing), BB_CRYSTAL_MAP.get(facing));
+	}
+
+	@Override
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		return BB_BODY_MAP.get(facing).offset(pos);
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return FULL_BLOCK_AABB;
 	}
 
 	@Override
