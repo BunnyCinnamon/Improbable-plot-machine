@@ -76,9 +76,9 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		if(!world.isRemote) {
 			updateInventoryAccess();
 			boolean isAir = false;
-			if(to.getKey() != null && (isAir = world.isAirBlock(pos.offset(getFacingLazy().getOpposite())))) {
+			if(to.getKey() != null && (isAir = isAir(getFacingLazy().getOpposite()))) {
 				collectItems();
-			} else if(from.getKey() != null && (isAir = world.isAirBlock(pos.offset(getFacingLazy())))) {
+			} else if(from.getKey() != null && (isAir = isAir(getFacingLazy()))) {
 				dropItems();
 			} else //noinspection ConstantConditions
 				if(isAir) transposeItems();
@@ -86,23 +86,27 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	private void spawnParticles() {
-		if(world.getTotalWorldTime() % 20 == 0 && world.rand.nextBoolean()) {
+		if(world.getTotalWorldTime() % 2 == 0) {
 			EnumFacing facing = getFacingLazy();
-			if(world.isAirBlock(pos.offset(facing.getOpposite()))) {
-				spawnNeutronParticles(facing, false);
-			}
-			if(world.isAirBlock(pos.offset(facing))) {
-				spawnNeutronParticles(facing.getOpposite(), true);
-			}
-		} else if(world.getTotalWorldTime() % 2 == 0) {
-			EnumFacing facing = getFacingLazy();
-			if(world.isAirBlock(pos.offset(facing.getOpposite()))) {
+			if(isAir(facing.getOpposite())) {
 				spawnLightParticles(facing, false);
 			}
-			if(world.isAirBlock(pos.offset(facing))) {
+			if(isAir(facing)) {
 				spawnLightParticles(facing.getOpposite(), true);
 			}
+		} else if(world.getTotalWorldTime() % 20 == 0 && world.rand.nextBoolean()) {
+			EnumFacing facing = getFacingLazy();
+			if(isAir(facing.getOpposite())) {
+				spawnNeutronParticles(facing, false);
+			}
+			if(isAir(facing)) {
+				spawnNeutronParticles(facing.getOpposite(), true);
+			}
 		}
+	}
+
+	private boolean isAir(EnumFacing facing) {
+		return world.isAirBlock(pos.offset(facing));
 	}
 
 	private void spawnLightParticles(EnumFacing facing, boolean inverse) {

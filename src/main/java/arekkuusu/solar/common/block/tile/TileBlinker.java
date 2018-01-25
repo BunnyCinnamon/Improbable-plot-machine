@@ -9,8 +9,8 @@ package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.relativity.IRelativePower;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
-import arekkuusu.solar.api.helper.Vector3;
 import arekkuusu.solar.api.state.State;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;

@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.common.network.PacketHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;

@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.entity;
 
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.entity.ai.FlightMoveHelper;
 import arekkuusu.solar.common.entity.ai.FlightPathNavigate;

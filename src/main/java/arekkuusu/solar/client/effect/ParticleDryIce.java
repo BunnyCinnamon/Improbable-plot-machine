@@ -27,7 +27,6 @@ public class ParticleDryIce extends ParticleBase {
 		particleMaxAge = age;
 		particleScale = scale;
 		initScale = particleScale;
-		particleGravity = initScale * 0.1F;
 		particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
 		canCollide = false;
 

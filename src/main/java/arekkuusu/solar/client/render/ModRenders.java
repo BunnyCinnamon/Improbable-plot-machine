@@ -39,14 +39,14 @@ public final class ModRenders {
 		registerTESR(TilePhenomena.class, new PhenomenaRenderer());
 		registerTESR(TileQSquared.class, new QSquaredRenderer());
 		registerTESR(TileTheorema.class, new TheoremaRenderer());
-		registerTESR(TileGravityInhibitor.class, new GravityInhibitorRenderer());
+		registerTESR(TileHyperConductor.class, new HyperConductorRenderer());
 		registerTESR(TileVacuumConveyor.class, new VacuumConveyorRenderer());
 		registerTESR(TileMechanicalTranslocator.class, new MechanicalTranslocatorRenderer());
 
 		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
 		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
 		registerTESRItemStack(ModBlocks.THEOREMA, TileTheorema.class);
-		registerTESRItemStack(ModBlocks.GRAVITY_INHIBITOR, TileGravityInhibitor.class);
+		registerTESRItemStack(ModBlocks.HYPER_CONDUCTOR, TileHyperConductor.class);
 		registerTESRItemStack(ModBlocks.VACUUM_CONVEYOR, TileVacuumConveyor.class);
 		registerTESRItemStack(ModBlocks.MECHANICAL_TRANSLOCATOR, TileMechanicalTranslocator.class);
 	}

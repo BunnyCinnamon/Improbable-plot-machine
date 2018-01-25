@@ -9,16 +9,16 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
-import arekkuusu.solar.client.util.baker.baked.BakedHyperConductor;
+import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
+import arekkuusu.solar.client.util.baker.baked.BakedRender;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
@@ -40,19 +40,6 @@ public class BlockHyperConductor extends BlockBase {
 		setDefaultState(getDefaultState().withProperty(State.POWER, 0));
 		setHarvestLevel(Tool.PICK, ToolLevel.IRON);
 		setHardness(1F);
-		setTickRandomly(true);
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState s, EntityLivingBase placer, ItemStack stack) {
-		if(!world.isRemote) {
-			BlockPos vec = new BlockPos(8, 8, 8);
-			BlockPos from = pos.add(vec);
-			BlockPos to = pos.subtract(vec);
-			getTile(TileHyperConductor.class, world, pos).ifPresent(tile -> {
-				BlockPos.getAllInBox(from, to).forEach(tile::addElectron);
-			});
-		}
 	}
 
 	@Override
@@ -73,7 +60,7 @@ public class BlockHyperConductor extends BlockBase {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		getTile(TileHyperConductor.class, world, pos).ifPresent(conductor -> {
 			if(state.getValue(State.POWER) > 0) {
-				conductor.setPowered(false);
+				conductor.hyperInduceAtmosphere();
 			}
 		});
 		super.breakBlock(world, pos, state);
@@ -113,7 +100,10 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedHyperConductor::new);
+		DummyBakedRegistry.register(this, (f, b) -> new BakedRender()
+				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
+				.setParticle(ResourceLibrary.PRIMAL_STONE)
+		);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

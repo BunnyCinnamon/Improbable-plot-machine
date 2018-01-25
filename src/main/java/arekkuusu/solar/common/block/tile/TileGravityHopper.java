@@ -167,10 +167,12 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	@Override
-	void readNBT(NBTTagCompound cmp) {
+	void readNBT(NBTTagCompound compound) {
+		powered = compound.getBoolean("powered");
 	}
 
 	@Override
-	void writeNBT(NBTTagCompound cmp) {
+	void writeNBT(NBTTagCompound compound) {
+		compound.setBoolean("powered", powered);
 	}
 }

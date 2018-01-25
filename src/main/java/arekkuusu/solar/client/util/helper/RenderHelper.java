@@ -96,45 +96,6 @@ public final class RenderHelper {
 		return (Minecraft.getSystemTime() + partialTicks) / 20F;
 	}
 
-	public static void renderCube(float size, double uMin, double uMax, double vMin, double vMax) {
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buff = tessellator.getBuffer();
-		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		size = 0.5F * size;
-		//Front
-		buff.pos(size, -size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(size, size, -size).tex(uMax, vMax).endVertex();
-		buff.pos(-size, size, -size).tex(uMin, vMax).endVertex();
-		buff.pos(-size, -size, -size).tex(uMin, vMin).endVertex();
-		//Back
-		buff.pos(-size, -size, size).tex(uMax, vMin).endVertex();
-		buff.pos(-size, size, size).tex(uMax, vMax).endVertex();
-		buff.pos(size, size, size).tex(uMin, vMax).endVertex();
-		buff.pos(size, -size, size).tex(uMin, vMin).endVertex();
-		//Right
-		buff.pos(size, -size, size).tex(uMax, vMin).endVertex();
-		buff.pos(size, size, size).tex(uMax, vMax).endVertex();
-		buff.pos(size, size, -size).tex(uMin, vMax).endVertex();
-		buff.pos(size, -size, -size).tex(uMin, vMin).endVertex();
-		//Left
-		buff.pos(-size, -size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(-size, size, -size).tex(uMax, vMax).endVertex();
-		buff.pos(-size, size, size).tex(uMin, vMax).endVertex();
-		buff.pos(-size, -size, size).tex(uMin, vMin).endVertex();
-		//Top
-		buff.pos(-size, size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(size, size, -size).tex(uMax, vMax).endVertex();
-		buff.pos(size, size, size).tex(uMin, vMax).endVertex();
-		buff.pos(-size, size, size).tex(uMin, vMin).endVertex();
-		//Bottom
-		buff.pos(-size, -size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(-size, -size, size).tex(uMin, vMin).endVertex();
-		buff.pos(size, -size, size).tex(uMin, vMax).endVertex();
-		buff.pos(size, -size, -size).tex(uMax, vMax).endVertex();
-
-		tessellator.draw();
-	}
-
 	public static void renderBeams(float age, int number, int startRBG, int endRGB, float size) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glShadeModel(GL11.GL_SMOOTH);

@@ -9,15 +9,13 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.client.util.baker.baked.BakedCosmicResonator;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.baker.baked.BakedCosmicResonator;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.common.block.tile.TileCelestialResonator;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,7 +24,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 /**
@@ -44,8 +41,29 @@ public class BlockCelestialResonator extends BlockBase {
 	}
 
 	@Override
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		if(!world.isRemote) {
+			world.scheduleUpdate(pos, this, tickRate(world));
+		}
+	}
+
+	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		world.setBlockState(pos, state.withProperty(State.ACTIVE, false));
+		if(!world.isRemote) {
+			MoonPhase currentPhase = state.getValue(MoonPhase.MOON_PHASE);
+			MoonPhase newPhase = MoonPhase.getMoonPhase(world);
+			if(currentPhase != newPhase) {
+				world.setBlockState(pos, state.withProperty(MoonPhase.MOON_PHASE, newPhase).withProperty(State.ACTIVE, true));
+			} else if(state.getValue(State.ACTIVE)) {
+				world.setBlockState(pos, state.withProperty(State.ACTIVE, false));
+			}
+			world.scheduleUpdate(pos, this, tickRate(world));
+		}
+	}
+
+	@Override
+	public int tickRate(World world) {
+		return 1;
 	}
 
 	@Override
@@ -55,7 +73,29 @@ public class BlockCelestialResonator extends BlockBase {
 
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return state.getValue(State.ACTIVE) ? 15 : 0;
+		return state.getValue(State.ACTIVE) ? 1 : 0;
+	}
+
+	@Override
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		MoonPhase phase = state.getValue(MoonPhase.MOON_PHASE);
+		switch(phase) {
+			case FULL_MOON:
+				return 15;
+			case WAXING_GIBBOUS:
+			case WANING_GIBBOUS:
+				return 12;
+			case FIRST_QUARTER:
+			case LAST_QUARTER:
+				return 8;
+			case WAXING_CRESCENT:
+			case WANING_CRESCENT:
+				return 3;
+			case NEW_MOON:
+			case ECLIPSE:
+				return 0;
+		}
+		return 0;
 	}
 
 	@Override
@@ -94,17 +134,6 @@ public class BlockCelestialResonator extends BlockBase {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return BB;
-	}
-
-	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
-
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileCelestialResonator();
 	}
 
 	@Override

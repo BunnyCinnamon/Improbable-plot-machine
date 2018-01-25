@@ -1,7 +1,0 @@
-{
-	"parent": "solar:block/block_overlay",
-    "textures": {
-        "all": "solar:blocks/hyper_conductor/base",
-        "overlay": "solar:blocks/hyper_conductor/overlay"
-    }
-}

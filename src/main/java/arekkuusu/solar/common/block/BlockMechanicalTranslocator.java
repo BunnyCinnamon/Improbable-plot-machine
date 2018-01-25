@@ -73,14 +73,6 @@ public class BlockMechanicalTranslocator extends BlockBase {
 			.put(EnumFacing.EAST, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
 			.put(EnumFacing.WEST, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
 			.build();
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.28125, 0.25, 0.75, 0.90625, 0.75))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.09375, 0.25, 0.75, 0.71875, 0.75))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.71875, 0.75, 0.75, 0.09375))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.28125, 0.75, 0.75, 0.90625))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.90625, 0.25, 0.25, 0.28125, 0.75, 0.75))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.09375, 0.25, 0.25, 0.71875, 0.75, 0.75))
-			.build();
 
 	public BlockMechanicalTranslocator() {
 		super(LibNames.MECHANICAL_TRANSLOCATOR, FixedMaterial.BREAK);

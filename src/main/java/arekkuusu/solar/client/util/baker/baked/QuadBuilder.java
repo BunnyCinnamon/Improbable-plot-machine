@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker.baked;
 
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.proxy.ClientProxy;
 import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.block.model.BakedQuad;

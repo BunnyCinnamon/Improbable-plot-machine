@@ -34,7 +34,6 @@ public final class ModBlocks {
 	public static final Block PHENOMENA = PLACE_HOLDER;
 	public static final Block Q_SQUARED = PLACE_HOLDER;
 	public static final Block THEOREMA = PLACE_HOLDER;
-	public static final Block GRAVITY_INHIBITOR = PLACE_HOLDER;
 	public static final Block HYPER_CONDUCTOR = PLACE_HOLDER;
 	public static final Block ELECTRON = PLACE_HOLDER;
 	public static final Block ASHEN = PLACE_HOLDER;
@@ -58,7 +57,6 @@ public final class ModBlocks {
 		registry.register(new BlockPhenomena());
 		registry.register(new BlockQSquared());
 		registry.register(new BlockTheorema());
-		registry.register(new BlockGravityInhibitor());
 		registry.register(new BlockHyperConductor());
 		registry.register(new BlockElectron());
 		registry.register(new BlockAshen());
@@ -80,11 +78,8 @@ public final class ModBlocks {
 		GameRegistry.registerTileEntity(TilePhenomena.class, LibMod.MOD_ID + ":phenomena");
 		GameRegistry.registerTileEntity(TileQSquared.class, LibMod.MOD_ID + ":q_squared");
 		GameRegistry.registerTileEntity(TileTheorema.class, LibMod.MOD_ID + ":theorema");
-		GameRegistry.registerTileEntity(TileGravityInhibitor.class, LibMod.MOD_ID + ":gravity_inhibitor");
 		GameRegistry.registerTileEntity(TileHyperConductor.class, LibMod.MOD_ID + ":hyper_conductor");
-		GameRegistry.registerTileEntity(TileElectron.class, LibMod.MOD_ID + ":electron");
 		GameRegistry.registerTileEntity(TileQimranut.class, LibMod.MOD_ID + ":qimranut");
-		GameRegistry.registerTileEntity(TileCelestialResonator.class, LibMod.MOD_ID + ":celestial_resonator");
 		GameRegistry.registerTileEntity(TileVacuumConveyor.class, LibMod.MOD_ID + ":vacuum_conveyor");
 		GameRegistry.registerTileEntity(TileMechanicalTranslocator.class, LibMod.MOD_ID + ":mechanical_translocator");
 		GameRegistry.registerTileEntity(TileAlternator.class, LibMod.MOD_ID + ":alternator");

@@ -42,8 +42,7 @@ public final class ModItems {
 		registry.register(new ItemCrystalQuartz());
 		registry.register(itemBlock(ModBlocks.Q_SQUARED));
 		registry.register(itemBlock(ModBlocks.THEOREMA));
-		registry.register(itemBlock(ModBlocks.GRAVITY_INHIBITOR));
-		registry.register(new ItemBlockBaked(ModBlocks.HYPER_CONDUCTOR));
+		registry.register(itemBlock(ModBlocks.HYPER_CONDUCTOR));
 		registry.register(new ItemBlockBaked(ModBlocks.ELECTRON));
 		registry.register(itemBlock(ModBlocks.ASHEN));
 		registry.register(itemBlock(ModBlocks.MONOLITHIC));

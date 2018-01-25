@@ -15,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.HashSet;
@@ -24,60 +23,63 @@ import java.util.HashSet;
  * Created by <Arekkuusu> on 25/10/2017.
  * It's distributed as part of Solar.
  */
-public class TileHyperConductor extends TileBase implements ITickable {
+public class TileHyperConductor extends TileBase {
 
 	private HashSet<BlockPos> electrons = Sets.newHashSet();
-	private boolean needsUpdate;
 	private boolean powered;
 
 	@Override
-	public void update() {
-		if(!world.isRemote && needsUpdate) {
-			updatePosition(world, pos);
-			needsUpdate = false;
+	public void onLoad() {
+		if(!world.isRemote) {
+			BlockPos from = pos.add(-8, -8, -8);
+			BlockPos to = pos.add(8, 8, 8);
+			BlockPos.getAllInBox(from, to).forEach(this::addElectron);
 		}
-		electrons.removeIf(pos -> world.isValid(pos) && world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() != ModBlocks.ELECTRON);
 	}
 
 	public void hyperInduceAtmosphere() {
 		if(!world.isRemote) {
-			electrons.stream().filter(e -> world.isValid(e)
-					&& world.isBlockLoaded(pos)
-					&& world.getBlockState(pos).getBlock() == ModBlocks.ELECTRON
-			).forEach(this::inverseElectron);
+			electrons.removeIf(p -> !isValid(p));
+			electrons.stream().filter(this::isValid).forEach(this::inverseElectron);
+			markDirty();
 		}
+	}
+
+	public void addElectron(BlockPos pos) {
+		if(!world.isRemote) {
+			if(isValid(pos) && isInRange(pos) && electrons.add(pos)) {
+				if(isPoweredLazy()) { //If the tile is ON, then it must inverse the electron
+					inverseElectron(pos);
+				}
+				markDirty();
+			}
+		}
+	}
+
+	private boolean isValid(BlockPos pos) {
+		return world.isValid(pos) && world.isBlockLoaded(pos)
+				&& world.getBlockState(pos).getBlock() == ModBlocks.ELECTRON;
+	}
+
+	private boolean isInRange(BlockPos pos) {
+		return getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 8;
 	}
 
 	private void inverseElectron(BlockPos pos) {
 		if(!world.isRemote) {
 			IBlockState state = world.getBlockState(pos);
 			boolean powered = state.getValue(State.POWER) > 0;
-			world.setBlockState(pos, state.withProperty(State.POWER, powered ? 0 : getPowerLazy()));
+			int power = powered ? 0 : (int) ((getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) / 8D) * (double) getPowerLazy());
+			world.setBlockState(pos, state.withProperty(State.POWER, power));
 		}
-	}
-
-	public void addElectron(BlockPos pos) {
-		if(world.isRemote || !isInRange(pos)) return;
-		IBlockState state = world.getBlockState(pos);
-		if(state.getBlock() == ModBlocks.ELECTRON && electrons.add(pos)) {
-			if(isPoweredLazy()) { //If the tile is ON, then it must inverse the electron node
-				inverseElectron(pos);
-			}
-			this.markDirty();
-			needsUpdate = true;
-		}
-	}
-
-	public boolean isInRange(BlockPos pos) {
-		return getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 8;
-	}
-
-	public int getPowerLazy() {
-		return getStateValue(State.POWER, pos).orElse(0);
 	}
 
 	public boolean isPoweredLazy() {
 		return getPowerLazy() > 0;
+	}
+
+	public int getPowerLazy() {
+		return getStateValue(State.POWER, pos).orElse(0);
 	}
 
 	public boolean isPowered() {
@@ -87,9 +89,10 @@ public class TileHyperConductor extends TileBase implements ITickable {
 	public void setPowered(boolean powered) {
 		this.powered = powered;
 		IBlockState state = world.getBlockState(pos);
-		if(state.getBlock() == ModBlocks.HYPER_CONDUCTOR)
-			world.setBlockState(pos, state.withProperty(State.POWER, getRedstonePower()));
-		this.hyperInduceAtmosphere();
+		world.setBlockState(pos, state.withProperty(State.POWER, getRedstonePower()));
+		if(powered) {
+			hyperInduceAtmosphere();
+		}
 	}
 
 	public int getRedstonePower() {
