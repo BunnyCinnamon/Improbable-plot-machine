@@ -27,7 +27,7 @@ import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -46,7 +46,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ClientProxy implements IProxy {
 
 	public static final ParticleRenderer PARTICLE_RENDERER = new ParticleRenderer();
-	private static boolean isOptifineInstalled;
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
@@ -88,10 +87,6 @@ public class ClientProxy implements IProxy {
 	}
 
 	public static boolean isOptifineInstalled() {
-		if(!isOptifineInstalled) {
-			isOptifineInstalled = Loader.isModLoaded("optifine");
-		}
-
-		return isOptifineInstalled;
+		return FMLClientHandler.instance().hasOptifine();
 	}
 }
