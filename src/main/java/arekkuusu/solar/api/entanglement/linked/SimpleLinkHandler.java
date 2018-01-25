@@ -8,7 +8,7 @@
 package arekkuusu.solar.api.entanglement.linked;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.helper.Pair;
+import arekkuusu.solar.api.util.Pair;
 import net.minecraft.tileentity.TileEntity;
 
 import javax.annotation.Nullable;

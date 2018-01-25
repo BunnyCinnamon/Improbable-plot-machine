@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import com.google.common.collect.Sets;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.proxy.ClientProxy;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;

@@ -10,7 +10,7 @@ package arekkuusu.solar.api;
 import arekkuusu.solar.api.entanglement.linked.ISimpleLinkedTile;
 import arekkuusu.solar.api.entanglement.quantum.data.IQuantumData;
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
-import arekkuusu.solar.api.helper.Pair;
+import arekkuusu.solar.api.util.Pair;
 import com.google.common.collect.Maps;
 
 import java.util.List;

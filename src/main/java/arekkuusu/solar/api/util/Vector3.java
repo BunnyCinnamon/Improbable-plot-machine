@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.helper;
+package arekkuusu.solar.api.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

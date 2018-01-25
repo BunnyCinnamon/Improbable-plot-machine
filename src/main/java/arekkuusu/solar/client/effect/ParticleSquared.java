@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import net.minecraft.world.World;
 

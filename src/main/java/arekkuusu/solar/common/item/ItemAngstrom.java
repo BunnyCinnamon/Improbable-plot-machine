@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.helper.RayTraceHelper;
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;

@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.quantum.data.QuantumTileWrapper;
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import net.minecraft.util.ITickable;
 

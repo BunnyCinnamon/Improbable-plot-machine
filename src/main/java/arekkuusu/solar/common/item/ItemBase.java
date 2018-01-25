@@ -25,9 +25,7 @@ public class ItemBase extends Item implements IModel {
 
 	public ItemBase(String id) {
 		super();
-		this.setUnlocalizedName(id);
-		this.setRegistryName(LibMod.MOD_ID, id);
-		this.setCreativeTab(CreativeTabHandler.MISC);
+		ModItems.setRegistry(this, id);
 	}
 
 	@Override

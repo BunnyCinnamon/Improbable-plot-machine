@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.helper.RandomCollection;
+import arekkuusu.solar.api.util.RandomCollection;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.SoundType;

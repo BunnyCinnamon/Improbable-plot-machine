@@ -8,7 +8,7 @@
 package arekkuusu.solar.client.proxy;
 
 import arekkuusu.solar.api.helper.RayTraceHelper;
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.item.ModItems;

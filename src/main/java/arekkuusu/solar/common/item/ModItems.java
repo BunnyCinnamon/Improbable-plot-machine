@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.common.block.ModBlocks;
+import arekkuusu.solar.common.handler.CreativeTabHandler;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
@@ -62,5 +63,13 @@ public final class ModItems {
 	@SuppressWarnings("ConstantConditions")
 	private static Item itemBlock(Block block) {
 		return new ItemBlock(block).setRegistryName(block.getRegistryName());
+	}
+
+	@SuppressWarnings({"UnusedReturnValue", "WeakerAccess"}) //Shut up
+	public static Item setRegistry(Item item, String id) {
+		item.setUnlocalizedName(id);
+		item.setRegistryName(LibMod.MOD_ID, id);
+		item.setCreativeTab(CreativeTabHandler.MISC);
+		return item;
 	}
 }

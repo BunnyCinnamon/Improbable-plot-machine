@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.gen;
 
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.gen.ModGen.Structure;

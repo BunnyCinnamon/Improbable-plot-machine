@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.api.tool.FixedDamage;
 import arekkuusu.solar.api.state.State;
 import net.minecraft.entity.EntityLivingBase;

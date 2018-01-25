@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.api.helper.Vector3;
-import arekkuusu.solar.api.helper.Vector3.ImmutableVector3;
+import arekkuusu.solar.api.util.Vector3;
+import arekkuusu.solar.api.util.Vector3.ImmutableVector3;
 import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.BufferBuilder;

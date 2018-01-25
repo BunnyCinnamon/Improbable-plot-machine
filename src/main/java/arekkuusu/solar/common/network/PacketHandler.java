@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.network;
 
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
-import arekkuusu.solar.api.helper.Vector3;
+import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.lib.LibMod;

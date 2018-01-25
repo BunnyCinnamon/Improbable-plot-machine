@@ -9,8 +9,6 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.client.util.helper.IModel;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.common.handler.CreativeTabHandler;
-import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -32,10 +30,8 @@ public class BlockBase extends Block implements IModel {
 
 	public BlockBase(String id, Material material) {
 		super(material);
-		this.setUnlocalizedName(id);
 		this.setDefaultState(defaultState());
-		this.setRegistryName(LibMod.MOD_ID, id);
-		this.setCreativeTab(CreativeTabHandler.MISC);
+		ModBlocks.setRegistry(this, id);
 	}
 
 	public Block setHarvestLevel(Tool lvl, ToolLevel i) {

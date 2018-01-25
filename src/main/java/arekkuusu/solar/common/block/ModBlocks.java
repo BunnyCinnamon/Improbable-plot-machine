@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.common.block.tile.*;
+import arekkuusu.solar.common.handler.CreativeTabHandler;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
@@ -87,5 +88,13 @@ public final class ModBlocks {
 		GameRegistry.registerTileEntity(TileVacuumConveyor.class, LibMod.MOD_ID + ":vacuum_conveyor");
 		GameRegistry.registerTileEntity(TileMechanicalTranslocator.class, LibMod.MOD_ID + ":mechanical_translocator");
 		GameRegistry.registerTileEntity(TileAlternator.class, LibMod.MOD_ID + ":alternator");
+	}
+
+	@SuppressWarnings({"UnusedReturnValue", "WeakerAccess"}) //Shut up
+	public static Block setRegistry(Block block, String id) {
+		block.setUnlocalizedName(id);
+		block.setRegistryName(LibMod.MOD_ID, id);
+		block.setCreativeTab(CreativeTabHandler.MISC);
+		return block;
 	}
 }
