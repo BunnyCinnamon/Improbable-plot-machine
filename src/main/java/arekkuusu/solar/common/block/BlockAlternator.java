@@ -10,6 +10,9 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.baker.baked.BakedAlternator;
+import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileAlternator;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,10 +21,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -40,13 +46,32 @@ public class BlockAlternator extends BlockBase {
 		setDefaultState(getDefaultState().withProperty(State.ACTIVE, true));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
+		setLightLevel(0.2F);
+	}
+
+	@Override
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		if(!world.isRemote) {
+			world.scheduleUpdate(pos, this, tickRate(world));
+		}
 	}
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
-			world.setBlockState(pos, state.withProperty(State.ACTIVE, alternator.areAllActive()));
-		});
+		if(!world.isRemote) {
+			getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
+				boolean active = alternator.areAllActive();
+				if(active != state.getValue(State.ACTIVE)) {
+					world.setBlockState(pos, state.withProperty(State.ACTIVE, active));
+				}
+			});
+			world.scheduleUpdate(pos, this, tickRate(world));
+		}
+	}
+
+	@Override
+	public int tickRate(World world) {
+		return 1;
 	}
 
 	@Override
@@ -116,6 +141,21 @@ public class BlockAlternator extends BlockBase {
 	}
 
 	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
+	}
+
+	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
@@ -124,5 +164,12 @@ public class BlockAlternator extends BlockBase {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileAlternator();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerModel() {
+		DummyBakedRegistry.register(this, BakedAlternator::new);
+		ModelHandler.registerModel(this, 0, "");
 	}
 }
