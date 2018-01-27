@@ -137,8 +137,8 @@ public class BlockBlinker extends BlockBase {
 	}
 
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-		return super.getStrongPower(blockState, blockAccess, pos, side);
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return getWeakPower(state, world, pos, side);
 	}
 
 	@Override

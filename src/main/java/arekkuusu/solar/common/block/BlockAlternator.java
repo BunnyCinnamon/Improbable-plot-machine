@@ -126,6 +126,11 @@ public class BlockAlternator extends BlockBase {
 	}
 
 	@Override
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return getWeakPower(state, world, pos, side);
+	}
+
+	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(State.ACTIVE, meta == 1);
 	}

@@ -50,7 +50,7 @@ public class EntityStaticItem extends EntityItem {
 	public void onUpdate() {
 		if(getItem().getItem().onEntityItemUpdate(this)) return;
 
-		if(getItem().isEmpty() || (!world.isRemote && despawn != -1 && despawn-- == 0)) {
+		if(getItem().isEmpty() || (!world.isRemote && despawn != -1 && despawn-- <= 0)) {
 			setDead();
 		} else {
 			onEntityUpdate();

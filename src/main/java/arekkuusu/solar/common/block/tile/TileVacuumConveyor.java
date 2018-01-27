@@ -52,6 +52,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	private AxisAlignedBB attract, repulse;
 	private AxisAlignedBB attractInverse, repulseInverse;
 	private AxisAlignedBB absorptionRange;
+	private int tick;
 
 	@Override
 	public void onLoad() {
@@ -75,13 +76,12 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	public void update() {
 		if(!world.isRemote) {
 			updateInventoryAccess();
-			boolean isAir = false;
+			boolean isAir = true;
 			if(to.getKey() != null && (isAir = isAir(getFacingLazy().getOpposite()))) {
 				collectItems();
 			} else if(from.getKey() != null && (isAir = isAir(getFacingLazy()))) {
 				dropItems();
-			} else //noinspection ConstantConditions
-				if(isAir) transposeItems();
+			} else if(isAir) transposeItems();
 		} else spawnParticles();
 	}
 
@@ -151,23 +151,24 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	private void dropItems() {
-		if(world.getTotalWorldTime() % 10 != 0) return;
-		applyGravity(repulse, false);
-		IItemHandler handler = from.getKey();
-		ISidedInventory sidedInv = from.getValue();
-		Vector3 spawn = Vector3.create(getPos()).add(0.5D).offset(getFacingLazy(), 1);
-		for(int slot = 0; slot < handler.getSlots(); slot++) {
-			ItemStack inSlot = handler.getStackInSlot(slot);
-			if(!inSlot.isEmpty()
-					&& (lookup.isEmpty() || ItemHandlerHelper.canItemStacksStack(lookup, inSlot))
-					&& (sidedInv == null || sidedInv.canExtractItem(slot, inSlot, getFacingLazy()))) {
-				ItemStack out = handler.extractItem(slot, Integer.MAX_VALUE, false);
-				EntityTemporalItem entity = new EntityTemporalItem(world, spawn.x, spawn.y, spawn.z, out);
-				impulseEntityItem(spawn, entity);
-				world.spawnEntity(entity);
-				break;
+		if(tick++ % 20 == 0) { // :thonk:
+			IItemHandler handler = from.getKey();
+			ISidedInventory sidedInv = from.getValue();
+			Vector3 spawn = Vector3.create(pos.offset(getFacingLazy())).add(0.5D);
+			for(int slot = 0; slot < handler.getSlots(); slot++) {
+				ItemStack inSlot = handler.getStackInSlot(slot);
+				if(!inSlot.isEmpty()
+						&& (lookup.isEmpty() || ItemHandlerHelper.canItemStacksStack(lookup, inSlot))
+						&& (sidedInv == null || sidedInv.canExtractItem(slot, inSlot, getFacingLazy()))) {
+					ItemStack out = handler.extractItem(slot, Integer.MAX_VALUE, false);
+					EntityTemporalItem entity = new EntityTemporalItem(world, spawn.x, spawn.y, spawn.z, out);
+					impulseEntityItem(spawn, entity);
+					world.spawnEntity(entity);
+					break;
+				}
 			}
 		}
+		applyGravity(repulse, false);
 	}
 
 	private void transposeItems() {
@@ -203,7 +204,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 
 			if(sqrt <= 10D) {
 				double strength = (1 - v) * (1 - v);
-				double power = 0.085D * (in ? 4D : -2D);
+				double power = 0.085D * (in ? 4D : -1.25D);
 
 				item.motionX += (x / sqrt) * strength * power;
 				item.motionY += (y / sqrt) * strength * power;
