@@ -84,9 +84,9 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.HYPER_CONDUCTOR);
 			addBlock(ModBlocks.ELECTRON);
 			addBlock(ModBlocks.QUANTUM_MIRROR);
-			addBlock(ModBlocks.MECHANICAL_TRANSLOCATOR);
-			addBlock(ModBlocks.VACUUM_CONVEYOR);
 			addBlock(ModBlocks.ALTERNATOR);
+			addBlock(ModBlocks.VACUUM_CONVEYOR);
+			addBlock(ModBlocks.MECHANICAL_TRANSLOCATOR);
 			addBlock(ModBlocks.GRAVITY_HOPPER);
 			addBlock(ModBlocks.BLINKER);
 			addBlock(ModBlocks.QIMRANUT);

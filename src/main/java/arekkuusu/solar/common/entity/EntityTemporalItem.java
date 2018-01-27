@@ -17,7 +17,7 @@ import net.minecraft.world.World;
  */
 public class EntityTemporalItem extends EntityStaticItem {
 
-	public int lifeTime = 20;
+	public int lifeTime = 360;
 
 	public EntityTemporalItem(World world, double x, double y, double z, ItemStack stack) {
 		super(world, x, y, z, stack);

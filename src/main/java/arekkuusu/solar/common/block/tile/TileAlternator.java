@@ -10,9 +10,10 @@ package arekkuusu.solar.common.block.tile;
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
-import com.google.common.collect.Maps;
+import arekkuusu.solar.common.handler.data.WorldAlternatorData;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -21,12 +22,15 @@ import java.util.UUID;
  */
 public class TileAlternator extends TileRelativeBase {
 
-	private static final Map<UUID, Integer> ACTIVE_MAP = Maps.newHashMap();
+	private UUID loadKey;
 
 	public boolean areAllActive() {
 		return getKey().map(key -> {
-			int size = Math.toIntExact(RelativityHandler.getRelatives(key).stream().filter(IRelativeTile::isLoaded).count());
-			int loaded = ACTIVE_MAP.get(key);
+			int size = 0;
+			for(IRelativeTile tile : RelativityHandler.getRelatives(key)) {
+				if(tile.isLoaded()) ++size;
+			}
+			int loaded = TileAlternator.getData(world).getSize(key);
 			return size == loaded;
 		}).orElse(false);
 	}
@@ -38,9 +42,13 @@ public class TileAlternator extends TileRelativeBase {
 	@Override
 	public void add() {
 		if(!world.isRemote) {
+			if(loadKey == null) {
+				loadKey = UUID.randomUUID();
+				markDirty();
+			}
 			RelativityHandler.addRelative(this, () -> {
 				getKey().ifPresent(key -> {
-					ACTIVE_MAP.put(key, ACTIVE_MAP.getOrDefault(key, 0) + 1);
+					TileAlternator.getData(world).add(key, loadKey);
 				});
 			});
 		}
@@ -50,10 +58,28 @@ public class TileAlternator extends TileRelativeBase {
 	public void remove() {
 		if(!world.isRemote) {
 			RelativityHandler.removeRelative(this, () -> {
-				getKey().ifPresent(key -> {
-					ACTIVE_MAP.put(key, ACTIVE_MAP.getOrDefault(key, 0) - 1);
-				});
+				if(loadKey != null) {
+					getKey().ifPresent(key -> {
+						TileAlternator.getData(world).remove(key, loadKey);
+					});
+				}
 			});
 		}
+	}
+
+	public static WorldAlternatorData getData(World world) {
+		return WorldAlternatorData.get(world);
+	}
+
+	@Override
+	void readNBT(NBTTagCompound compound) {
+		super.readNBT(compound);
+		loadKey = compound.getUniqueId("loadKey");
+	}
+
+	@Override
+	void writeNBT(NBTTagCompound compound) {
+		super.writeNBT(compound);
+		compound.setUniqueId("loadKey", loadKey);
 	}
 }

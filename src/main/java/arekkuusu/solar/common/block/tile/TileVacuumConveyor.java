@@ -216,14 +216,13 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, box, Entity::isEntityAlive);
 		return list.stream().filter(entity -> {
 			ItemStack stack = entity.getItem();
-
 			return lookup.isEmpty() || ItemHandlerHelper.canItemStacksStack(lookup, stack);
 		}).map(this::map).collect(Collectors.toList());
 	}
 
 	private EntityTemporalItem map(EntityItem entity) {
 		if(entity instanceof EntityTemporalItem) {
-			((EntityTemporalItem) entity).lifeTime = 40;
+			((EntityTemporalItem) entity).lifeTime = 360;
 			return (EntityTemporalItem) entity;
 		}
 		EntityTemporalItem item = new EntityTemporalItem(entity);

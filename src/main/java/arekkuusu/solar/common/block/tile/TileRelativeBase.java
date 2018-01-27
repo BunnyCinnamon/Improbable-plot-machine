@@ -26,10 +26,9 @@ public abstract class TileRelativeBase extends TileBase implements IRelativeTile
 	private UUID key;
 
 	@Override
-	public void onLoad() {
-		if(!world.isRemote) {
-			add();
-		}
+	public void validate() {
+		super.validate();
+		add();
 	}
 
 	@Override
