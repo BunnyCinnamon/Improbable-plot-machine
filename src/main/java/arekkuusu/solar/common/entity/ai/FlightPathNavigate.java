@@ -7,19 +7,14 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity.ai;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.pathfinding.*;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.pathfinding.FlyingNodeProcessor;
+import net.minecraft.pathfinding.PathFinder;
+import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by <Arekkuusu> on 05/08/2017.

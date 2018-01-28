@@ -7,7 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.common;
 
-import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.common.entity.ModEntities;
 import arekkuusu.solar.common.handler.gen.ModGen;
 import arekkuusu.solar.common.lib.LibMod;
@@ -17,7 +16,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

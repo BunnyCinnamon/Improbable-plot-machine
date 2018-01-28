@@ -9,8 +9,6 @@ package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.client.util.helper.IModel;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.common.handler.CreativeTabHandler;
-import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

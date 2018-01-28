@@ -9,8 +9,8 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
-import arekkuusu.solar.client.util.baker.baked.BakedSchrodingerGlyph;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.baker.baked.BakedSchrodingerGlyph;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.solar.common.entity.Megumin;

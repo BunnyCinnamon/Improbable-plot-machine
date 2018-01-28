@@ -8,10 +8,10 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.tool.FixedMaterial;
-import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
-import arekkuusu.solar.client.util.baker.baked.BakedRender;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
+import arekkuusu.solar.client.util.baker.baked.BakedRender;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQSquared;
 import arekkuusu.solar.common.lib.LibNames;

@@ -9,8 +9,8 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
-import arekkuusu.solar.client.util.baker.baked.BakedMonolithicGlyph;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.baker.baked.BakedMonolithicGlyph;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.lib.LibNames;

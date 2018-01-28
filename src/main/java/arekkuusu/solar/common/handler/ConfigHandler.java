@@ -10,7 +10,8 @@ package arekkuusu.solar.common.handler;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraftforge.common.config.Config;
 
-import static net.minecraftforge.common.config.Config.*;
+import static net.minecraftforge.common.config.Config.Comment;
+import static net.minecraftforge.common.config.Config.LangKey;
 
 /**
  * Created by <Arekkuusu> on 23/06/2017.

@@ -9,8 +9,6 @@ package arekkuusu.solar.api.entanglement.quantum;
 
 import arekkuusu.solar.api.SolarApi;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.*;
 
