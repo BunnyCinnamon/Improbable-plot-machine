@@ -37,7 +37,12 @@ public enum BlockBaker {
 	VACUUM_BOTTOM("vacuum_bottom"),
 	TRANSLOCATOR_BASE("translocator_base"),
 	TRANSLOCATOR_CENTER("translocator_center"),
-	TRANSLOCATOR_PIECE_RING("translocator_piece_ring");
+	TRANSLOCATOR_PIECE_RING("translocator_piece_ring"),
+	CONDUCTOR_PIECE_0("conductor_piece_0"),
+	CONDUCTOR_PIECE_1("conductor_piece_1"),
+	CONDUCTOR_PIECE_2("conductor_piece_2"),
+	CONDUCTOR_PIECE_3("conductor_piece_3"),
+	CONDUCTOR_PIECE_4("conductor_piece_4");
 
 	ResourceLocation location;
 

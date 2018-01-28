@@ -7,24 +7,35 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.GLHelper;
+import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.Tuple;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by <Arekkuusu> on 17/10/2017.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public class HyperConductorRenderer extends SpecialModelRenderer<TileHyperConductor> {
+
+	private final BlockBaker[] models = {
+			BlockBaker.CONDUCTOR_PIECE_0,
+			BlockBaker.CONDUCTOR_PIECE_1,
+			BlockBaker.CONDUCTOR_PIECE_2,
+			BlockBaker.CONDUCTOR_PIECE_3,
+			BlockBaker.CONDUCTOR_PIECE_4
+	};
+	private final float offsets[][] = {
+			{0.0025F, 0.0025F, -0.0025F},
+			{-0.0025F, -0.0025F, 0.0025F},
+			{0.0025F, -0.0025F, 0.0025F},
+			{0.0025F, 0.0025F, -0.0025F},
+			{-0.0025F, -0.0025F, 0.0025F}
+	};
 
 	@Override
 	void renderTile(TileHyperConductor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
@@ -37,88 +48,27 @@ public class HyperConductorRenderer extends SpecialModelRenderer<TileHyperConduc
 	}
 
 	private void renderModel(double x, double y, double z, float partialTicks) {
-		float tick = RenderHelper.getRenderWorldTime(partialTicks) * 0.5F;
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
+		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
-		GlStateManager.disableCull();
-		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-		GlStateManager.rotate(tick % 360, 0, 1, tick % 720);
-		GlStateManager.rotate(15.0F * (float) Math.sin(Math.toRadians(partialTicks / 15F + tick / 15F % 360F)), 1, 0, 0);
-		GlStateManager.rotate(45.0F * (float) Math.sin(Math.toRadians(partialTicks / 15F + tick / 15F % 360F)), 0, 1, 0);
-		GlStateManager.rotate(30.0F * (float) Math.sin(Math.toRadians(partialTicks / 15F + tick / 15F % 360F)), 0, 0, 1);
-
-		for(int layer = 0; layer < 3; layer++) {
-			float relativeTime = (tick - ((float) layer * 145F)) * 0.05F;
-
-			float size = MathHelper.sin(relativeTime);
-			size = (size < 0 ? -size : size);
-			size += 0.2F;
-			size *= 0.4F;
-
-			double uvMin = 0.3125D;
-			SpriteLibrary.HYPER_CONDUCTOR.bindManager();
-			renderCube(size, uvMin, 1 - uvMin, uvMin, 1 - uvMin);
-
-			SpriteLibrary.HYPER_CONDUCTOR_OVERLAY.bindManager();
-			Tuple<Double, Double> uv = SpriteLibrary.HYPER_CONDUCTOR_OVERLAY.getUVFrame((int) (tick * 0.45F));
-			double uOffset = SpriteLibrary.HYPER_CONDUCTOR_OVERLAY.getU();
-			double u = uv.getFirst();
-			double vOffset = SpriteLibrary.HYPER_CONDUCTOR_OVERLAY.getV();
-			double v = uv.getSecond();
-
-			double uMin = u + uvMin / 2F;
-			double uMax = u + uOffset - uvMin / 2F;
-			double vMin = v + uvMin / 4F;
-			double vMax = v + vOffset - uvMin / 4F;
-
-			final float prevU = OpenGlHelper.lastBrightnessX;
-			final float prevV = OpenGlHelper.lastBrightnessY;
-			GlStateManager.disableLighting();
-			GLHelper.lightMap(255F, 255F);
-			renderCube(size, uMin, uMax, vMin, vMax);
-			GLHelper.lightMap(prevU, prevV);
-			GlStateManager.enableLighting();
-		}
-
 		GlStateManager.enableCull();
+		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
+		for(int i = 0; i < 5; i++) {
+			GlStateManager.pushMatrix();
+			float offset[] = offsets[i];
+			wobble(tick, 1.5F, partialTicks, offset);
+			BlockBaker.render(models[i]);
+			GlStateManager.popMatrix();
+		}
+		GlStateManager.disableCull();
 		GlStateManager.popMatrix();
 	}
 
-	private void renderCube(float size, double uMin, double uMax, double vMin, double vMax) {
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buff = tessellator.getBuffer();
-		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		size = 0.5F * size;
-		//Front
-		buff.pos(size, -size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(size, size, -size).tex(uMax, vMax).endVertex();
-		buff.pos(-size, size, -size).tex(uMin, vMax).endVertex();
-		buff.pos(-size, -size, -size).tex(uMin, vMin).endVertex();
-		//Back
-		buff.pos(-size, -size, size).tex(uMax, vMin).endVertex();
-		buff.pos(-size, size, size).tex(uMax, vMax).endVertex();
-		buff.pos(size, size, size).tex(uMin, vMax).endVertex();
-		buff.pos(size, -size, size).tex(uMin, vMin).endVertex();
-		//Right
-		buff.pos(size, -size, size).tex(uMax, vMin).endVertex();
-		buff.pos(size, size, size).tex(uMax, vMax).endVertex();
-		buff.pos(size, size, -size).tex(uMin, vMax).endVertex();
-		buff.pos(size, -size, -size).tex(uMin, vMin).endVertex();
-		//Left
-		buff.pos(-size, -size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(-size, size, -size).tex(uMax, vMax).endVertex();
-		buff.pos(-size, size, size).tex(uMin, vMax).endVertex();
-		buff.pos(-size, -size, size).tex(uMin, vMin).endVertex();
-		//Top
-		buff.pos(-size, size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(size, size, -size).tex(uMax, vMax).endVertex();
-		buff.pos(size, size, size).tex(uMin, vMax).endVertex();
-		buff.pos(-size, size, size).tex(uMin, vMin).endVertex();
-		//Bottom
-		buff.pos(-size, -size, -size).tex(uMax, vMin).endVertex();
-		buff.pos(-size, -size, size).tex(uMin, vMin).endVertex();
-		buff.pos(size, -size, size).tex(uMin, vMax).endVertex();
-		buff.pos(size, -size, -size).tex(uMax, vMax).endVertex();
-
-		tessellator.draw();
+	public static void wobble(float tick, float speed, float angle, float offset[]) {
+		float toDegrees = (float) Math.PI / 180F;
+		angle += speed * tick;
+		if(angle > 360) angle -= 360;
+		double i = Math.sin(angle * toDegrees);
+		GlStateManager.translate(i * offset[0], i * offset[1], i * offset[2]);
 	}
 }

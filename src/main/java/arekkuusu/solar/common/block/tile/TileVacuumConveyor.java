@@ -52,7 +52,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	private AxisAlignedBB attract, repulse;
 	private AxisAlignedBB attractInverse, repulseInverse;
 	private AxisAlignedBB absorptionRange;
-	private int tick;
+	private int cooldown;
 
 	@Override
 	public void onLoad() {
@@ -151,15 +151,15 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	private void dropItems() {
-		if(tick++ % 20 == 0) { // :thonk:
+		if(cooldown-- <= 0) { // :thonk:
 			IItemHandler handler = from.getKey();
 			ISidedInventory sidedInv = from.getValue();
-			Vector3 spawn = Vector3.create(pos.offset(getFacingLazy())).add(0.5D);
 			for(int slot = 0; slot < handler.getSlots(); slot++) {
 				ItemStack inSlot = handler.getStackInSlot(slot);
 				if(!inSlot.isEmpty()
 						&& (lookup.isEmpty() || ItemHandlerHelper.canItemStacksStack(lookup, inSlot))
 						&& (sidedInv == null || sidedInv.canExtractItem(slot, inSlot, getFacingLazy()))) {
+					Vector3 spawn = Vector3.create(pos.offset(getFacingLazy())).add(0.5D);
 					ItemStack out = handler.extractItem(slot, Integer.MAX_VALUE, false);
 					EntityTemporalItem entity = new EntityTemporalItem(world, spawn.x, spawn.y, spawn.z, out);
 					impulseEntityItem(spawn, entity);
@@ -167,6 +167,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 					break;
 				}
 			}
+			cooldown = 8;
 		}
 		applyGravity(repulse, false);
 	}

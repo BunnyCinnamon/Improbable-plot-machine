@@ -33,8 +33,6 @@ public final class SpriteLibrary {
 	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteManager.load(MODEL, "eye_of_schrodinger_layer");
 	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteManager.load(BLOCKS, "quantum_mirror", 9, 1);
 	public static final SpriteResource Q_SQUARED = SpriteManager.load(BLOCKS, "q_squared");
-	public static final FrameSpriteResource HYPER_CONDUCTOR_OVERLAY = SpriteManager.load(BLOCKS, "hyper_conductor/overlay", 4, 2);
-	public static final SpriteResource HYPER_CONDUCTOR = SpriteManager.load(BLOCKS, "hyper_conductor/base");
 	public static final SpriteResource THEOREMA = SpriteManager.load(EFFECT, "theorema");
 
 	public static void init() {}

@@ -31,7 +31,7 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		if(!active) {
 			if(translocator.temp == -1) translocator.temp = RenderHelper.getRenderWorldTime(partialTicks);
 		} else if(translocator.temp != -1) translocator.temp = -1;
-		renderModel(translocator.getFacingLazy(), active ? tick : translocator.temp, active, x, y, z, partialTicks);
+		renderModel(translocator.getFacingLazy(), active ? tick : translocator.temp, active, x, y, z, active ? partialTicks : 0);
 	}
 
 	@Override
