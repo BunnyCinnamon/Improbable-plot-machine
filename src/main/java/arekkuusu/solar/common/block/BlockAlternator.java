@@ -112,12 +112,12 @@ public class BlockAlternator extends BlockBase {
 
 	@Override
 	public boolean canProvidePower(IBlockState state) {
-		return state.getValue(State.ACTIVE);
+		return true;
 	}
 
 	@Override
 	public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
-		return canProvidePower(state);
+		return true;
 	}
 
 	@Override
