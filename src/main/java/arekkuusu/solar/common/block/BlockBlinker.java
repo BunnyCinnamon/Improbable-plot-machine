@@ -137,11 +137,6 @@ public class BlockBlinker extends BlockBase {
 	}
 
 	@Override
-	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return getWeakPower(state, world, pos, side);
-	}
-
-	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(State.ACTIVE, false);
 	}

@@ -77,15 +77,20 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 	}
 
 	@Override
+	public void onLoad() {
+		if(!world.isRemote) {
+			if(world.isBlockPowered(getPos())) {
+				RelativityHandler.setPower(this, getRedstonePower());
+			} else {
+				onPowerUpdate();
+			}
+		}
+	}
+
+	@Override
 	public void add() {
 		if(!world.isRemote) {
-			RelativityHandler.addRelative(this, () -> {
-				if(world.isBlockPowered(getPos())) {
-					RelativityHandler.setPower(this, getRedstonePower());
-				} else {
-					onPowerUpdate();
-				}
-			});
+			RelativityHandler.addRelative(this, null);
 		}
 	}
 
