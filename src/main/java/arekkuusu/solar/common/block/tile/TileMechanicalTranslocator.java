@@ -12,8 +12,10 @@ import arekkuusu.solar.api.helper.FacingHelper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -72,7 +74,12 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 		EnumFacing from = data.getMiddle();
 		EnumFacing to = getFacingLazy();
 		if(state.getBlock().canPlaceBlockAt(world, pos)) {
-			world.setBlockState(pos, getRotationState(state, from, to));
+			if(state.getBlock() == Blocks.WATER) { //Special cases?
+				state = Blocks.FLOWING_WATER.getDefaultState().withProperty(BlockLiquid.LEVEL, state.getValue(BlockLiquid.LEVEL));
+			} else { //No clue
+				state = getRotationState(state, from, to);
+			}
+			world.setBlockState(pos, state);
 			getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 				NBTTagCompound tag = data.getRight();
 				tag.setInteger("x", pos.getX());

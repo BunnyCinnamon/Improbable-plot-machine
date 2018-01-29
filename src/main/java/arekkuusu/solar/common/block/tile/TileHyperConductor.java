@@ -39,8 +39,9 @@ public class TileHyperConductor extends TileBase {
 
 	public void hyperInduceAtmosphere() {
 		if(!world.isRemote) {
-			electrons.removeIf(p -> !isValid(p));
-			electrons.stream().filter(this::isValid).forEach(this::inverseElectron);
+			electrons.removeIf(p -> world.isValid(p) && world.isBlockLoaded(p)
+					&& (world.getBlockState(p).getBlock() != ModBlocks.ELECTRON || !isInRange(p)));
+			electrons.stream().filter(p -> isValid(p) && isInRange(p)).forEach(this::inverseElectron);
 			markDirty();
 		}
 	}
