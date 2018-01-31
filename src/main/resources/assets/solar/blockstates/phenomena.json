@@ -13,7 +13,7 @@
 	  "true" : {
 	  },
 	  "false": {
-		"model": "solar:no_model"
+		"model": "solar:phenomena_"
 	  }
 	}
   }

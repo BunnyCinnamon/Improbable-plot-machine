@@ -35,10 +35,7 @@ public interface IEntangledStack {
 	}
 
 	default void setKey(ItemStack stack, UUID uuid) {
-		Optional<UUID> optional = getKey(stack);
-		if(!optional.isPresent()) {
-			NBTHelper.<NBTTagCompound>getOrCreate(stack, QuantumHandler.NBT_TAG, NBTType.COMPOUND).setUniqueId("key", uuid);
-		}
+		NBTHelper.<NBTTagCompound>getOrCreate(stack, QuantumHandler.NBT_TAG, NBTType.COMPOUND).setUniqueId("key", uuid);
 	}
 
 	default Optional<UUID> getKey(ItemStack stack) {

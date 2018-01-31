@@ -7,7 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker.baked;
 
-import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -34,7 +33,7 @@ import java.util.Map;
 public class BakedRender extends BakedPerspective {
 
 	private Map<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = ImmutableMap.copyOf(ITEM_TRANSFORMS);
-	private ResourceLocation particle = ResourceLibrary.TRANSPARENT;
+	private ResourceLocation particle;
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {

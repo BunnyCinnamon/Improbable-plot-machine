@@ -7,7 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,8 +25,6 @@ public class ItemBlockBaked extends ItemBaseBlock {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		Block block = Block.getBlockFromItem(this);
-		//noinspection ConstantConditions
-		ModelHandler.registerModel(this, 0, ResourceLibrary.getModel(block.getRegistryName().getResourcePath() + '_', ""));
+		ModelHandler.registerModel(this, 0, "inventory");
 	}
 }

@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
 import arekkuusu.solar.client.util.baker.baked.BakedRender;
@@ -53,7 +54,9 @@ public class BlockTheorema extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
-				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS));
+				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
+				.setParticle(ResourceLibrary.THEOREMA)
+		);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

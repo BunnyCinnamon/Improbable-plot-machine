@@ -11,8 +11,10 @@ import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedQimranut;
+import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
+import arekkuusu.solar.client.util.baker.baked.BakedRender;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQimranut;
 import arekkuusu.solar.common.lib.LibNames;
@@ -150,8 +152,8 @@ public class BlockQimranut extends BlockBase {
 	}
 
 	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
@@ -168,7 +170,10 @@ public class BlockQimranut extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedQimranut::new);
+		DummyBakedRegistry.register(this, (v, f) -> new BakedRender()
+				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
+				.setParticle(ResourceLibrary.QIMRANUT_BASE)
+		);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

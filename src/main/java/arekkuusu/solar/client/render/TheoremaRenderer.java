@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.client.util.SpriteLibrary;
+import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.block.tile.TileTheorema;
 import net.minecraft.client.Minecraft;
@@ -60,7 +60,7 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.S);
 		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.T);
 		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.R);
-		SpriteLibrary.THEOREMA.bindManager();
+		bindTexture(ResourceLibrary.THEOREMA);
 
 		GlStateManager.disableLighting();
 		GlStateManager.getFloat(2982, VIEW);

@@ -67,7 +67,7 @@ public final class ModelHandler {
 	}
 
 	public static void registerModel(Item item, int meta) {
-		ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "inventory");
+		ModelResourceLocation location = new ModelResourceLocation(item.getRegistryName(), "");
 		ModelLoader.setCustomModelResourceLocation(item, meta, location);
 	}
 
@@ -80,7 +80,7 @@ public final class ModelHandler {
 	public static <T extends Enum<T> & IStringSerializable> void registerModel(Item item, Class<T> clazz) {
 		for(T t : clazz.getEnumConstants()) {
 			ResourceLocation location = new ResourceLocation(item.getRegistryName() + "_" + t.getName());
-			ModelResourceLocation modelResourceLocation = new ModelResourceLocation(location, "inventory");
+			ModelResourceLocation modelResourceLocation = new ModelResourceLocation(location, "");
 			ModelLoader.setCustomModelResourceLocation(item, t.ordinal(), modelResourceLocation);
 		}
 	}

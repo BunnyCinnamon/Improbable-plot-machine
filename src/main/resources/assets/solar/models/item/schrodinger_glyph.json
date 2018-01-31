@@ -1,0 +1,8 @@
+{
+	"parent": "solar:block/block_overlay",
+	"textures": {
+	  "all": "solar:blocks/primal_stone",
+	  "overlay": "solar:blocks/schrodinger_glyph",
+	  "particle": "solar:blocks/primal_stone"
+	}
+}

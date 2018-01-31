@@ -83,7 +83,7 @@ public class TileQimranut extends TileSimpleLinkBase implements ITickable {
 				.orElse(super.getCapability(capability, facing)) : null;
 	}
 
-	private EnumFacing getFacingLazy() {
+	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 

@@ -34,7 +34,7 @@ public class ItemMonolithicGlyph extends ItemBaseBlock {
 	@Override
 	public void registerModel() {
 		for(int i = 0; i < 16; i++) {
-			ModelHandler.registerModel(this, i, ResourceLibrary.getModel("monolithic_", "glyph=" + i));
+			ModelHandler.registerModel(this, i, ResourceLibrary.getModel("monolithic_glyph_", "glyph=" + i));
 		}
 	}
 }

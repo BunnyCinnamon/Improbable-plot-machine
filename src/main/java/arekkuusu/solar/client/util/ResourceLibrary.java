@@ -33,8 +33,7 @@ public final class ResourceLibrary {
 
 	public static final Set<ResourceLocation> ATLAS_SET = Sets.newHashSet();
 
-	//Textures
-	public static final ResourceLocation TRANSPARENT = getAtlas(BLOCKS, "transparent");
+	//Atlas
 	public static final ResourceLocation MONOLITHIC = getAtlas(BLOCKS, "monolithic/base");
 	public static final ResourceLocation[] MONOLITHIC_OVERLAY = from(16, "monolithic/glyph_overlay_", name ->
 			getAtlas(BLOCKS, name)
@@ -54,7 +53,6 @@ public final class ResourceLibrary {
 	public static final ResourceLocation ELECTRON_ON = getAtlas(BLOCKS, "electron/on");
 	public static final ResourceLocation ELECTRON_OFF = getAtlas(BLOCKS, "electron/off");
 	public static final ResourceLocation QIMRANUT_BASE = getAtlas(BLOCKS, "qimranut/base");
-	public static final ResourceLocation QIMRANUT_BASE_ = getAtlas(BLOCKS, "qimranut/base_");
 	public static final ResourceLocation QIMRANUT_OVERLAY_FRONT = getAtlas(BLOCKS, "qimranut/overlay_front");
 	public static final ResourceLocation QIMRANUT_OVERLAY_BACK = getAtlas(BLOCKS, "qimranut/overlay_back");
 	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = from(MoonPhase.class, "moon_phase/", name ->
@@ -66,6 +64,8 @@ public final class ResourceLibrary {
 	public static final ResourceLocation ALTERNATOR_OVERLAY_ON = getAtlas(BLOCKS, "alternator/overlay_on");
 	public static final ResourceLocation ALTERNATOR_OVERLAY_OFF = getAtlas(BLOCKS, "alternator/overlay_off");
 	public static final ResourceLocation HYPER_CONDUCTOR = getAtlas(BLOCKS, "hyper_conductor");
+	public static final ResourceLocation THEOREMA = getAtlas(BLOCKS, "theorema");
+	//Textures
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
