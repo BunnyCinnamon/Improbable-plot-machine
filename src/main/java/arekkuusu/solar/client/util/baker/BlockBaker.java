@@ -42,7 +42,11 @@ public enum BlockBaker {
 	CONDUCTOR_PIECE_1("conductor_piece_1"),
 	CONDUCTOR_PIECE_2("conductor_piece_2"),
 	CONDUCTOR_PIECE_3("conductor_piece_3"),
-	CONDUCTOR_PIECE_4("conductor_piece_4");
+	CONDUCTOR_PIECE_4("conductor_piece_4"),
+	QIMRANUT("qimranut"),
+	QIMRANUT_("qimranut_"),
+	QIMRANUT_PIECE_0("qimranut_piece_0"),
+	QIMRANUT_PIECE_1("qimranut_piece_1");
 
 	ResourceLocation location;
 
