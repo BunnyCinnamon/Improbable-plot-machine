@@ -14,7 +14,6 @@ import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 
@@ -49,9 +48,9 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 
 	@Override
 	public void onPowerUpdate() {
-		if(!world.isRemote) {
-			IBlockState state = world.getBlockState(pos);
-			world.scheduleUpdate(getPos(), state.getBlock(), 0);
+		int power;
+		if(world.isBlockPowered(pos) && RelativityHandler.getPower(this) < (power = getRedstonePower())) {
+			RelativityHandler.setPower(this, power, false);
 		}
 	}
 
@@ -78,19 +77,8 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 
 	@Override
 	public void onLoad() {
-		if(!world.isRemote) {
-			if(world.isBlockPowered(getPos())) {
-				RelativityHandler.setPower(this, getRedstonePower());
-			} else {
-				onPowerUpdate();
-			}
-		}
-	}
-
-	@Override
-	public void add() {
-		if(!world.isRemote) {
-			RelativityHandler.addRelative(this, null);
+		if(!world.isRemote && world.isBlockPowered(getPos())) {
+			onPowerUpdate();
 		}
 	}
 
@@ -99,7 +87,7 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 		if(!world.isRemote) {
 			RelativityHandler.removeRelative(this, () -> {
 				if(world.isBlockPowered(getPos())) {
-					RelativityHandler.setPower(this, 0);
+					RelativityHandler.setPower(this, 0, true);
 				}
 			});
 		}

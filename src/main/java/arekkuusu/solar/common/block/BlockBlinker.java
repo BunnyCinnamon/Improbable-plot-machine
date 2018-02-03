@@ -64,6 +64,31 @@ public class BlockBlinker extends BlockBase {
 	}
 
 	@Override
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		if(!world.isRemote) {
+			world.scheduleUpdate(pos, this, tickRate(world));
+		}
+	}
+
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if(!world.isRemote) {
+			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
+				boolean active = RelativityHandler.isPowered(blinker);
+				if(active != state.getValue(State.ACTIVE)) {
+					world.setBlockState(pos, state.withProperty(State.ACTIVE, active));
+				}
+			});
+			world.scheduleUpdate(pos, this, tickRate(world));
+		}
+	}
+
+	@Override
+	public int tickRate(World worldIn) {
+		return 0;
+	}
+
+	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
@@ -106,17 +131,10 @@ public class BlockBlinker extends BlockBase {
 				boolean wasPowered = RelativityHandler.isPowered(blinker);
 				boolean isPowered = world.isBlockPowered(pos);
 				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-					RelativityHandler.setPower(blinker, blinker.getRedstonePower());
+					RelativityHandler.setPower(blinker, blinker.getRedstonePower(), true);
 				}
 			});
 		}
-	}
-
-	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		getTile(TileBlinker.class, world, pos).ifPresent(tile ->
-				world.setBlockState(pos, state.withProperty(State.ACTIVE, RelativityHandler.isPowered(tile)))
-		);
 	}
 
 	@Override

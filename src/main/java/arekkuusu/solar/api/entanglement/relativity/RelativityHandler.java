@@ -130,9 +130,9 @@ public final class RelativityHandler {
 	 * @param newPower The new redstone power.
 	 * @param <T>      An impl of {@param tile}.
 	 */
-	public static <T extends TileEntity & IRelativePower> void setPower(T tile, int newPower) {
+	public static <T extends TileEntity & IRelativePower> void setPower(T tile, int newPower, boolean update) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityPowerMap().compute(uuid, (key, prevPower) -> {
-			if(prevPower == null || prevPower != newPower) {
+			if(update && (prevPower == null || prevPower != newPower)) {
 				updateAllRelatives(IRelativePower.class, key);
 			}
 			return newPower > 0 ? newPower : null;
