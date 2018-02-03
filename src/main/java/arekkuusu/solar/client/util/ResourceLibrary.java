@@ -64,8 +64,8 @@ public final class ResourceLibrary {
 	public static final ResourceLocation ALTERNATOR_OVERLAY_ON = getAtlas(BLOCKS, "alternator/overlay_on");
 	public static final ResourceLocation ALTERNATOR_OVERLAY_OFF = getAtlas(BLOCKS, "alternator/overlay_off");
 	public static final ResourceLocation HYPER_CONDUCTOR = getAtlas(BLOCKS, "hyper_conductor");
-	public static final ResourceLocation THEOREMA = getAtlas(BLOCKS, "theorema");
 	//Textures
+	public static final ResourceLocation THEOREMA = getTexture(BLOCKS, "theorema");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");
 
 	public static ResourceLocation getLocation(AssetLocation asset, Location location, String name, String suffix) {
