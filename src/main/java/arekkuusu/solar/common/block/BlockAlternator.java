@@ -70,8 +70,8 @@ public class BlockAlternator extends BlockBase {
 	}
 
 	@Override
-	public int tickRate(World world) {
-		return 1;
+	public int tickRate(World worldIn) {
+		return 0;
 	}
 
 	@Override
