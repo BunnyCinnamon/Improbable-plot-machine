@@ -179,8 +179,8 @@ public class BlockQimranut extends BlockBase {
 						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
 						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.get(0F, 3F, 0F, 0F, 45F, 0F, 0.5F))
 						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.get(0F, 3F, 0F, 0F, 225F, 0F, 0.5F))
-						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.get(0F, 3.5F, 0F, 0F, 0F, 0F, 0.6F))
-						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.get(0F, 1F, 0F, 0F, 0F, 0F, 0.6F))
+						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.get(0F, 3.5F, 0F, 0F, 0F, 0F, 0.25F))
+						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.get(0F, 1F, 0F, 0F, 0F, 0F, 0.5F))
 						.build())
 				.setParticle(ResourceLibrary.QIMRANUT_BASE)
 		);
