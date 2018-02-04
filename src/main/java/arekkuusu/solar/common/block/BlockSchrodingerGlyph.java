@@ -45,16 +45,6 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	}
 
 	@Override
-	public int tickRate(World worldIn) {
-		return 60;
-	}
-
-	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-		world.scheduleUpdate(pos, this, tickRate(world));
-	}
-
-	@Override
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
 		Vector3 vec = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
 		Megumin.chant(world, vec, 5F, false)
@@ -68,6 +58,11 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	}
 
 	@Override
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		world.scheduleUpdate(pos, this, tickRate(world));
+	}
+
+	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if(!world.isRemote) {
 			Optional<EntityPlayer> optional = getClosestPlayer(world, pos);
@@ -75,31 +70,30 @@ public class BlockSchrodingerGlyph extends BlockBase {
 				double distance = optional.get().getDistanceSqToCenter(pos);
 				distance = MathHelper.sqrt(distance);
 				boolean spawn = false;
-
 				for(int i = 0, tries = (int) (11 - distance); i < tries; i++) {
 					if(rand.nextInt(5) == 0) continue;
-
 					BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(pos);
-
 					for(int j = 0, randomized = rand.nextInt(6); j < randomized; j++) {
 						EnumFacing facing = EnumFacing.values()[rand.nextInt(5)];
 						mutable.move(facing, rand.nextInt(3));
 					}
-
 					EntityEyeOfSchrodinger eye = new EntityEyeOfSchrodinger(world);
 					eye.setPosition(mutable.getX() + 0.5D, mutable.getY() + 0.5D, mutable.getZ() + 0.5D);
-
 					if(eye.getCanSpawnHere() && !world.getBlockState(mutable).causesSuffocation()) {
 						world.spawnEntity(eye);
 						spawn = true;
 					}
 				}
-
 				world.scheduleUpdate(pos, this, spawn ? 20 + rand.nextInt(60) : 20);
 			} else {
 				world.scheduleUpdate(pos, this, tickRate(world));
 			}
 		}
+	}
+
+	@Override
+	public int tickRate(World worldIn) {
+		return 60;
 	}
 
 	@Override

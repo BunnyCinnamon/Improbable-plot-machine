@@ -33,8 +33,8 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class BakedRender extends BakedPerspective {
 
-	private Map<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = ImmutableMap.copyOf(ITEM_TRANSFORMS);
-	private ResourceLocation particle;
+	private Map<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = ImmutableMap.copyOf(BLOCK_TRANSFORMS);
+	private ResourceLocation particle = ResourceLibrary.NULL;
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {

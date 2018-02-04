@@ -23,6 +23,7 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,6 +33,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -171,7 +173,15 @@ public class BlockQimranut extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, (v, f) -> new BakedRender()
-				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
+				.setTransforms(ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
+						.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.get(0F, 2F, 0F, 30F, 45F, 0F, 0.75F))
+						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.get(3F, 8.5F, 3F, 75F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.get(3F, 8.5F, 3F, 75F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.get(0F, 4F, 0F, 0F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.get(0F, 4F, 0F, 0F, 225F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.get(0F, 3.5F, 0F, 0F, 0F, 0F, 0.6F))
+						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.get(0F, 1F, 0F, 0F, 0F, 90F, 0.6F))
+						.build())
 				.setParticle(ResourceLibrary.QIMRANUT_BASE)
 		);
 		ModelHandler.registerModel(this, 0, "");

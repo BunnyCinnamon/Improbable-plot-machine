@@ -35,21 +35,21 @@ public final class ModItems {
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
 		registry.register(new ItemQuantumMirror());
-		registry.register(new ItemBlockBaked(ModBlocks.GRAVITY_HOPPER));
-		registry.register(new ItemBlockBaked(ModBlocks.SCHRODINGER_GLYPH));
+		registry.register(itemBlock(ModBlocks.GRAVITY_HOPPER));
+		registry.register(itemBlock(ModBlocks.SCHRODINGER_GLYPH));
 		registry.register(new ItemBlinker());
 		registry.register(itemBlock(ModBlocks.PHENOMENA));
 		registry.register(new ItemCrystalQuartz());
 		registry.register(itemBlock(ModBlocks.Q_SQUARED));
 		registry.register(itemBlock(ModBlocks.THEOREMA));
 		registry.register(itemBlock(ModBlocks.HYPER_CONDUCTOR));
-		registry.register(new ItemBlockBaked(ModBlocks.ELECTRON));
+		registry.register(itemBlock(ModBlocks.ELECTRON));
 		registry.register(itemBlock(ModBlocks.ASHEN));
 		registry.register(itemBlock(ModBlocks.MONOLITHIC));
 		registry.register(new ItemMonolithicGlyph());
 		registry.register(new ItemAngstrom());
 		registry.register(new ItemQimranut());
-		registry.register(new ItemBlockBaked(ModBlocks.CELESTIAL_RESONATOR));
+		registry.register(itemBlock(ModBlocks.CELESTIAL_RESONATOR));
 		registry.register(itemBlock(ModBlocks.LARGE_POT));
 		registry.register(new ItemBase(LibNames.ASH));
 		registry.register(new ItemBase(LibNames.SINGULARITY));

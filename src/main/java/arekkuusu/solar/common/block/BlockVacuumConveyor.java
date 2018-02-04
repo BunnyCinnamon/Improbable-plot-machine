@@ -11,7 +11,6 @@ import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
 import arekkuusu.solar.client.util.baker.baked.BakedRender;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
@@ -170,7 +169,6 @@ public class BlockVacuumConveyor extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
-				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
 				.setParticle(ResourceLibrary.VACUUM_CONVEYOR)
 		);
 		ModelHandler.registerModel(this, 0, "");

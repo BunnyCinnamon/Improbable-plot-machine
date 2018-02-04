@@ -8,13 +8,17 @@
 package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.proxy.ClientProxy;
+import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,9 +31,9 @@ import java.util.List;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public abstract class BakedBrightness implements IBakedModel {
+public abstract class BakedBrightness extends BakedPerspective {
 
-	protected final VertexFormat format;
+	private final VertexFormat format;
 
 	public BakedBrightness(VertexFormat format) {
 		this.format = new VertexFormat(format);
@@ -40,11 +44,11 @@ public abstract class BakedBrightness implements IBakedModel {
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing facing, long rand) {
-		if(state == null || facing != null) return Collections.emptyList();
-		return getQuads(state);
+		if(facing != null) return Collections.emptyList();
+		return getQuads(state, state == null ? DefaultVertexFormats.ITEM : format);
 	}
 
-	protected abstract List<BakedQuad> getQuads(IBlockState state);
+	abstract List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format);
 
 	@Override
 	public boolean isAmbientOcclusion() {
@@ -63,6 +67,13 @@ public abstract class BakedBrightness implements IBakedModel {
 
 	@Override
 	public ItemOverrideList getOverrides() {
-		return ItemOverrideList.NONE;
+		return new ItemOverrideList(Lists.newArrayList()) {
+			@Nullable
+			@Override
+			@SuppressWarnings("deprecation")
+			public ResourceLocation applyOverride(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				return null;
+			}
+		};
 	}
 }

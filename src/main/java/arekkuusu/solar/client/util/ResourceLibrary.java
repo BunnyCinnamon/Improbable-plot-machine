@@ -34,6 +34,7 @@ public final class ResourceLibrary {
 	public static final Set<ResourceLocation> ATLAS_SET = Sets.newHashSet();
 
 	//Atlas
+	public static final ResourceLocation NULL = getAtlas(BLOCKS, "null");
 	public static final ResourceLocation MONOLITHIC = getAtlas(BLOCKS, "monolithic/base");
 	public static final ResourceLocation[] MONOLITHIC_OVERLAY = from(16, "monolithic/glyph_overlay_", name ->
 			getAtlas(BLOCKS, name)
@@ -43,7 +44,6 @@ public final class ResourceLibrary {
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");
-	public static final ResourceLocation QUANTUM_MIRROR = getAtlas(BLOCKS, "quantum_mirror");
 	public static final ResourceLocation SCHRODINGER_GLYPH = getAtlas(BLOCKS, "schrodinger_glyph");
 	public static final ResourceLocation BLINKER_BASE = getAtlas(BLOCKS, "blinker/blinker_base");
 	public static final ResourceLocation BLINKER_TOP_ON = getAtlas(BLOCKS, "blinker/blinker_top_on");

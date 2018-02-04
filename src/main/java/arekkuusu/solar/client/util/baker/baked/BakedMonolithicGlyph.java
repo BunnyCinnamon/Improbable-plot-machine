@@ -9,8 +9,10 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +20,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
@@ -42,8 +44,8 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 	}
 
 	@Override
-	protected List<BakedQuad> getQuads(IBlockState state) {
-		List<BakedQuad> quads = new ArrayList<>();
+	protected List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+		List<BakedQuad> quads = Lists.newArrayList();
 		switch(MinecraftForgeClient.getRenderLayer()) {
 			case SOLID:
 				//Base
@@ -56,17 +58,24 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 				break;
 			case CUTOUT_MIPPED:
 				//Overlay
-				int glyph = state.getValue(State.GLYPH);
-				quads.addAll(QuadBuilder.withFormat(format)
-						.setFrom(0, 0, 0)
-						.setTo(16, 16, 16)
-						.setHasBrightness(true)
-						.addAll(overlay[glyph])
-						.bake()
-				);
+				if(state != null) {
+					int glyph = state.getValue(State.GLYPH);
+					quads.addAll(QuadBuilder.withFormat(format)
+							.setFrom(0, 0, 0)
+							.setTo(16, 16, 16)
+							.setHasBrightness(true)
+							.addAll(overlay[glyph])
+							.bake()
+					);
+				}
 				break;
 		}
 		return quads;
+	}
+
+	@Override
+	public ItemOverrideList getOverrides() {
+		return ItemOverrideList.NONE;
 	}
 
 	@Override

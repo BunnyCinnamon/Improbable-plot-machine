@@ -10,7 +10,6 @@ package arekkuusu.solar.client.util.baker.baked;
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.client.render.SpecialModelRenderer;
-import arekkuusu.solar.client.util.ResourceLibrary;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,11 +31,6 @@ import java.util.UUID;
 public class BakedQuantumMirror extends BakedRender {
 
 	private final ItemOverrides overrides = new ItemOverrides();
-
-	public BakedQuantumMirror() {
-		setTransforms(BakedPerspective.BLOCK_TRANSFORMS);
-		setParticle(ResourceLibrary.QUANTUM_MIRROR);
-	}
 
 	@Override
 	public ItemOverrideList getOverrides() {

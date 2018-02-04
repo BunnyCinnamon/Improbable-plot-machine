@@ -9,6 +9,7 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -17,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
@@ -39,9 +40,17 @@ public class BakedElectron extends BakedBrightness {
 	}
 
 	@Override
-	protected List<BakedQuad> getQuads(IBlockState state) {
-		List<BakedQuad> quads = new ArrayList<>();
-		boolean on = state.getValue(State.POWER) > 0;
+	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+		List<BakedQuad> quads = Lists.newArrayList();
+		if(state == null) {
+			addBase(quads, format, false);
+		} else {
+			addBase(quads, format, state.getValue(State.POWER) > 0);
+		}
+		return quads;
+	}
+
+	private void addBase(List<BakedQuad> quads, VertexFormat format, boolean on) {
 		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(5.5D, 5.5D, 5.5D)
 				.setTo(10.5D, 10.5D, 10.5D)
@@ -49,7 +58,6 @@ public class BakedElectron extends BakedBrightness {
 				.setHasBrightness(on)
 				.bake()
 		);
-		return quads;
 	}
 
 	@Override

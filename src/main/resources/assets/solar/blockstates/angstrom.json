@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-	"model": "solar:angstrom",
+	"textures": {
+	  "all": "solar:blocks/angstrom"
+	},
+	"model": "cube_all",
 	"uvlock": false
   },
   "variants": {

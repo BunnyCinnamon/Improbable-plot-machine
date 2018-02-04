@@ -9,6 +9,7 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -18,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -46,33 +48,44 @@ public class BakedCosmicResonator extends BakedBrightness {
 	}
 
 	@Override
-	protected List<BakedQuad> getQuads(IBlockState state) {
-		MoonPhase phase = state.getValue(MOON_PHASE);
-		QuadBuilder builder = QuadBuilder.withFormat(format)
-				.setFrom(5, 5, 5)
-				.setTo(11, 11, 11)
-				.setHasBrightness(true);
-		switch(phase) {
-			case NEW_MOON:
-				builder.addAll(5F, 11F, 5F, 11F, new_moon);
-				break;
-			case FULL_MOON:
-				builder.addAll(5F, 11F, 5F, 11F, full_moon);
-				break;
-			case ECLIPSE:
-				builder.addAll(5F, 11F, 5F, 11F, eclipse);
-				break;
-			default: {
-				boolean inverse = phase.ordinal() > 4;
-				builder.addFace(EAST, 5F, 11F, 5F, 11F, inverse ? new_moon : full_moon)
-						.addFace(WEST, 5F, 11F, 5F, 11F, inverse ? full_moon : new_moon)
-						.addFace(UP, 5F, 11F, 5F, 11F, phases.get(phase))
-						.addFace(DOWN, 5F, 11F, 5F, 11F, phases.get(phase)).mirror()
-						.addFace(NORTH, 5F, 11F, 5F, 11F, phases.get(phase)).mirror()
-						.addFace(SOUTH, 5F, 11F, 5F, 11F, phases.get(phase));
+	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+		List<BakedQuad> quads = Lists.newArrayList();
+		if(state == null) {
+			QuadBuilder builder = QuadBuilder.withFormat(format)
+					.setFrom(5, 5, 5)
+					.setTo(11, 11, 11)
+					.setHasBrightness(false);
+			builder.addAll(5F, 11F, 5F, 11F, full_moon);
+			quads.addAll(builder.bake());
+		} else {
+			MoonPhase phase = state.getValue(MOON_PHASE);
+			QuadBuilder builder = QuadBuilder.withFormat(format)
+					.setFrom(5, 5, 5)
+					.setTo(11, 11, 11)
+					.setHasBrightness(true);
+			switch(phase) {
+				case NEW_MOON:
+					builder.addAll(5F, 11F, 5F, 11F, new_moon);
+					break;
+				case FULL_MOON:
+					builder.addAll(5F, 11F, 5F, 11F, full_moon);
+					break;
+				case ECLIPSE:
+					builder.addAll(5F, 11F, 5F, 11F, eclipse);
+					break;
+				default: {
+					boolean inverse = phase.ordinal() > 4;
+					builder.addFace(EAST, 5F, 11F, 5F, 11F, inverse ? new_moon : full_moon)
+							.addFace(WEST, 5F, 11F, 5F, 11F, inverse ? full_moon : new_moon)
+							.addFace(UP, 5F, 11F, 5F, 11F, phases.get(phase))
+							.addFace(DOWN, 5F, 11F, 5F, 11F, phases.get(phase)).mirror()
+							.addFace(NORTH, 5F, 11F, 5F, 11F, phases.get(phase)).mirror()
+							.addFace(SOUTH, 5F, 11F, 5F, 11F, phases.get(phase));
+				}
 			}
+			quads.addAll(builder.bake());
 		}
-		return builder.bake();
+		return quads;
 	}
 
 	@Override

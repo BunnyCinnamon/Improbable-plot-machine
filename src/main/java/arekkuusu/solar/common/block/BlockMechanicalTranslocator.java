@@ -25,6 +25,7 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,6 +42,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -231,7 +233,15 @@ public class BlockMechanicalTranslocator extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
-				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
+				.setTransforms(ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
+						.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.get(0F, 2F, 0F, 30F, 45F, 0F, 0.75F))
+						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.get(3F, 8.5F, 3F, 75F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.get(3F, 8.5F, 3F, 75F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.get(0F, 4F, 0F, 0F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.get(0F, 4F, 0F, 0F, 225F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.get(0F, 3.5F, 0F, 0F, 0F, 0F, 0.75F))
+						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.get(0F, 1F, 0F, 0F, 0F, 90F, 0.75F))
+						.build())
 				.setParticle(ResourceLibrary.MECHANICAL_TRANSLOCATOR)
 		);
 		ModelHandler.registerModel(this, 0, "");
