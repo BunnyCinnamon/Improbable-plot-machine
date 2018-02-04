@@ -53,7 +53,7 @@ public class BlockTheorema extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
-				.setParticle(ResourceLibrary.THEOREMA)
+				.setParticle(ResourceLibrary.NULL)
 		);
 		ModelHandler.registerModel(this, 0, "");
 	}
