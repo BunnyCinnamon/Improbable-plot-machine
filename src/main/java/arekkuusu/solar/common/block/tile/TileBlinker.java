@@ -77,7 +77,7 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 
 	@Override
 	public void onLoad() {
-		if(!world.isRemote && world.isBlockPowered(getPos())) {
+		if(!world.isRemote) {
 			onPowerUpdate();
 		}
 	}

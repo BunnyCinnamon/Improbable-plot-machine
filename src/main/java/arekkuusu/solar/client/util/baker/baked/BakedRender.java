@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker.baked;
 
+import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

@@ -131,20 +131,22 @@ public final class RelativityHandler {
 	 * @param <T>      An impl of {@param tile}.
 	 */
 	public static <T extends TileEntity & IRelativePower> void setPower(T tile, int newPower, boolean update) {
-		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityPowerMap().compute(uuid, (key, prevPower) -> {
-			if(update && (prevPower == null || prevPower != newPower)) {
-				updateAllRelatives(IRelativePower.class, key);
-			}
-			return newPower > 0 ? newPower : null;
-		}));
+		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityPowerMap().compute(uuid, (key, prevPower) ->
+				newPower > 0 ? newPower : null
+		));
+		if(update) {
+			updateAllRelatives(IRelativePower.class, tile);
+		}
 	}
 
-	public static <T extends IRelativePower> void updateAllRelatives(Class<T> type, UUID key) {
-		SolarApi.getRelativityMap().computeIfPresent(key, (k, list) -> {
-			list.stream()
-					.filter(t -> t.isLoaded() && t instanceof IRelativePower && type.isInstance(t))
-					.map(t -> (IRelativePower) t).forEach(IRelativePower::onPowerUpdate);
-			return list;
+	public static <T extends IRelativePower> void updateAllRelatives(Class<T> type, T tile) {
+		tile.getKey().ifPresent(uuid -> {
+			SolarApi.getRelativityMap().computeIfPresent(uuid, (k, list) -> {
+				list.stream()
+						.filter(t -> t.isLoaded() && t instanceof IRelativePower && type.isInstance(t))
+						.map(t -> (IRelativePower) t).forEach(IRelativePower::onPowerUpdate);
+				return list;
+			});
 		});
 	}
 }

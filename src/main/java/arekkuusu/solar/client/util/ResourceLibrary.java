@@ -43,6 +43,7 @@ public final class ResourceLibrary {
 			getAtlas(BLOCKS, name)
 	);
 	public static final ResourceLocation PRIMAL_STONE = getAtlas(BLOCKS, "primal_stone");
+	public static final ResourceLocation QUANTUM_MIRROR = getAtlas(BLOCKS, "quantum_mirror");
 	public static final ResourceLocation SCHRODINGER_GLYPH = getAtlas(BLOCKS, "schrodinger_glyph");
 	public static final ResourceLocation BLINKER_BASE = getAtlas(BLOCKS, "blinker/blinker_base");
 	public static final ResourceLocation BLINKER_TOP_ON = getAtlas(BLOCKS, "blinker/blinker_top_on");
