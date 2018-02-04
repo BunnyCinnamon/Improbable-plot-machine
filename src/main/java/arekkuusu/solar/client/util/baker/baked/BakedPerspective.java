@@ -27,7 +27,7 @@ import java.util.Map;
 public abstract class BakedPerspective implements IBakedModel {
 
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> BLOCK_TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
-			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 0F, 0F, 30F, 45F, 0F, 0.645F))
+			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 0F, 0F, 30F, 45F, 0F, 0.64F))
 			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.38F))
 			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.38F))
 			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, get(0F, 0F, 0F, 0F, 45F, 0F, 0.38F))

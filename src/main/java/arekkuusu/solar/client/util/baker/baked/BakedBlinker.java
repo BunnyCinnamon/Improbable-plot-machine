@@ -41,8 +41,8 @@ public class BakedBlinker extends BakedBrightness {
 
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
 			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 4F, 0F, 30F, 45F, 0F, 0.6F))
-			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(-4, 12.5F, -4, 75F, 45F, 0F, 0.55F))
-			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(-4, 12.5F, -4, 75F, 45F, 0F, 0.55F))
+			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(0F, 12.5F, 0F, 75F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0F, 12.5F, 0F, 75F, 45F, 0F, 0.5F))
 			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.get(0F, 4F, 0F, 0F, 45F, 0F, 0.5F))
 			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.get(0F, 4F, 0F, 0F, 225F, 0F, 0.5F))
 			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 3.8F, 0F, 0F, 0F, 0F, 0.25F))
