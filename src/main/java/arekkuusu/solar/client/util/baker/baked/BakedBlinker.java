@@ -41,11 +41,11 @@ public class BakedBlinker extends BakedBrightness {
 
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
 			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 4F, 0F, 30F, 45F, 0F, 0.6F))
-			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(0F, 12.5F, 0F, 75F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0F, 12.5F, 0F, 75F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.get(0F, 4F, 0F, 0F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.get(0F, 4F, 0F, 0F, 225F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 3.8F, 0F, 0F, 0F, 0F, 0.25F))
+			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, get(0F, 4F, 0F, 0F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, get(0F, 4F, 0F, 0F, 225F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 3.8F, 0F, 0F, 0F, 0F, 0.45F))
 			.put(ItemCameraTransforms.TransformType.FIXED, get(0F, 1F, 0F, 0F, -90F, 90F, 1F))
 			.build();
 	private final TextureAtlasSprite base;
