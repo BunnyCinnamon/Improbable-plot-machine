@@ -33,7 +33,7 @@ public class TileHyperConductor extends TileBase {
 		if(!world.isRemote) {
 			BlockPos from = pos.add(-8, -8, -8);
 			BlockPos to = pos.add(8, 8, 8);
-			BlockPos.getAllInBox(from, to).forEach(this::addElectron);
+			BlockPos.getAllInBoxMutable(from, to).forEach(this::addElectron);
 		}
 	}
 

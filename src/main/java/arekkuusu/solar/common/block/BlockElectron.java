@@ -55,7 +55,7 @@ public class BlockElectron extends BlockBase {
 		if(!world.isRemote) {
 			BlockPos from = pos.add(-8, -8, -8);
 			BlockPos to = pos.add(8, 8, 8);
-			BlockPos.getAllInBox(from, to).forEach(p ->
+			BlockPos.getAllInBoxMutable(from, to).forEach(p ->
 					getTile(TileHyperConductor.class, world, p).ifPresent(conductor -> conductor.addElectron(pos))
 			);
 			world.scheduleUpdate(pos, this, tickRate(world));
