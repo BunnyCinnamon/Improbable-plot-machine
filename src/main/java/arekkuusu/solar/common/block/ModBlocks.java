@@ -13,6 +13,7 @@ import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -46,6 +47,7 @@ public final class ModBlocks {
 	public static final Block VACUUM_CONVEYOR = PLACE_HOLDER;
 	public static final Block MECHANICAL_TRANSLOCATOR = PLACE_HOLDER;
 	public static final Block ALTERNATOR = PLACE_HOLDER;
+	public static final Block DILATON = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -68,21 +70,27 @@ public final class ModBlocks {
 		registry.register(new BlockVacuumConveyor());
 		registry.register(new BlockMechanicalTranslocator());
 		registry.register(new BlockAlternator());
+		registry.register(new BlockDilaton());
 		registerTiles();
 	}
 
 	private static void registerTiles() {
-		GameRegistry.registerTileEntity(TileQuantumMirror.class, LibMod.MOD_ID + ":quantum_mirror");
-		GameRegistry.registerTileEntity(TileGravityHopper.class, LibMod.MOD_ID + ":gravity_hopper");
-		GameRegistry.registerTileEntity(TileBlinker.class, LibMod.MOD_ID + ":blinker");
-		GameRegistry.registerTileEntity(TilePhenomena.class, LibMod.MOD_ID + ":phenomena");
-		GameRegistry.registerTileEntity(TileQSquared.class, LibMod.MOD_ID + ":q_squared");
-		GameRegistry.registerTileEntity(TileTheorema.class, LibMod.MOD_ID + ":theorema");
-		GameRegistry.registerTileEntity(TileHyperConductor.class, LibMod.MOD_ID + ":hyper_conductor");
-		GameRegistry.registerTileEntity(TileQimranut.class, LibMod.MOD_ID + ":qimranut");
-		GameRegistry.registerTileEntity(TileVacuumConveyor.class, LibMod.MOD_ID + ":vacuum_conveyor");
-		GameRegistry.registerTileEntity(TileMechanicalTranslocator.class, LibMod.MOD_ID + ":mechanical_translocator");
-		GameRegistry.registerTileEntity(TileAlternator.class, LibMod.MOD_ID + ":alternator");
+		registerTile(TileQuantumMirror.class, LibNames.QUANTUM_MIRROR);
+		registerTile(TileGravityHopper.class, LibNames.GRAVITY_HOPPER);
+		registerTile(TileBlinker.class, LibNames.BLINKER);
+		registerTile(TilePhenomena.class, LibNames.PHENOMENA);
+		registerTile(TileQSquared.class, LibNames.Q_SQUARED);
+		registerTile(TileTheorema.class, LibNames.THEOREMA);
+		registerTile(TileHyperConductor.class, LibNames.HYPER_CONDUCTOR);
+		registerTile(TileQimranut.class, LibNames.QIMRANUT);
+		registerTile(TileVacuumConveyor.class, LibNames.VACUUM_CONVEYOR);
+		registerTile(TileMechanicalTranslocator.class, LibNames.MECHANICAL_TRANSLOCATOR);
+		registerTile(TileAlternator.class, LibNames.ALTERNATOR);
+		registerTile(TileDilaton.class, LibNames.DILATON);
+	}
+
+	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {
+		GameRegistry.registerTileEntity(tile, LibMod.MOD_ID + ":" + name);
 	}
 
 	@SuppressWarnings({"UnusedReturnValue", "WeakerAccess"}) //Shut up

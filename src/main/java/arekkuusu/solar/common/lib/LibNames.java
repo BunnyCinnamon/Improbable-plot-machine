@@ -23,7 +23,6 @@ public class LibNames {
 	public static final String CRYSTAL_QUARTZ = "crystal_quartz";
 	public static final String Q_SQUARED = "q_squared";
 	public static final String THEOREMA = "theorema";
-	public static final String GRAVITY_INHIBITOR = "gravity_inhibitor";
 	public static final String HYPER_CONDUCTOR = "hyper_conductor";
 	public static final String ELECTRON = "electron";
 	public static final String ASHEN = "ashen";
@@ -40,4 +39,5 @@ public class LibNames {
 	public static final String ALTERNATOR = "alternator";
 	public static final String QELAION = "qelaion";
 	public static final String POCKET_STAR = "pocket_star";
+	public static final String DILATON = "dilaton";
 }
