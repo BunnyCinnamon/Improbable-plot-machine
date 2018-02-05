@@ -67,12 +67,14 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	private Optional<BlockPos> traceBlock(EnumFacing facing) { //Oh boy, I cant wait to use raytrace! ♪~ ᕕ(ᐛ)ᕗ
 		for(int forward = 0; forward < 15; forward++) {
 			BlockPos target = pos.offset(facing, forward + 1);
-			IBlockState state = world.getBlockState(target);
-			if(state.getBlock().hasTileEntity(state)) {
-				TileEntity tile = world.getTileEntity(target);
-				if(tile != null && (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
-						|| tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))) {
-					return Optional.of(target);
+			if(world.isValid(target) && world.isBlockLoaded(target)) {
+				IBlockState state = world.getBlockState(target);
+				if(state.getBlock().hasTileEntity(state)) {
+					TileEntity tile = world.getTileEntity(target);
+					if(tile != null && (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
+							|| tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))) {
+						return Optional.of(target);
+					}
 				}
 			}
 		}
