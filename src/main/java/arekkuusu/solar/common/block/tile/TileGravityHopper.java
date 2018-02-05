@@ -43,21 +43,22 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			.build();
 	private boolean powered;
 	private boolean inverse;
+	private int cooldown;
 
 	@Override
 	@SuppressWarnings("ConstantConditions")
 	public void update() {
 		if(!world.isRemote) {
-			if(world.getTotalWorldTime() % 2 == 0) {
+			if(cooldown <= 0) {
 				traceBlock(getFacing()).ifPresent(out -> {
 					traceBlock(getFacing().getOpposite()).ifPresent(in -> {
 						ItemStack stack = transferOut(out, true);
 						if(!stack.isEmpty() && transferIn(in, stack, true)) {
-							transferIn(in, transferOut(out, false), false);
+							if(transferIn(in, transferOut(out, false), false)) cooldown = 5;
 						}
 					});
 				});
-			}
+			} else cooldown--;
 		} else {
 			spawnParticles();
 		}

@@ -151,7 +151,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	private void dropItems() {
-		if(cooldown-- <= 0) { // :thonk:
+		if(cooldown <= 0) {
 			IItemHandler handler = from.getKey();
 			ISidedInventory sidedInv = from.getValue();
 			for(int slot = 0; slot < handler.getSlots(); slot++) {
@@ -167,8 +167,8 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 					break;
 				}
 			}
-			cooldown = 8;
-		}
+			cooldown = 5;
+		} else cooldown--;
 		applyGravity(repulse, false);
 	}
 
