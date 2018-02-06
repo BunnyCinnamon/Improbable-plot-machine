@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "facing=up,mode=default": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=down,mode=default": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=east,mode=default": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=west,mode=default": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=north,mode=default": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=south,mode=default": { "model": "solar:dilaton/extension", "uvlock": false },
+		
+        "facing=up,mode=override": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=down,mode=override": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=east,mode=override": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=west,mode=override": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=north,mode=override": { "model": "solar:dilaton/extension", "uvlock": false },
+        "facing=south,mode=override": { "model": "solar:dilaton/extension", "uvlock": false }
+    }
+}

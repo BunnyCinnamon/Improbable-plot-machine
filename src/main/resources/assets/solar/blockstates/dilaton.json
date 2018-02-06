@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "facing=up,active=false": { "model": "solar:dilaton/full", "uvlock": false },
+        "facing=down,active=false": { "model": "solar:dilaton/full", "uvlock": false },
+        "facing=east,active=false": { "model": "solar:dilaton/full", "uvlock": false },
+        "facing=west,active=false": { "model": "solar:dilaton/full", "uvlock": false },
+        "facing=north,active=false": { "model": "solar:dilaton/full", "uvlock": false },
+        "facing=south,active=false": { "model": "solar:dilaton/full", "uvlock": false },
+		
+        "facing=up,active=true": { "model": "solar:dilaton/base", "uvlock": false },
+        "facing=down,active=true": { "model": "solar:dilaton/base", "uvlock": false },
+        "facing=east,active=true": { "model": "solar:dilaton/base", "uvlock": false },
+        "facing=west,active=true": { "model": "solar:dilaton/base", "uvlock": false },
+        "facing=north,active=true": { "model": "solar:dilaton/base", "uvlock": false },
+        "facing=south,active=true": { "model": "solar:dilaton/base", "uvlock": false }
+    }
+}

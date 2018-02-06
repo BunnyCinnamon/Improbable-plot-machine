@@ -40,4 +40,5 @@ public class LibNames {
 	public static final String QELAION = "qelaion";
 	public static final String POCKET_STAR = "pocket_star";
 	public static final String DILATON = "dilaton";
+	public static final String DILATON_EXTENSION = "dilaton_extension";
 }

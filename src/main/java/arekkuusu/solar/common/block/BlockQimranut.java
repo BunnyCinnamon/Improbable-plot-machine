@@ -9,7 +9,6 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
-import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
@@ -20,15 +19,14 @@ import arekkuusu.solar.common.block.tile.TileQimranut;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -46,7 +44,7 @@ import java.util.UUID;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockQimranut extends BlockBase {
+public class BlockQimranut extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0.1875, 0.75, 0.1875, 0.8125, 0.8125, 0.8125))
@@ -100,51 +98,6 @@ public class BlockQimranut extends BlockBase {
 			return stack;
 		}
 		return super.getItem(world, pos, state);
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(State.ACTIVE, false);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(BlockDirectional.FACING).ordinal();
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.values()[meta]);
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING, State.ACTIVE);
-	}
-
-	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(BlockDirectional.FACING, rot.rotate(state.getValue(BlockDirectional.FACING)));
-	}
-
-	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror) {
-		return state.withRotation(mirror.toRotation(state.getValue(BlockDirectional.FACING)));
-	}
-
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		return state.getValue(BlockDirectional.FACING) == facing ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
 	}
 
 	@Override

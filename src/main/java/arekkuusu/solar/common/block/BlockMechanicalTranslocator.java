@@ -56,8 +56,7 @@ import java.util.UUID;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockMechanicalTranslocator extends BlockBase {
-
+public class BlockMechanicalTranslocator extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_BODY_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.59375, 0.25, 0.75, 0.90625, 0.75))
@@ -169,31 +168,6 @@ public class BlockMechanicalTranslocator extends BlockBase {
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, BlockDirectional.FACING, State.ACTIVE);
-	}
-
-	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(BlockDirectional.FACING, rot.rotate(state.getValue(BlockDirectional.FACING)));
-	}
-
-	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror) {
-		return state.withRotation(mirror.toRotation(state.getValue(BlockDirectional.FACING)));
-	}
-
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		return state.getValue(BlockDirectional.FACING) == facing ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
 	}
 
 	@Override

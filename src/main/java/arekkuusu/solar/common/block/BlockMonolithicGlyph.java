@@ -7,13 +7,13 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedMonolithicGlyph;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.lib.LibNames;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -38,6 +38,8 @@ import java.util.List;
 @SuppressWarnings("deprecation")
 public class BlockMonolithicGlyph extends BlockBase {
 
+	public static final PropertyInteger GLYPH = PropertyInteger.create("glyph", 0, 15);
+
 	public BlockMonolithicGlyph() {
 		super(LibNames.MONOLITHIC_GLYPH, FixedMaterial.DONT_MOVE);
 		setBlockUnbreakable();
@@ -56,17 +58,17 @@ public class BlockMonolithicGlyph extends BlockBase {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(State.GLYPH, meta);
+		return getDefaultState().withProperty(GLYPH, meta);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(State.GLYPH);
+		return state.getValue(GLYPH);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, State.GLYPH);
+		return new BlockStateContainer(this, GLYPH);
 	}
 
 	@Override

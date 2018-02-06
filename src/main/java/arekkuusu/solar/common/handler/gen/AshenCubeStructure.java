@@ -7,9 +7,9 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.gen;
 
-import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.RandomCollection;
 import arekkuusu.solar.api.util.Vector3;
+import arekkuusu.solar.common.block.BlockLargePot;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
@@ -68,7 +68,7 @@ public class AshenCubeStructure extends BaseGen {
 			loot = GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.loot / 100D > random.nextDouble();
 			if (loot) {
 				BlockPos inside = origin.add(1 + random.nextInt(4), 1, 1 + random.nextInt(4));
-				IBlockState pot = ModBlocks.LARGE_POT.getDefaultState().withProperty(State.POT_VARIANT, random.nextInt(3));
+				IBlockState pot = ModBlocks.LARGE_POT.getDefaultState().withProperty(BlockLargePot.POT_VARIANT, random.nextInt(3));
 				world.setBlockState(inside, pot);
 			}
 		}

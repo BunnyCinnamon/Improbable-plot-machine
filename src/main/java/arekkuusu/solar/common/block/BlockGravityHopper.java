@@ -33,7 +33,7 @@ import static net.minecraft.block.BlockDirectional.FACING;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockGravityHopper extends BlockBase {
+public class BlockGravityHopper extends BlockBaseFacing {
 
 	private static final AxisAlignedBB BB = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
@@ -65,41 +65,6 @@ public class BlockGravityHopper extends BlockBase {
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		EnumFacing side = EnumFacing.getDirectionFromEntityLiving(pos, placer);
 		return defaultState().withProperty(FACING, side);
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex();
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return defaultState().withProperty(FACING, EnumFacing.values()[meta]);
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
-	}
-
-	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
-	}
-
-	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror) {
-		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
 	}
 
 	@Override

@@ -16,7 +16,6 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +23,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -42,7 +43,7 @@ import static net.minecraft.block.BlockDirectional.FACING;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockVacuumConveyor extends BlockBase {
+public class BlockVacuumConveyor extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0.1875, 0.15625, 0.1875, 0.8125, 0.84375, 0.8125))
@@ -106,41 +107,6 @@ public class BlockVacuumConveyor extends BlockBase {
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		EnumFacing side = EnumFacing.getDirectionFromEntityLiving(pos, placer);
 		return defaultState().withProperty(FACING, side.getOpposite());
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex();
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return defaultState().withProperty(FACING, EnumFacing.values()[meta]);
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
-	}
-
-	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
-	}
-
-	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror) {
-		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
 	}
 
 	@Override

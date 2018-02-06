@@ -48,6 +48,7 @@ public final class ModBlocks {
 	public static final Block MECHANICAL_TRANSLOCATOR = PLACE_HOLDER;
 	public static final Block ALTERNATOR = PLACE_HOLDER;
 	public static final Block DILATON = PLACE_HOLDER;
+	public static final Block DILATON_EXTENSION = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -71,6 +72,7 @@ public final class ModBlocks {
 		registry.register(new BlockMechanicalTranslocator());
 		registry.register(new BlockAlternator());
 		registry.register(new BlockDilaton());
+		registry.register(new BlockDilaton.BlockDilatonPiece());
 		registerTiles();
 	}
 
