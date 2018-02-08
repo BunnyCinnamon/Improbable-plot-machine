@@ -82,7 +82,7 @@ public class TileDilaton extends TileBase {
 			});
 			pos.move(facing.getOpposite());
 			for(int i = 0, size = pushed.size(); i < size; i++) {
-				if(world.isAirBlock(pos) || world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
+				if(isPosValid(pos)) {
 					for(int index = pushed.size() - 1; index >= 0; index--) {
 						Pair<IBlockState, BlockPos> p = pushed.get(index);
 						world.setBlockState(pos, p.getKey());
@@ -106,6 +106,11 @@ public class TileDilaton extends TileBase {
 				if(!isActiveLazy()) world.setBlockState(getPos(), world.getBlockState(getPos()).withProperty(State.ACTIVE, true));
 			}
 		}
+	}
+
+	private boolean isPosValid(BlockPos pos) {
+		return world.isValid(pos) && world.isBlockLoaded(pos) && world.isAirBlock(pos)
+				|| world.getBlockState(pos).getBlock().isReplaceable(world, pos);
 	}
 
 	public int getRedstonePower() {
