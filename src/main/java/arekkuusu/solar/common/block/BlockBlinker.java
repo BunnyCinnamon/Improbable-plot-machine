@@ -102,15 +102,6 @@ public class BlockBlinker extends BlockBase {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-			ItemStack stack = getItem(world, pos, state);
-			spawnAsEntity(world, pos, stack);
-		});
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		Optional<TileBlinker> optional = getTile(TileBlinker.class, world, pos);
 		if(optional.isPresent()) {

@@ -83,15 +83,6 @@ public class BlockQuantumMirror extends BlockBase {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
-			ItemStack stack = getItem(world, pos, state);
-			spawnAsEntity(world, pos, stack);
-		});
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		Optional<TileQuantumMirror> optional = getTile(TileQuantumMirror.class, world, pos);
 		if(optional.isPresent()) {

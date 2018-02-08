@@ -96,15 +96,6 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> {
-			ItemStack stack = getItem(world, pos, state);
-			spawnAsEntity(world, pos, stack);
-		});
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		Optional<TileMechanicalTranslocator> optional = getTile(TileMechanicalTranslocator.class, world, pos);
 		if(optional.isPresent()) {

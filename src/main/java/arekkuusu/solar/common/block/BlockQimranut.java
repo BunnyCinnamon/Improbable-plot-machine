@@ -78,15 +78,6 @@ public class BlockQimranut extends BlockBaseFacing {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileQimranut.class, world, pos).ifPresent(qimranut -> {
-			ItemStack stack = getItem(world, pos, state);
-			spawnAsEntity(world, pos, stack);
-		});
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		Optional<TileQimranut> optional = getTile(TileQimranut.class, world, pos);
 		if(optional.isPresent()) {

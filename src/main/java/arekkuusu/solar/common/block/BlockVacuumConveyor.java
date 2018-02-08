@@ -81,15 +81,6 @@ public class BlockVacuumConveyor extends BlockBaseFacing {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileVacuumConveyor.class, world, pos).ifPresent(vacuum -> {
-			ItemStack stack = getItem(world, pos, state);
-			spawnAsEntity(world, pos, stack);
-		});
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		Optional<TileVacuumConveyor> optional = getTile(TileVacuumConveyor.class, world, pos);
 		if(optional.isPresent()) {

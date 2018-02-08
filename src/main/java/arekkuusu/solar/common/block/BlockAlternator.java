@@ -88,15 +88,6 @@ public class BlockAlternator extends BlockBase {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
-			ItemStack stack = getItem(world, pos, state);
-			spawnAsEntity(world, pos, stack);
-		});
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		Optional<TileAlternator> optional = getTile(TileAlternator.class, world, pos);
 		if(optional.isPresent()) {

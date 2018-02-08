@@ -64,13 +64,6 @@ public class BlockDilaton extends BlockBaseFacing {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		ItemStack stack = getItem(world, pos, state);
-		spawnAsEntity(world, pos, stack);
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		ItemStack stack = new ItemStack(this);
 		stack.getOrCreateSubCompound("dilaton").setBoolean("active", state.getValue(State.ACTIVE));
