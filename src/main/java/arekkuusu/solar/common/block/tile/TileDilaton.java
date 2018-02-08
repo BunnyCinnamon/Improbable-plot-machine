@@ -53,7 +53,7 @@ public class TileDilaton extends TileBase {
 			List<Pair<IBlockState, BlockPos>> pushed = Lists.newArrayList();
 			Set<BlockPos> deleted = Sets.newHashSet();
 			List<BlockPos> removed = Lists.newArrayList();
-			for(; pointer < range; pointer++) {
+			loop : for(; pointer < range; pointer++) {
 				IBlockState next = world.getBlockState(pos.move(facing));
 				if(pos.equals(getPos()) || next.getBlock() == Blocks.OBSIDIAN) break;
 				if(next.getBlock() == Blocks.AIR) continue;
@@ -61,16 +61,14 @@ public class TileDilaton extends TileBase {
 				switch(reaction) {
 					case PUSH_ONLY:
 					case NORMAL:
-						if(pushed.add(Pair.of(next, pos.toImmutable())) && pushed.size() > 15) {
-							break;
-						}
+						if(pushed.add(Pair.of(next, pos.toImmutable())) && pushed.size() > 15) break loop;
 						else ++range;
 						continue;
 					case DESTROY:
 						removed.add(pos.toImmutable());
 						continue;
 					case BLOCK:
-						break;
+						break loop;
 					case IGNORE:
 				}
 			}
