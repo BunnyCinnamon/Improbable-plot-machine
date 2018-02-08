@@ -36,7 +36,7 @@ public class BlockCelestialResonator extends BlockBase {
 	private static final AxisAlignedBB BB = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
 	public BlockCelestialResonator() {
-		super(LibNames.CELESTIAL_RESONATOR, Material.CIRCUITS);
+		super(LibNames.CELESTIAL_RESONATOR, Material.ROCK);
 		setDefaultState(getDefaultState().withProperty(State.ACTIVE, false));
 	}
 

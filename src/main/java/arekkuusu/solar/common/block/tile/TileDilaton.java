@@ -40,8 +40,8 @@ public class TileDilaton extends TileBase {
 			int pointer = 0;
 			if(isActiveLazy()) {
 				for(; pointer < range; pointer++) {
-					if(pointer >= range) return;
-					IBlockState state = world.getBlockState(pos.move(facing));
+					if(!isPosSafe(pos.move(facing)) || pointer >= range) return;
+					IBlockState state = world.getBlockState(pos);
 					if(state.getBlock() == ModBlocks.DILATON_EXTENSION) {
 						world.setBlockToAir(pos);
 						break;
@@ -51,10 +51,11 @@ public class TileDilaton extends TileBase {
 			}
 			if(!powered) facing = facing.getOpposite();
 			List<Pair<IBlockState, BlockPos>> pushed = Lists.newArrayList();
-			Set<BlockPos> deleted = Sets.newHashSet();
 			List<BlockPos> removed = Lists.newArrayList();
+			Set<BlockPos> deleted = Sets.newHashSet();
 			loop : for(; pointer < range; pointer++) {
-				IBlockState next = world.getBlockState(pos.move(facing));
+				if(!isPosSafe(pos.move(facing))) return;
+				IBlockState next = world.getBlockState(pos);
 				if(pos.equals(getPos()) || next.getBlock() == Blocks.OBSIDIAN) break;
 				if(next.getBlock() == Blocks.AIR) continue;
 				EnumPushReaction reaction = next.getMobilityFlag();
@@ -72,26 +73,23 @@ public class TileDilaton extends TileBase {
 					case IGNORE:
 				}
 			}
-			removed.forEach(p -> {
-				IBlockState state = world.getBlockState(p);
-				float chance = state.getBlock() instanceof BlockSnow ? -1.0f : 1.0f;
-				state.getBlock().dropBlockAsItemWithChance(world, p, state, chance, 0);
-				world.setBlockToAir(p);
-			});
 			pos.move(facing.getOpposite());
 			for(int i = 0, size = pushed.size(); i < size; i++) {
-				if(isPosValid(pos)) {
+				if(isPosAvailable(pos)) {
 					for(int index = pushed.size() - 1; index >= 0; index--) {
 						Pair<IBlockState, BlockPos> p = pushed.get(index);
 						world.setBlockState(pos, p.getKey());
-						if(deleted.add(p.getValue())) {
+						if(deleted.add(p.getValue()))
 							deleted.removeIf(a -> a.equals(pos));
-						}
 						pos.move(facing.getOpposite());
 					}
-					for(BlockPos delete : deleted) {
-						world.setBlockToAir(delete);
-					}
+					removed.forEach(p -> {
+						IBlockState state = world.getBlockState(p);
+						float chance = state.getBlock() instanceof BlockSnow ? -1.0F : 1.0F;
+						state.getBlock().dropBlockAsItemWithChance(world, p, state, chance, 0);
+						world.setBlockToAir(p);
+					});
+					deleted.forEach(world::setBlockToAir);
 					break;
 				} else if(!pushed.isEmpty()) pushed.remove(pushed.size() - 1);
 				pos.move(facing.getOpposite());
@@ -106,9 +104,13 @@ public class TileDilaton extends TileBase {
 		}
 	}
 
-	private boolean isPosValid(BlockPos pos) {
+	private boolean isPosAvailable(BlockPos pos) {
 		return world.isValid(pos) && world.isBlockLoaded(pos) && world.isAirBlock(pos)
 				|| world.getBlockState(pos).getBlock().isReplaceable(world, pos);
+	}
+
+	private boolean isPosSafe(BlockPos pos) {
+		return world.isValid(pos) && world.isBlockLoaded(pos);
 	}
 
 	public int getRedstonePower() {
