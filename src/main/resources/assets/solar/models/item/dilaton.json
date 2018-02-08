@@ -3,13 +3,13 @@
   "overrides": [
     {
       "predicate": {
-        "active": 1.0
+        "active": 0.0
       },
       "model": "solar:block/dilaton/full"
     },
     {
       "predicate": {
-        "active": 0.0
+        "active": 1.0
       },
       "model": "solar:block/dilaton/base"
     }

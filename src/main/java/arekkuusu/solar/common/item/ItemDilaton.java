@@ -19,10 +19,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class ItemDilaton extends ItemBaseBlock {
 
-	ItemDilaton() {
+	public ItemDilaton() {
 		super(ModBlocks.DILATON);
 		addPropertyOverride(new ResourceLocation("active"), (stack, world, entity) ->
-				stack.getOrCreateSubCompound("dilaton").getBoolean("active") ? 0F : 1F
+				stack.getOrCreateSubCompound("dilaton").getBoolean("active") ? 1F : 0F
 		);
 	}
 
