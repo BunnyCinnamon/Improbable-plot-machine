@@ -72,7 +72,7 @@ public final class ModBlocks {
 		registry.register(new BlockMechanicalTranslocator());
 		registry.register(new BlockAlternator());
 		registry.register(new BlockDilaton());
-		registry.register(new BlockDilaton.BlockDilatonPiece());
+		registry.register(new BlockDilaton.BlockDilatonExtension());
 		registerTiles();
 	}
 

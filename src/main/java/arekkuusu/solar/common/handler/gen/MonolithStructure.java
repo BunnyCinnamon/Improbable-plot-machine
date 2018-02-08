@@ -7,8 +7,9 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.gen;
 
-import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.Vector3;
+import arekkuusu.solar.common.block.BlockLargePot;
+import arekkuusu.solar.common.block.BlockMonolithicGlyph;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.gen.ModGen.Structure;
 import net.minecraft.block.state.IBlockState;
@@ -50,7 +51,7 @@ public class MonolithStructure extends BaseGen {
 			Vector3 start = Vector3.create(pos).add(0,-4,6);
 			Arrays.stream(EnumFacing.HORIZONTALS).forEach(facing -> {
 				for (int i = 0; i < 6; i++) {
-					IBlockState glyph = ModBlocks.MONOLITHIC_GLYPH.getDefaultState().withProperty(State.GLYPH, random.nextInt(16));
+					IBlockState glyph = ModBlocks.MONOLITHIC_GLYPH.getDefaultState().withProperty(BlockMonolithicGlyph.GLYPH, random.nextInt(16));
 					world.setBlockState(start.toBlockPos(), glyph);
 					start.offset(facing.getOpposite(), 1);
 				}
@@ -60,7 +61,7 @@ public class MonolithStructure extends BaseGen {
 			for (int i = 0; i < 6 + random.nextInt(6); i++) {
 				if (GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.loot / 100D > random.nextDouble()) {
 					BlockPos inside = loot.add(random.nextInt(4), 0, random.nextInt(4));
-					IBlockState pot = ModBlocks.LARGE_POT.getDefaultState().withProperty(State.POT_VARIANT, random.nextInt(3));
+					IBlockState pot = ModBlocks.LARGE_POT.getDefaultState().withProperty(BlockLargePot.POT_VARIANT, random.nextInt(3));
 					world.setBlockState(inside, pot);
 				}
 			}

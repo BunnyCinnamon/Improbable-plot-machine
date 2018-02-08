@@ -29,7 +29,7 @@ public class FixedMaterial extends Material {
 	}
 
 	private FixedMaterial setBreakable() {
-		super.setImmovableMobility();
+		super.setNoPushMobility();
 		return this;
 	}
 }

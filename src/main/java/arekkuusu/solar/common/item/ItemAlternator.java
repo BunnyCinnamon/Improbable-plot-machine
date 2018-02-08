@@ -25,7 +25,7 @@ import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHI
  * Created by <Snack> on 23/01/2018.
  * It's distributed as part of Solar.
  */
-public class ItemAlternator extends ItemBlockBaked implements IEntangledStack {
+public class ItemAlternator extends ItemBaseBlock implements IEntangledStack {
 
 	public ItemAlternator() {
 		super(ModBlocks.ALTERNATOR);

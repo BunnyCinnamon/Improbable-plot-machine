@@ -52,7 +52,6 @@ public class BlockGravityHopper extends BlockBaseFacing {
 				boolean isPowered = world.isBlockPowered(pos);
 				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
 					hopper.setPowered(isPowered);
-
 					if(isPowered != hopper.isInverse()) {
 						hopper.setInverse(isPowered);
 					}

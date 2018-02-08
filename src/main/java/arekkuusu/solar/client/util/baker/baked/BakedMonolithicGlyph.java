@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker.baked;
 
-import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
+import arekkuusu.solar.common.block.BlockMonolithicGlyph;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -59,7 +59,7 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 			case CUTOUT_MIPPED:
 				//Overlay
 				if(state != null) {
-					int glyph = state.getValue(State.GLYPH);
+					int glyph = state.getValue(BlockMonolithicGlyph.GLYPH);
 					quads.addAll(QuadBuilder.withFormat(format)
 							.setFrom(0, 0, 0)
 							.setTo(16, 16, 16)

@@ -25,7 +25,7 @@ import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHI
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class ItemBlinker extends ItemBlockBaked implements IEntangledStack {
+public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 
 	ItemBlinker() {
 		super(ModBlocks.BLINKER);

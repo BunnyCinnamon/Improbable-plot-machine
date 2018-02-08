@@ -8,23 +8,27 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import net.minecraft.block.Block;
+import arekkuusu.solar.common.block.ModBlocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Created by <Snack> on 06/01/2018.
+ * Created by <Snack> on 06/02/2018.
  * It's distributed as part of Solar.
  */
-public class ItemBlockBaked extends ItemBaseBlock {
+public class ItemDilaton extends ItemBaseBlock {
 
-	ItemBlockBaked(Block block) {
-		super(block);
+	ItemDilaton() {
+		super(ModBlocks.DILATON);
+		addPropertyOverride(new ResourceLocation("active"), (stack, world, entity) ->
+				stack.getOrCreateSubCompound("dilaton").getBoolean("active") ? 0F : 1F
+		);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		ModelHandler.registerModel(this, 0, "inventory");
+		ModelHandler.registerModel(this, 0);
 	}
 }

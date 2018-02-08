@@ -1,17 +1,17 @@
 {
     "variants": {
-        "facing=up,active=false": { "model": "solar:dilaton/full", "uvlock": false },
-        "facing=down,active=false": { "model": "solar:dilaton/full", "uvlock": false },
-        "facing=east,active=false": { "model": "solar:dilaton/full", "uvlock": false },
-        "facing=west,active=false": { "model": "solar:dilaton/full", "uvlock": false },
-        "facing=north,active=false": { "model": "solar:dilaton/full", "uvlock": false },
-        "facing=south,active=false": { "model": "solar:dilaton/full", "uvlock": false },
+        "active=false,facing=up": { "model": "solar:dilaton/full", "uvlock": false },
+        "active=false,facing=down": { "model": "solar:dilaton/full", "x": 180, "uvlock": false },
+        "active=false,facing=east": { "model": "solar:dilaton/full", "x": 90,"y": 90, "uvlock": false },
+        "active=false,facing=west": { "model": "solar:dilaton/full", "x": -90,"y": 90, "uvlock": false },
+        "active=false,facing=north": { "model": "solar:dilaton/full", "x": 90,"y": 0, "uvlock": false },
+        "active=false,facing=south": { "model": "solar:dilaton/full", "x": -90,"y": 0, "uvlock": false },
 		
-        "facing=up,active=true": { "model": "solar:dilaton/base", "uvlock": false },
-        "facing=down,active=true": { "model": "solar:dilaton/base", "uvlock": false },
-        "facing=east,active=true": { "model": "solar:dilaton/base", "uvlock": false },
-        "facing=west,active=true": { "model": "solar:dilaton/base", "uvlock": false },
-        "facing=north,active=true": { "model": "solar:dilaton/base", "uvlock": false },
-        "facing=south,active=true": { "model": "solar:dilaton/base", "uvlock": false }
+        "active=true,facing=up": { "model": "solar:dilaton/base", "uvlock": false },
+        "active=true,facing=down": { "model": "solar:dilaton/base", "x": 180, "uvlock": false },
+        "active=true,facing=east": { "model": "solar:dilaton/base", "x": 90,"y": 90, "uvlock": false },
+        "active=true,facing=west": { "model": "solar:dilaton/base", "x": -90,"y": 90, "uvlock": false },
+        "active=true,facing=north": { "model": "solar:dilaton/base", "x": 90,"y": 0, "uvlock": false },
+        "active=true,facing=south": { "model": "solar:dilaton/base", "x": -90,"y": 0, "uvlock": false }
     }
 }

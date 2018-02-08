@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"parent": "block/block",
 	"textures": {
 		"0": "solar:blocks/dilaton/base_bottom",
 		"1": "solar:blocks/dilaton/base_side",
