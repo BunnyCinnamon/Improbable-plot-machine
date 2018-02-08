@@ -44,7 +44,7 @@ public class BlockDilaton extends BlockBaseFacing {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if(block != this) {
+		if(block != this && !pos.offset(state.getValue(BlockDirectional.FACING)).equals(fromPos)) {
 			getTile(TileDilaton.class, world, pos).ifPresent(dilaton -> {
 				boolean wasPowered = dilaton.isPowered();
 				boolean isPowered = world.isBlockPowered(pos);
