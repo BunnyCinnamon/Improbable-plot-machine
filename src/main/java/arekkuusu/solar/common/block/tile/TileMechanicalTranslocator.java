@@ -60,11 +60,11 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 					mechanical.setRelativeState(triplet);
 					break;
 				}
-				if(i + 1 >= size) {
-					i = -1;
-				}
 				if(i == index) {
 					break;
+				}
+				if(i + 1 >= size) {
+					i = -1;
 				}
 			}
 			ProfilerHelper.end();

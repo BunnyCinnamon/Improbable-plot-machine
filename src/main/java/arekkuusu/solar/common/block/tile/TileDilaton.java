@@ -112,9 +112,9 @@ public class TileDilaton extends TileBase {
 			if(pos.equals(getPos().offset(facing.getOpposite()))) {
 				if(isActiveLazy()) world.setBlockState(getPos(), world.getBlockState(getPos()).withProperty(State.ACTIVE, false));
 			} else if(!pos.equals(getPos())) {
+				if(!isActiveLazy()) world.setBlockState(getPos(), world.getBlockState(getPos()).withProperty(State.ACTIVE, true));
 				IBlockState extension = ModBlocks.DILATON_EXTENSION.getDefaultState().withProperty(BlockDirectional.FACING, facing);
 				world.setBlockState(pos, extension);
-				if(!isActiveLazy()) world.setBlockState(getPos(), world.getBlockState(getPos()).withProperty(State.ACTIVE, true));
 			}
 		}
 	}

@@ -46,15 +46,27 @@ public class BlockDilaton extends BlockBaseFacing {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if(block != this && !pos.offset(state.getValue(BlockDirectional.FACING)).equals(fromPos)) {
-			getTile(TileDilaton.class, world, pos).ifPresent(dilaton -> {
-				boolean wasPowered = dilaton.isPowered();
-				boolean isPowered = world.isBlockPowered(pos);
-				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-					dilaton.setPowered(isPowered);
-					dilaton.pushExtension(isPowered);
+		if(block != this) {
+			EnumFacing facing = state.getValue(BlockDirectional.FACING);
+			boolean front = pos.offset(facing).equals(fromPos);
+			if(front) {
+				IBlockState from = world.getBlockState(fromPos);
+				if(from.getBlock() == ModBlocks.DILATON_EXTENSION
+						&& state.getValue(State.ACTIVE)
+						&& from.getValue(BlockDirectional.FACING).getOpposite() == facing) {
+					world.setBlockState(pos, state.withProperty(State.ACTIVE, false));
+					world.setBlockToAir(fromPos);
 				}
-			});
+			} else {
+				getTile(TileDilaton.class, world, pos).ifPresent(dilaton -> {
+					boolean wasPowered = dilaton.isPowered();
+					boolean isPowered = world.isBlockPowered(pos);
+					if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
+						dilaton.setPowered(isPowered);
+						dilaton.pushExtension(isPowered);
+					}
+				});
+			}
 		}
 	}
 
