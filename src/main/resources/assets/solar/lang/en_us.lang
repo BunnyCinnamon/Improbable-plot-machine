@@ -36,6 +36,7 @@ tile.large_pot.name=Ancient Pot
 tile.vacuum_conveyor.name=Vacuum Conveyor
 tile.mechanical_translocator.name=Mechanical Translocator
 tile.alternator.name=Alternator
+tile.dilaton.name=Dilaton
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger
