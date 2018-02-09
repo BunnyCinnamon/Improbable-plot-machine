@@ -92,12 +92,6 @@ public class TileDilaton extends TileBase {
 							deleted.removeIf(a -> a.equals(pos));
 						pos.move(facing.getOpposite());
 					}
-					removed.forEach(p -> {
-						IBlockState state = world.getBlockState(p);
-						float chance = state.getBlock() instanceof BlockSnow ? -1.0F : 1.0F;
-						state.getBlock().dropBlockAsItemWithChance(world, p, state, chance, 0);
-						world.setBlockToAir(p);
-					});
 					deleted.forEach(delete -> {
 						if(world.getTileEntity(delete) != null) world.removeTileEntity(delete);
 						world.setBlockToAir(delete);
@@ -106,6 +100,13 @@ public class TileDilaton extends TileBase {
 				} else if(!pushed.isEmpty()) pushed.remove(pushed.size() - 1);
 				pos.move(facing.getOpposite());
 			}
+			ProfilerHelper.flagSection("[Dilaton] Block drops");
+			removed.forEach(p -> {
+				IBlockState state = world.getBlockState(p);
+				float chance = state.getBlock() instanceof BlockSnow ? -1.0F : 1.0F;
+				state.getBlock().dropBlockAsItemWithChance(world, p, state, chance, 0);
+				world.setBlockToAir(p);
+			});
 			ProfilerHelper.end();
 			ProfilerHelper.flagSection("[Dilaton] Place extension");
 			if(pos.equals(getPos().offset(facing.getOpposite()))) {
