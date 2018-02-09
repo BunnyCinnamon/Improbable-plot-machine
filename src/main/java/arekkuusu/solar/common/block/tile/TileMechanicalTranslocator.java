@@ -12,10 +12,9 @@ import arekkuusu.solar.api.helper.FacingHelper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -77,12 +76,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 		IBlockState state = data.getLeft();
 		EnumFacing from = data.getMiddle();
 		EnumFacing to = getFacingLazy();
-		if(state.getBlock() == Blocks.WATER) { //Special cases?
-			state = Blocks.FLOWING_WATER.getDefaultState().withProperty(BlockLiquid.LEVEL, state.getValue(BlockLiquid.LEVEL));
-		} else { //No clue
-			state = getRotationState(state, from, to);
-		}
-		world.setBlockState(pos, state);
+		world.setBlockState(pos, state.getMaterial() != Material.WATER ? getRotationState(state, from, to) : state);
 		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 			NBTTagCompound tag = data.getRight();
 			tag.setInteger("x", pos.getX());
@@ -90,6 +84,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 			tag.setInteger("z", pos.getZ());
 			tile.readFromNBT(tag);
 		});
+		world.notifyNeighborsOfStateChange(getPos(), getBlockType(), true);
 	}
 
 	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
@@ -140,6 +135,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 	}
 
 	private void clearRelativeState() {
+		BlockPos pos = getPos().offset(getFacingLazy());
 		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 			world.removeTileEntity(pos);
 		});
