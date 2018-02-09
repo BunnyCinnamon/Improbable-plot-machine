@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -64,15 +65,16 @@ public class TileDilaton extends TileBase {
 				if(pos.equals(getPos()) || next.getBlock() == Blocks.OBSIDIAN) break;
 				if(next.getBlock() == Blocks.AIR) continue;
 				EnumPushReaction reaction = next.getMobilityFlag();
+				if(next.getMaterial() == Material.GLASS) reaction = EnumPushReaction.DESTROY;
 				switch(reaction) {
 					case PUSH_ONLY:
 					case NORMAL:
 						if(pushed.add(getStateTile(next, pos.toImmutable())) && pushed.size() > 15) break loop;
 						else ++range;
-						continue;
+						continue loop;
 					case DESTROY:
 						removed.add(pos.toImmutable());
-						continue;
+						continue loop;
 					case BLOCK:
 						break loop;
 					case IGNORE:

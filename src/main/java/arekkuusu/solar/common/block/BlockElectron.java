@@ -19,6 +19,7 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -44,7 +45,7 @@ public class BlockElectron extends BlockBase {
 	private static final AxisAlignedBB BB = new AxisAlignedBB(0.3125D,0.3125D,0.3125D, 0.6875D, 0.6875D, 0.6875D);
 
 	public BlockElectron() {
-		super(LibNames.ELECTRON, FixedMaterial.BREAK);
+		super(LibNames.ELECTRON, Material.ROCK);
 		setDefaultState(getDefaultState().withProperty(State.POWER, 0));
 		setSound(SoundType.CLOTH);
 		setHardness(1F);
