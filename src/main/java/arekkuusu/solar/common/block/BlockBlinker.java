@@ -102,6 +102,11 @@ public class BlockBlinker extends BlockBase {
 	}
 
 	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		drops.add(getItem((World) world, pos, state)); //Bad??
+	}
+
+	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		Optional<TileBlinker> optional = getTile(TileBlinker.class, world, pos);
 		if(optional.isPresent()) {

@@ -22,7 +22,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -61,6 +63,11 @@ public class BlockDilaton extends BlockBaseFacing {
 		ItemStack stack = placer.getHeldItem(hand);
 		boolean active = !stack.isEmpty() && stack.getOrCreateSubCompound("dilaton").getBoolean("active");
 		return defaultState().withProperty(BlockDirectional.FACING, facing).withProperty(State.ACTIVE, active);
+	}
+
+	@Override
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		drops.add(getItem((World) world, pos, state)); //Bad??
 	}
 
 	@Override
