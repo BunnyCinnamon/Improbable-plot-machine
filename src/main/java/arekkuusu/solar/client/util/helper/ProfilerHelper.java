@@ -28,6 +28,11 @@ public final class ProfilerHelper {
 		}
 	}
 
+	public static void interrupt(String section) {
+		profiler.endSection();
+		profiler.startSection(section);
+	}
+
 	public static void end() {
 		profiler.endSection();
 	}

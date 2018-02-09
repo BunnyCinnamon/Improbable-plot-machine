@@ -45,6 +45,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 
 	public void activate() {
 		if(!world.isRemote && canSend()) {
+			ProfilerHelper.begin("[Mechanical Translocator] Relocating block");
 			List<TileMechanicalTranslocator> list = RelativityHandler.getRelatives(this).stream()
 					.filter(tile -> tile.isLoaded() && tile instanceof TileMechanicalTranslocator)
 					.map(tile -> (TileMechanicalTranslocator) tile).collect(Collectors.toList());
@@ -52,10 +53,12 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 			int index = list.indexOf(this);
 			int size = list.size();
 			int i = index + 1 >= size ? 0 : index + 1;
+			Triple<IBlockState, EnumFacing, NBTTagCompound> triplet = getRelativeState();
 			for(; i < size; i++) {
 				TileMechanicalTranslocator mechanical = list.get(i);
-				if(mechanical.isTransferable() && mechanical != this && mechanical.canReceive()) {
-					mechanical.setRelativeState(getRelativeState());
+				if(mechanical.isTransferable() && mechanical != this && mechanical.canReceive(triplet.getLeft())) {
+					clearRelativeState(); //Before sending the actual state
+					mechanical.setRelativeState(triplet);
 					break;
 				}
 				if(i + 1 >= size) {
@@ -65,6 +68,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 					break;
 				}
 			}
+			ProfilerHelper.end();
 		}
 	}
 
@@ -73,21 +77,19 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 		IBlockState state = data.getLeft();
 		EnumFacing from = data.getMiddle();
 		EnumFacing to = getFacingLazy();
-		if(state.getBlock().canPlaceBlockAt(world, pos)) {
-			if(state.getBlock() == Blocks.WATER) { //Special cases?
-				state = Blocks.FLOWING_WATER.getDefaultState().withProperty(BlockLiquid.LEVEL, state.getValue(BlockLiquid.LEVEL));
-			} else { //No clue
-				state = getRotationState(state, from, to);
-			}
-			world.setBlockState(pos, state);
-			getTile(TileEntity.class, world, pos).ifPresent(tile -> {
-				NBTTagCompound tag = data.getRight();
-				tag.setInteger("x", pos.getX());
-				tag.setInteger("y", pos.getY());
-				tag.setInteger("z", pos.getZ());
-				tile.readFromNBT(tag);
-			});
+		if(state.getBlock() == Blocks.WATER) { //Special cases?
+			state = Blocks.FLOWING_WATER.getDefaultState().withProperty(BlockLiquid.LEVEL, state.getValue(BlockLiquid.LEVEL));
+		} else { //No clue
+			state = getRotationState(state, from, to);
 		}
+		world.setBlockState(pos, state);
+		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
+			NBTTagCompound tag = data.getRight();
+			tag.setInteger("x", pos.getX());
+			tag.setInteger("y", pos.getY());
+			tag.setInteger("z", pos.getZ());
+			tile.readFromNBT(tag);
+		});
 	}
 
 	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
@@ -133,10 +135,15 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 			tag.removeTag("x");
 			tag.removeTag("y");
 			tag.removeTag("z");
+		});
+		return Triple.of(state, getFacingLazy(), tag);
+	}
+
+	private void clearRelativeState() {
+		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 			world.removeTileEntity(pos);
 		});
 		world.setBlockToAir(pos);
-		return Triple.of(state, getFacingLazy(), tag);
 	}
 
 	public EnumFacing getFacingLazy() {
@@ -147,9 +154,10 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 		return getStateValue(State.ACTIVE, getPos()).orElse(false);
 	}
 
-	public boolean canReceive() {
+	public boolean canReceive(IBlockState state) {
 		BlockPos pos = getPos().offset(getFacingLazy());
-		return world.isAirBlock(pos) || world.getBlockState(pos).getBlock().isReplaceable(world, pos);
+		return (world.isAirBlock(pos) || world.getBlockState(pos).getBlock().isReplaceable(world, pos))
+				&& state.getBlock().canPlaceBlockAt(world, pos);
 	}
 
 	public boolean canSend() {
