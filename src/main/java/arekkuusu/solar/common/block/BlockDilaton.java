@@ -69,8 +69,9 @@ public class BlockDilaton extends BlockBaseFacing {
 	public BlockDilaton() {
 		super(LibNames.DILATON, Material.ROCK);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(State.ACTIVE, false));
-		setHarvestLevel(Tool.PICK, ToolLevel.WOOD_GOLD);
+		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(5F);
+		setResistance(2000F);
 	}
 
 	@Override
@@ -169,7 +170,9 @@ public class BlockDilaton extends BlockBaseFacing {
 		public BlockDilatonExtension() {
 			super(LibNames.DILATON_EXTENSION, Material.ROCK);
 			setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
-			setBlockUnbreakable();
+			setHarvestLevel(Tool.PICK, ToolLevel.STONE);
+			setHardness(5F);
+			setResistance(2000F);
 		}
 
 		@Override

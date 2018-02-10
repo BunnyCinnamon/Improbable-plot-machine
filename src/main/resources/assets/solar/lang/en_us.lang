@@ -37,6 +37,7 @@ tile.vacuum_conveyor.name=Vacuum Conveyor
 tile.mechanical_translocator.name=Mechanical Translocator
 tile.alternator.name=Alternator
 tile.dilaton.name=Dilaton
+tile.dilaton_extension.name=Dilaton Extension
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger
