@@ -66,6 +66,8 @@ public class TileDilaton extends TileBase {
 				if(next.getBlock() == Blocks.AIR) continue;
 				EnumPushReaction reaction = next.getMobilityFlag();
 				if(next.getMaterial() == Material.GLASS) reaction = EnumPushReaction.DESTROY;
+				else
+				if(next.getMaterial() == Material.WATER) reaction = EnumPushReaction.IGNORE;
 				switch(reaction) {
 					case PUSH_ONLY:
 					case NORMAL:
