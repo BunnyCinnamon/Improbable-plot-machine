@@ -234,9 +234,9 @@ public class Vector3 {
 	}
 
 	public static Vector3 getRandomVec(double max) {
-		double x = max * (RAND.nextDouble() * 2 - 1);
-		double y = max * (RAND.nextDouble() * 2 - 1);
-		double z = max * (RAND.nextDouble() * 2 - 1);
+		double x = max * (RAND.nextGaussian() * 2 - 1);
+		double y = max * (RAND.nextGaussian() * 2 - 1);
+		double z = max * (RAND.nextGaussian() * 2 - 1);
 
 		return new Vector3(x, y, z);
 	}

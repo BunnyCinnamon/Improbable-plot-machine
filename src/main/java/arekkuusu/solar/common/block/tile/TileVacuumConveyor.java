@@ -127,7 +127,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	private void collectItems() {
-		applyGravity(attract, true);
+		applyGravity(attract, 4D);
 		IItemHandler handler = to.getKey();
 		ISidedInventory sidedInv = to.getValue();
 		getItemsFiltered(absorptionRange).forEach(e -> {
@@ -169,13 +169,13 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 			}
 			cooldown = 5;
 		} else cooldown--;
-		applyGravity(repulse, false);
+		applyGravity(repulse, -1.25D);
 	}
 
 	private void transposeItems() {
 		boolean impulse = false;
 		if(world.isAirBlock(pos.offset(getFacingLazy().getOpposite()))) {
-			applyGravity(attractInverse, true);
+			applyGravity(attractInverse, 4D);
 			impulse = true;
 		}
 		if(world.isAirBlock(pos.offset(getFacingLazy()))) {
@@ -185,7 +185,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 					impulseEntityItem(spawn, entity);
 				});
 			}
-			applyGravity(repulseInverse, false);
+			applyGravity(repulseInverse, -4D);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		item.setMotion(0, 0, 0);
 	}
 
-	private void applyGravity(AxisAlignedBB box, boolean in) {
+	private void applyGravity(AxisAlignedBB box, double force) {
 		getItemsFiltered(box).forEach(item -> {
 			double x = getPos().getX() + 0.5D - item.posX;
 			double y = getPos().getY() + 0.5D - item.posY;
@@ -205,7 +205,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 
 			if(sqrt <= 10D) {
 				double strength = (1 - v) * (1 - v);
-				double power = 0.085D * (in ? 4D : -1.25D);
+				double power = 0.085D * force;
 
 				item.motionX += (x / sqrt) * strength * power;
 				item.motionY += (y / sqrt) * strength * power;

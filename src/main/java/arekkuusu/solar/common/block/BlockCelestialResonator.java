@@ -38,6 +38,8 @@ public class BlockCelestialResonator extends BlockBase {
 	public BlockCelestialResonator() {
 		super(LibNames.CELESTIAL_RESONATOR, Material.ROCK);
 		setDefaultState(getDefaultState().withProperty(State.ACTIVE, false));
+		setHarvestLevel(Tool.PICK, ToolLevel.WOOD_GOLD);
+		setHardness(0.5F);
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.common.block.tile.TileDilaton;
 import arekkuusu.solar.common.lib.LibNames;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
@@ -23,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -39,9 +41,36 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockDilaton extends BlockBaseFacing {
 
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_BASE = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0, 0, 0, 1, 0.75, 1))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0.25, 0, 1, 1, 1))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0, 0, 0, 1, 1, 0.75))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0, 0, 0.25, 1, 1, 1))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0, 0, 0, 0.75, 1, 1))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.25, 0, 0, 1, 1, 1))
+			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_PIECE = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0, 0, 0, 1, 0.25, 1))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0.75, 0, 1, 1, 1))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0, 0, 0, 1, 1, 0.25))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0, 0, 0.75, 1, 1, 1))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0, 0, 0.25, 1, 1))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.75, 0, 0, 1, 1, 1))
+			.build();
+	private static final ImmutableMap<EnumFacing, Vector3> VEC_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
+			.put(EnumFacing.UP, Vector3.create(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.25D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.25D))
+			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.75D))
+			.put(EnumFacing.EAST, Vector3.create(0.75D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.create(0.25D, 0.5D, 0.5D))
+			.build();
+
 	public BlockDilaton() {
 		super(LibNames.DILATON, Material.ROCK);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(State.ACTIVE, false));
+		setHarvestLevel(Tool.PICK, ToolLevel.WOOD_GOLD);
+		setHardness(5F);
 	}
 
 	@Override
@@ -94,7 +123,7 @@ public class BlockDilaton extends BlockBaseFacing {
 		if(state.getValue(State.ACTIVE)) {
 			boolean powered = world.isBlockPowered(pos);
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
-			Vector3 vec = Vector3.create(facing).multiply(0.025D + 0.005D * rand.nextFloat());
+			Vector3 vec = Vector3.create(facing).multiply(0.025D + 0.005D * rand.nextGaussian());
 			ParticleUtil.spawnLightParticle(world, Vector3.create(pos).add(0.5D), vec, powered ? 0x49FFFF : 0xFF0303, 60, 2F);
 		}
 	}
@@ -120,6 +149,11 @@ public class BlockDilaton extends BlockBaseFacing {
 	}
 
 	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return state.getValue(State.ACTIVE) ? BB_BASE.get(state.getValue(BlockDirectional.FACING)) : FULL_BLOCK_AABB;
+	}
+
+	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
@@ -139,9 +173,22 @@ public class BlockDilaton extends BlockBaseFacing {
 		}
 
 		@Override
-		@SideOnly(Side.CLIENT)
-		public void registerModel() {
-			//Yoink!
+		public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+			return defaultState().withProperty(BlockDirectional.FACING, facing);
+		}
+
+		@Override
+		public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+			EnumFacing facing = state.getValue(BlockDirectional.FACING);
+			Vector3 posVec = VEC_MAP.get(facing).copy().add(pos);
+			double speed = world.rand.nextGaussian() * -0.015D;
+			Vector3 speedVec = Vector3.create(facing).multiply(speed);
+			ParticleUtil.spawnLightParticle(world, posVec, speedVec, 0x1BE564, 30, 2F);
+		}
+
+		@Override
+		public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+			return BB_PIECE.get(state.getValue(BlockDirectional.FACING));
 		}
 	}
 }

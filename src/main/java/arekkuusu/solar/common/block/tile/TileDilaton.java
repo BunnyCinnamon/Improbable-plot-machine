@@ -44,14 +44,17 @@ public class TileDilaton extends TileBase {
 			int pointer = 0;
 			if(isActiveLazy()) {
 				ProfilerHelper.flagSection("[Dilaton] Locate nearest extension");
+				boolean found = false;
 				for(; pointer < range; pointer++) {
 					if(!isPosValid(pos.move(facing)) || pointer >= range) return;
 					IBlockState state = world.getBlockState(pos);
 					if(state.getBlock() == ModBlocks.DILATON_EXTENSION) {
 						world.setBlockToAir(pos);
+						found = true;
 						break;
 					}
 				}
+				if(!found) return;
 				if(!powered) pointer = 0;
 			}
 			ProfilerHelper.begin("[Dilaton] Gathering pushed blocks");

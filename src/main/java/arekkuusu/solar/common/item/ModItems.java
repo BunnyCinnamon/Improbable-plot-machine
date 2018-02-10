@@ -58,6 +58,7 @@ public final class ModItems {
 		registry.register(new ItemMechanicalTranslocator());
 		registry.register(new ItemAlternator());
 		registry.register(new ItemDilaton());
+		registry.register(itemBlock(ModBlocks.DILATON_EXTENSION));
 	}
 
 	@SuppressWarnings("ConstantConditions")
