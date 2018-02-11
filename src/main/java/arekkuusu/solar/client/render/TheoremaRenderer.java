@@ -48,9 +48,7 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 		GLHelper.lightMap(255F, 255F);
-
 		RAND.setSeed(31100L);
-
 		GlStateManager.texGen(GlStateManager.TexGen.S, 9216);
 		GlStateManager.texGen(GlStateManager.TexGen.T, 9216);
 		GlStateManager.texGen(GlStateManager.TexGen.R, 9216);
@@ -61,14 +59,12 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.T);
 		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.R);
 		bindTexture(ResourceLibrary.THEOREMA);
-
 		GlStateManager.disableLighting();
 		GlStateManager.getFloat(2982, VIEW);
 		GlStateManager.getFloat(2983, PROJECTION);
 		double squared = x * x + y * y + z * z;
 		int passes = getPasses(squared);
 		boolean fog = false;
-
 		for(int pass = 0; pass < passes; ++pass) {
 			GlStateManager.pushMatrix();
 			float colorOffset = pass == 0 ? 0F : 2.0F / (float) (16 - pass);
@@ -83,11 +79,9 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 				Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
 				fog = true;
 			}
-
 			GlStateManager.popMatrix();
 			GlStateManager.matrixMode(5890);
 			GlStateManager.pushMatrix();
-
 			GlStateManager.loadIdentity();
 			GlStateManager.translate(0.5F, 0.5F, 0F);
 			GlStateManager.scale(0.5F, 0.5F, 1F);
@@ -97,7 +91,6 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 			GlStateManager.scale(4.5F - passOffset / 6F, 4.5F - passOffset / 6F, 1F);
 			GlStateManager.multMatrix(PROJECTION);
 			GlStateManager.multMatrix(VIEW);
-
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder buff = tessellator.getBuffer();
 			buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
@@ -105,49 +98,42 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 			float r = (mod * 0.75F) * colorOffset;
 			float g = (mod * 0.75F) * colorOffset;
 			float b = (mod * 1F) * colorOffset;
-
 			if(pandora == null || pandora.shouldRenderFace(EnumFacing.SOUTH)) {
 				buff.pos(x, y, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y + 1D, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x, y + 1D, z + 1D).color(r, g, b, 1F).endVertex();
 			}
-
 			if(pandora == null || pandora.shouldRenderFace(EnumFacing.NORTH)) {
 				buff.pos(x, y + 1D, z).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y + 1D, z).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y, z).color(r, g, b, 1F).endVertex();
 				buff.pos(x, y, z).color(r, g, b, 1F).endVertex();
 			}
-
 			if(pandora == null || pandora.shouldRenderFace(EnumFacing.EAST)) {
 				buff.pos(x + 1D, y + 1D, z).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y + 1D, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y, z).color(r, g, b, 1F).endVertex();
 			}
-
 			if(pandora == null || pandora.shouldRenderFace(EnumFacing.WEST)) {
 				buff.pos(x, y, z).color(r, g, b, 1F).endVertex();
 				buff.pos(x, y, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x, y + 1D, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x, y + 1D, z).color(r, g, b, 1F).endVertex();
 			}
-
 			if(pandora == null || pandora.shouldRenderFace(EnumFacing.DOWN)) {
 				buff.pos(x, y, z).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y, z).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x, y, z + 1D).color(r, g, b, 1F).endVertex();
 			}
-
 			if(pandora == null || pandora.shouldRenderFace(EnumFacing.UP)) {
 				buff.pos(x, y + 1D, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y + 1D, z + 1D).color(r, g, b, 1F).endVertex();
 				buff.pos(x + 1D, y + 1D, z).color(r, g, b, 1F).endVertex();
 				buff.pos(x, y + 1D, z).color(r, g, b, 1F).endVertex();
 			}
-
 			tessellator.draw();
 			GlStateManager.popMatrix();
 			GlStateManager.matrixMode(5888);
@@ -155,7 +141,6 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		if(fog) {
 			Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
 		}
-
 		GlStateManager.disableBlend();
 		GlStateManager.disableTexGenCoord(GlStateManager.TexGen.S);
 		GlStateManager.disableTexGenCoord(GlStateManager.TexGen.T);
@@ -185,7 +170,6 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		} else {
 			passes = 15;
 		}
-
 		return passes;
 	}
 

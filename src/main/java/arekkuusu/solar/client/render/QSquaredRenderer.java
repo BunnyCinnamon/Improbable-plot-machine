@@ -43,14 +43,11 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 		GLHelper.lightMap(255F, 255F);
-
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-
 		calculateWaves(tick);
-
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
@@ -84,7 +81,6 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 
 	private void renderLayer(double size, int layer) {
 		double min = 0.0625D;
-
 		//UV
 		double vMin = min * (double) layer;
 		double vMax = vMin + min;
@@ -93,11 +89,9 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 		//POS
 		double yMin = 0.5D - vMin;
 		double yMax = -yMin + min;
-
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buff = tessellator.getBuffer();
 		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
 		//Front
 		buff.pos(size, -yMin, -size).tex(uMax, vMin).endVertex();
 		buff.pos(size, yMax, -size).tex(uMax, vMax).endVertex();
@@ -128,7 +122,6 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 		buff.pos(size, -yMin, -size).tex(uMax, uMax).endVertex();
 		buff.pos(size, -yMin, size).tex(uMin, uMax).endVertex();
 		buff.pos(-size, -yMin, size).tex(uMin, uMin).endVertex();
-
 		tessellator.draw();
 	}
 }

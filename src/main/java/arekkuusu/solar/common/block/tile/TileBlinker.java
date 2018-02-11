@@ -40,7 +40,7 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 		if(world.isRemote && tick++ % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing.getOpposite());
-			double speed = world.rand.nextGaussian() * -0.01D;
+			double speed = world.rand.nextDouble() * -0.01D;
 			Vector3 vec = Vector3.create(facing).multiply(speed);
 			ParticleUtil.spawnLightParticle(world, back, vec, isPoweredLazy() ? 0x49FFFF : 0xFFFFFF, 60, 2.5F);
 		}

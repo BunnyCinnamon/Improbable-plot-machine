@@ -111,18 +111,18 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 
 	private void spawnLightParticles(EnumFacing facing, boolean inverse) {
 		Vector3 back = getOffSet(facing);
-		double speed = world.rand.nextGaussian() * 0.03D;
+		double speed = world.rand.nextDouble() * 0.03D;
 		Vector3 vec = Vector3.create(facing.getOpposite()).multiply(speed);
 		ParticleUtil.spawnLightParticle(world, back, vec, inverse ? 0xFFFFFF : 0x000000, 100, 2.5F);
 	}
 
 	private void spawnNeutronParticles(EnumFacing facing, boolean inverse) {
 		Vector3 back = getOffSet(facing);
-		double speed = 0.010D + world.rand.nextGaussian() * 0.010D;
+		double speed = 0.010D + world.rand.nextDouble() * 0.010D;
 		Vector3 vec = Vector3.create(facing.getOpposite())
 				.multiply(speed)
-				.rotatePitchX((float) ((world.rand.nextGaussian() * 2D - 1D) * 0.25F))
-				.rotatePitchZ((float) ((world.rand.nextGaussian() * 2D - 1D) * 0.25F));
+				.rotatePitchX((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F))
+				.rotatePitchZ((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F));
 		ParticleUtil.spawnNeutronBlast(world, back, vec, inverse ? 0xFFFFFF : 0x000000, 60, 0.1F, true);
 	}
 

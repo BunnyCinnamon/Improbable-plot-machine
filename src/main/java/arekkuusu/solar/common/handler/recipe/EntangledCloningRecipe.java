@@ -32,6 +32,7 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
 		int slots = inv.getHeight() * inv.getWidth();
+		if(slots < 9 || slots % 2 != 0) return false;
 		int center = (int) ((float)slots / 2F);
 		ItemStack checked = inv.getStackInSlot(center);
 		if(checked.isEmpty() || !checked.hasTagCompound()) return false;

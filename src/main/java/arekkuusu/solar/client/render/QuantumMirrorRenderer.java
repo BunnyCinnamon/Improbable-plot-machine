@@ -40,7 +40,6 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		int layer = MinecraftForgeClient.getRenderPass();
-
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
 		switch(layer) {
@@ -49,19 +48,16 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 				if(optional.isPresent()) {
 					ItemStack stack = QuantumHandler.getEntanglementStack(optional.get(), 0);
 					if(stack.isEmpty()) break;
-
 					GlStateManager.pushMatrix();
 					GLHelper.lightMap(255F, 255F);
 					GlStateManager.translate(x + 0.5, y + 0.38, z + 0.5);
-
 					GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
 					RenderHelper.renderItemStack(stack);
-
 					GlStateManager.popMatrix();
 				}
 				break;
 			case 1:
-				renderModel(tick, x, y, z);
+				renderModel(tick, x, y, z, partialTicks);
 				break;
 		}
 		GLHelper.lightMap(prevU, prevV);
@@ -72,75 +68,60 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		final float prevU = OpenGlHelper.lastBrightnessX;
 		final float prevV = OpenGlHelper.lastBrightnessY;
-
 		ItemStack stack = SpecialModelRenderer.getTempItemRenderer();
 		if(!stack.isEmpty()) {
 			GlStateManager.pushMatrix();
 			GLHelper.lightMap(255F, 255F);
 			GlStateManager.translate(x + 0.5D, y + 0.38D, z + 0.5D);
-
 			GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
 			RenderHelper.renderItemStack(stack);
-
 			GlStateManager.popMatrix();
 		}
-
 		GLHelper.disableDepth();
-		renderModel(tick, x, y, z);
+		renderModel(tick, x, y, z, partialTicks);
 		GLHelper.enableDepth();
 		GLHelper.lightMap(prevU, prevV);
 	}
 
-	private void renderModel(float tick, double x, double y, double z) {
+	private void renderModel(float tick, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
 		GlStateManager.enableBlend();
 		GLHelper.BLEND_SRC_ALPHA$ONE.blend();
-
 		float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
 		if(brigthness < 0) brigthness *= -1;
 		brigthness *= 255F;
 		GLHelper.lightMap(brigthness, brigthness);
-
 		GlStateManager.translate(x, y, z + 0.5F);
-
 		SpriteLibrary.QUANTUM_MIRROR.bindManager();
-		renderMirror(-tick, -180F, 0.5F);
-		renderMirror(tick, 180F, 0.75F);
-		renderMirror(-tick, 0F, 1F);
-
+		renderMirror(tick, 0.75F, 0.5F, partialTicks);
+		renderMirror(tick, 0.5F, 0.75F, partialTicks);
+		renderMirror(tick, -0.3F, 1F, partialTicks);
 		GlStateManager.disableBlend();
 		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
 	}
 
-	private void renderMirror(float age, float offset, float scale) {
+	private void renderMirror(float tick, float offset, float scale, float partialTicks) {
 		GlStateManager.pushMatrix();
-		Tuple<Double, Double> uv = SpriteLibrary.QUANTUM_MIRROR.getUVFrame((int) (age * 0.25F));
+		Tuple<Double, Double> uv = SpriteLibrary.QUANTUM_MIRROR.getUVFrame((int) (tick * 0.25F));
 		double vOffset = SpriteLibrary.QUANTUM_MIRROR.getV();
 		double v = uv.getSecond();
-
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buff = tessellator.getBuffer();
-
 		GlStateManager.translate(0.5F, 0.5F, 0F);
-
 		GlStateManager.scale(scale, scale, scale);
-		GlStateManager.rotate(offset - age, 0F, 1F, 0F);
-		GlStateManager.rotate(offset - age, 1F, 0F, 0F);
-		GlStateManager.rotate(offset - age, 0F, 0F, 1F);
-
+		GlStateManager.rotate(partialTicks + tick * offset % 360F, 0F, 1F, 0F);
+		GlStateManager.rotate(partialTicks + tick * offset % 360F, 1F, 0F, 0F);
+		GlStateManager.rotate(partialTicks + tick * offset % 360F, 0F, 0F, 1F);
 		GlStateManager.translate(-0.5F, -0.5F, 0F);
-
 		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
 		buff.pos(0, 0, 0).tex(0, v).endVertex();
 		buff.pos(1, 0, 0).tex(1, v).endVertex();
 		buff.pos(1, 1, 0).tex(1, v + vOffset).endVertex();
 		buff.pos(0, 1, 0).tex(0, v + vOffset).endVertex();
-
 		tessellator.draw();
 		GlStateManager.popMatrix();
 	}

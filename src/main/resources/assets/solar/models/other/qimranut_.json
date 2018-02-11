@@ -2,23 +2,10 @@
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
 		"1": "solar:blocks/qimranut/overlay_front",
-		"2": "solar:blocks/qimranut/overlay_back"
+		"2": "solar:blocks/qimranut/overlay_back",
+		"particle": "solar:blocks/qimranut/base"
 	},
 	"elements": [
-		{
-			"name": "cube",
-			"from": [-4.5, -3, -4.5],
-			"to": [4.5, -2, 4.5],
-			"faces": {
-				"north": {"uv": [0, 0, 9, 1], "texture": "#1"},
-				"east": {"uv": [0, 0, 9, 1], "texture": "#1"},
-				"south": {"uv": [0, 0, 9, 1], "texture": "#1"},
-				"west": {"uv": [0, 0, 9, 1], "texture": "#1"},
-				"up": {"uv": [0, 0, 9, 9], "texture": "#2"},
-				"down": {"uv": [0, 0, 9, 9], "texture": "#1"}
-			},
-			"type": "cube"
-		},
 		{
 			"name": "cube",
 			"from": [-4.5, -6, -4.5],
@@ -48,12 +35,53 @@
 		{
 			"name": "cube",
 			"from": [-3.5, -4, -3.5],
-			"to": [3.5, -3, 3.5],
+			"to": [3.5, -2.5, 3.5],
 			"faces": {
 				"north": {"uv": [1, 0, 8, 1], "texture": "#1"},
 				"east": {"uv": [1, 0, 8, 1], "texture": "#1"},
 				"south": {"uv": [1, 0, 8, 1], "texture": "#1"},
-				"west": {"uv": [1, 0, 8, 1], "texture": "#1"}
+				"west": {"uv": [1, 0, 8, 1], "texture": "#1"},
+				"up": {"uv": [1, 1, 8, 8], "texture": "#2"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [-1.5, -3, -4.5],
+			"to": [4.5, -2, -1.5],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 1], "texture": "#1"},
+				"down": {"uv": [3, 6, 9, 9], "texture": "#1"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [1.5, -3, -1.5],
+			"to": [4.5, -2, 4.5],
+			"faces": {
+				"east": {"uv": [0, 0, 6, 1], "texture": "#1"},
+				"down": {"uv": [6, 0, 9, 6], "texture": "#1"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [-4.5, -3, 1.5],
+			"to": [1.5, -2, 4.5],
+			"faces": {
+				"south": {"uv": [0, 0, 6, 1], "texture": "#1"},
+				"down": {"uv": [0, 0, 6, 3], "texture": "#1"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [-4.5, -3, -4.5],
+			"to": [-1.5, -2, 1.5],
+			"faces": {
+				"west": {"uv": [0, 0, 6, 1], "texture": "#1"},
+				"down": {"uv": [0, 3, 3, 9], "texture": "#1"}
 			},
 			"type": "cube"
 		}
@@ -63,7 +91,13 @@
 			"name": "group",
 			"isOpen": true,
 			"display": {"visibility": true, "autouv": true},
-			"children": [0, 1, 2, 3]
+			"children": [0, 1, 2]
+		},
+		{
+			"name": "group",
+			"isOpen": true,
+			"display": {"visibility": true, "autouv": true},
+			"children": [3, 4, 5, 6]
 		}
 	]
 }

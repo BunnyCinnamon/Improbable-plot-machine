@@ -138,7 +138,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		} else if(world.getTotalWorldTime() % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing.getOpposite());
-			double speed = world.rand.nextGaussian() * -0.015D;
+			double speed = world.rand.nextDouble() * -0.015D;
 			Vector3 vec = Vector3.create(facing).multiply(speed);
 			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 30, 2F);
 		}

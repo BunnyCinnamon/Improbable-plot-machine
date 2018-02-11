@@ -40,11 +40,9 @@ public class PhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 	@Override
 	public void renderTileEntityFast(@Nonnull TilePhenomena phenomena, double x, double y, double z, float partialTick, int breakStage, float partial, @Nullable BufferBuilder renderer) {
 		if(blockRenderer == null) blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
-
 		BlockPos pos = phenomena.getPos();
 		IBlockAccess world = MinecraftForgeClient.getRegionRenderCache(phenomena.getWorld(), pos);
 		IBlockState state = getState(phenomena, world, pos);
-
 		if(state instanceof IExtendedBlockState) {
 			IExtendedBlockState extendedState = (IExtendedBlockState) state;
 			if(extendedState.getUnlistedNames().contains(Properties.AnimationProperty)) {
@@ -52,13 +50,10 @@ public class PhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 				IAnimationStateMachine capability = phenomena.getCapability(CapabilityAnimation.ANIMATION_CAPABILITY, null);
 				if(capability != null) {
 					Pair<IModelState, Iterable<Event>> pair = capability.apply(time);
-
 					extendedState = extendedState.withProperty(Properties.AnimationProperty, pair.getLeft());
 					IBakedModel model = getModel(state);
-
 					assert renderer != null;
 					renderer.setTranslation(x - pos.getX(), y - pos.getY(), z - pos.getZ());
-
 					blockRenderer.getBlockModelRenderer().renderModel(world, model, extendedState, pos, renderer, false);
 				}
 			}
