@@ -101,9 +101,8 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		if(world.isRemote && rand.nextInt(15) == 0 && getClosestPlayer(world, pos).isPresent()) {
 			for(EnumFacing facing : EnumFacing.values()) {
-				Vector3 from = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
-				double speed = 0.025D;
-				Vector3 vec = Vector3.create(facing.getFrontOffsetX() * speed, facing.getFrontOffsetY() * speed, facing.getFrontOffsetZ() * speed);
+				Vector3 from = Vector3.create(pos).add(0.5D);
+				Vector3 vec = Vector3.create(facing).multiply(0.025D);
 				ParticleUtil.spawnNeutronBlast(world, from, vec, 0xFF0303, 60, 0.25F, false);
 			}
 		}

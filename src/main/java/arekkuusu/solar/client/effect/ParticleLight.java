@@ -28,7 +28,6 @@ public class ParticleLight extends ParticleBase {
 		this.particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
 		this.canCollide = false;
 		this.dark = rgb == 0x000000;
-
 		setSprite(dark ? SpriteLibrary.DARK_PARTICLE : SpriteLibrary.LIGHT_PARTICLE);
 	}
 
@@ -36,13 +35,13 @@ public class ParticleLight extends ParticleBase {
 	public void onUpdate() {
 		super.onUpdate();
 		if(rand.nextInt(6) == 0) {
-			particleAge++;
+			this.particleAge++;
 		}
 		float life = (float) this.particleAge / (float) this.particleMaxAge;
 		this.particleScale = initScale - initScale * life;
 		this.particleAlpha = 0.5F * (1.0f - life);
 		this.prevParticleAngle = particleAngle;
-		particleAngle += 1.0f;
+		this.particleAngle += 1.0f;
 	}
 
 	@Override

@@ -93,9 +93,9 @@ public class BlockElectron extends BlockBase {
 			for(int i = 0; i < 1 + world.rand.nextInt(3); i++) {
 				Vector3 from = Vector3.create(pos).add(0.5D);
 				Vector3 to = Vector3.create(0, 1, 0)
-						.rotate(EnumFacing.Axis.X, world.rand.nextFloat() * 360)
-						.rotate(EnumFacing.Axis.Y, world.rand.nextFloat() * 360)
-						.rotate(EnumFacing.Axis.Z, world.rand.nextFloat() * 360)
+						.rotate(EnumFacing.Axis.X, (float) (world.rand.nextGaussian() * 360D))
+						.rotate(EnumFacing.Axis.Y, (float) (world.rand.nextGaussian() * 360D))
+						.rotate(EnumFacing.Axis.Z, (float) (world.rand.nextGaussian() * 360D))
 						.add(from);
 				ParticleUtil.spawnBolt(world, from, to, 4, 0.25F, 0x5194FF, true, true);
 			}

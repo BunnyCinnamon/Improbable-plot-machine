@@ -47,7 +47,6 @@ public class ParticleNeutronBlast extends ParticleBase {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
-
 		this.move(this.motionX, this.motionY, this.motionZ);
 
 		spawnNeutron(-motionX * 0.35, -motionY * 0.35, -motionZ * 0.35);
@@ -70,7 +69,6 @@ public class ParticleNeutronBlast extends ParticleBase {
 		xOffset += posX;
 		yOffset += posY;
 		zOffset += posZ;
-
 		ParticleNeutron particle = new ParticleNeutron(world, Vector3.create(xOffset, yOffset, zOffset),
 				Vector3.ImmutableVector3.NULL, 60, particleScale, rgb);
 		ClientProxy.PARTICLE_RENDERER.add(particle);

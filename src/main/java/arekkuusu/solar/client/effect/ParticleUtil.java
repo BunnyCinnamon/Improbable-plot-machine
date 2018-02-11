@@ -89,7 +89,6 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 	private static boolean doParticle() {
 		if(FMLCommonHandler.instance().getEffectiveSide().isServer()) return false;
 		int setting = Minecraft.getMinecraft().gameSettings.particleSetting;
-
 		float chance;
 		switch(setting) {
 			case 1:
@@ -101,7 +100,6 @@ public class ParticleUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 			default:
 				return true;
 		}
-
 		return Math.random() < chance;
 	}
 }

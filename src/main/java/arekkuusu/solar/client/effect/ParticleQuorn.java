@@ -25,7 +25,6 @@ public class ParticleQuorn extends ParticleBase {
 		this.particleMaxAge = age;
 		this.particleScale = scale;
 		this.canCollide = false;
-
 		setSprite(SpriteLibrary.QUORN_PARTICLE);
 	}
 
@@ -36,11 +35,9 @@ public class ParticleQuorn extends ParticleBase {
 		}
 		float life = (float) particleAge / (float) particleMaxAge;
 		this.particleAlpha = 1F * (1F - life);
-
-		prevPosX = posX += motionX;
-		prevPosY = posY += motionY;
-		prevPosZ = posZ += motionZ;
-
+		this.prevPosX = posX += motionX;
+		this.prevPosY = posY += motionY;
+		this.prevPosZ = posZ += motionZ;
 		move(motionX, motionY, motionZ);
 	}
 

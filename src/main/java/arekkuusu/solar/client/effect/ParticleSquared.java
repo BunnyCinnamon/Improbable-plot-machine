@@ -21,10 +21,9 @@ public class ParticleSquared extends ParticleBase {
 
 	ParticleSquared(World world, Vector3 pos, Vector3 speed, int rgb, float scale, int age) {
 		super(world, pos, speed, rgb);
-		particleMaxAge = age;
-		particleScale = scale;
-		initScale = particleScale;
-
+		this.particleMaxAge = age;
+		this.particleScale = scale;
+		this.initScale = particleScale;
 		setSprite(SpriteLibrary.SQUARED);
 	}
 

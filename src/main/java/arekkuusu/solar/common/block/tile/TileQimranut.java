@@ -42,15 +42,14 @@ public class TileQimranut extends TileSimpleLinkBase implements ITickable {
 			EnumFacing facing = getFacingLazy();
 			if(world.getTotalWorldTime() % 20 == 0 && world.rand.nextBoolean()) {
 				Vector3 back = getOffSet(facing.getOpposite());
-				double speed = -0.010D - world.rand.nextDouble() * 0.010D;
-				Vector3 vec = Vector3.create(facing)
-						.multiply(speed)
-						.rotatePitchX((world.rand.nextFloat() * 2 - 1) * 0.25F)
-						.rotatePitchZ((world.rand.nextFloat() * 2 - 1) * 0.25F);
+				double speed = -0.010D - world.rand.nextGaussian() * 0.010D;
+				Vector3 vec = Vector3.create(facing).multiply(speed)
+						.rotatePitchX((float) ((world.rand.nextGaussian() * 2D - 1D) * 0.25F))
+						.rotatePitchZ((float) ((world.rand.nextGaussian() * 2D - 1D) * 0.25F));
 				ParticleUtil.spawnNeutronBlast(world, back, vec, 0x000000, 60, 0.1F, true);
 			} else if(world.getTotalWorldTime() % 2 == 0) {
 				Vector3 back = getOffSet(facing.getOpposite());
-				double speed = world.rand.nextDouble() * -0.03D;
+				double speed = world.rand.nextGaussian() * -0.03D;
 				Vector3 vec = Vector3.create(facing).multiply(speed);
 				ParticleUtil.spawnDarkParticle(world, back, vec, 0x000000, 100, 2.5F);
 			}

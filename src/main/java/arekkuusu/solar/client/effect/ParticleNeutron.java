@@ -25,11 +25,11 @@ public class ParticleNeutron extends ParticleBase {
 
 	ParticleNeutron(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
 		super(world, pos, speed, rgb);
-		particleMaxAge = age;
-		particleScale = scale;
-		initScale = particleScale;
-		canCollide = false;
-		dark = rgb == 0x000000;
+		this.particleMaxAge = age;
+		this.particleScale = scale;
+		this.initScale = particleScale;
+		this.canCollide = false;
+		this.dark = rgb == 0x000000;
 		setSprite(dark ? SpriteLibrary.DARK_PARTICLE : SpriteLibrary.NEUTRON_PARTICLE);
 	}
 

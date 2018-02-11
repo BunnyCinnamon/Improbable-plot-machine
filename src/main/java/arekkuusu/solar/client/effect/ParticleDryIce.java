@@ -24,12 +24,11 @@ public class ParticleDryIce extends ParticleBase {
 
 	ParticleDryIce(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
 		super(world, pos, speed, rgb);
-		particleMaxAge = age;
-		particleScale = scale;
-		initScale = particleScale;
-		particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
-		canCollide = false;
-
+		this.particleMaxAge = age;
+		this.particleScale = scale;
+		this.initScale = particleScale;
+		this.particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
+		this.canCollide = false;
 		setSprite(SpriteLibrary.CHARGED_ICE);
 	}
 
@@ -37,12 +36,12 @@ public class ParticleDryIce extends ParticleBase {
 	public void onUpdate() {
 		super.onUpdate();
 		if(rand.nextInt(6) == 0) {
-			particleAge++;
+			this.particleAge++;
 		}
 		float life = (float) this.particleAge / (float) this.particleMaxAge;
 		this.particleScale = initScale - initScale * life;
 		this.particleAlpha = 0.5F * (1.0f - life);
 		this.prevParticleAngle = particleAngle;
-		particleAngle += 1.0f;
+		this.particleAngle += 1.0f;
 	}
 }
