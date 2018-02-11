@@ -106,9 +106,9 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.translate(x, y, z + 0.5F);
 
 		SpriteLibrary.QUANTUM_MIRROR.bindManager();
-		renderMirror(tick, -180F, 0.5F);
-		renderMirror(-tick, 90F, 0.75F);
-		renderMirror(tick, 0F, 1F);
+		renderMirror(-tick, -180F, 0.5F);
+		renderMirror(tick, 180F, 0.75F);
+		renderMirror(-tick, 0F, 1F);
 
 		GlStateManager.disableBlend();
 		GlStateManager.enableLighting();
