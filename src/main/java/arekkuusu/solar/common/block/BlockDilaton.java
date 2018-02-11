@@ -50,8 +50,8 @@ public class BlockDilaton extends BlockBaseFacing {
 			.put(EnumFacing.WEST, new AxisAlignedBB(0.25, 0, 0, 1, 1, 1))
 			.build();
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_PIECE = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0, 0, 0, 1, 0.25, 1))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0.75, 0, 1, 1, 1))
+			.put(EnumFacing.UP, new AxisAlignedBB(0, 0.75, 0, 1, 1, 1))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0, 0, 1, 0.25, 1))
 			.put(EnumFacing.NORTH, new AxisAlignedBB(0, 0, 0, 1, 1, 0.25))
 			.put(EnumFacing.SOUTH, new AxisAlignedBB(0, 0, 0.75, 1, 1, 1))
 			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0, 0, 0.25, 1, 1))
@@ -120,6 +120,7 @@ public class BlockDilaton extends BlockBaseFacing {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		if(state.getValue(State.ACTIVE)) {
 			boolean powered = world.isBlockPowered(pos);
@@ -173,11 +174,6 @@ public class BlockDilaton extends BlockBaseFacing {
 			setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 			setHardness(5F);
 			setResistance(2000F);
-		}
-
-		@Override
-		public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-			return defaultState().withProperty(BlockDirectional.FACING, facing);
 		}
 
 		@Override
