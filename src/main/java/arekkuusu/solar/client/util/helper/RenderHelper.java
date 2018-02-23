@@ -153,6 +153,8 @@ public final class RenderHelper {
 		IBakedModel model = render.getItemModelWithOverrides(stack, null, null);
 		IBakedModel transformedModel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
 		render.renderItem(stack, transformedModel);
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.disableBlend();
 	}
 
 	public static void renderGhostBlock(BlockPos pos, IBlockState state) {
