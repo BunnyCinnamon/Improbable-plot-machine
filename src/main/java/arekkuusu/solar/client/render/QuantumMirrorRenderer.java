@@ -39,69 +39,85 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 	@Override
 	void renderTile(TileQuantumMirror mirror, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		int layer = MinecraftForgeClient.getRenderPass();
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
-		switch(layer) {
+		switch(MinecraftForgeClient.getRenderPass()) {
 			case 0:
 				Optional<UUID> optional = mirror.getKey();
 				if(optional.isPresent()) {
 					ItemStack stack = QuantumHandler.getEntanglementStack(optional.get(), 0);
-					if(stack.isEmpty()) break;
-					GlStateManager.pushMatrix();
-					GLHelper.lightMap(255F, 255F);
-					GlStateManager.translate(x + 0.5, y + 0.38, z + 0.5);
-					GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-					RenderHelper.renderItemStack(stack);
-					GlStateManager.popMatrix();
+					if(!stack.isEmpty()) {
+						renderItem(stack, tick, x, y, z, partialTicks);
+					}
 				}
 				break;
 			case 1:
 				renderModel(tick, x, y, z, partialTicks);
 				break;
 		}
-		GLHelper.lightMap(prevU, prevV);
 	}
 
 	@Override
 	public void renderStack(double x, double y, double z, float partialTicks) {
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
 		ItemStack stack = SpecialModelRenderer.getTempItemRenderer();
 		if(!stack.isEmpty()) {
-			GlStateManager.pushMatrix();
-			GLHelper.lightMap(255F, 255F);
-			GlStateManager.translate(x + 0.5D, y + 0.38D, z + 0.5D);
-			GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-			RenderHelper.renderItemStack(stack);
-			GlStateManager.popMatrix();
+			renderItem(stack, tick, x, y, z, partialTicks);
 		}
 		GLHelper.disableDepth();
-		renderModel(tick, x, y, z, partialTicks);
-		GLHelper.enableDepth();
-		GLHelper.lightMap(prevU, prevV);
-	}
-
-	private void renderModel(float tick, double x, double y, double z, float partialTicks) {
-		GlStateManager.pushMatrix();
-		GlStateManager.disableCull();
-		GlStateManager.disableLighting();
-		GlStateManager.enableBlend();
-		GLHelper.BLEND_SRC_ALPHA$ONE.blend();
+		final float prevU = OpenGlHelper.lastBrightnessX;
+		final float prevV = OpenGlHelper.lastBrightnessY;
 		float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
 		if(brigthness < 0) brigthness *= -1;
 		brigthness *= 255F;
+		GlStateManager.disableLighting();
 		GLHelper.lightMap(brigthness, brigthness);
+		//
+		GlStateManager.pushMatrix();
+		GlStateManager.disableCull();
+		GlStateManager.translate(x, y, z + 0.5F);
+		SpriteLibrary.QUANTUM_MIRROR.bindManager();
+		renderMirror(tick, 0.75F, 0.5F, partialTicks);
+		renderMirror(tick, 0.5F, 0.75F, partialTicks);
+		renderMirror(tick, -0.3F, 1F, partialTicks);
+		GlStateManager.enableCull();
+		GlStateManager.popMatrix();
+		//
+		GLHelper.lightMap(prevU, prevV);
+		GlStateManager.enableLighting();
+		GLHelper.enableDepth();
+	}
+
+	private void renderItem(ItemStack stack, float tick, double x, double y, double z, float partialTicks) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x + 0.5, y + 0.38, z + 0.5);
+		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
+		RenderHelper.renderItemStack(stack);
+		GlStateManager.popMatrix();
+	}
+
+	private void renderModel(float tick, double x, double y, double z, float partialTicks) {
+		final float prevU = OpenGlHelper.lastBrightnessX;
+		final float prevV = OpenGlHelper.lastBrightnessY;
+		float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
+		if(brigthness < 0) brigthness *= -1;
+		brigthness *= 255F;
+		GlStateManager.disableLighting();
+		GLHelper.lightMap(brigthness, brigthness);
+		//
+		GlStateManager.pushMatrix();
+		GlStateManager.disableCull();
+		GlStateManager.enableBlend();
+		GLHelper.BLEND_SRC_ALPHA$ONE.blend();
 		GlStateManager.translate(x, y, z + 0.5F);
 		SpriteLibrary.QUANTUM_MIRROR.bindManager();
 		renderMirror(tick, 0.75F, 0.5F, partialTicks);
 		renderMirror(tick, 0.5F, 0.75F, partialTicks);
 		renderMirror(tick, -0.3F, 1F, partialTicks);
 		GlStateManager.disableBlend();
-		GlStateManager.enableLighting();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
+		//
+		GLHelper.lightMap(prevU, prevV);
+		GlStateManager.enableLighting();
 	}
 
 	private void renderMirror(float tick, float offset, float scale, float partialTicks) {

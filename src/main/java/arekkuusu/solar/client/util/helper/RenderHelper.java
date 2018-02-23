@@ -14,6 +14,7 @@ import arekkuusu.solar.common.Solar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -143,12 +144,15 @@ public final class RenderHelper {
 		if(stack.getItem() instanceof ItemBlock) {
 			GlStateManager.translate(0F, -0.1F, 0F);
 		}
-		RenderItem render = Minecraft.getMinecraft().getRenderItem();
-		GlStateManager.pushAttrib();
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.alphaFunc(516, 0.1F);
+		GlStateManager.enableBlend();
 		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
-		render.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
-		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
-		GlStateManager.popAttrib();
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		RenderItem render = Minecraft.getMinecraft().getRenderItem();
+		IBakedModel model = render.getItemModelWithOverrides(stack, null, null);
+		IBakedModel transformedModel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
+		render.renderItem(stack, transformedModel);
 	}
 
 	public static void renderGhostBlock(BlockPos pos, IBlockState state) {
