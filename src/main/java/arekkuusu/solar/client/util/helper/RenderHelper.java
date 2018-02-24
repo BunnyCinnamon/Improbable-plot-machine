@@ -52,14 +52,7 @@ public final class RenderHelper {
 		cube = addDraw(new Cube(), GLU.GLU_FILL, GLU.GLU_FLAT, Cube::draw);
 
 		//-----------------Json Models-----------------//
-		for(BlockBaker model : BlockBaker.values()) {
-			try {
-				model.bake();
-			} catch(Exception e) {
-				Solar.LOG.fatal("[Model Bakery] Failed to bake json model: " + model.getLocation().toString());
-				e.printStackTrace();
-			}
-		}
+		BlockBaker.bakeAll();
 		Solar.LOG.info("[PIE HAS BEEN SUCCESSFULLY BAKED!]");
 	}
 
@@ -144,17 +137,16 @@ public final class RenderHelper {
 		if(stack.getItem() instanceof ItemBlock) {
 			GlStateManager.translate(0F, -0.1F, 0F);
 		}
-		GlStateManager.enableRescaleNormal();
 		GlStateManager.alphaFunc(516, 0.1F);
-		GlStateManager.enableBlend();
+		GlStateManager.enableRescaleNormal();
 		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		RenderItem render = Minecraft.getMinecraft().getRenderItem();
 		IBakedModel model = render.getItemModelWithOverrides(stack, null, null);
 		IBakedModel transformedModel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
 		render.renderItem(stack, transformedModel);
+		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableRescaleNormal();
-		GlStateManager.disableBlend();
 	}
 
 	public static void renderGhostBlock(BlockPos pos, IBlockState state) {

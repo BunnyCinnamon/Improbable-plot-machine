@@ -60,7 +60,7 @@ public class BlockQSquared extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
+		DummyBakedRegistry.register(this, () -> new BakedRender()
 				.setParticle(ResourceLibrary.Q_SQUARED));
 		ModelHandler.registerModel(this, 0, "");
 	}

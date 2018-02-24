@@ -8,6 +8,8 @@
 package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockDirectional;
@@ -47,15 +49,23 @@ public class BakedGravityHopper extends BakedBrightness {
 			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 3.5F, 0F, 0F, 0F, 0F, 0.6F))
 			.put(ItemCameraTransforms.TransformType.FIXED, get(0F, 1F, 0F, 0F, 0F, 0F, 0.6F))
 			.build();
-	private final TextureAtlasSprite[] overlay = new TextureAtlasSprite[3];
-	private final TextureAtlasSprite base;
+	private TextureAtlasSprite[] overlay = new TextureAtlasSprite[3];
+	private TextureAtlasSprite base;
 
-	public BakedGravityHopper(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
-		super(format);
+	@Override
+	public ImmutableCollection getTextures() {
+		return ImmutableList.copyOf(
+				ResourceLibrary.GRAVITY_HOPPER_OVERLAY
+		);
+	}
+
+	@Override
+	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
 		for(int i = 0; i < 3; i++) {
-			this.overlay[i] = getter.apply(ResourceLibrary.GRAVITY_HOPPER_OVERLAY[i]);
+			this.overlay[i] = sprites.apply(ResourceLibrary.GRAVITY_HOPPER_OVERLAY[i]);
 		}
-		this.base = getter.apply(ResourceLibrary.GRAVITY_HOPPER);
+		this.base = sprites.apply(ResourceLibrary.GRAVITY_HOPPER);
+		return this;
 	}
 
 	@Override

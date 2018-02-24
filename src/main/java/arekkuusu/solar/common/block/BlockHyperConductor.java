@@ -133,7 +133,7 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, (f, b) -> new BakedRender()
+		DummyBakedRegistry.register(this, () -> new BakedRender()
 				.setTransforms(BakedPerspective.BLOCK_TRANSFORMS)
 				.setParticle(ResourceLibrary.HYPER_CONDUCTOR)
 		);

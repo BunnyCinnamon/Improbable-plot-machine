@@ -26,7 +26,8 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class DummyModelLoader implements ICustomModelLoader {
 
-	private final Map<ResourceLocation, IModel> created = Maps.newHashMap();
+	private final Map<ResourceLocation, DummyModel> created = Maps.newHashMap();
+	public static final DummyModelLoader INSTANCE = new DummyModelLoader();
 
 	@Override
 	public boolean accepts(ResourceLocation location) {
@@ -34,7 +35,7 @@ public class DummyModelLoader implements ICustomModelLoader {
 	}
 
 	@Override
-	public IModel loadModel(ResourceLocation location) throws Exception {
+	public IModel loadModel(ResourceLocation location) {
 		return created.computeIfAbsent(trim(location), DummyModel::new);
 	}
 
@@ -43,7 +44,9 @@ public class DummyModelLoader implements ICustomModelLoader {
 	}
 
 	@Override
-	public void onResourceManagerReload(IResourceManager resourceManager) {
-		//NO-OP
+	public void onResourceManagerReload(IResourceManager manager) {
+		for(BlockBaker baker : BlockBaker.values()) {
+			baker.bake();
+		}
 	}
 }

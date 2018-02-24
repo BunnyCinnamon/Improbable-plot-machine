@@ -33,13 +33,20 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public abstract class BakedBrightness extends BakedPerspective {
 
-	private final VertexFormat format;
+	private VertexFormat format;
 
-	public BakedBrightness(VertexFormat format) {
+	@Override
+	public Baked applyFormat(VertexFormat format) {
 		this.format = new VertexFormat(format);
 		if(!ClientProxy.isOptifineInstalled()) {
 			this.format.addElement(DefaultVertexFormats.TEX_2S);
 		}
+		return this;
+	}
+
+	@Override
+	public VertexFormat getFormat() {
+		return format;
 	}
 
 	@Override

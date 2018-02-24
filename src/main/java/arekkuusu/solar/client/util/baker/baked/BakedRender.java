@@ -8,6 +8,8 @@
 package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -15,6 +17,8 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -25,6 +29,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Created by <Arekkuusu> on 09/08/2017.
@@ -35,6 +40,26 @@ public class BakedRender extends BakedPerspective {
 
 	private Map<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = ImmutableMap.copyOf(BLOCK_TRANSFORMS);
 	private ResourceLocation particle = ResourceLibrary.NULL;
+
+	@Override
+	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
+		return this;
+	}
+
+	@Override
+	public ImmutableCollection getTextures() {
+		return ImmutableList.of();
+	}
+
+	@Override
+	public Baked applyFormat(VertexFormat format) {
+		return this;
+	}
+
+	@Override
+	public VertexFormat getFormat() {
+		return DefaultVertexFormats.ITEM;
+	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {

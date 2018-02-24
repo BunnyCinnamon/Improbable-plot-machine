@@ -8,6 +8,8 @@
 package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -30,13 +32,22 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class BakedSchrodingerGlyph extends BakedBrightness {
 
-	private final TextureAtlasSprite overlay;
-	private final TextureAtlasSprite base;
+	private TextureAtlasSprite overlay;
+	private TextureAtlasSprite base;
 
-	public BakedSchrodingerGlyph(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
-		super(format);
-		this.overlay = getter.apply(ResourceLibrary.SCHRODINGER_GLYPH);
-		this.base = getter.apply(ResourceLibrary.PRIMAL_STONE);
+	@Override
+	public ImmutableCollection getTextures() {
+		return ImmutableList.of(
+				ResourceLibrary.SCHRODINGER_GLYPH,
+				ResourceLibrary.PRIMAL_STONE
+		);
+	}
+
+	@Override
+	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
+		this.overlay = sprites.apply(ResourceLibrary.SCHRODINGER_GLYPH);
+		this.base = sprites.apply(ResourceLibrary.PRIMAL_STONE);
+		return this;
 	}
 
 	@Override

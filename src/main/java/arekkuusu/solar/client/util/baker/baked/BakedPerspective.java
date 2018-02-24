@@ -24,7 +24,7 @@ import java.util.Map;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public abstract class BakedPerspective implements IBakedModel {
+public abstract class BakedPerspective extends Baked {
 
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> BLOCK_TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
 			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 0F, 0F, 30F, 45F, 0F, 0.64F))

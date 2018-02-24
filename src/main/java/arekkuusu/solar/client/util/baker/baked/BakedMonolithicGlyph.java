@@ -9,6 +9,8 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.common.block.BlockMonolithicGlyph;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -32,15 +34,24 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class BakedMonolithicGlyph extends BakedBrightness {
 
-	private final TextureAtlasSprite[] overlay = new TextureAtlasSprite[16];
-	private final TextureAtlasSprite base;
+	private TextureAtlasSprite[] overlay = new TextureAtlasSprite[16];
+	private TextureAtlasSprite base;
 
-	public BakedMonolithicGlyph(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
-		super(format);
+	@Override
+	public ImmutableCollection getTextures() {
+		return new ImmutableList.Builder<>()
+				.add(ResourceLibrary.MONOLITHIC_OVERLAY)
+				.add(ResourceLibrary.MONOLITHIC)
+				.build();
+	}
+
+	@Override
+	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
 		for(int i = 0; i < 16; i++) {
-			this.overlay[i] = getter.apply(ResourceLibrary.MONOLITHIC_OVERLAY[i]);
+			this.overlay[i] = sprites.apply(ResourceLibrary.MONOLITHIC_OVERLAY[i]);
 		}
-		this.base = getter.apply(ResourceLibrary.MONOLITHIC);
+		this.base = sprites.apply(ResourceLibrary.MONOLITHIC);
+		return this;
 	}
 
 	@Override

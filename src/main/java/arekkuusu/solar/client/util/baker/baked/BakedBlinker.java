@@ -9,6 +9,8 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockDirectional;
@@ -39,6 +41,7 @@ import static net.minecraft.util.EnumFacing.UP;
 @SideOnly(Side.CLIENT)
 public class BakedBlinker extends BakedBrightness {
 
+	@SuppressWarnings("WeakerAccess")
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
 			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 4F, 0F, 30F, 45F, 0F, 0.75F))
 			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(0F, 3.5F, 0F, 75F, 45F, 0F, 0.5F))
@@ -48,19 +51,31 @@ public class BakedBlinker extends BakedBrightness {
 			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 3.8F, 0F, 0F, 0F, 0F, 0.25F))
 			.put(ItemCameraTransforms.TransformType.FIXED, get(0F, 1F, 0F, 0F, -90F, 90F, 0.5F))
 			.build();
-	private final TextureAtlasSprite base;
-	private final TextureAtlasSprite top_on;
-	private final TextureAtlasSprite bottom_on;
-	private final TextureAtlasSprite top_off;
-	private final TextureAtlasSprite bottom_off;
+	private TextureAtlasSprite base;
+	private TextureAtlasSprite top_on;
+	private TextureAtlasSprite bottom_on;
+	private TextureAtlasSprite top_off;
+	private TextureAtlasSprite bottom_off;
 
-	public BakedBlinker(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
-		super(format);
-		base = getter.apply(ResourceLibrary.BLINKER_BASE);
-		top_on = getter.apply(ResourceLibrary.BLINKER_TOP_ON);
-		bottom_on = getter.apply(ResourceLibrary.BLINKER_BOTTOM_ON);
-		top_off = getter.apply(ResourceLibrary.BLINKER_TOP_OFF);
-		bottom_off = getter.apply(ResourceLibrary.BLINKER_BOTTOM_OFF);
+	@Override
+	public ImmutableCollection getTextures() {
+		return ImmutableList.of(
+				ResourceLibrary.BLINKER_BASE,
+				ResourceLibrary.BLINKER_TOP_ON,
+				ResourceLibrary.BLINKER_BOTTOM_ON,
+				ResourceLibrary.BLINKER_TOP_OFF,
+				ResourceLibrary.BLINKER_BOTTOM_OFF
+		);
+	}
+
+	@Override
+	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
+		base = sprites.apply(ResourceLibrary.BLINKER_BASE);
+		top_on = sprites.apply(ResourceLibrary.BLINKER_TOP_ON);
+		bottom_on = sprites.apply(ResourceLibrary.BLINKER_BOTTOM_ON);
+		top_off = sprites.apply(ResourceLibrary.BLINKER_TOP_OFF);
+		bottom_off = sprites.apply(ResourceLibrary.BLINKER_BOTTOM_OFF);
+		return this;
 	}
 
 	@Override

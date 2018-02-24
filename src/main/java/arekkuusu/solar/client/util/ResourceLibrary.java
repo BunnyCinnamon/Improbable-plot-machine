@@ -54,8 +54,6 @@ public final class ResourceLibrary {
 	public static final ResourceLocation ELECTRON_ON = getAtlas(BLOCKS, "electron/on");
 	public static final ResourceLocation ELECTRON_OFF = getAtlas(BLOCKS, "electron/off");
 	public static final ResourceLocation QIMRANUT_BASE = getAtlas(BLOCKS, "qimranut/base");
-	public static final ResourceLocation QIMRANUT_OVERLAY_FRONT = getAtlas(BLOCKS, "qimranut/overlay_front");
-	public static final ResourceLocation QIMRANUT_OVERLAY_BACK = getAtlas(BLOCKS, "qimranut/overlay_back");
 	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = from(MoonPhase.class, "moon_phase/", name ->
 			getAtlas(BLOCKS, name)
 	);

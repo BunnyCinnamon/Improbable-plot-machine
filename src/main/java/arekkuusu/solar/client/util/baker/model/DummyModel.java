@@ -7,7 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker.model;
 
+import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
+import arekkuusu.solar.client.util.baker.baked.Baked;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -20,6 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * This class was created by <Arekkuusu> on 25/06/2017.
@@ -30,6 +36,7 @@ import java.util.Collections;
 public class DummyModel implements IModel {
 
 	private final ResourceLocation location;
+	private Baked baked;
 
 	public DummyModel(ResourceLocation location) {
 		this.location = location;
@@ -37,17 +44,17 @@ public class DummyModel implements IModel {
 
 	@Override
 	public Collection<ResourceLocation> getDependencies() {
-		return Collections.emptyList();
+		return ImmutableList.of(location);
 	}
 
 	@Override
 	public Collection<ResourceLocation> getTextures() {
-		return Collections.emptyList();
+		return baked != null ? baked.getTextures() : Collections.emptyList();
 	}
 
 	@Override
-	public IBakedModel bake(IModelState state, VertexFormat format, java.util.function.Function<ResourceLocation, TextureAtlasSprite> getter) {
-		return DummyBakedRegistry.getBaked(location, format, getter);
+	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
+		return baked = DummyBakedRegistry.getBaked(location, format, getter);
 	}
 
 	@Override

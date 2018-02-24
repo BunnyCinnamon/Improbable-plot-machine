@@ -62,7 +62,8 @@ public class ClientProxy implements IProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		registerResourceReloadListener(SpriteManager.INSTANCE);
 		registerResourceReloadListener(ShaderManager.INSTANCE);
-		ModelLoaderRegistry.registerLoader(new DummyModelLoader());
+		registerResourceReloadListener(DummyModelLoader.INSTANCE);
+		ModelLoaderRegistry.registerLoader(DummyModelLoader.INSTANCE);
 		ModRenders.preInit();
 	}
 

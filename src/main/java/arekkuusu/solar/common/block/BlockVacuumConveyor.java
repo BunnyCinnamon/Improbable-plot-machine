@@ -131,7 +131,7 @@ public class BlockVacuumConveyor extends BlockBaseFacing {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, (format, g) -> new BakedRender()
+		DummyBakedRegistry.register(this, () -> new BakedRender()
 				.setParticle(ResourceLibrary.VACUUM_CONVEYOR)
 		);
 		ModelHandler.registerModel(this, 0, "");

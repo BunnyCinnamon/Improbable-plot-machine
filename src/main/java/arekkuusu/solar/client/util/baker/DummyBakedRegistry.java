@@ -8,8 +8,8 @@
 package arekkuusu.solar.client.util.baker;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
+import arekkuusu.solar.client.util.baker.baked.Baked;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.item.Item;
@@ -19,8 +19,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by <Arekkuusu> on 29/07/2017.
@@ -29,23 +29,23 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class DummyBakedRegistry {
 
-	private static final Map<ResourceLocation, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel>> BAKERS = new HashMap<>();
+	private static final Map<ResourceLocation, Supplier<Baked>> BAKERS = new HashMap<>();
 
-	public static void register(Item item, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel> function) {
+	public static void register(Item item, Supplier<Baked> baked) {
 		ResourceLocation location = item.getRegistryName();
-		BAKERS.putIfAbsent(location, function);
+		BAKERS.putIfAbsent(location, baked);
 	}
 
-	public static void register(Block block, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel> function) {
-		register(Item.getItemFromBlock(block), function);
+	public static void register(Block block, Supplier<Baked> baked) {
+		register(Item.getItemFromBlock(block), baked);
 	}
 
-	public static void register(String name, BiFunction<VertexFormat, Function<ResourceLocation, TextureAtlasSprite>, IBakedModel> function) {
-		BAKERS.put(ResourceLibrary.getSimpleLocation(name), function);
+	public static void register(String name, Supplier<Baked> baked) {
+		BAKERS.put(ResourceLibrary.getSimpleLocation(name), baked);
 	}
 
-	public static IBakedModel getBaked(ResourceLocation location, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> function) {
-		return BAKERS.get(location).apply(format, function);
+	public static Baked getBaked(ResourceLocation location, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> function) {
+		return BAKERS.get(location).get().applyFormat(format).applyTextures(function);
 	}
 
 	public static boolean isRegistered(ResourceLocation location) {

@@ -9,6 +9,7 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.block.state.IBlockState;
@@ -35,16 +36,22 @@ import static net.minecraft.util.EnumFacing.*;
 public class BakedCosmicResonator extends BakedBrightness {
 
 	private final Map<MoonPhase, TextureAtlasSprite> phases = Maps.newEnumMap(MoonPhase.class);
-	private final TextureAtlasSprite full_moon;
-	private final TextureAtlasSprite new_moon;
-	private final TextureAtlasSprite eclipse;
+	private TextureAtlasSprite full_moon;
+	private TextureAtlasSprite new_moon;
+	private TextureAtlasSprite eclipse;
 
-	public BakedCosmicResonator(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
-		super(format);
-		ResourceLibrary.MOON_PHASES.forEach((key, value) -> phases.put(key, getter.apply(value)));
+	@Override
+	public ImmutableCollection getTextures() {
+		return ResourceLibrary.MOON_PHASES.values();
+	}
+
+	@Override
+	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
+		ResourceLibrary.MOON_PHASES.forEach((key, value) -> phases.put(key, sprites.apply(value)));
 		full_moon = phases.get(FULL_MOON);
 		new_moon = phases.get(NEW_MOON);
 		eclipse = phases.get(ECLIPSE);
+		return this;
 	}
 
 	@Override

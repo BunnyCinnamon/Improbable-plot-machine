@@ -8,6 +8,7 @@
 package arekkuusu.solar.client.util.baker;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
+import arekkuusu.solar.common.Solar;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -48,20 +49,34 @@ public enum BlockBaker {
 	QIMRANUT_PIECE_0("qimranut_piece_0"),
 	QIMRANUT_PIECE_1("qimranut_piece_1");
 
-	ResourceLocation location;
-
-	List<BakedQuad> quads;
-	IModel model;
-	IBakedModel baked;
+	private ResourceLocation location;
+	private List<BakedQuad> quads;
+	private IModel model;
+	private IBakedModel baked;
 
 	BlockBaker(String name) {
 		location = ResourceLibrary.getLocation(null, ResourceLibrary.ModelLocation.OTHER, name, "");
 	}
 
-	public void bake() throws Exception {
-		model = ModelLoaderRegistry.getModel(location);
-		baked = model.bake(TRSRTransformation.identity(), Attributes.DEFAULT_BAKED_FORMAT, ModelLoader.defaultTextureGetter());
-		quads = baked.getQuads(null, null, 0);
+	public static void bakeAll() {
+		for(BlockBaker bake : BlockBaker.values()) {
+			try {
+				if(bake.model == null) {
+					bake.model = ModelLoaderRegistry.getModel(bake.location);
+					bake.bake();
+				}
+			} catch(Exception e) {
+				Solar.LOG.fatal("[Model Bakery] Failed to bake json model: " + bake.getLocation().toString());
+				e.printStackTrace();
+			}
+		}
+	}
+
+	void bake() {
+		if(model != null) {
+			baked = model.bake(TRSRTransformation.identity(), Attributes.DEFAULT_BAKED_FORMAT, ModelLoader.defaultTextureGetter());
+			quads = baked.getQuads(null, null, 0);
+		}
 	}
 
 	public ResourceLocation getLocation() {

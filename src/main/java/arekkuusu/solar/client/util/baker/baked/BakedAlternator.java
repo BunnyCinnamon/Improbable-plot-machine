@@ -9,6 +9,8 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -32,15 +34,25 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class BakedAlternator extends BakedBrightness {
 
-	private final TextureAtlasSprite base;
-	private final TextureAtlasSprite overlay_on;
-	private final TextureAtlasSprite overlay_off;
+	private TextureAtlasSprite base;
+	private TextureAtlasSprite overlay_on;
+	private TextureAtlasSprite overlay_off;
 
-	public BakedAlternator(VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> getter) {
-		super(format);
-		this.base = getter.apply(ResourceLibrary.ALTERNATOR_BASE);
-		this.overlay_on = getter.apply(ResourceLibrary.ALTERNATOR_OVERLAY_ON);
-		this.overlay_off = getter.apply(ResourceLibrary.ALTERNATOR_OVERLAY_OFF);
+	@Override
+	public ImmutableCollection getTextures() {
+		return ImmutableList.of(
+				ResourceLibrary.ALTERNATOR_BASE,
+				ResourceLibrary.ALTERNATOR_OVERLAY_ON,
+				ResourceLibrary.ALTERNATOR_OVERLAY_OFF
+		);
+	}
+
+	@Override
+	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
+		this.base = sprites.apply(ResourceLibrary.ALTERNATOR_BASE);
+		this.overlay_on = sprites.apply(ResourceLibrary.ALTERNATOR_OVERLAY_ON);
+		this.overlay_off = sprites.apply(ResourceLibrary.ALTERNATOR_OVERLAY_OFF);
+		return this;
 	}
 
 	@Override
