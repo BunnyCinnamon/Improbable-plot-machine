@@ -32,8 +32,11 @@ import static arekkuusu.solar.client.util.ResourceLibrary.TextureLocation.MODEL;
 public final class ResourceLibrary {
 
 	public static final Set<ResourceLocation> ATLAS_SET = Sets.newHashSet();
-
 	//Atlas
+	static {
+		getAtlas(BLOCKS, "qimranut/overlay_front");
+		getAtlas(BLOCKS, "qimranut/overlay_back");
+	}
 	public static final ResourceLocation NULL = getAtlas(BLOCKS, "null");
 	public static final ResourceLocation MONOLITHIC = getAtlas(BLOCKS, "monolithic/base");
 	public static final ResourceLocation[] MONOLITHIC_OVERLAY = from(16, "monolithic/glyph_overlay_", name ->
