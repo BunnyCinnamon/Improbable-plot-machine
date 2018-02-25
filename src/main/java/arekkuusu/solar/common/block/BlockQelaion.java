@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -48,6 +49,7 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class BlockQelaion extends BlockBase {
 
+	public static final AxisAlignedBB BB = new AxisAlignedBB(0.0625, 0.0625, 0.0625,0.9375, 0.9375, 0.9375);
 	public static final PropertyBool HAS_NODE = PropertyBool.create("has_node");
 
 	public BlockQelaion() {
@@ -135,11 +137,12 @@ public class BlockQelaion extends BlockBase {
 					ParticleUtil.spawnLightParticle(world, Vector3.create(pos).add(0.5D), vec, on ? 0x49FFFF : 0xFF0303, 60, 2F);
 				}
 			}
-
-			qelaion.getFacings().forEach(facing -> {
-
-			});
 		});
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return BB;
 	}
 
 	@Override
