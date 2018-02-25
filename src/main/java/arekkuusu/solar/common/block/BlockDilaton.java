@@ -125,8 +125,12 @@ public class BlockDilaton extends BlockBaseFacing {
 		if(state.getValue(State.ACTIVE)) {
 			boolean powered = world.isBlockPowered(pos);
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
-			Vector3 vec = Vector3.create(facing).multiply(0.025D + 0.005D * rand.nextDouble());
-			ParticleUtil.spawnLightParticle(world, Vector3.create(pos).add(0.5D), vec, powered ? 0x49FFFF : 0xFF0303, 60, 2F);
+			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
+				Vector3 vec = Vector3.create(facing).multiply(0.025D + 0.005D * rand.nextDouble());
+				vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+				vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+				ParticleUtil.spawnLightParticle(world, Vector3.create(pos).add(0.5D), vec, powered ? 0x49FFFF : 0xFF0303, 60, 2F);
+			}
 		}
 	}
 
@@ -180,9 +184,13 @@ public class BlockDilaton extends BlockBaseFacing {
 		public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
 			Vector3 posVec = VEC_MAP.get(facing).copy().add(pos);
-			double speed = world.rand.nextDouble() * -0.015D;
-			Vector3 speedVec = Vector3.create(facing).multiply(speed);
-			ParticleUtil.spawnLightParticle(world, posVec, speedVec, 0x1BE564, 30, 2F);
+			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
+				double speed = world.rand.nextDouble() * -0.015D;
+				Vector3 speedVec = Vector3.create(facing).multiply(speed);
+				speedVec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+				speedVec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+				ParticleUtil.spawnLightParticle(world, posVec, speedVec, 0x1BE564, 30, 2F);
+			}
 		}
 
 		@Override

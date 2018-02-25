@@ -9,7 +9,6 @@ package arekkuusu.solar.api.entanglement;
 
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.api.helper.NBTHelper.NBTType;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,11 +34,11 @@ public interface IEntangledStack {
 	}
 
 	default void setKey(ItemStack stack, UUID uuid) {
-		NBTHelper.<NBTTagCompound>getOrCreate(stack, QuantumHandler.NBT_TAG, NBTType.COMPOUND).setUniqueId("key", uuid);
+		stack.getOrCreateSubCompound(QuantumHandler.NBT_TAG).setUniqueId("key", uuid);
 	}
 
 	default Optional<UUID> getKey(ItemStack stack) {
 		Optional<NBTTagCompound> optional = NBTHelper.getNBTTag(stack, QuantumHandler.NBT_TAG);
-		return Optional.ofNullable(optional.map(nbtTagCompound -> nbtTagCompound.getUniqueId("key")).orElse(null));
+		return optional.map(nbtTagCompound -> nbtTagCompound.getUniqueId("key"));
 	}
 }

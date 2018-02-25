@@ -42,6 +42,8 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower, ITi
 			Vector3 back = getOffSet(facing.getOpposite());
 			double speed = world.rand.nextDouble() * -0.01D;
 			Vector3 vec = Vector3.create(facing).multiply(speed);
+			vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+			vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
 			ParticleUtil.spawnLightParticle(world, back, vec, isPoweredLazy() ? 0x49FFFF : 0xFFFFFF, 60, 2.5F);
 		}
 	}

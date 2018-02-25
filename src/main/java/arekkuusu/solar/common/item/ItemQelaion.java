@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.item;
 
+import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.block.ModBlocks;
@@ -19,27 +20,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHIFT_KEY_DOWN;
+
 /**
- * Created by <Arekkuusu> on 19/12/2017.
+ * Created by <Snack> on 24/02/2018.
  * It's distributed as part of Solar.
  */
-public class ItemVacuumConveyor extends ItemBaseBlock {
+public class ItemQelaion extends ItemBaseBlock implements IEntangledStack {
 
-	public ItemVacuumConveyor() {
-		super(ModBlocks.VACUUM_CONVEYOR);
+	public ItemQelaion() {
+		super(ModBlocks.QELAION);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipBuilder.inline()
-				.condition(() -> NBTHelper.hasTag(stack, "lookup"))
-				.ifPresent(sub -> sub
-						.addI18("item_filter", TooltipBuilder.DARK_GRAY_ITALIC)
-						.add(": ", TooltipBuilder.DARK_GRAY_ITALIC)
-						.add(new ItemStack(stack.getOrCreateSubCompound("lookup")).getDisplayName(), TooltipBuilder.GRAY_ITALIC)
-						.end()
-						.skip()
-				).build(tooltip);
+		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline().condition(SHIFT_KEY_DOWN)
+				.ifPresent(builder -> getInfo(builder, uuid)
+						.condition(() -> NBTHelper.hasUniqueID(stack, "nodes"))
+						.ifPresent(sub -> {
+							String key = NBTHelper.getUniqueID(stack, "nodes").toString();
+							sub.add(" > ").add(key.substring(0, 18)).end();
+							sub.add(" > ").add(key.substring(18)).end();
+						})
+				).build(tooltip));
 	}
 }

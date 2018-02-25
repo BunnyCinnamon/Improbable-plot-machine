@@ -8,10 +8,8 @@
 package arekkuusu.solar.api.entanglement.quantum;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,7 +52,7 @@ public interface IQuantumStack extends IEntangledStack {
 	default void setKey(ItemStack stack, UUID uuid) {
 		Optional<UUID> optional = getKey(stack);
 		if(!optional.isPresent()) {
-			NBTHelper.<NBTTagCompound>getOrCreate(stack, QuantumHandler.NBT_TAG, NBTHelper.NBTType.COMPOUND).setUniqueId("key", uuid);
+			stack.getOrCreateSubCompound(QuantumHandler.NBT_TAG).setUniqueId("key", uuid);
 		}
 	}
 }

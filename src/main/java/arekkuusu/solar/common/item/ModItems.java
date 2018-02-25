@@ -31,6 +31,7 @@ public final class ModItems {
 	public static final Item ASH = PLACE_HOLDER;
 	public static final Item SINGULARITY = PLACE_HOLDER;
 	public static final Item PLASMON = PLACE_HOLDER;
+	public static final Item QELAION = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -59,6 +60,7 @@ public final class ModItems {
 		registry.register(new ItemAlternator());
 		registry.register(new ItemDilaton());
 		registry.register(itemBlock(ModBlocks.DILATON_EXTENSION));
+		registry.register(new ItemQelaion());
 	}
 
 	@SuppressWarnings("ConstantConditions")

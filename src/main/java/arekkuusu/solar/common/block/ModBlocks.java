@@ -49,6 +49,7 @@ public final class ModBlocks {
 	public static final Block ALTERNATOR = PLACE_HOLDER;
 	public static final Block DILATON = PLACE_HOLDER;
 	public static final Block DILATON_EXTENSION = PLACE_HOLDER;
+	public static final Block QELAION = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -73,6 +74,7 @@ public final class ModBlocks {
 		registry.register(new BlockAlternator());
 		registry.register(new BlockDilaton());
 		registry.register(new BlockDilaton.BlockDilatonExtension());
+		registry.register(new BlockQelaion());
 		registerTiles();
 	}
 
@@ -89,6 +91,7 @@ public final class ModBlocks {
 		registerTile(TileMechanicalTranslocator.class, LibNames.MECHANICAL_TRANSLOCATOR);
 		registerTile(TileAlternator.class, LibNames.ALTERNATOR);
 		registerTile(TileDilaton.class, LibNames.DILATON);
+		registerTile(TileQelaion.class, LibNames.QELAION);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {

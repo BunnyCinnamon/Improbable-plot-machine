@@ -66,6 +66,10 @@ public final class ResourceLibrary {
 	public static final ResourceLocation ALTERNATOR_OVERLAY_ON = getAtlas(BLOCKS, "alternator/overlay_on");
 	public static final ResourceLocation ALTERNATOR_OVERLAY_OFF = getAtlas(BLOCKS, "alternator/overlay_off");
 	public static final ResourceLocation HYPER_CONDUCTOR = getAtlas(BLOCKS, "hyper_conductor");
+	public static final ResourceLocation QELAION_BASE = getAtlas(BLOCKS, "qelaion/base");
+	public static final ResourceLocation QELAION_INSIDE = getAtlas(BLOCKS, "qelaion/inside");
+	public static final ResourceLocation QELAION_ON = getAtlas(BLOCKS, "qelaion/on");
+	public static final ResourceLocation QELAION_OFF = getAtlas(BLOCKS, "qelaion/off");
 	//Textures
 	public static final ResourceLocation THEOREMA = getTexture(BLOCKS, "theorema");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(MODEL, "eye_of_schrodinger");

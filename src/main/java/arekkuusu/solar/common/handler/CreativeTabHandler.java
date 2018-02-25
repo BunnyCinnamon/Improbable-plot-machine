@@ -91,6 +91,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.BLINKER);
 			addBlock(ModBlocks.QIMRANUT);
 			addBlock(ModBlocks.DILATON);
+			addBlock(ModBlocks.QELAION);
 			addBlock(ModBlocks.CELESTIAL_RESONATOR);
 			addItem(ModItems.SINGULARITY);
 			addItem(ModItems.CRYSTAL_QUARTZ);

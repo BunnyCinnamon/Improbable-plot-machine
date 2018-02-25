@@ -47,7 +47,8 @@ public enum BlockBaker {
 	QIMRANUT("qimranut"),
 	QIMRANUT_("qimranut_"),
 	QIMRANUT_PIECE_0("qimranut_piece_0"),
-	QIMRANUT_PIECE_1("qimranut_piece_1");
+	QIMRANUT_PIECE_1("qimranut_piece_1"),
+	QELAION("qelaion");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;
