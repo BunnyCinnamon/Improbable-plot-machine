@@ -147,11 +147,13 @@ public class TileQelaion extends TileRelativeBase {
 	@Override
 	void readNBT(NBTTagCompound compound) {
 		super.readNBT(compound);
-		if(world != null && !world.isRemote) {
-			if(compound.hasUniqueId("nodes")) {
-				nodes = compound.getUniqueId("nodes");
-			}
+		if(compound.hasUniqueId("nodes")) {
+			nodes = compound.getUniqueId("nodes");
+		}
+		if(compound.hasKey("facingIndex")) {
 			facingIndex = compound.getInteger("facingIndex");
+		}
+		if(compound.hasKey("nodeIndex")) {
 			nodeIndex = compound.getInteger("nodeIndex");
 		}
 		facings.clear();
@@ -177,18 +179,5 @@ public class TileQelaion extends TileRelativeBase {
 		}
 		compound.setInteger("facingIndex", facingIndex);
 		compound.setInteger("nodeIndex", nodeIndex);
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		NBTTagCompound compound = new NBTTagCompound();
-		NBTTagList list = new NBTTagList();
-		facings.forEach(facing -> {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("facing", facing.getName());
-			list.appendTag(tag);
-		});
-		compound.setTag("facings", list);
-		return compound;
 	}
 }

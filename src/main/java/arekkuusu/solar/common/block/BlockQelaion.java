@@ -75,9 +75,11 @@ public class BlockQelaion extends BlockBase {
 				return false;
 			}
 		} else if(stack.isEmpty()) {
-			getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
-				qelaion.putFacing(facing);
-			});
+				getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
+					if(!player.isSneaking()) {
+						qelaion.putFacing(facing);
+					} else qelaion.setNodes(null);
+				});
 		}
 		return false;
 	}
