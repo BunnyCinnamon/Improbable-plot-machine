@@ -10,6 +10,8 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.api.util.Vector3;
+import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
@@ -37,7 +39,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -48,12 +52,20 @@ import java.util.UUID;
 public class BlockQimranut extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.1875, 0.75, 0.1875, 0.8125, 0.8125, 0.8125))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.1875, 0.1875, 0.1875, 0.8125, 0.25, 0.8125))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.1875, 0.1875, 0.25, 0.8125, 0.8125, 0.1875))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.1875, 0.1875, 0.75, 0.8125, 0.8125, 0.8125))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.8125, 0.1875, 0.1875, 0.75, 0.8125, 0.8125))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.25, 0.1875, 0.1875, 0.1875, 0.8125, 0.8125))
+			.put(EnumFacing.UP, new AxisAlignedBB(0.1875, 0.625, 0.1875, 0.8125, 0.875, 0.8125))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.1875, 0.125, 0.1875, 0.8125, 0.375, 0.8125))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.1875, 0.1875, 0.375, 0.8125, 0.8125, 0.125))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.1875, 0.1875, 0.625, 0.8125, 0.8125, 0.875))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.875, 0.1875, 0.1875, 0.625, 0.8125, 0.8125))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.375, 0.1875, 0.1875, 0.125, 0.8125, 0.8125))
+			.build();
+	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
+			.put(EnumFacing.UP, Vector3.create(0.5D, 0.4D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.6D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.6D))
+			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.4D))
+			.put(EnumFacing.EAST, Vector3.create(0.4D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.create(0.6D, 0.5D, 0.5D))
 			.build();
 
 	public BlockQimranut() {
@@ -95,6 +107,31 @@ public class BlockQimranut extends BlockBaseFacing {
 			return stack;
 		}
 		return super.getItem(world, pos, state);
+	}
+
+	@Override
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		Vector3 back = getOffSet(facing.getOpposite(), pos);
+		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
+			double speed = world.rand.nextDouble() * -0.03D;
+			Vector3 vec = Vector3.create(facing).multiply(speed);
+			vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.05F);
+			vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.05F);
+			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 70, 2.5F);
+		}
+
+		if(rand.nextFloat() < 0.1F) {
+			double speed = -0.010D - world.rand.nextDouble() * 0.010D;
+			Vector3 vec = Vector3.create(facing).multiply(speed)
+					.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F)
+					.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+			ParticleUtil.spawnNeutronBlast(world, back, vec, 0x000000, 60, 0.1F, true);
+		}
+	}
+
+	private Vector3 getOffSet(EnumFacing facing, BlockPos pos) {
+		return FACING_MAP.get(facing).copy().add(pos);
 	}
 
 	@Override

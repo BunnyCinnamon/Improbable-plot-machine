@@ -67,13 +67,15 @@ public class QimranutRenderer extends SpecialModelRenderer<TileQimranut> {
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		/*--- Sides ---*/
 		GlStateManager.pushMatrix();
+		GlStateManager.translate(0,0.4,0);
+		GlStateManager.scale(0.5, 0.5, 0.5);
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-		BlockBaker.render(BlockBaker.QIMRANUT_PIECE_0);
+		BlockBaker.render(BlockBaker.QIMRANUT_PIECE);
 		GlStateManager.popMatrix();
 
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, -1F, 0F);
-		BlockBaker.render(BlockBaker.QIMRANUT_PIECE_1);
+		BlockBaker.render(BlockBaker.QIMRANUT_PIECE);
 		GlStateManager.popMatrix();
 		/*--- Corners ---*/
 		GLHelper.lightMap(prevU, prevV);

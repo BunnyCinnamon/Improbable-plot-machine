@@ -34,7 +34,7 @@ public class ParticleLight extends ParticleBase {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if(rand.nextInt(6) == 0) {
+		if(rand.nextInt(2) == 0) {
 			this.particleAge++;
 		}
 		float life = (float) this.particleAge / (float) this.particleMaxAge;

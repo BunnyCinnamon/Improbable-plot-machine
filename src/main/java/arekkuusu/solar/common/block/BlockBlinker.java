@@ -11,6 +11,8 @@ import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.api.util.Vector3;
+import arekkuusu.solar.client.effect.ParticleUtil;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedBlinker;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -37,6 +39,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -55,6 +58,14 @@ public class BlockBlinker extends BlockBaseFacing {
 			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0.125, 0.9375, 0.875, 0.875, 1))
 			.put(EnumFacing.EAST, new AxisAlignedBB(0.9375, 0.125, 0.875, 1, 0.875, 0.125))
 			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0.125, 0.125, 0.0625, 0.875, 0.875))
+			.build();
+	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
+			.put(EnumFacing.UP, Vector3.create(0.5D, 0.2D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.8D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.8D))
+			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.2D))
+			.put(EnumFacing.EAST, Vector3.create(0.2D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.create(0.8D, 0.5D, 0.5D))
 			.build();
 
 	public BlockBlinker()  {
@@ -120,6 +131,24 @@ public class BlockBlinker extends BlockBaseFacing {
 			return stack;
 		}
 		return super.getItem(world, pos, state);
+	}
+
+	@Override
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		boolean active = state.getValue(State.ACTIVE);
+		Vector3 back = getOffSet(facing.getOpposite(), pos);
+		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
+			double speed = world.rand.nextDouble() * -0.02D;
+			Vector3 vec = Vector3.create(facing).multiply(speed);
+			vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+			vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+			ParticleUtil.spawnLightParticle(world, back, vec, active ? 0x49FFFF : 0xFFFFFF, 60, 2.5F);
+		}
+	}
+
+	private Vector3 getOffSet(EnumFacing facing, BlockPos pos) {
+		return FACING_MAP.get(facing).copy().add(pos);
 	}
 
 	@Override

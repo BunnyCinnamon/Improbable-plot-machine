@@ -23,7 +23,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Triple;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -47,8 +46,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 			ProfilerHelper.begin("[Mechanical Translocator] Relocating block");
 			List<TileMechanicalTranslocator> list = RelativityHandler.getRelatives(this).stream()
 					.filter(tile -> tile.isLoaded() && tile instanceof TileMechanicalTranslocator)
-					.map(tile -> (TileMechanicalTranslocator) tile).collect(Collectors.toList());
-			Collections.sort(list);
+					.map(tile -> (TileMechanicalTranslocator) tile).sorted().collect(Collectors.toList());
 			int index = list.indexOf(this);
 			int size = list.size();
 			int i = index + 1 >= size ? 0 : index + 1;
