@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -40,7 +41,7 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 	@Override
 	public ImmutableCollection getTextures() {
 		return new ImmutableList.Builder<>()
-				.add(ResourceLibrary.MONOLITHIC_OVERLAY)
+				.addAll(Arrays.asList(ResourceLibrary.MONOLITHIC_OVERLAY))
 				.add(ResourceLibrary.MONOLITHIC)
 				.build();
 	}
