@@ -39,10 +39,11 @@ public class ItemQelaion extends ItemBaseBlock implements IEntangledStack {
 				.ifPresent(builder -> getInfo(builder, uuid)
 						.condition(() -> NBTHelper.hasUniqueID(stack, "nodes"))
 						.ifPresent(sub -> {
+							sub.addI18("tag_nodes", TooltipBuilder.DARK_GRAY_ITALIC).add(": ").end();
 							String key = NBTHelper.getUniqueID(stack, "nodes").toString();
 							sub.add(" > ").add(key.substring(0, 18)).end();
 							sub.add(" > ").add(key.substring(18)).end();
-						})
+						}).apply()
 				).build(tooltip));
 	}
 }

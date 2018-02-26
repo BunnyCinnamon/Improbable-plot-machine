@@ -51,5 +51,6 @@ tlp.shift_for_info.name=<shift for info>
 tlp.ctrl_for_info.name=<ctrl for detailed-info>
 tlp.quantum_data.name=Quantum Data
 tlp.uuid_key.name=Uuid
+tlp.tag_nodes.name=Nodes
 tlp.item_filter.name=Item Filter
 tlp.monolithic_description.name=Immovable Object
