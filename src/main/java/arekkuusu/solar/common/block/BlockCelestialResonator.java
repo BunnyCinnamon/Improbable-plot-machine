@@ -16,7 +16,9 @@ import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -37,7 +39,7 @@ public class BlockCelestialResonator extends BlockBase {
 
 	public BlockCelestialResonator() {
 		super(LibNames.CELESTIAL_RESONATOR, Material.ROCK);
-		setDefaultState(getDefaultState().withProperty(State.ACTIVE, false));
+		setDefaultState(getDefaultState().withProperty(MoonPhase.MOON_PHASE, MoonPhase.FULL_MOON).withProperty(State.ACTIVE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.WOOD_GOLD);
 		setHardness(0.5F);
 	}
@@ -61,6 +63,11 @@ public class BlockCelestialResonator extends BlockBase {
 			}
 			world.scheduleUpdate(pos, this, tickRate(world));
 		}
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return getDefaultState().withProperty(MoonPhase.MOON_PHASE, MoonPhase.getMoonPhase(world));
 	}
 
 	@Override
