@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.common.block.BlockQelaion;
 import com.google.common.collect.ImmutableList;
@@ -115,6 +116,7 @@ public class TileQelaion extends TileRelativeBase {
 	public ImmutableList<TileQelaion> getNodeList() {
 		return nodes != null ? ImmutableList.copyOf(
 				RelativityHandler.getRelatives(nodes).stream()
+						.filter(IRelativeTile::isLoaded)
 						.map(n -> (TileQelaion) n)
 						.collect(Collectors.toList())
 		) : ImmutableList.of();
