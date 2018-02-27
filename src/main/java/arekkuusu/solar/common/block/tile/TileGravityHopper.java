@@ -83,7 +83,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private Pair<IItemHandler, ISidedInventory> getInventory(BlockPos target, EnumFacing facing) {
-		if(world.isBlockLoaded(target, false)) {
+		if(world.isValid(target) && world.isBlockLoaded(target, false)) {
 			TileEntity tile = world.getTileEntity(target);
 			if(tile != null) {
 				IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
