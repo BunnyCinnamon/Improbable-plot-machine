@@ -29,7 +29,7 @@ minecraft {
 }
 
 dependencies {
-    compile project("Mirror")
+
 }
 
 processResources {
