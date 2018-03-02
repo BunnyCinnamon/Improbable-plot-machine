@@ -231,7 +231,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 			if(taskOwner.getAttackTarget() != null) {
 				Vec3d vec = RandomPositionGenerator.findRandomTarget(taskOwner, 5, 5);
 				if(vec != null) {
-					taskOwner.getNavigator().clearPathEntity();
+					taskOwner.getNavigator().clearPath();
 					taskOwner.getNavigator().tryMoveToXYZ(vec.x, vec.y, vec.z, 1D);
 					attack.resetTask();
 				}
@@ -264,8 +264,8 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		@Override
 		@SuppressWarnings("ConstantConditions")
 		public void startExecuting() {
-			if(eye.getDistanceToEntity(eye.getAttackTarget()) >= 5) {
-				eye.getNavigator().clearPathEntity();
+			if(eye.getDistance(eye.getAttackTarget()) >= 5) {
+				eye.getNavigator().clearPath();
 				eye.getNavigator().tryMoveToEntityLiving(eye.getAttackTarget(), 0.25D);
 			}
 			eye.setTargetedEntity(true);

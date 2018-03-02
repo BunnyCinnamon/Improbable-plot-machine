@@ -10,6 +10,7 @@ package arekkuusu.solar.api.helper;
 import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -60,7 +61,7 @@ public final class RayTraceHelper {
 	public static RayTraceResult tracePlayerHighlight(EntityPlayerMP player) {
 		Vec3d eyes = player.getPositionEyes(1F);
 		Vec3d look = player.getLookVec();
-		double range = player.interactionManager.getBlockReachDistance();
+		double range = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
 		Vec3d hit = eyes.addVector(look.x * range, look.y * range, look.z * range);
 		return player.world.rayTraceBlocks(eyes, hit, false, false, true);
 	}

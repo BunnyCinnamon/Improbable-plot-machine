@@ -40,7 +40,7 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 
 		for(int j = 0; j < slots; j++) {
 			ItemStack stack = inv.getStackInSlot(j);
-			if(!stack.isEmpty() && (!hasTag(stack) || stack.getItem() != checked.getItem())) return false;
+			if(!stack.isEmpty() && (hasNoTag(stack) || stack.getItem() != checked.getItem())) return false;
 			if(!stack.isEmpty() && j != center) {
 				amount++;
 			}
@@ -59,7 +59,7 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 
 		for(int j = 0; j < slots; j++) {
 			ItemStack stack = inv.getStackInSlot(j);
-			if(!stack.isEmpty() && (!hasTag(stack) || stack.getItem() != checked.getItem())) return ItemStack.EMPTY;
+			if(!stack.isEmpty() && (hasNoTag(stack) || stack.getItem() != checked.getItem())) return ItemStack.EMPTY;
 			if(!stack.isEmpty() && j != center) {
 				amount++;
 			}
@@ -76,7 +76,7 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
 		int slots = inv.getHeight() * inv.getWidth();
-		NonNullList<ItemStack> nonNullList = NonNullList.<ItemStack>withSize(slots, ItemStack.EMPTY);
+		NonNullList<ItemStack> nonNullList = NonNullList.withSize(slots, ItemStack.EMPTY);
 		int center = (int) ((float) slots / 2);
 
 		ItemStack stack = inv.getStackInSlot(center);
@@ -85,8 +85,8 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 		return nonNullList;
 	}
 
-	private boolean hasTag(ItemStack stack) {
-		return stack.getItem() instanceof IEntangledStack && getKey(stack).isPresent();
+	private boolean hasNoTag(ItemStack stack) {
+		return !(stack.getItem() instanceof IEntangledStack) || !getKey(stack).isPresent();
 	}
 
 	private Optional<UUID> getKey(ItemStack stack) {
@@ -105,10 +105,5 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 	@Override
 	public ItemStack getRecipeOutput() {
 		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean isHidden() {
-		return true;
 	}
 }

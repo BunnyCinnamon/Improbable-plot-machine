@@ -63,9 +63,4 @@ public class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 	public ItemStack getRecipeOutput() {
 		return ItemStack.EMPTY;
 	}
-
-	@Override
-	public boolean isHidden() {
-		return true;
-	}
 }

@@ -57,7 +57,7 @@ public class ParticleNeutronBlast extends ParticleBase {
 			BlockPos pos = new BlockPos(posX, posY, posZ);
 			IBlockState state = world.getBlockState(pos);
 			//noinspection deprecation
-			AxisAlignedBB bounding = state.getBlock().getCollisionBoundingBox(state, world, pos);
+			AxisAlignedBB bounding = state.getCollisionBoundingBox(world, pos);
 
 			if(bounding != null && !world.getCollisionBoxes(null, this.getBoundingBox().shrink(0.1D)).isEmpty()) {
 				setExpired();
