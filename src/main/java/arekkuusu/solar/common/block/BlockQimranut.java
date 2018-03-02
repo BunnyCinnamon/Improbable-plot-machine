@@ -118,7 +118,7 @@ public class BlockQimranut extends BlockBaseFacing {
 			Vector3 vec = Vector3.create(facing).multiply(speed);
 			vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.05F);
 			vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.05F);
-			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 70, 2.5F);
+			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 25, 2F);
 		}
 
 		if(rand.nextFloat() < 0.1F) {
@@ -126,7 +126,7 @@ public class BlockQimranut extends BlockBaseFacing {
 			Vector3 vec = Vector3.create(facing).multiply(speed)
 					.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F)
 					.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-			ParticleUtil.spawnNeutronBlast(world, back, vec, 0x000000, 60, 0.1F, true);
+			ParticleUtil.spawnNeutronBlast(world, back, vec, 0x000000, 40, 0.1F, true);
 		}
 	}
 
