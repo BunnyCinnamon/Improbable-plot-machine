@@ -7,8 +7,10 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker;
 
-import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.common.Solar;
+import arekkuusu.solar.common.lib.LibMod;
+import net.katsstuff.mirror.client.helper.ModelLocation;
+import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -55,7 +57,8 @@ public enum BlockBaker {
 	private IBakedModel baked;
 
 	BlockBaker(String name) {
-		location = ResourceLibrary.getLocation(null, ResourceLibrary.ModelLocation.OTHER, name, "");
+		ModelLocation modelLocation = new ModelLocation("other");
+		location = ResourceHelperStatic.getLocation(LibMod.MOD_ID, null, modelLocation, name, "");
 	}
 
 	public static void bakeAll() {

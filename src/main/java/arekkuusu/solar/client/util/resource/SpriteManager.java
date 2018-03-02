@@ -7,11 +7,12 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.resource;
 
-import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.resource.sprite.FrameSpriteResource;
-import arekkuusu.solar.client.util.resource.sprite.Location;
 import arekkuusu.solar.client.util.resource.sprite.SpriteResource;
 import arekkuusu.solar.common.Solar;
+import arekkuusu.solar.common.lib.LibMod;
+import net.katsstuff.mirror.client.helper.Location;
+import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.ResourceLocation;
@@ -35,7 +36,7 @@ public final class SpriteManager implements IResourceManagerReloadListener {
 	private static boolean reloading;
 
 	public static SpriteResource load(Location location, String name) {
-		ResourceLocation resource = ResourceLibrary.getTexture(location, name);
+		ResourceLocation resource = ResourceHelperStatic.getTexture(LibMod.MOD_ID, location, name);
 		SpriteResource bind = new SpriteResource(resource);
 		SPRITE_RESOURCE_MAP.put(resource, bind);
 		return bind;
@@ -46,7 +47,7 @@ public final class SpriteManager implements IResourceManagerReloadListener {
 			Solar.LOG.fatal("[SpriteLoader] Your sprite can't have 0 rows or columns" + location.toString());
 		}
 
-		ResourceLocation resource = ResourceLibrary.getTexture(location, name);
+		ResourceLocation resource = ResourceHelperStatic.getTexture(LibMod.MOD_ID, location, name);
 		FrameSpriteResource bind = new FrameSpriteResource(resource, rows, columns);
 		SPRITE_RESOURCE_MAP.put(resource, bind);
 		return bind;

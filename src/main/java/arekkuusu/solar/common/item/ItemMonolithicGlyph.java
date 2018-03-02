@@ -7,9 +7,10 @@
  ******************************************************************************/
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.ModBlocks;
+import arekkuusu.solar.common.lib.LibMod;
+import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,8 +34,8 @@ public class ItemMonolithicGlyph extends ItemBaseBlock {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerModel() {
-		for(int i = 0; i < 16; i++) {
-			ModelHandler.registerModel(this, i, ResourceLibrary.getModel("monolithic_glyph_", "glyph=" + i));
+		for (int i = 0; i < 16; i++) {
+			ModelHandler.registerModel(this, i, ResourceHelperStatic.getModel(LibMod.MOD_ID, "monolithic_glyph_", "glyph=" + i));
 		}
 	}
 }
