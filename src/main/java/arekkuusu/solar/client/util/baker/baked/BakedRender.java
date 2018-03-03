@@ -7,12 +7,10 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker.baked;
 
-import arekkuusu.solar.common.lib.LibMod;
+import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
-import net.katsstuff.mirror.client.helper.TextureLocation;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -41,7 +39,7 @@ import java.util.function.Function;
 public class BakedRender extends BakedPerspective {
 
 	private Map<ItemCameraTransforms.TransformType, TRSRTransformation> transforms = ImmutableMap.copyOf(BLOCK_TRANSFORMS);
-	private ResourceLocation particle = ResourceHelperStatic.getAtlas(LibMod.MOD_ID, TextureLocation.Blocks(), "null");
+	private ResourceLocation particle = ResourceLibrary.TRANSPARENT;
 
 	@Override
 	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {

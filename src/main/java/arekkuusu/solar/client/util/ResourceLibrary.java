@@ -34,6 +34,7 @@ public final class ResourceLibrary {
 		getBlockTexture("qimranut/overlay_front");
 		getBlockTexture("qimranut/overlay_back");
 	}
+	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation[] MONOLITHIC_OVERLAY = ResourceHelperStatic.from(16, "monolithic/glyph_overlay_",
 			ResourceLibrary::getBlockTexture
 	);
@@ -66,7 +67,9 @@ public final class ResourceLibrary {
 	public static final ResourceLocation QELAION_INSIDE = getBlockTexture("qelaion/inside");
 	public static final ResourceLocation QELAION_ON = getBlockTexture("qelaion/on");
 	public static final ResourceLocation QELAION_OFF = getBlockTexture("qelaion/off");
-	//Textures
+	//Raw Textures
+	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
+	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");
 	public static final ResourceLocation THEOREMA = getTexture(TextureLocation.Blocks(), "theorema");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(TextureLocation.Model(), "eye_of_schrodinger");
 
@@ -78,5 +81,11 @@ public final class ResourceLibrary {
 
 	private static ResourceLocation getTexture(Location location, String name) {
 		return ResourceHelperStatic.getTexture(LibMod.MOD_ID, location, name);
+	}
+
+	private static ResourceLocation getAtlas(Location location, String name) {
+		ResourceLocation rl = ResourceHelperStatic.getAtlas(LibMod.MOD_ID, location, name);
+		ATLAS_SET.add(rl);
+		return rl;
 	}
 }
