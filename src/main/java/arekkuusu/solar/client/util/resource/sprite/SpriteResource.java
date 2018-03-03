@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,11 +37,6 @@ public class SpriteResource {
 
 	public ResourceLocation getLocation() {
 		return location;
-	}
-
-	public void bind() {
-		if(texture == null || SpriteManager.isReloading()) return;
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getGlTextureId());
 	}
 
 	public void bindManager() {
