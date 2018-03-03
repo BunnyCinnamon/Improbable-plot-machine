@@ -11,7 +11,8 @@ import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
@@ -118,7 +119,7 @@ public class BlockQimranut extends BlockBaseFacing {
 			Vector3 vec = Vector3.create(facing).multiply(speed);
 			vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.05F);
 			vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.05F);
-			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 25, 2F);
+			FXUtil.spawnLight(world, back, vec, 25, 2F, 0x49FFFF, Light.GLOW);
 		}
 
 		if(rand.nextFloat() < 0.1F) {
@@ -126,7 +127,7 @@ public class BlockQimranut extends BlockBaseFacing {
 			Vector3 vec = Vector3.create(facing).multiply(speed)
 					.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F)
 					.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-			ParticleUtil.spawnNeutronBlast(world, back, vec, 0x000000, 40, 0.1F, true);
+			FXUtil.spawnNeutron(world, back, vec, 40, 0.1F, 0x000000, true);
 		}
 	}
 

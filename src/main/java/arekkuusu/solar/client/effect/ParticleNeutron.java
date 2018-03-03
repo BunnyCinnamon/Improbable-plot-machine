@@ -8,54 +8,76 @@
 package arekkuusu.solar.client.effect;
 
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.util.SpriteLibrary;
+import net.katsstuff.mirror.client.particles.GlowTexture;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by <Arekkuusu> on 26/07/2017.
  * It's distributed as part of Solar.
  */
-@SideOnly(Side.CLIENT)
 public class ParticleNeutron extends ParticleBase {
 
-	private final float initScale;
-	private final boolean dark;
+	private final boolean collide;
+	private final int rgb;
 
-	ParticleNeutron(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
-		super(world, pos, speed, rgb);
-		this.particleMaxAge = age;
-		this.particleScale = scale;
-		this.initScale = particleScale;
-		this.canCollide = false;
-		this.dark = rgb == 0x000000;
-		setSprite(dark ? SpriteLibrary.DARK_PARTICLE : SpriteLibrary.NEUTRON_PARTICLE);
+	ParticleNeutron(World world, Vector3 pos, Vector3 speed, float scale, int age, int rgb, boolean collide) {
+		super(world, pos, speed, scale, age, rgb);
+		this.rgb = rgb;
+		this.collide = collide;
+		this.canCollide = !this.collide;
+	}
+
+	@Override
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+		//NO-OP
+	}
+
+	@Override
+	public void onUpdateGlow() {
+		this.onUpdate();
 	}
 
 	@Override
 	public void onUpdate() {
-		if(this.particleAge++ >= this.particleMaxAge) {
-			this.setExpired();
+		if((particleAge++ >= particleMaxAge)) {
+			setExpired();
 		}
-		float life = (float) particleAge / (float) particleMaxAge;
-		this.particleScale = initScale - initScale * life;
-		this.particleAlpha = 0.25F * (1F - life);
-
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
-
 		this.move(this.motionX, this.motionY, this.motionZ);
+
+		spawnTrail(-motionX * 0.35, -motionY * 0.35, -motionZ * 0.35);
+		spawnTrail(0, 0, 0);
+		spawnTrail(motionX * 0.35, motionY * 0.35, motionZ * 0.35);
+
+		if(collide) {
+			BlockPos pos = new BlockPos(posX, posY, posZ);
+			IBlockState state = world.getBlockState(pos);
+			//noinspection deprecation
+			AxisAlignedBB bounding = state.getCollisionBoundingBox(world, pos);
+
+			if(bounding != null && !world.getCollisionBoxes(null, this.getBoundingBox().shrink(0.1D)).isEmpty()) {
+				setExpired();
+			}
+		}
+	}
+
+	private void spawnTrail(double xOffset, double yOffset, double zOffset) {
+		xOffset += posX;
+		yOffset += posY;
+		zOffset += posZ;
+		FXUtil.spawnMute(world, Vector3.create(xOffset, yOffset, zOffset), Vector3.ImmutableVector3.NULL,
+				60, particleScale, rgb, GlowTexture.GLOW);
 	}
 
 	@Override
-	public int getBrightnessForRender(float idk) {
-		return dark ? 0 : 255;
-	}
-
-	@Override
-	public boolean isAdditive() {
-		return !dark;
+	public boolean shouldRender() {
+		return false;
 	}
 }

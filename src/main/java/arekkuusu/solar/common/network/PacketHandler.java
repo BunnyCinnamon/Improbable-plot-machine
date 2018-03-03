@@ -9,11 +9,12 @@ package arekkuusu.solar.common.network;
 
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.lib.LibMod;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.katsstuff.mirror.client.particles.GlowTexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -93,14 +94,14 @@ public class PacketHandler {
 			for(int i = 0; i < 15; i++) {
 				Vector3 offset = Vector3.getRandomVec(0.1D).add(from);
 				Vector3 speed = Vector3.getRandomVec(0.1D);
-				ParticleUtil.spawnTunnelingPhoton(world, offset,
-						speed, 0xFF0303, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
+				FXUtil.spawnTunneling(world, offset,
+						speed, 60, 0.35F + (world.rand.nextFloat() * 0.5F), 0xFF0303, GlowTexture.GLINT);
 			}
 			for(int i = 0; i < 15; i++) {
 				Vector3 offset = Vector3.getRandomVec(0.05D).add(to);
 				Vector3 speed = Vector3.getRandomVec(0.01D);
-				ParticleUtil.spawnTunnelingPhoton(world, offset,
-						speed, 0x49FFFF, 60, 0.35F + (world.rand.nextFloat() * 0.5F));
+				FXUtil.spawnTunneling(world, offset,
+						speed, 60, 0.35F + (world.rand.nextFloat() * 0.5F), 0x49FFFF, GlowTexture.GLINT);
 			}
 		}
 	};

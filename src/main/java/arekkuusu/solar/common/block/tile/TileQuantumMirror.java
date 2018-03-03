@@ -9,7 +9,8 @@ package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.quantum.data.QuantumTileWrapper;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.FXUtil;
+import net.katsstuff.mirror.client.particles.GlowTexture;
 import net.minecraft.util.ITickable;
 
 /**
@@ -29,7 +30,7 @@ public class TileQuantumMirror extends TileQuantumBase<QuantumTileWrapper> imple
 	public void update() {
 		if(world.isRemote && world.rand.nextInt(10) == 0) {
 			Vector3 from = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
-			ParticleUtil.spawnQuorn(world, from, Vector3.getRandomVec(0.1F), 20, 0.1F, 0XFFFFFF);
+			FXUtil.spawnMute(world, from, Vector3.getRandomVec(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
 		}
 	}
 

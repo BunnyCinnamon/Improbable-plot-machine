@@ -10,7 +10,7 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
@@ -80,7 +80,7 @@ public class BlockHyperConductor extends BlockBase {
 		Vector3 origin = Vector3.create(pos).add(0.5D);
 		for(EnumFacing facing : EnumFacing.values()) {
 			Vector3 vec = Vector3.create(facing).multiply(0.025D);
-			ParticleUtil.spawnSquared(world, origin, vec, 0xFFFFFF, 40, 4F);
+			FXUtil.spawnSquared(world, origin, vec, 40, 4F, 0xFFFFFF);
 		}
 	}
 

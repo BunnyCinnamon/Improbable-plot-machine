@@ -8,25 +8,17 @@
 package arekkuusu.solar.client.effect;
 
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.util.SpriteLibrary;
+import net.katsstuff.mirror.client.particles.GlowTexture;
 import net.minecraft.world.World;
 
 /**
- * Created by <Arekkuusu> on 28/07/2017.
+ * Created by <Arekkuusu> on 04/08/2017.
  * It's distributed as part of Solar.
  */
-public class ParticleDark extends ParticleBase {
+public class ParticleTunneling extends ParticleMute {
 
-	private final float initScale;
-
-	ParticleDark(World world, Vector3 pos, Vector3 speed, int rgb, int age, float scale) {
-		super(world, pos, speed, rgb);
-		this.particleMaxAge = age;
-		this.particleScale = scale;
-		this.initScale = particleScale;
-		this.particleAngle = rand.nextBoolean() ? 2F : -2F * (float) Math.PI;
-		this.canCollide = false;
-		setSprite(SpriteLibrary.DARK_PARTICLE);
+	ParticleTunneling(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
+		super(world, pos, speed, scale, age, rgb, glow);
 	}
 
 	@Override
@@ -43,12 +35,7 @@ public class ParticleDark extends ParticleBase {
 	}
 
 	@Override
-	public boolean isAdditive() {
-		return false;
-	}
-
-	@Override
-	public int getBrightnessForRender(float p_189214_1_) {
-		return 0;
+	public boolean shouldDisableDepth() {
+		return true;
 	}
 }

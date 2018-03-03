@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedSchrodingerGlyph;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -103,7 +103,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 			for(EnumFacing facing : EnumFacing.values()) {
 				Vector3 from = Vector3.create(pos).add(0.5D);
 				Vector3 vec = Vector3.create(facing).multiply(0.025D);
-				ParticleUtil.spawnNeutronBlast(world, from, vec, 0xFF0303, 60, 0.25F, false);
+				FXUtil.spawnNeutron(world, from, vec, 60, 0.25F, 0xFF0303, false);
 			}
 		}
 	}

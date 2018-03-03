@@ -10,9 +10,8 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.sound.SolarSounds;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedDamage;
-import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedElectron;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -22,7 +21,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
@@ -82,13 +80,6 @@ public class BlockElectron extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		for(int i = 0; i <= Math.min(state.getValue(State.POWER), 8); i++) {
-			if(rand.nextFloat() < 0.2F) {
-				Vector3 vec = Vector3.getRandomVec(0.01D + rand.nextFloat() * 0.05D);
-				ParticleUtil.spawnChargedIce(world, Vector3.create(pos).add(0.5D),
-						vec, 0xFFFFFF, 15, 0.5F * rand.nextFloat());
-			}
-		}
 		if(state.getValue(State.POWER) > 0 && world.rand.nextBoolean()) {
 			for(int i = 0; i < 1 + world.rand.nextInt(3); i++) {
 				Vector3 from = Vector3.create(pos).add(0.5D);
@@ -97,9 +88,9 @@ public class BlockElectron extends BlockBase {
 						.rotate(EnumFacing.Axis.Y, world.rand.nextFloat() * 360F)
 						.rotate(EnumFacing.Axis.Z, world.rand.nextFloat() * 360F)
 						.add(from);
-				ParticleUtil.spawnBolt(world, from, to, 4, 0.25F, 0x5194FF, true, true);
+				FXUtil.spawnVolt(world, from, to, 4, 0.25F, 15, 0x5194FF, true, true);
 			}
-			((WorldClient) world).playSound(pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F, 1F, false);
+			FXUtil.playSound(world, pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F);
 		}
 	}
 

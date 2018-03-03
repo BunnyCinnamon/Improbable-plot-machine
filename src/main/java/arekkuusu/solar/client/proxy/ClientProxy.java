@@ -14,7 +14,6 @@ import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.baker.DummyModelLoader;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.client.util.helper.ParticleRenderer;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.client.util.resource.ShaderManager;
 import arekkuusu.solar.client.util.resource.SpriteManager;
@@ -44,8 +43,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 @EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.CLIENT)
 public class ClientProxy implements IProxy {
-
-	public static final ParticleRenderer PARTICLE_RENDERER = new ParticleRenderer();
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {

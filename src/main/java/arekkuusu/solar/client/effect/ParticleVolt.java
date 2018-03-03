@@ -29,23 +29,18 @@ import java.util.List;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class ParticleBolt extends ParticleBase {
+public class ParticleVolt extends ParticleBase {
 
-	private List<BoltSegment> segments = Lists.newArrayList();
+	private List<VoltSegment> segments = Lists.newArrayList();
 	private final int generations;
 	private final boolean branch;
 	private final boolean fade;
 	private float offset;
 
-	ParticleBolt(World world, Vector3 from, Vector3 to, int generations, float offset, int rgb, boolean branch, boolean fade) {
-		super(world, from.copy().add(to).divide(2D), ImmutableVector3.NULL, rgb);
-		float r = (rgb >>> 16 & 0xFF) / 256.0F;
-		float g = (rgb >>> 8 & 0xFF) / 256.0F;
-		float b = (rgb & 0xFF) / 256.0F;
-		setRBGColorF(r, g, b);
-		this.segments.add(new BoltSegment(from, to));
+	ParticleVolt(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
+		super(world, from.copy().add(to).divide(2D), ImmutableVector3.NULL, 0, age, rgb);
+		this.segments.add(new VoltSegment(from, to));
 		this.generations = generations;
-		this.particleMaxAge = 25;
 		this.branch = branch;
 		this.offset = offset;
 		this.fade = fade;
@@ -54,10 +49,10 @@ public class ParticleBolt extends ParticleBase {
 
 	private void calculateBolts() {
 		ProfilerHelper.begin("[Particle Bolt] Calculating Bolts");
-		List<BoltSegment> branched = Lists.newArrayList();
+		List<VoltSegment> branched = Lists.newArrayList();
 		for(int i = 0; i < generations; i++) {
-			List<BoltSegment> temp = Lists.newArrayList();
-			for(BoltSegment segment : segments) {
+			List<VoltSegment> temp = Lists.newArrayList();
+			for(VoltSegment segment : segments) {
 				ImmutableVector3 from = segment.from.toImmutable();
 				ImmutableVector3 to = segment.to.toImmutable();
 				Vector3 mid = average(from, to);
@@ -70,12 +65,12 @@ public class ParticleBolt extends ParticleBase {
 							.rotatePitchZ((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
 							.multiply(0.7D)
 							.add(mid);
-					BoltSegment sub = new BoltSegment(mid, splitEnd);
+					VoltSegment sub = new VoltSegment(mid, splitEnd);
 					sub.alpha = segment.alpha;
 					temp.add(sub);
 				}
-				BoltSegment one = new BoltSegment(from, mid);
-				BoltSegment two = new BoltSegment(mid, to);
+				VoltSegment one = new VoltSegment(from, mid);
+				VoltSegment two = new VoltSegment(mid, to);
 				if(fade) {
 					one.alpha = segment.alpha * 0.5F;
 					two.alpha = segment.alpha;
@@ -101,25 +96,32 @@ public class ParticleBolt extends ParticleBase {
 		Tessellator.getInstance().draw();
 
 		GlStateManager.disableTexture2D();
-		segments.forEach(BoltSegment::render);
+		segments.forEach(VoltSegment::render);
 		GlStateManager.enableTexture2D();
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void onUpdateGlow() {
+		this.onUpdate();
 		segments.forEach(r -> r.alpha *= 0.9F);
+		float life = (float) particleAge / (float) particleMaxAge;
+		this.particleScale = initScale - initScale * life;
+		this.particleAlpha = 1.0f - life;
+		if(this.particleAngle != 0.0F) {
+			this.prevParticleAngle = particleAngle;
+			this.particleAngle += 1.0F;
+		}
 	}
 
-	private class BoltSegment {
+	private class VoltSegment {
 
 		private final Vector3 from;
 		private final Vector3 to;
 		private float alpha = 1F;
 
-		BoltSegment(Vector3 from, Vector3 to) {
+		VoltSegment(Vector3 from, Vector3 to) {
 			this.from = from;
 			this.to = to;
 		}

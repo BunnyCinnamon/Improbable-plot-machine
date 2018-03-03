@@ -21,23 +21,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class SpriteLibrary {
 
-	public static final FrameSpriteResource QUORN_PARTICLE = SpriteManager.load(
-			TextureLocation.Effect(), "quorn_particle", 7, 1
-	);
-	public static final SpriteResource NEUTRON_PARTICLE = SpriteManager.load(
-			TextureLocation.Effect(), "neutron_particle"
-	);
-	public static final SpriteResource LIGHT_PARTICLE = SpriteManager.load(
-			TextureLocation.Effect(), "light_particle"
-	);
-	public static final SpriteResource DARK_PARTICLE = SpriteManager.load(
-			TextureLocation.Effect(), "dark_particle"
-	);
-	public static final SpriteResource CHARGED_ICE = SpriteManager.load(
-			TextureLocation.Effect(), "charged_ice"
-	);
-	public static final FrameSpriteResource SQUARED = SpriteManager.load(
-			TextureLocation.Effect(), "squared", 11, 1
+	public static final FrameSpriteResource SQUARED_PARTICLE = SpriteManager.load(
+			TextureLocation.Effect(), "squared_particle", 12, 1
 	);
 	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteManager.load(
 			TextureLocation.Blocks(), "quantum_mirror", 9, 1

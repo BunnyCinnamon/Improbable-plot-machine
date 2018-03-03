@@ -8,7 +8,8 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.client.effect.FXUtil;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -134,13 +135,13 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing);
 			Vector3 vec = Vector3.create(facing).multiply(0.005D);
-			ParticleUtil.spawnNeutronBlast(world, back, vec, 0xFF0303, 40, 0.25F, true);
+			FXUtil.spawnNeutron(world, back, vec, 40, 0.25F, 0xFF0303, true);
 		} else if(world.getTotalWorldTime() % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing.getOpposite());
 			double speed = world.rand.nextDouble() * -0.015D;
 			Vector3 vec = Vector3.create(facing).multiply(speed);
-			ParticleUtil.spawnLightParticle(world, back, vec, 0x49FFFF, 30, 2F);
+			FXUtil.spawnLight(world, back, vec, 30, 2F, 0x49FFFF, Light.GLOW);
 		}
 	}
 

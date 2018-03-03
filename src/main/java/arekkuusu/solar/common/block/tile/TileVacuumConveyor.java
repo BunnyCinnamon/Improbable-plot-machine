@@ -8,9 +8,10 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.entity.EntityTemporalItem;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.client.particles.GlowTexture;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -113,7 +114,9 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		Vector3 back = getOffSet(facing);
 		double speed = world.rand.nextDouble() * 0.03D;
 		Vector3 vec = Vector3.create(facing.getOpposite()).multiply(speed);
-		ParticleUtil.spawnLightParticle(world, back, vec, inverse ? 0xFFFFFF : 0x000000, 100, 2.5F);
+		vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+		vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+		FXUtil.spawnMute(world, back, vec, 100, 2.5F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
 	}
 
 	private void spawnNeutronParticles(EnumFacing facing, boolean inverse) {
@@ -123,7 +126,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 				.multiply(speed)
 				.rotatePitchX((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F))
 				.rotatePitchZ((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F));
-		ParticleUtil.spawnNeutronBlast(world, back, vec, inverse ? 0xFFFFFF : 0x000000, 60, 0.1F, true);
+		FXUtil.spawnNeutron(world, back, vec, 60, 0.1F, inverse ? 0xFFFFFF : 0x000000, true);
 	}
 
 	private void collectItems() {

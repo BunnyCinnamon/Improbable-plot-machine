@@ -9,7 +9,8 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.block.tile.TileDilaton;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
@@ -129,7 +130,7 @@ public class BlockDilaton extends BlockBaseFacing {
 				Vector3 vec = Vector3.create(facing).multiply(0.025D + 0.005D * rand.nextDouble());
 				vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
 				vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-				ParticleUtil.spawnLightParticle(world, Vector3.create(pos).add(0.5D), vec, powered ? 0x49FFFF : 0xFF0303, 60, 2F);
+				FXUtil.spawnLight(world, Vector3.create(pos).add(0.5D), vec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
 			}
 		}
 	}
@@ -189,7 +190,7 @@ public class BlockDilaton extends BlockBaseFacing {
 				Vector3 speedVec = Vector3.create(facing).multiply(speed);
 				speedVec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
 				speedVec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-				ParticleUtil.spawnLightParticle(world, posVec, speedVec, 0x1BE564, 30, 2F);
+				FXUtil.spawnLight(world, posVec, speedVec, 30, 2F, 0x1BE564, Light.GLOW);
 			}
 		}
 

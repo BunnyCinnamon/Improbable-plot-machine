@@ -16,15 +16,12 @@ import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,22 +32,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 @EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.CLIENT)
 public class Events {
-
-	//----------------Particle Renderer Start----------------//
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onTick(TickEvent.ClientTickEvent event) {
-		if(event.phase == TickEvent.Phase.START) {
-			ClientProxy.PARTICLE_RENDERER.update();
-		}
-	}
-
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onRenderAfterWorld(RenderWorldLastEvent event) {
-		GlStateManager.pushMatrix();
-		ClientProxy.PARTICLE_RENDERER.renderAll(event.getPartialTicks());
-		GlStateManager.popMatrix();
-	}
-	//----------------Particle Renderer End----------------//
 
 	@SubscribeEvent
 	public static void renderGhostAngstrom(RenderWorldLastEvent event) {

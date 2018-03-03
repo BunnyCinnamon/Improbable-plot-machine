@@ -11,7 +11,8 @@ import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedQelaion;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -134,7 +135,7 @@ public class BlockQelaion extends BlockBase {
 					Vector3 vec = Vector3.create(facing).multiply(0.025D + 0.005D * rand.nextDouble());
 					vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
 					vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-					ParticleUtil.spawnLightParticle(world, Vector3.create(pos).add(0.5D), vec, on ? 0x49FFFF : 0xFF0303, 60, 2F);
+					FXUtil.spawnLight(world, Vector3.create(pos).add(0.5D), vec, 60, 2F, on ? 0x49FFFF : 0xFF0303, Light.GLOW);
 				}
 			}
 		});

@@ -9,12 +9,13 @@ package arekkuusu.solar.common.entity;
 
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.entity.ai.FlightMoveHelper;
 import arekkuusu.solar.common.entity.ai.FlightPathNavigate;
 import arekkuusu.solar.common.handler.gen.ModGen;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import net.katsstuff.mirror.client.particles.GlowTexture;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -74,16 +75,16 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		//Spawn Particles
 		if(world.isRemote) {
 			int rgb = hasTargetedEntity() ? RED : BLUE;
-			ParticleUtil.spawnTunnelingPhoton(world
+			FXUtil.spawnTunneling(world
 					, Vector3.create(posX, posY + 0.25D, posZ)
-					, Vector3.ImmutableVector3.NULL, rgb, 10, 1.5F);
+					, Vector3.ImmutableVector3.NULL, 10, 1.5F, rgb, GlowTexture.GLOW);
 			Entity entity = getTargetedEntity();
 			if(entity != null) {
 				Vector3 speed = Vector3.create(posX, posY + 0.25D, posZ)
 						.subtract(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)
 						.multiply(-0.1D)
 						.limit(0.15D);
-				ParticleUtil.spawnSquared(world, Vector3.create(posX, posY + 0.25D, posZ), speed, RED, 10, 4F);
+				FXUtil.spawnSquared(world, Vector3.create(posX, posY + 0.25D, posZ), speed, 10, 4F, RED);
 			}
 		}
 	}

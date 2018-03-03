@@ -12,7 +12,8 @@ import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.ParticleUtil;
+import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedBlinker;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -143,7 +144,7 @@ public class BlockBlinker extends BlockBaseFacing {
 			Vector3 vec = Vector3.create(facing).multiply(speed);
 			vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
 			vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-			ParticleUtil.spawnLightParticle(world, back, vec, active ? 0x49FFFF : 0xFFFFFF, 60, 2.5F);
+			FXUtil.spawnLight(world, back, vec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
 		}
 	}
 
