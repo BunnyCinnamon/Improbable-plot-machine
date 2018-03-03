@@ -7,8 +7,9 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker;
 
-import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.baked.Baked;
+import arekkuusu.solar.common.lib.LibMod;
+import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -41,7 +42,7 @@ public class DummyBakedRegistry {
 	}
 
 	public static void register(String name, Supplier<Baked> baked) {
-		BAKERS.put(ResourceLibrary.getSimpleLocation(name), baked);
+		BAKERS.put(ResourceHelperStatic.getSimple(LibMod.MOD_ID, name), baked);
 	}
 
 	public static Baked getBaked(ResourceLocation location, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> function) {

@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.common.lib.LibMod;
+import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.util.SoundEvent;
 
 /**
@@ -18,7 +18,7 @@ import net.minecraft.util.SoundEvent;
 public class SoundBase extends SoundEvent {
 
 	public SoundBase(String name) {
-		super(ResourceLibrary.getSimpleLocation(name));
+		super(ResourceHelperStatic.getSimple(LibMod.MOD_ID, name));
 		setRegistryName(LibMod.MOD_ID, name);
 	}
 }

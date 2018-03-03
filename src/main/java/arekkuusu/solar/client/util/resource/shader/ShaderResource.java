@@ -7,10 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.resource.shader;
 
-import arekkuusu.solar.client.util.ResourceLibrary;
-import arekkuusu.solar.client.util.ResourceLibrary.AssetLocation;
-import arekkuusu.solar.client.util.ResourceLibrary.ShaderLocation;
 import arekkuusu.solar.client.util.resource.ShaderManager;
+import arekkuusu.solar.common.lib.LibMod;
+import net.katsstuff.mirror.client.helper.AssetLocation;
+import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
+import net.katsstuff.mirror.client.helper.ShaderLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.resources.IResourceManager;
@@ -31,9 +32,9 @@ public class ShaderResource {
 
 	public ShaderResource(@Nullable String vsh, @Nullable String fsh) {
 		if(vsh != null)
-			this.vsh = ResourceLibrary.getLocation(AssetLocation.SHADERS, ShaderLocation.PROGRAM, vsh, ".vsh");
+			this.vsh = ResourceHelperStatic.getLocation(LibMod.MOD_ID, AssetLocation.Shaders(), ShaderLocation.Program(), vsh, ".vsh");
 		if(fsh != null)
-			this.fsh = ResourceLibrary.getLocation(AssetLocation.SHADERS, ShaderLocation.PROGRAM, fsh, ".fsh");
+			this.fsh = ResourceHelperStatic.getLocation(LibMod.MOD_ID, AssetLocation.Shaders(), ShaderLocation.Program(), fsh, ".fsh");
 		this.reload(Minecraft.getMinecraft().getResourceManager());
 	}
 
