@@ -27,7 +27,7 @@ import java.util.Map;
 public abstract class BakedPerspective extends Baked {
 
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> BLOCK_TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
-			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 0F, 0F, 30F, 45F, 0F, 0.64F))
+			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 0F, 0F, 30F, 45F, 0F, 0.625F, 0.6F, 0.625F))
 			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.38F))
 			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.38F))
 			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, get(0F, 0F, 0F, 0F, 45F, 0F, 0.38F))
@@ -38,10 +38,14 @@ public abstract class BakedPerspective extends Baked {
 	private static final TRSRTransformation DEFAULT_TRANSFORM = get(0, 0, 0, 0, 0, 0, 1);
 
 	public static TRSRTransformation get(float tx, float ty, float tz, float ax, float ay, float az, float size) {
+		return get(tx, ty, tz, ax, ay, az, size, size, size);
+	}
+
+	public static TRSRTransformation get(float tx, float ty, float tz, float ax, float ay, float az, float sizeX, float sizeY, float sizeZ) {
 		return new TRSRTransformation(
 				new Vector3f(tx / 16, ty / 16, tz / 16),
 				TRSRTransformation.quatFromXYZDegrees(new Vector3f(ax, ay, az)),
-				new Vector3f(size, size, size), null);
+				new Vector3f(sizeX, sizeY, sizeZ), null);
 	}
 
 	@Override
