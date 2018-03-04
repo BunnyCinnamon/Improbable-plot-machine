@@ -11,6 +11,7 @@ import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.entity.EntityTemporalItem;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.mirror.client.particles.GlowTexture;
+import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -112,28 +113,30 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 
 	private void spawnLightParticles(EnumFacing facing, boolean inverse) {
 		Vector3 back = getOffSet(facing);
-		double speed = world.rand.nextDouble() * 0.03D;
 		facing = facing.getOpposite();
-		Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-				.asMutable()
-				.multiply(speed)
-				.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
-				.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
-				.asImmutable();
-		FXUtil.spawnMute(world, back, vec, 100, 2.5F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
+
+		Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
+		Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
+		double speed = world.rand.nextDouble() * 0.03D;
+		Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+				.asImmutable()
+				.rotate(x.multiply(z))
+				.multiply(speed);
+		FXUtil.spawnMute(world, back, speedVec, 100, 2.5F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
 	}
 
 	private void spawnNeutronParticles(EnumFacing facing, boolean inverse) {
 		Vector3 back = getOffSet(facing);
-		double speed = 0.010D + world.rand.nextDouble() * 0.010D;
 		facing = facing.getOpposite();
-		Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-				.asMutable()
-				.multiply(speed)
-				.rotate((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F), EnumFacing.Axis.X)
-				.rotate((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F), EnumFacing.Axis.Z)
-				.asImmutable();
-		FXUtil.spawnNeutron(world, back, vec, 60, 0.1F, inverse ? 0xFFFFFF : 0x000000, true);
+
+		Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
+		Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
+		double speed = 0.010D + world.rand.nextDouble() * 0.010D;
+		Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+				.asImmutable()
+				.rotate(x.multiply(z))
+				.multiply(speed);
+		FXUtil.spawnNeutron(world, back, speedVec, 60, 0.1F, inverse ? 0xFFFFFF : 0x000000, true);
 	}
 
 	private void collectItems() {

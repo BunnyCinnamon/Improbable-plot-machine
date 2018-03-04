@@ -10,6 +10,7 @@ package arekkuusu.solar.client.effect;
 import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import com.google.common.collect.Lists;
 import net.katsstuff.mirror.data.MutableVector3;
+import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,7 +18,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -64,9 +64,12 @@ public class ParticleVolt extends ParticleBase {
 				);
 				if(branch && rand.nextDouble() > 0.6D) {
 					MutableVector3 direction = mid.subtract(from);
+					float xAngle = (0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1);
+					float zAngle = (0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1);
+					Quat x = Quat.fromAxisAngle(Vector3.Forward(), xAngle);
+					Quat z = Quat.fromAxisAngle(Vector3.Right(), zAngle);
 					Vector3 splitEnd = direction
-							.rotate((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1), EnumFacing.Axis.X)
-							.rotate((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1), EnumFacing.Axis.Z)
+							.rotate(x.multiply(z))
 							.multiply(0.7D)
 							.add(mid)
 							.asImmutable();

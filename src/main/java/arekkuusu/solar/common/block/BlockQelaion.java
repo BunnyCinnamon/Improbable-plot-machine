@@ -19,6 +19,7 @@ import arekkuusu.solar.common.block.tile.TileQelaion;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableList;
+import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -133,13 +134,14 @@ public class BlockQelaion extends BlockBase {
 			for(EnumFacing facing : EnumFacing.values()) {
 				boolean on = facings.contains(facing);
 				for(int i = 0; i < 1 + rand.nextInt(3); i++) {
-					Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-							.asMutable()
-							.multiply(0.025D + 0.005D * rand.nextDouble())
-							.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
-							.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
-							.asImmutable();
-					FXUtil.spawnLight(world, posVec, vec, 60, 2F, on ? 0x49FFFF : 0xFF0303, Light.GLOW);
+					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 0.25);
+					Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 0.25);
+					double speed = 0.025D + 0.005D * rand.nextDouble();
+					Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+							.asImmutable()
+							.multiply(speed)
+							.rotate(x.multiply(z));
+					FXUtil.spawnLight(world, posVec, speedVec, 60, 2F, on ? 0x49FFFF : 0xFF0303, Light.GLOW);
 				}
 			}
 		});

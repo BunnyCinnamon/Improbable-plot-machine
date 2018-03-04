@@ -134,14 +134,18 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		if(world.getTotalWorldTime() % 180 == 0) {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing);
-			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.005D);
-			FXUtil.spawnNeutron(world, back, vec, 40, 0.25F, 0xFF0303, true);
+			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					.asImmutable()
+					.multiply(0.005D);
+			FXUtil.spawnNeutron(world, back, speedVec, 40, 0.25F, 0xFF0303, false);
 		} else if(world.getTotalWorldTime() % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing().getOpposite();
 			Vector3 back = getOffSet(facing);
 			double speed = world.rand.nextDouble() * 0.015D;
-			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
-			FXUtil.spawnLight(world, back, vec, 30, 2F, 0x49FFFF, Light.GLOW);
+			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					.asImmutable()
+					.multiply(speed);
+			FXUtil.spawnLight(world, back, speedVec, 30, 2F, 0x49FFFF, Light.GLOW);
 		}
 	}
 

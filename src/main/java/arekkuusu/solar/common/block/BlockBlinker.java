@@ -19,6 +19,7 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileBlinker;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -139,15 +140,16 @@ public class BlockBlinker extends BlockBaseFacing {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		boolean active = state.getValue(State.ACTIVE);
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
+		facing = facing.getOpposite();
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
-			double speed = world.rand.nextDouble() * -0.02D;
-			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-					.asMutable()
+			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 0.25);
+			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 0.25);
+			double speed = rand.nextDouble() * 0.02D;
+			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					.asImmutable()
 					.multiply(speed)
-					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
-					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
-					.asImmutable();
-			FXUtil.spawnLight(world, back, vec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
+					.rotate(x.multiply(z));
+			FXUtil.spawnLight(world, back, speedVec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
 		}
 	}
 

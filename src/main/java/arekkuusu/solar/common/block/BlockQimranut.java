@@ -20,6 +20,7 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQimranut;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -114,26 +115,27 @@ public class BlockQimranut extends BlockBaseFacing {
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
+		facing = facing.getOpposite();
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
-			double speed = world.rand.nextDouble() * -0.03D;
-			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-					.asMutable()
+			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 0.25);
+			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 0.25);
+			double speed = rand.nextDouble() * 0.03D;
+			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					.asImmutable()
 					.multiply(speed)
-					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.05F, EnumFacing.Axis.X)
-					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.05F, EnumFacing.Axis.Z)
-					.asImmutable();
-			FXUtil.spawnLight(world, back, vec, 25, 2F, 0x49FFFF, Light.GLOW);
+					.rotate(x.multiply(z));
+			FXUtil.spawnLight(world, back, speedVec, 25, 2F, 0x49FFFF, Light.GLOW);
 		}
 
 		if(rand.nextFloat() < 0.1F) {
-			double speed = -0.010D - world.rand.nextDouble() * 0.010D;
-			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-					.asMutable()
+			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 0.25);
+			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 0.25);
+			double speed = 0.010D + rand.nextDouble() * 0.010D;
+			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					.asImmutable()
 					.multiply(speed)
-					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
-					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
-					.asImmutable();
-			FXUtil.spawnNeutron(world, back, vec, 40, 0.1F, 0x000000, true);
+					.rotate(x.multiply(z));
+			FXUtil.spawnNeutron(world, back, speedVec, 40, 0.1F, 0x000000, true);
 		}
 	}
 

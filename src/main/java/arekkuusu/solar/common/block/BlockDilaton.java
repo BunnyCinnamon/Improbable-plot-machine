@@ -13,6 +13,7 @@ import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.common.block.tile.TileDilaton;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -128,13 +129,14 @@ public class BlockDilaton extends BlockBaseFacing {
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
 			Vector3 posVec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ()).add(0.5D);
 			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
-				Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-						.asMutable()
-						.multiply(0.025D + 0.005D * rand.nextDouble())
-						.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
-						.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
-						.asImmutable();
-				FXUtil.spawnLight(world, posVec, vec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
+				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 0.25);
+				Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 0.25);
+				double speed = 0.025D + 0.005D * rand.nextDouble();
+				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+						.asImmutable()
+						.multiply(speed)
+						.rotate(x.multiply(z));
+				FXUtil.spawnLight(world, posVec, speedVec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
 			}
 		}
 	}
@@ -189,14 +191,15 @@ public class BlockDilaton extends BlockBaseFacing {
 		public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
 			Vector3 posVec = VEC_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
+			facing = facing.getOpposite();
 			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
-				double speed = world.rand.nextDouble() * -0.015D;
+				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
+				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
+				double speed = world.rand.nextDouble() * 0.015D;
 				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-						.asMutable()
+						.asImmutable()
 						.multiply(speed)
-						.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
-						.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
-						.asImmutable();
+						.rotate(x.multiply(z));
 				FXUtil.spawnLight(world, posVec, speedVec, 30, 2F, 0x1BE564, Light.GLOW);
 			}
 		}
