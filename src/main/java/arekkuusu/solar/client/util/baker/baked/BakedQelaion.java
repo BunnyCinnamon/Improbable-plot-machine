@@ -13,6 +13,7 @@ import arekkuusu.solar.common.block.BlockQelaion;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -60,7 +61,7 @@ public class BakedQelaion extends BakedBrightness {
 				.setTo(11, 11, 11)
 				.addAll(0, 9, 0, 9, hasNode ? on : off)
 				.setHasBrightness(true)
-				.bake()
+				.bakeJava()
 		);
 		return list;
 	}

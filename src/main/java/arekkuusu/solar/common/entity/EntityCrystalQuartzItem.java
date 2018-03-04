@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.common.network.PacketHelper;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,12 +39,12 @@ public class EntityCrystalQuartzItem extends EntityStaticItem {
 	public void updateLogic() {
 		super.updateLogic();
 		if(!world.isRemote && rand.nextInt(100) == 0) {
-			Vector3 from = Vector3.create(posX, posY, posZ);
-			Vector3 to = Vector3.getRandomVec(4).add(from);
+			Vector3 from = Vector3.apply(posX, posY, posZ);
+			Vector3 to = Vector3.rotateRandom().multiply(4).add(from);
 
 			BlockPos pos = to.toBlockPos();
 			if(!getPosition().equals(pos) && world.isAirBlock(pos) && vec.distanceTo(to.toVec3d()) <= 15) {
-				setPositionAndUpdate(to.x, to.y, to.z);
+				setPositionAndUpdate(to.x(), to.y(), to.z());
 				playSound(SoundEvents.ENTITY_SHULKER_TELEPORT, 1F, 1F);
 				//Send teleport effect to clients
 				PacketHelper.sendQuartzEffectPacket(this, from.add(0, 0.2D, 0), to.add(0, 0.2D, 0));

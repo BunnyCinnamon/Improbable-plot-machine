@@ -8,9 +8,9 @@
 package arekkuusu.solar.common.handler.gen;
 
 import arekkuusu.solar.api.util.RandomCollection;
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.common.block.BlockLargePot;
 import arekkuusu.solar.common.block.ModBlocks;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -77,10 +77,10 @@ public class AshenCubeStructure extends BaseGen {
 		for(int i = 0; i < GEN_CONFIG.ASHEN_CUBE_STRUCTURE.size; i++) {
 			Template cube = nuggets.next().load(world);
 			Rotation rotation = Rotation.values()[random.nextInt(4)];
-			Vector3 vec = Vector3.create(cube.getSize()).rotate(rotation);
-			BlockPos offset = randomVector().add(pos).toBlockPos();
+			Vector3 vec = rotate(new Vector3.WrappedVec3i(cube.getSize()).asImmutable(), rotation);
+			BlockPos offset = pos.add(randomVector().toBlockPos());
 			if(offset.getY() < 1  || (world.canSeeSky(offset) && GEN_CONFIG.ASHEN_CUBE_STRUCTURE.underground)) continue;
-			AxisAlignedBB nuggetBB = new AxisAlignedBB(offset, vec.add(offset).toBlockPos());
+			AxisAlignedBB nuggetBB = new AxisAlignedBB(offset, vec.add(new Vector3.WrappedVec3i(offset)).toBlockPos());
 			if(!nuggetBB.intersects(cubeBB)) {
 				PlacementSettings settings = new PlacementSettings();
 				settings.setIntegrity(random.nextFloat() > 0.85F ? 0.9F : 0.35F + 0.45F * random.nextFloat());
@@ -91,10 +91,25 @@ public class AshenCubeStructure extends BaseGen {
 		}
 	}
 
+	@Deprecated
+	public Vector3 rotate(Vector3 vec, Rotation rotation) { //TODO: Add this to Vector3
+		switch(rotation) {
+			case NONE:
+			default:
+				return vec;
+			case CLOCKWISE_90:
+				return Vector3.apply(-vec.z(), vec.y(), vec.x());
+			case CLOCKWISE_180:
+				return Vector3.apply(-vec.x(), vec.y(), -vec.z());
+			case COUNTERCLOCKWISE_90:
+				return Vector3.apply(vec.z(), vec.y(), -vec.x());
+		}
+	}
+
 	private Vector3 randomVector() {
 		double x = 7D + (4D * (random.nextDouble() * 2D - 1D));
 		double y = GEN_CONFIG.ASHEN_CUBE_STRUCTURE.spread * (random.nextDouble() * 2D - 1D);
 		double z = 7D + (4D * (random.nextDouble() * 2D - 1D));
-		return Vector3.create(x, y, z);
+		return Vector3.apply(x, y, z);
 	}
 }

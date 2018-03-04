@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.api.util.Vector3;
 import net.katsstuff.mirror.client.particles.GlowTexture;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.world.World;
 
 /**

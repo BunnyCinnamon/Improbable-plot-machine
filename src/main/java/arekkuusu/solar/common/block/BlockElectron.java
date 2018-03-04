@@ -10,13 +10,13 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.sound.SolarSounds;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.tool.FixedDamage;
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedElectron;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -82,12 +82,8 @@ public class BlockElectron extends BlockBase {
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		if(state.getValue(State.POWER) > 0 && world.rand.nextBoolean()) {
 			for(int i = 0; i < 1 + world.rand.nextInt(3); i++) {
-				Vector3 from = Vector3.create(pos).add(0.5D);
-				Vector3 to = Vector3.create(0, 1, 0)
-						.rotate(EnumFacing.Axis.X, world.rand.nextFloat() * 360F)
-						.rotate(EnumFacing.Axis.Y, world.rand.nextFloat() * 360F)
-						.rotate(EnumFacing.Axis.Z, world.rand.nextFloat() * 360F)
-						.add(from);
+				Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
+				Vector3 to = Vector3.rotateRandom().add(from);
 				FXUtil.spawnVolt(world, from, to, 4, 0.25F, 15, 0x5194FF, true, true);
 			}
 			FXUtil.playSound(world, pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F);

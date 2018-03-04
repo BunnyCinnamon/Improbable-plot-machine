@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.api.util.Vector3;
 import net.katsstuff.mirror.client.particles.GlowTexture;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
@@ -72,7 +72,7 @@ public class ParticleNeutron extends ParticleBase {
 		xOffset += posX;
 		yOffset += posY;
 		zOffset += posZ;
-		FXUtil.spawnMute(world, Vector3.create(xOffset, yOffset, zOffset), Vector3.ImmutableVector3.NULL,
+		FXUtil.spawnMute(world, Vector3.apply(xOffset, yOffset, zOffset), Vector3.Zero(),
 				60, particleScale, rgb, GlowTexture.GLOW);
 	}
 

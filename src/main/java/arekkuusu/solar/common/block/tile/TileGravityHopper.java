@@ -7,10 +7,10 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.client.effect.Light;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.ISidedInventory;
@@ -35,12 +35,12 @@ import java.util.Optional;
 public class TileGravityHopper extends TileBase implements ITickable {
 
 	private static final Map<EnumFacing, Vector3> FF = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, Vector3.create(0.5D, 0.75D, 0.5D))
-			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.25D, 0.5D))
-			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.25D))
-			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.75D))
-			.put(EnumFacing.EAST, Vector3.create(0.75D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, Vector3.create(0.25D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.25D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.25D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.75D))
+			.put(EnumFacing.EAST, Vector3.apply(0.75D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.25D, 0.5D, 0.5D))
 			.build();
 	private boolean powered;
 	private boolean inverse;
@@ -134,13 +134,13 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		if(world.getTotalWorldTime() % 180 == 0) {
 			EnumFacing facing = getFacing();
 			Vector3 back = getOffSet(facing);
-			Vector3 vec = Vector3.create(facing).multiply(0.005D);
+			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.005D);
 			FXUtil.spawnNeutron(world, back, vec, 40, 0.25F, 0xFF0303, true);
 		} else if(world.getTotalWorldTime() % 4 == 0 && world.rand.nextBoolean()) {
-			EnumFacing facing = getFacing();
-			Vector3 back = getOffSet(facing.getOpposite());
-			double speed = world.rand.nextDouble() * -0.015D;
-			Vector3 vec = Vector3.create(facing).multiply(speed);
+			EnumFacing facing = getFacing().getOpposite();
+			Vector3 back = getOffSet(facing);
+			double speed = world.rand.nextDouble() * 0.015D;
+			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
 			FXUtil.spawnLight(world, back, vec, 30, 2F, 0x49FFFF, Light.GLOW);
 		}
 	}
@@ -168,7 +168,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	}
 
 	private Vector3 getOffSet(EnumFacing facing) {
-		return FF.get(facing).copy().add(pos);
+		return FF.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override

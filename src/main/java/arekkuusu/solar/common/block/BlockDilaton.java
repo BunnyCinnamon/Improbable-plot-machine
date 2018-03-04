@@ -8,12 +8,12 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.common.block.tile.TileDilaton;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
@@ -59,12 +59,12 @@ public class BlockDilaton extends BlockBaseFacing {
 			.put(EnumFacing.EAST, new AxisAlignedBB(0.75, 0, 0, 1, 1, 1))
 			.build();
 	private static final ImmutableMap<EnumFacing, Vector3> VEC_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, Vector3.create(0.5D, 0.75D, 0.5D))
-			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.25D, 0.5D))
-			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.25D))
-			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.75D))
-			.put(EnumFacing.EAST, Vector3.create(0.75D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, Vector3.create(0.25D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.75D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.25D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.25D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.75D))
+			.put(EnumFacing.EAST, Vector3.apply(0.75D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.25D, 0.5D, 0.5D))
 			.build();
 
 	public BlockDilaton() {
@@ -126,11 +126,15 @@ public class BlockDilaton extends BlockBaseFacing {
 		if(state.getValue(State.ACTIVE)) {
 			boolean powered = world.isBlockPowered(pos);
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
+			Vector3 posVec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ()).add(0.5D);
 			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
-				Vector3 vec = Vector3.create(facing).multiply(0.025D + 0.005D * rand.nextDouble());
-				vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-				vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-				FXUtil.spawnLight(world, Vector3.create(pos).add(0.5D), vec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
+				Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+						.asMutable()
+						.multiply(0.025D + 0.005D * rand.nextDouble())
+						.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
+						.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
+						.asImmutable();
+				FXUtil.spawnLight(world, posVec, vec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
 			}
 		}
 	}
@@ -184,12 +188,15 @@ public class BlockDilaton extends BlockBaseFacing {
 		@Override
 		public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
-			Vector3 posVec = VEC_MAP.get(facing).copy().add(pos);
+			Vector3 posVec = VEC_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
 			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
 				double speed = world.rand.nextDouble() * -0.015D;
-				Vector3 speedVec = Vector3.create(facing).multiply(speed);
-				speedVec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-				speedVec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+						.asMutable()
+						.multiply(speed)
+						.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
+						.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
+						.asImmutable();
 				FXUtil.spawnLight(world, posVec, speedVec, 30, 2F, 0x1BE564, Light.GLOW);
 			}
 		}

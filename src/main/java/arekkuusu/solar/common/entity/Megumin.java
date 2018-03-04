@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.entity;
 
-import arekkuusu.solar.api.util.Vector3;
 import com.google.common.collect.Sets;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentProtection;
@@ -42,7 +42,7 @@ public class Megumin {
 	private float size;
 
 	private Megumin(World world, Vector3 pos, float size, boolean damageEntities) {
-		dummy = new Explosion(world, null, pos.x, pos.y, pos.z, size, false, false);
+		dummy = new Explosion(world, null, pos.x(), pos.y(), pos.z(), size, false, false);
 		this.world = world;
 		this.pos = pos;
 		this.size = size;
@@ -78,7 +78,7 @@ public class Megumin {
 	}
 
 	public void EXPLOSION() {
-		world.playSound(null, pos.x, pos.y, pos.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
+		world.playSound(null, pos.x(), pos.y(), pos.z(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
 
 		Set<BlockPos> set = Sets.newHashSet();
 
@@ -94,9 +94,9 @@ public class Megumin {
 						d1 = d1 / d3;
 						d2 = d2 / d3;
 						float f = this.size * (0.7F + this.world.rand.nextFloat() * 0.6F);
-						double d4 = pos.x;
-						double d6 = pos.y;
-						double d8 = pos.z;
+						double d4 = pos.x();
+						double d6 = pos.y();
+						double d8 = pos.z();
 
 						for(; f > 0.0F; f -= 0.22500001F) {
 							BlockPos pos = new BlockPos(d4, d6, d8);
@@ -124,9 +124,9 @@ public class Megumin {
 			double d0 = (double) ((float) blockpos.getX() + this.world.rand.nextFloat());
 			double d1 = (double) ((float) blockpos.getY() + this.world.rand.nextFloat());
 			double d2 = (double) ((float) blockpos.getZ() + this.world.rand.nextFloat());
-			double d3 = d0 - pos.x;
-			double d4 = d1 - pos.y;
-			double d5 = d2 - pos.z;
+			double d3 = d0 - pos.x();
+			double d4 = d1 - pos.y();
+			double d5 = d2 - pos.z();
 			double d6 = (double) MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
 			d3 = d3 / d6;
 			d4 = d4 / d6;
@@ -136,30 +136,30 @@ public class Megumin {
 			d3 = d3 * d7;
 			d4 = d4 * d7;
 			d5 = d5 * d7;
-			this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (d0 + pos.x) / 2.0D, (d1 + pos.y) / 2.0D, (d2 + pos.z) / 2.0D, d3, d4, d5);
+			this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (d0 + pos.x()) / 2.0D, (d1 + pos.y()) / 2.0D, (d2 + pos.z()) / 2.0D, d3, d4, d5);
 			this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5);
 		}
 
 		if(damageEntities) {
 			size *= 2.0F;
-			int minX = MathHelper.floor(pos.x - size - 1.0D);
-			int minY = MathHelper.floor(pos.x + size + 1.0D);
-			int minZ = MathHelper.floor(pos.y - size - 1.0D);
-			int maxX = MathHelper.floor(pos.y + size + 1.0D);
-			int maxY = MathHelper.floor(pos.z - size - 1.0D);
-			int maxZ = MathHelper.floor(pos.z + size + 1.0D);
+			int minX = MathHelper.floor(pos.x() - size - 1.0D);
+			int minY = MathHelper.floor(pos.x() + size + 1.0D);
+			int minZ = MathHelper.floor(pos.y() - size - 1.0D);
+			int maxX = MathHelper.floor(pos.y() + size + 1.0D);
+			int maxY = MathHelper.floor(pos.z() - size - 1.0D);
+			int maxZ = MathHelper.floor(pos.z() + size + 1.0D);
 			List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB((double) minX, (double) minZ, (double) maxY, (double) minY, (double) maxX, (double) maxZ));
 			net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(world, dummy, list, size);
-			Vec3d vec3d = new Vec3d(pos.x, pos.y, pos.z);
+			Vec3d vec3d = new Vec3d(pos.x(), pos.y(), pos.z());
 
 			for(Entity entity : list) {
 				if(!entity.isImmuneToExplosions()) {
-					double distance = entity.getDistance(pos.x, pos.y, pos.z) / (double) size;
+					double distance = entity.getDistance(pos.x(), pos.y(), pos.z()) / (double) size;
 
 					if(distance <= 1.0D) {
-						double x = entity.posX - pos.x;
-						double y = entity.posY + (double) entity.getEyeHeight() - pos.y;
-						double z = entity.posZ - pos.z;
+						double x = entity.posX - pos.x();
+						double y = entity.posY + (double) entity.getEyeHeight() - pos.y();
+						double z = entity.posZ - pos.z();
 						double sqrt = (double) MathHelper.sqrt(x * x + y * y + z * z);
 
 						if(sqrt != 0.0D) {

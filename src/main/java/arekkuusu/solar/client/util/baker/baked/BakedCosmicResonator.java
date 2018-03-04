@@ -12,6 +12,7 @@ import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -61,9 +62,9 @@ public class BakedCosmicResonator extends BakedBrightness {
 			QuadBuilder builder = QuadBuilder.withFormat(format)
 					.setFrom(5, 5, 5)
 					.setTo(11, 11, 11)
+					.addAll(5F, 11F, 5F, 11F, full_moon)
 					.setHasBrightness(false);
-			builder.addAll(5F, 11F, 5F, 11F, full_moon);
-			quads.addAll(builder.bake());
+			quads.addAll(builder.bakeJava());
 		} else {
 			MoonPhase phase = state.getValue(MOON_PHASE);
 			QuadBuilder builder = QuadBuilder.withFormat(format)
@@ -72,17 +73,18 @@ public class BakedCosmicResonator extends BakedBrightness {
 					.setHasBrightness(true);
 			switch(phase) {
 				case NEW_MOON:
-					builder.addAll(5F, 11F, 5F, 11F, new_moon);
+					builder = builder.addAll(5F, 11F, 5F, 11F, new_moon);
 					break;
 				case FULL_MOON:
-					builder.addAll(5F, 11F, 5F, 11F, full_moon);
+					builder = builder.addAll(5F, 11F, 5F, 11F, full_moon);
 					break;
 				case ECLIPSE:
-					builder.addAll(5F, 11F, 5F, 11F, eclipse);
+					builder = builder.addAll(5F, 11F, 5F, 11F, eclipse);
 					break;
 				default: {
 					boolean inverse = phase.ordinal() > 4;
-					builder.addFace(EAST, 5F, 11F, 5F, 11F, inverse ? new_moon : full_moon)
+					builder = builder
+							.addFace(EAST, 5F, 11F, 5F, 11F, inverse ? new_moon : full_moon)
 							.addFace(WEST, 5F, 11F, 5F, 11F, inverse ? full_moon : new_moon)
 							.addFace(UP, 5F, 11F, 5F, 11F, phases.get(phase))
 							.addFace(DOWN, 5F, 11F, 5F, 11F, phases.get(phase)).mirror()
@@ -90,7 +92,7 @@ public class BakedCosmicResonator extends BakedBrightness {
 							.addFace(SOUTH, 5F, 11F, 5F, 11F, phases.get(phase));
 				}
 			}
-			quads.addAll(builder.bake());
+			quads.addAll(builder.bakeJava());
 		}
 		return quads;
 	}

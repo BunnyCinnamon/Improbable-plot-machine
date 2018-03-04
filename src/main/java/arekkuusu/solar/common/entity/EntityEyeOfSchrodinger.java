@@ -8,7 +8,6 @@
 package arekkuusu.solar.common.entity;
 
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.entity.ai.FlightMoveHelper;
 import arekkuusu.solar.common.entity.ai.FlightPathNavigate;
@@ -16,6 +15,8 @@ import arekkuusu.solar.common.handler.gen.ModGen;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import net.katsstuff.mirror.client.particles.GlowTexture;
+import net.katsstuff.mirror.data.MutableVector3;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -76,15 +77,18 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		if(world.isRemote) {
 			int rgb = hasTargetedEntity() ? RED : BLUE;
 			FXUtil.spawnTunneling(world
-					, Vector3.create(posX, posY + 0.25D, posZ)
-					, Vector3.ImmutableVector3.NULL, 10, 1.5F, rgb, GlowTexture.GLOW);
+					, Vector3.apply(posX, posY + 0.25D, posZ)
+					, Vector3.Zero(), 10, 1.5F, rgb, GlowTexture.GLOW);
 			Entity entity = getTargetedEntity();
 			if(entity != null) {
-				Vector3 speed = Vector3.create(posX, posY + 0.25D, posZ)
+				MutableVector3 speed = Vector3.apply(posX, posY + 0.25D, posZ)
+						.asMutable()
 						.subtract(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)
-						.multiply(-0.1D)
-						.limit(0.15D);
-				FXUtil.spawnSquared(world, Vector3.create(posX, posY + 0.25D, posZ), speed, 10, 4F, RED);
+						.multiply(-0.1D);
+				if(speed.x() > 0.15D || speed.x() < -0.15D) speed.setX(0.15);
+				if(speed.y() > 0.15D || speed.y() < -0.15D) speed.setY(0.15);
+				if(speed.z() > 0.15D || speed.z() < -0.15D) speed.setZ(0.15);
+				FXUtil.spawnSquared(world, Vector3.apply(posX, posY + 0.25D, posZ), speed.asImmutable(), 10, 4F, RED);
 			}
 		}
 	}

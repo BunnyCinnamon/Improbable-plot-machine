@@ -7,10 +7,10 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.util.resource.sprite.FrameSpriteResource;
 import arekkuusu.solar.client.util.resource.sprite.SpriteResource;
 import net.katsstuff.mirror.client.particles.IMirrorParticle;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -39,10 +39,10 @@ public class ParticleBase extends Particle implements IMirrorParticle {
 	private SpriteResource sprite;
 
 	ParticleBase(World world, Vector3 pos, Vector3 speed, float scale, int age, int rgb) {
-		super(world, pos.x, pos.y, pos.z, 0, 0, 0);
-		this.motionX = speed.x;
-		this.motionY = speed.y;
-		this.motionZ = speed.z;
+		super(world, pos.x(), pos.y(), pos.z(), 0, 0, 0);
+		this.motionX = speed.x();
+		this.motionY = speed.y();
+		this.motionZ = speed.z();
 		float r = (rgb >>> 16 & 0xFF) / 256.0F;
 		float g = (rgb >>> 8 & 0xFF) / 256.0F;
 		float b = (rgb & 0xFF) / 256.0F;

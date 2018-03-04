@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -110,7 +111,7 @@ public class BakedBlinker extends BakedBrightness {
 				.addFace(UP, 2F, 14F, 3F, 14F, base)
 				.addFace(DOWN, 2F, 14F, 2F, 14F, base)
 				.rotate(facing, DOWN);
-		quads.addAll(base_quads.bake());
+		quads.addAll(base_quads.bakeJava());
 	}
 
 	private void addOverlayQuads(List<BakedQuad> quads, VertexFormat format, EnumFacing facing, boolean bright, boolean on) {
@@ -122,7 +123,7 @@ public class BakedBlinker extends BakedBrightness {
 				.addFace(DOWN, 2F, 14F, 2F, 14F, on ? bottom_on : bottom_off)
 				.setHasBrightness(bright)
 				.rotate(facing, DOWN);
-		quads.addAll(overlay_quads.bake());
+		quads.addAll(overlay_quads.bakeJava());
 	}
 
 	@Override

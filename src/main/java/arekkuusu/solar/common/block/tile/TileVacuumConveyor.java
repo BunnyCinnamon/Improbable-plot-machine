@@ -7,11 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.entity.EntityTemporalItem;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.mirror.client.particles.GlowTexture;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -41,12 +41,12 @@ import java.util.stream.Collectors;
 public class TileVacuumConveyor extends TileBase implements ITickable {
 
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, Vector3.create(0.5D, 0.1D, 0.5D))
-			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.9D, 0.5D))
-			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.9D))
-			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.1D))
-			.put(EnumFacing.EAST, Vector3.create(0.1D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, Vector3.create(0.9D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.1D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.9D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.9D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.1D))
+			.put(EnumFacing.EAST, Vector3.apply(0.1D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.9D, 0.5D, 0.5D))
 			.build();
 	private Pair<IItemHandler, ISidedInventory> to, from;
 	private ItemStack lookup = ItemStack.EMPTY;
@@ -113,19 +113,26 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	private void spawnLightParticles(EnumFacing facing, boolean inverse) {
 		Vector3 back = getOffSet(facing);
 		double speed = world.rand.nextDouble() * 0.03D;
-		Vector3 vec = Vector3.create(facing.getOpposite()).multiply(speed);
-		vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F);
-		vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+		facing = facing.getOpposite();
+		Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+				.asMutable()
+				.multiply(speed)
+				.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
+				.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
+				.asImmutable();
 		FXUtil.spawnMute(world, back, vec, 100, 2.5F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
 	}
 
 	private void spawnNeutronParticles(EnumFacing facing, boolean inverse) {
 		Vector3 back = getOffSet(facing);
 		double speed = 0.010D + world.rand.nextDouble() * 0.010D;
-		Vector3 vec = Vector3.create(facing.getOpposite())
+		facing = facing.getOpposite();
+		Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+				.asMutable()
 				.multiply(speed)
-				.rotatePitchX((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F))
-				.rotatePitchZ((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F));
+				.rotate((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F), EnumFacing.Axis.X)
+				.rotate((float) ((world.rand.nextDouble() * 2D - 1D) * 0.25F), EnumFacing.Axis.Z)
+				.asImmutable();
 		FXUtil.spawnNeutron(world, back, vec, 60, 0.1F, inverse ? 0xFFFFFF : 0x000000, true);
 	}
 
@@ -162,9 +169,10 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 				if(!inSlot.isEmpty()
 						&& (lookup.isEmpty() || ItemHandlerHelper.canItemStacksStack(lookup, inSlot))
 						&& (sidedInv == null || sidedInv.canExtractItem(slot, inSlot, getFacingLazy()))) {
-					Vector3 spawn = Vector3.create(pos.offset(getFacingLazy())).add(0.5D);
+					BlockPos offset = pos.offset(getFacingLazy());
+					Vector3 spawn = Vector3.apply(offset.getX(), offset.getY(), offset.getZ()).add(0.5D);
 					ItemStack out = handler.extractItem(slot, Integer.MAX_VALUE, false);
-					EntityTemporalItem entity = new EntityTemporalItem(world, spawn.x, spawn.y, spawn.z, out);
+					EntityTemporalItem entity = new EntityTemporalItem(world, spawn.x(), spawn.y(), spawn.z(), out);
 					impulseEntityItem(spawn, entity);
 					world.spawnEntity(entity);
 					break;
@@ -183,7 +191,8 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		}
 		if(world.isAirBlock(pos.offset(getFacingLazy()))) {
 			if(impulse) {
-				Vector3 spawn = Vector3.create(getPos().offset(getFacingLazy())).add(0.5D);
+				BlockPos offset = getPos().offset(getFacingLazy());
+				Vector3 spawn = Vector3.apply(offset.getX(), offset.getY(), offset.getZ()).add(0.5D);
 				getItemsFiltered(new AxisAlignedBB(getPos()).grow(0.5D)).forEach(entity -> {
 					impulseEntityItem(spawn, entity);
 				});
@@ -193,8 +202,8 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	private void impulseEntityItem(Vector3 pos, EntityTemporalItem item) {
-		Vector3 fuzzy = pos.copy().add(Vector3.getRandomVec(0.1D));
-		item.setPositionAndUpdate(fuzzy.x, fuzzy.y, fuzzy.z);
+		Vector3 fuzzy = pos.add(Vector3.rotateRandom().multiply(0.1D));
+		item.setPositionAndUpdate(fuzzy.x(), fuzzy.y(), fuzzy.z());
 		item.setMotion(0, 0, 0);
 	}
 
@@ -255,7 +264,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 	}
 
 	private Vector3 getOffSet(EnumFacing facing) {
-		return FACING_MAP.get(facing).copy().add(pos);
+		return FACING_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public EnumFacing getFacingLazy() {

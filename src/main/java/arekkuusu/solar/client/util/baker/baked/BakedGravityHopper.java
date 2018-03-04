@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -99,9 +100,9 @@ public class BakedGravityHopper extends BakedBrightness {
 				.addAll(5F, 11F, 5F, 11F, side)
 				.addFace(UP, 5F, 11F, 5F, 11F, up)
 				.addFace(DOWN, 5F, 11F, 5F, 11F, down)
-				.rotate(facing, EnumFacing.DOWN)
+				.rotate(facing, DOWN)
 				.setHasBrightness(shine)
-				.bake()
+				.bakeJava()
 		);
 	}
 

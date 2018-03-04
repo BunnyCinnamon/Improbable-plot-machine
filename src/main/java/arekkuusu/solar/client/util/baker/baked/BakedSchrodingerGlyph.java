@@ -11,6 +11,7 @@ import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -78,7 +79,7 @@ public class BakedSchrodingerGlyph extends BakedBrightness {
 				.setFrom(0, 0, 0)
 				.setTo(16, 16, 16)
 				.addAll(base)
-				.bake()
+				.bakeJava()
 		);
 	}
 
@@ -88,7 +89,7 @@ public class BakedSchrodingerGlyph extends BakedBrightness {
 				.setTo(16, 16, 16)
 				.setHasBrightness(bright)
 				.addAll(overlay)
-				.bake()
+				.bakeJava()
 		);
 	}
 

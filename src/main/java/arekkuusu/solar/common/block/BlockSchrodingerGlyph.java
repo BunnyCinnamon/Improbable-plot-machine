@@ -7,7 +7,6 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedSchrodingerGlyph;
@@ -15,6 +14,7 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.solar.common.entity.Megumin;
 import arekkuusu.solar.common.lib.LibNames;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +46,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 
 	@Override
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
-		Vector3 vec = Vector3.create(pos).add(0.5D, 0.5D, 0.5D);
+		Vector3 vec = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 		Megumin.chant(world, vec, 5F, false)
 				.Oh_blackness_shrouded_in_light()
 				.Frenzied_blaze_clad_in_night()
@@ -101,8 +101,8 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		if(world.isRemote && rand.nextInt(15) == 0 && getClosestPlayer(world, pos).isPresent()) {
 			for(EnumFacing facing : EnumFacing.values()) {
-				Vector3 from = Vector3.create(pos).add(0.5D);
-				Vector3 vec = Vector3.create(facing).multiply(0.025D);
+				Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
+				Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.025D);
 				FXUtil.spawnNeutron(world, from, vec, 60, 0.25F, 0xFF0303, false);
 			}
 		}

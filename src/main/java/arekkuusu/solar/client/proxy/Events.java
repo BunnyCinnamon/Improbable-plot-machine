@@ -8,11 +8,11 @@
 package arekkuusu.solar.client.proxy;
 
 import arekkuusu.solar.api.helper.RayTraceHelper;
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibMod;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -43,8 +43,8 @@ public class Events {
 		if(!stack.isEmpty() && stack.getItem() == ModItems.ANGSTROM) {
 			RayTraceResult result = RayTraceHelper.tracePlayerHighlight(player);
 			if(result.typeOfHit != RayTraceResult.Type.BLOCK) {
-				Vector3 vec = Vector3.create(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-				vec.add(Vector3.create(player.getLookVec()).multiply(2.5D));
+				Vector3 vec = Vector3.apply(player.posX, player.posY + player.getEyeHeight(), player.posZ)
+						.add(new Vector3(player.getLookVec()).multiply(2.5D));
 				BlockPos pos = new BlockPos(vec.toVec3d());
 				IBlockState replaced = player.world.getBlockState(pos);
 				if(player.world.isAirBlock(pos) || replaced.getBlock().isReplaceable(player.world, pos)) {

@@ -12,6 +12,7 @@ import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -67,7 +68,7 @@ public class BakedElectron extends BakedBrightness {
 				.setTo(10.5D, 10.5D, 10.5D)
 				.addAll(0F, 5F, 0, 5F, on ? base_on : base_off)
 				.setHasBrightness(on)
-				.bake()
+				.bakeJava()
 		);
 	}
 

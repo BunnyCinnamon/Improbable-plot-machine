@@ -7,16 +7,17 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.api.util.Vector3.ImmutableVector3;
 import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.data.MutableVector3;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,7 +39,7 @@ public class ParticleVolt extends ParticleBase {
 	private float offset;
 
 	ParticleVolt(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
-		super(world, from.copy().add(to).divide(2D), ImmutableVector3.NULL, 0, age, rgb);
+		super(world, from.add(to).divide(2D), Vector3.Zero(), 0, age, rgb);
 		this.segments.add(new VoltSegment(from, to));
 		this.generations = generations;
 		this.branch = branch;
@@ -47,30 +48,34 @@ public class ParticleVolt extends ParticleBase {
 		calculateBolts();
 	}
 
-	private void calculateBolts() {
+	private void calculateBolts() { //TODO: Maybe use textures instead of raw gl lines?
 		ProfilerHelper.begin("[Particle Bolt] Calculating Bolts");
 		List<VoltSegment> branched = Lists.newArrayList();
 		for(int i = 0; i < generations; i++) {
 			List<VoltSegment> temp = Lists.newArrayList();
 			for(VoltSegment segment : segments) {
-				ImmutableVector3 from = segment.from.toImmutable();
-				ImmutableVector3 to = segment.to.toImmutable();
-				Vector3 mid = average(from, to);
+				Vector3 from = segment.from;
+				Vector3 to = segment.to;
+				MutableVector3 mid = average(from, to).asMutable();
 				Vector3 midOffset = to.subtract(from);
-				mid.add(midOffset.normalize().cross(Vector3.create(1, 1, 1)).multiply(Vector3.getRandomVec(offset)));
+				mid.add(midOffset.normalize()
+						.cross(Vector3.apply(1, 1, 1))
+						.multiply(Vector3.rotateRandom().multiply(offset))
+				);
 				if(branch && rand.nextDouble() > 0.6D) {
-					Vector3 direction = mid.copy().subtract(from);
+					MutableVector3 direction = mid.subtract(from);
 					Vector3 splitEnd = direction
-							.rotatePitchX((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
-							.rotatePitchZ((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1))
+							.rotate((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1), EnumFacing.Axis.X)
+							.rotate((0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1), EnumFacing.Axis.Z)
 							.multiply(0.7D)
-							.add(mid);
-					VoltSegment sub = new VoltSegment(mid, splitEnd);
+							.add(mid)
+							.asImmutable();
+					VoltSegment sub = new VoltSegment(mid.asImmutable(), splitEnd);
 					sub.alpha = segment.alpha;
 					temp.add(sub);
 				}
-				VoltSegment one = new VoltSegment(from, mid);
-				VoltSegment two = new VoltSegment(mid, to);
+				VoltSegment one = new VoltSegment(from, mid.asImmutable());
+				VoltSegment two = new VoltSegment(mid.asImmutable(), to);
 				if(fade) {
 					one.alpha = segment.alpha * 0.5F;
 					two.alpha = segment.alpha;
@@ -87,7 +92,7 @@ public class ParticleVolt extends ParticleBase {
 		ProfilerHelper.end();
 	}
 
-	private Vector3 average(ImmutableVector3 one, ImmutableVector3 two) {
+	private Vector3 average(Vector3 one, Vector3 two) {
 		return one.add(two).divide(2D);
 	}
 
@@ -136,9 +141,9 @@ public class ParticleVolt extends ParticleBase {
 					-TileEntityRendererDispatcher.staticPlayerY,
 					-TileEntityRendererDispatcher.staticPlayerZ
 			);
-			buff.pos(from.x, from.y, from.z).color(getRedColorF(), getGreenColorF(), getBlueColorF(), alpha * particleAlpha)
+			buff.pos(from.x(), from.y(), from.z()).color(getRedColorF(), getGreenColorF(), getBlueColorF(), alpha * particleAlpha)
 					.endVertex();
-			buff.pos(to.x, to.y, to.z).color(getRedColorF(), getGreenColorF(), getBlueColorF(), alpha * particleAlpha)
+			buff.pos(to.x(), to.y(), to.z()).color(getRedColorF(), getGreenColorF(), getBlueColorF(), alpha * particleAlpha)
 					.endVertex();
 			buff.setTranslation(0,0,0);
 			tessellator.draw();

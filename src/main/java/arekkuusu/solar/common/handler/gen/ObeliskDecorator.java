@@ -8,8 +8,8 @@
 package arekkuusu.solar.common.handler.gen;
 
 import arekkuusu.solar.api.util.RandomCollection;
-import arekkuusu.solar.api.util.Vector3;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -54,8 +54,8 @@ public class ObeliskDecorator extends BaseGen {
 				}
 				Template obelisk = obelisks.next().load(world);
 				Rotation rotation = Rotation.values()[random.nextInt(4)];
-				Vector3 vec = Vector3.create(obelisk.getSize()).rotate(rotation);
-				AxisAlignedBB obeliskBB = new AxisAlignedBB(top, vec.add(top).toBlockPos()).grow(1);
+				Vector3 vec = rotate(new Vector3.WrappedVec3i(obelisk.getSize()).asImmutable(), rotation);
+				AxisAlignedBB obeliskBB = new AxisAlignedBB(top, top.add(vec.toBlockPos())).grow(1);
 				if(occupied.stream().noneMatch(bb -> bb.intersects(obeliskBB))) {
 					PlacementSettings settings = new PlacementSettings();
 					settings.setRotation(rotation);
@@ -68,9 +68,24 @@ public class ObeliskDecorator extends BaseGen {
 		}
 	}
 
+	@Deprecated
+	public Vector3 rotate(Vector3 vec, Rotation rotation) { //TODO: Add this to Vector3
+		switch(rotation) {
+			case NONE:
+			default:
+				return vec;
+			case CLOCKWISE_90:
+				return Vector3.apply(-vec.z(), vec.y(), vec.x());
+			case CLOCKWISE_180:
+				return Vector3.apply(-vec.x(), vec.y(), -vec.z());
+			case COUNTERCLOCKWISE_90:
+				return Vector3.apply(vec.z(), vec.y(), -vec.x());
+		}
+	}
+
 	private Vector3 randomVector() {
 		double x = 4 + random.nextInt(7);
 		double z = 4 + random.nextInt(7);
-		return Vector3.create(x, 0, z);
+		return Vector3.apply(x, 0, z);
 	}
 }

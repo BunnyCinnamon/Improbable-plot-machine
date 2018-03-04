@@ -7,11 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.gen;
 
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.common.block.BlockLargePot;
 import arekkuusu.solar.common.block.BlockMonolithicGlyph;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.gen.ModGen.Structure;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -48,12 +48,12 @@ public class MonolithStructure extends BaseGen {
 			BlockPos pos = origin.add(5, Math.max(surface.getY() - (5 + random.nextInt(3)), 8), 4);
 			Structure.MONOLITH_CUBE.generate(world, pos.down(7), new PlacementSettings());
 			//Randomize glyphs
-			Vector3 start = Vector3.create(pos).add(0,-4,6);
+			Vector3 start = new Vector3.WrappedVec3i(pos).asImmutable().add(0,-4,6);
 			Arrays.stream(EnumFacing.HORIZONTALS).forEach(facing -> {
 				for (int i = 0; i < 6; i++) {
 					IBlockState glyph = ModBlocks.MONOLITHIC_GLYPH.getDefaultState().withProperty(BlockMonolithicGlyph.GLYPH, random.nextInt(16));
 					world.setBlockState(start.toBlockPos(), glyph);
-					start.offset(facing.getOpposite(), 1);
+					start.offset(new Vector3.WrappedVec3i(facing.getOpposite().getDirectionVec()).asImmutable(), 1);
 				}
 			});
 			//Add loot
@@ -85,6 +85,6 @@ public class MonolithStructure extends BaseGen {
 	private Vector3 randomVector() {
 		double x = 8D + (6D * (random.nextDouble() * 2D - 1D));
 		double z = 8D + (6D * (random.nextDouble() * 2D - 1D));
-		return Vector3.create(x, 0, z);
+		return Vector3.apply(x, 0, z);
 	}
 }

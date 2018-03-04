@@ -7,12 +7,12 @@
  ******************************************************************************/
 package arekkuusu.solar.client.effect;
 
-import arekkuusu.solar.api.util.Vector3;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import net.katsstuff.mirror.Mirror;
 import net.katsstuff.mirror.client.ClientProxy;
 import net.katsstuff.mirror.client.particles.GlowTexture;
 import net.katsstuff.mirror.client.particles.IMirrorParticle;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.SoundCategory;

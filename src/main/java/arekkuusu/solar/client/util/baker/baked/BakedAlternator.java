@@ -12,6 +12,7 @@ import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -90,10 +91,10 @@ public class BakedAlternator extends BakedBrightness {
 				.addFace(EnumFacing.EAST, 0F, 7F, 9F, 16F, base);
 		for(int i = 0; i < 2; i++) {
 			for(int j = 0; j < 4; j++) {
-				out.rotate(EnumFacing.Axis.Y, 90F);
-				quads.addAll(out.bake());
+				out = out.rotate(EnumFacing.Axis.Y, 90F);
+				quads.addAll(out.bakeJava());
 			}
-			out.rotate(EnumFacing.Axis.X, 180F);
+			out = out.rotate(EnumFacing.Axis.X, 180F);
 		}
 	}
 
@@ -104,7 +105,7 @@ public class BakedAlternator extends BakedBrightness {
 						.setTo(13.5F, 13.5F, 13.5F)
 						.addAll(0F, 11F, 0F, 11F, active ? overlay_on : overlay_off)
 						.setHasBrightness(bright)
-						.bake()
+						.bakeJava()
 		);
 	}
 

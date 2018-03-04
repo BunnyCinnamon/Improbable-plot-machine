@@ -10,9 +10,8 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.tool.FixedMaterial;
-import arekkuusu.solar.api.util.Vector3;
-import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
@@ -21,6 +20,7 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQimranut;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -61,12 +61,12 @@ public class BlockQimranut extends BlockBaseFacing {
 			.put(EnumFacing.WEST, new AxisAlignedBB(0.375, 0.1875, 0.1875, 0.125, 0.8125, 0.8125))
 			.build();
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, Vector3.create(0.5D, 0.4D, 0.5D))
-			.put(EnumFacing.DOWN, Vector3.create(0.5D, 0.6D, 0.5D))
-			.put(EnumFacing.NORTH, Vector3.create(0.5D, 0.5D, 0.6D))
-			.put(EnumFacing.SOUTH, Vector3.create(0.5D, 0.5D, 0.4D))
-			.put(EnumFacing.EAST, Vector3.create(0.4D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, Vector3.create(0.6D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.4D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.6D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.6D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.4D))
+			.put(EnumFacing.EAST, Vector3.apply(0.4D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.6D, 0.5D, 0.5D))
 			.build();
 
 	public BlockQimranut() {
@@ -116,23 +116,29 @@ public class BlockQimranut extends BlockBaseFacing {
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
 			double speed = world.rand.nextDouble() * -0.03D;
-			Vector3 vec = Vector3.create(facing).multiply(speed);
-			vec.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.05F);
-			vec.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.05F);
+			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					.asMutable()
+					.multiply(speed)
+					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.05F, EnumFacing.Axis.X)
+					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.05F, EnumFacing.Axis.Z)
+					.asImmutable();
 			FXUtil.spawnLight(world, back, vec, 25, 2F, 0x49FFFF, Light.GLOW);
 		}
 
 		if(rand.nextFloat() < 0.1F) {
 			double speed = -0.010D - world.rand.nextDouble() * 0.010D;
-			Vector3 vec = Vector3.create(facing).multiply(speed)
-					.rotatePitchX((world.rand.nextFloat() * 2F - 1F) * 0.25F)
-					.rotatePitchZ((world.rand.nextFloat() * 2F - 1F) * 0.25F);
+			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					.asMutable()
+					.multiply(speed)
+					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.X)
+					.rotate((world.rand.nextFloat() * 2F - 1F) * 0.25F, EnumFacing.Axis.Z)
+					.asImmutable();
 			FXUtil.spawnNeutron(world, back, vec, 40, 0.1F, 0x000000, true);
 		}
 	}
 
 	private Vector3 getOffSet(EnumFacing facing, BlockPos pos) {
-		return FACING_MAP.get(facing).copy().add(pos);
+		return FACING_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override
