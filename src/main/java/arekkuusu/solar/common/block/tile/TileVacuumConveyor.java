@@ -96,14 +96,6 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 			if(isAir(facing)) {
 				spawnLightParticles(facing.getOpposite(), true);
 			}
-		} else if(world.getTotalWorldTime() % 20 == 0 && world.rand.nextBoolean()) {
-			EnumFacing facing = getFacingLazy();
-			if(isAir(facing.getOpposite())) {
-				spawnNeutronParticles(facing, false);
-			}
-			if(isAir(facing)) {
-				spawnNeutronParticles(facing.getOpposite(), true);
-			}
 		}
 	}
 
@@ -115,28 +107,14 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 		Vector3 back = getOffSet(facing);
 		facing = facing.getOpposite();
 
-		Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
-		Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
+		Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 5);
+		Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 5);
 		double speed = world.rand.nextDouble() * 0.03D;
 		Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 				.asImmutable()
 				.rotate(x.multiply(z))
 				.multiply(speed);
 		FXUtil.spawnMute(world, back, speedVec, 100, 2.5F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
-	}
-
-	private void spawnNeutronParticles(EnumFacing facing, boolean inverse) {
-		Vector3 back = getOffSet(facing);
-		facing = facing.getOpposite();
-
-		Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
-		Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
-		double speed = 0.010D + world.rand.nextDouble() * 0.010D;
-		Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-				.asImmutable()
-				.rotate(x.multiply(z))
-				.multiply(speed);
-		FXUtil.spawnNeutron(world, back, speedVec, 60, 0.1F, inverse ? 0xFFFFFF : 0x000000, true);
 	}
 
 	private void collectItems() {

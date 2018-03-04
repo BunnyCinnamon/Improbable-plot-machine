@@ -134,9 +134,9 @@ public class BlockQelaion extends BlockBase {
 			for(EnumFacing facing : EnumFacing.values()) {
 				boolean on = facings.contains(facing);
 				for(int i = 0; i < 1 + rand.nextInt(3); i++) {
-					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 0.25);
-					Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 0.25);
-					double speed = 0.025D + 0.005D * rand.nextDouble();
+					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 6);
+					Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 6);
+					double speed = 0.025D + 0.0025D * rand.nextDouble();
 					Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 							.asImmutable()
 							.multiply(speed)

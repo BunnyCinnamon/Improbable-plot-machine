@@ -129,8 +129,8 @@ public class BlockDilaton extends BlockBaseFacing {
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
 			Vector3 posVec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ()).add(0.5D);
 			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
-				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 0.25);
-				Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 0.25);
+				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 6);
+				Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 6);
 				double speed = 0.025D + 0.005D * rand.nextDouble();
 				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 						.asImmutable()
@@ -193,8 +193,8 @@ public class BlockDilaton extends BlockBaseFacing {
 			Vector3 posVec = VEC_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
 			facing = facing.getOpposite();
 			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
-				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
-				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 0.25);
+				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 15);
+				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 15);
 				double speed = world.rand.nextDouble() * 0.015D;
 				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 						.asImmutable()

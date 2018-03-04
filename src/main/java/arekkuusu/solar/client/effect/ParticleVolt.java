@@ -58,14 +58,14 @@ public class ParticleVolt extends ParticleBase {
 				Vector3 to = segment.to;
 				MutableVector3 mid = average(from, to).asMutable();
 				Vector3 midOffset = to.subtract(from);
-				mid.add(midOffset.normalize()
-						.cross(Vector3.apply(1, 1, 1))
+				mid = mid.add(midOffset.normalize()
+						.cross(Vector3.One())
 						.multiply(Vector3.rotateRandom().multiply(offset))
 				);
 				if(branch && rand.nextDouble() > 0.6D) {
 					MutableVector3 direction = mid.subtract(from);
-					float xAngle = (0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1);
-					float zAngle = (0.2F + 0.25F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1);
+					float xAngle = (25.0F + 12.5F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1);
+					float zAngle = (25.0F + 12.5F * rand.nextFloat()) * (rand.nextBoolean() ? 1 : -1);
 					Quat x = Quat.fromAxisAngle(Vector3.Forward(), xAngle);
 					Quat z = Quat.fromAxisAngle(Vector3.Right(), zAngle);
 					Vector3 splitEnd = direction
