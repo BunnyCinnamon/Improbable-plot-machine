@@ -61,16 +61,15 @@ public class TileDilaton extends TileBase {
 			if(!powered) facing = facing.getOpposite();
 			List<Triple<IBlockState, NBTTagCompound, BlockPos>> pushed = Lists.newArrayList();
 			List<BlockPos> removed = Lists.newArrayList();
-			Set<BlockPos> deleted = Sets.newHashSet();
 			loop : for(; pointer < range; pointer++) {
-				if(!isPosValid(pos.move(facing))) return;
+				if(pos.move(facing).equals(getPos()) || !isPosValid(pos)) break;
 				IBlockState next = world.getBlockState(pos);
-				if(pos.equals(getPos()) || next.getBlock() == Blocks.OBSIDIAN) break;
 				if(next.getBlock() == Blocks.AIR) continue;
-				EnumPushReaction reaction = next.getMobilityFlag();
-				if(next.getMaterial() == Material.GLASS) reaction = EnumPushReaction.DESTROY;
-				else
+				float hardness = next.getBlockHardness(world, pos);
+				if(hardness > 2000F || hardness < 0F) break;
+				EnumPushReaction reaction;
 				if(next.getMaterial() == Material.WATER) reaction = EnumPushReaction.IGNORE;
+				else reaction = next.getMobilityFlag();
 				switch(reaction) {
 					case PUSH_ONLY:
 					case NORMAL:
@@ -86,14 +85,18 @@ public class TileDilaton extends TileBase {
 				}
 			}
 			ProfilerHelper.interrupt("[Dilaton] Relocating pushed blocks");
-			pos.move(facing.getOpposite());
+			Set<BlockPos> deleted = Sets.newHashSet();
+			if(pushed.size() <= 15) {
+				pos.move(facing.getOpposite());
+			}
 			for(int i = 0, size = pushed.size(); i < size; i++) {
-				if(isPosValid(pos) && isPosReplaceable(pos)) {
+				if(isPosReplaceable(pos)) {
 					for(int index = pushed.size() - 1; index >= 0; index--) {
 						Triple<IBlockState, NBTTagCompound, BlockPos> triplet = pushed.get(index);
 						if(setStateTile(triplet.getLeft(), triplet.getMiddle(), pos.toImmutable()))
 							removed.add(pos.toImmutable());
-						if(deleted.add(triplet.getRight()))
+						BlockPos oldPos = triplet.getRight();
+						if(deleted.add(oldPos))
 							deleted.removeIf(a -> a.equals(pos));
 						pos.move(facing.getOpposite());
 					}
