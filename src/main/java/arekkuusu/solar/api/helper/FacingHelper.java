@@ -77,16 +77,15 @@ public final class FacingHelper {
 	}
 
 	public static Rotation getHorizontalRotation(EnumFacing from, EnumFacing to) {
-		if(from.getAxis().isVertical() || to.getAxis().isVertical()) return Rotation.NONE;
-		if(from.getOpposite() == to) {
-			return Rotation.CLOCKWISE_180;
-		} else if(from != to) {
+		if(from != to && (!from.getAxis().isVertical() && !to.getAxis().isVertical())) {
+			if(from.getOpposite() == to)
+				return Rotation.CLOCKWISE_180;
 			int indexFrom = from.getHorizontalIndex();
 			int indexTo = to.getHorizontalIndex();
-			if(indexFrom < indexTo || (indexFrom == 3 && indexTo == 0)) {
+			if((indexFrom > indexTo || (from == SOUTH && to == EAST)))
+				return from != EAST || to != SOUTH ? Rotation.COUNTERCLOCKWISE_90 : Rotation.CLOCKWISE_90;
+			else {
 				return Rotation.CLOCKWISE_90;
-			} else {
-				return Rotation.COUNTERCLOCKWISE_90;
 			}
 		}
 		return Rotation.NONE;
