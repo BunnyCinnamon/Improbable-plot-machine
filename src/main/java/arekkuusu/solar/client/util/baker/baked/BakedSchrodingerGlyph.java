@@ -8,9 +8,9 @@
 package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -37,11 +37,16 @@ public class BakedSchrodingerGlyph extends BakedBrightness {
 	private TextureAtlasSprite base;
 
 	@Override
-	public ImmutableCollection getTextures() {
-		return ImmutableList.of(
+	public ResourceLocation[] getTextures() {
+		return new ResourceLocation[]{
 				ResourceLibrary.SCHRODINGER_GLYPH,
 				ResourceLibrary.PRIMAL_STONE
-		);
+		};
+	}
+
+	@Override
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.PRIMAL_STONE;
 	}
 
 	@Override
@@ -52,21 +57,17 @@ public class BakedSchrodingerGlyph extends BakedBrightness {
 	}
 
 	@Override
-	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
 		List<BakedQuad> quads = Lists.newArrayList();
 		if(state == null) {
-			//Base
 			addBaseQuads(quads, format);
-			//Overlay
 			addOverlayQuads(quads, format, false);
 		} else {
 			switch(MinecraftForgeClient.getRenderLayer()) {
 				case SOLID:
-					//Base
 					addBaseQuads(quads, format);
 					break;
 				case CUTOUT_MIPPED:
-					//Overlay
 					addOverlayQuads(quads, format, true);
 					break;
 			}
@@ -91,10 +92,5 @@ public class BakedSchrodingerGlyph extends BakedBrightness {
 				.addAll(overlay)
 				.bakeJava()
 		);
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return base;
 	}
 }

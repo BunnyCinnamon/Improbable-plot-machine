@@ -209,6 +209,6 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 
 	@Override
 	public int compareTo(TileMechanicalTranslocator other) {
-		return Integer.compare(other.index, index);
+		return Integer.compare(index, other.index);
 	}
 }

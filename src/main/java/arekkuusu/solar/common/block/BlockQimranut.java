@@ -14,12 +14,12 @@ import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedPerspective;
-import arekkuusu.solar.client.util.baker.baked.BakedRender;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQimranut;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.client.baked.BakedPerspective;
+import net.katsstuff.mirror.client.baked.BakedRender;
 import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
@@ -169,14 +169,14 @@ public class BlockQimranut extends BlockBaseFacing {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, () -> new BakedRender()
-				.setTransforms(ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
-						.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.get(0F, 2F, 0F, 30F, 45F, 0F, 0.75F))
-						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
-						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
-						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.get(0F, 3F, 0F, 0F, 45F, 0F, 0.5F))
-						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.get(0F, 3F, 0F, 0F, 225F, 0F, 0.5F))
-						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.get(0F, 3.5F, 0F, 0F, 0F, 0F, 0.25F))
-						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.get(0F, 1F, 0F, 0F, 0F, 0F, 0.5F))
+				.setTransformsJava(ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
+						.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.mkTransform(0F, 2F, 0F, 30F, 45F, 0F, 0.75F))
+						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, 3F, 0F, 0F, 45F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, 3F, 0F, 0F, 225F, 0F, 0.5F))
+						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 0F, 0F, 0F, 0.25F))
+						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 1F, 0F, 0F, 0F, 0F, 0.5F))
 						.build())
 				.setParticle(ResourceLibrary.QIMRANUT_BASE)
 		);

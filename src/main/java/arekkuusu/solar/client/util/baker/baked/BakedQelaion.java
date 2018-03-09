@@ -10,9 +10,9 @@ package arekkuusu.solar.client.util.baker.baked;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.common.block.BlockQelaion;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -30,30 +30,31 @@ import java.util.function.Function;
  */
 public class BakedQelaion extends BakedBrightness {
 
-	private TextureAtlasSprite base;
 	private TextureAtlasSprite off;
 	private TextureAtlasSprite on;
 
 	@Override
-	public ImmutableCollection getTextures() {
-		return ImmutableList.of(
-				ResourceLibrary.QELAION_BASE,
-				ResourceLibrary.QELAION_INSIDE,
+	public ResourceLocation[] getTextures() {
+		return new ResourceLocation[]{
 				ResourceLibrary.QELAION_ON,
 				ResourceLibrary.QELAION_OFF
-		);
+		};
+	}
+
+	@Override
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.QELAION_BASE;
 	}
 
 	@Override
 	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
-		this.base = sprites.apply(ResourceLibrary.QELAION_BASE);
 		this.off = sprites.apply(ResourceLibrary.QELAION_OFF);
 		this.on = sprites.apply(ResourceLibrary.QELAION_ON);
 		return this;
 	}
 
 	@Override
-	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
 		List<BakedQuad> list = Lists.newArrayList(BlockBaker.QELAION.getQuads()); //Sub model
 		boolean hasNode = state != null && state.getValue(BlockQelaion.HAS_NODE);
 		list.addAll(QuadBuilder.withFormat(format)
@@ -64,10 +65,5 @@ public class BakedQelaion extends BakedBrightness {
 				.bakeJava()
 		);
 		return list;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return base;
 	}
 }

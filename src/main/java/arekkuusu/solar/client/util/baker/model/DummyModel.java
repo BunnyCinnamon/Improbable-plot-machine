@@ -8,8 +8,8 @@
 package arekkuusu.solar.client.util.baker.model;
 
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.Baked;
 import com.google.common.collect.ImmutableList;
+import net.katsstuff.mirror.client.baked.Baked;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -46,7 +46,7 @@ public class DummyModel implements IModel {
 
 	@Override
 	public Collection<ResourceLocation> getTextures() {
-		return baked != null ? baked.getTextures() : Collections.emptyList();
+		return baked != null ? ImmutableList.copyOf(baked.getTextures()) : Collections.emptyList();
 	}
 
 	@Override

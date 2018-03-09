@@ -9,9 +9,9 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -37,11 +37,16 @@ public class BakedElectron extends BakedBrightness {
 	private TextureAtlasSprite base_off;
 
 	@Override
-	public ImmutableCollection getTextures() {
-		return ImmutableList.of(
+	public ResourceLocation[] getTextures() {
+		return new ResourceLocation[]{
 				ResourceLibrary.ELECTRON_ON,
 				ResourceLibrary.ELECTRON_OFF
-		);
+		};
+	}
+
+	@Override
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.ELECTRON_ON;
 	}
 
 	@Override
@@ -52,7 +57,7 @@ public class BakedElectron extends BakedBrightness {
 	}
 
 	@Override
-	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
 		List<BakedQuad> quads = Lists.newArrayList();
 		if(state == null) {
 			addBase(quads, format, false);
@@ -70,10 +75,5 @@ public class BakedElectron extends BakedBrightness {
 				.setHasBrightness(on)
 				.bakeJava()
 		);
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return base_off;
 	}
 }

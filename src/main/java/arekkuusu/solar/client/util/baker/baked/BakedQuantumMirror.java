@@ -10,6 +10,7 @@ package arekkuusu.solar.client.util.baker.baked;
 import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.client.render.SpecialModelRenderer;
+import net.katsstuff.mirror.client.baked.BakedRender;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.entity.EntityLivingBase;

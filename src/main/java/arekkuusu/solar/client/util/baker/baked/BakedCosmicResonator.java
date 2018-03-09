@@ -9,9 +9,10 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.client.util.ResourceLibrary;
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -42,8 +43,13 @@ public class BakedCosmicResonator extends BakedBrightness {
 	private TextureAtlasSprite eclipse;
 
 	@Override
-	public ImmutableCollection getTextures() {
-		return ResourceLibrary.MOON_PHASES.values();
+	public ResourceLocation[] getTextures() {
+		return (ResourceLocation[]) ResourceLibrary.MOON_PHASES.values().toArray();
+	}
+
+	@Override
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.MOON_PHASES.get(MoonPhase.FULL_MOON);
 	}
 
 	@Override
@@ -56,7 +62,7 @@ public class BakedCosmicResonator extends BakedBrightness {
 	}
 
 	@Override
-	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
 		List<BakedQuad> quads = Lists.newArrayList();
 		if(state == null) {
 			QuadBuilder builder = QuadBuilder.withFormat(format)
@@ -95,10 +101,5 @@ public class BakedCosmicResonator extends BakedBrightness {
 			quads.addAll(builder.bakeJava());
 		}
 		return quads;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return full_moon;
 	}
 }

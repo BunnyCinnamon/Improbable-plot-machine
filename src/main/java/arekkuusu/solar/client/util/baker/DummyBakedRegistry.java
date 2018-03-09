@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker;
 
-import arekkuusu.solar.client.util.baker.baked.Baked;
 import arekkuusu.solar.common.lib.LibMod;
+import net.katsstuff.mirror.client.baked.Baked;
 import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

@@ -9,10 +9,11 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.mirror.client.baked.BakedBrightness;
+import net.katsstuff.mirror.client.baked.BakedPerspective;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -44,13 +45,13 @@ public class BakedBlinker extends BakedBrightness {
 
 	@SuppressWarnings("WeakerAccess")
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
-			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 4F, 0F, 30F, 45F, 0F, 0.75F))
-			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(0F, 3.5F, 0F, 75F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0F, 3.5F, 0F, 75F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, get(0F, 4F, 0F, 0F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, get(0F, 4F, 0F, 0F, 225F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 3.8F, 0F, 0F, 0F, 0F, 0.25F))
-			.put(ItemCameraTransforms.TransformType.FIXED, get(0F, 1F, 0F, 0F, -90F, 90F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.mkTransform(0F, 4F, 0F, 30F, 45F, 0F, 0.75F))
+			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 75F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 75F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, 4F, 0F, 0F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, 4F, 0F, 0F, 225F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, 3.8F, 0F, 0F, 0F, 0F, 0.25F))
+			.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 1F, 0F, 0F, -90F, 90F, 0.5F))
 			.build();
 	private TextureAtlasSprite base;
 	private TextureAtlasSprite top_on;
@@ -59,14 +60,19 @@ public class BakedBlinker extends BakedBrightness {
 	private TextureAtlasSprite bottom_off;
 
 	@Override
-	public ImmutableCollection getTextures() {
-		return ImmutableList.of(
+	public ResourceLocation[] getTextures() {
+		return new ResourceLocation[]{
 				ResourceLibrary.BLINKER_BASE,
 				ResourceLibrary.BLINKER_TOP_ON,
 				ResourceLibrary.BLINKER_BOTTOM_ON,
 				ResourceLibrary.BLINKER_TOP_OFF,
 				ResourceLibrary.BLINKER_BOTTOM_OFF
-		);
+		};
+	}
+
+	@Override
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.BLINKER_BASE;
 	}
 
 	@Override
@@ -80,22 +86,18 @@ public class BakedBlinker extends BakedBrightness {
 	}
 
 	@Override
-	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
 		List<BakedQuad> quads = Lists.newArrayList();
 		if(state == null) {
-			//Base
 			addBaseQuads(quads, format, EnumFacing.DOWN);
-			//Overlay
 			addOverlayQuads(quads, format, EnumFacing.DOWN, false, true);
 		} else {
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
 			switch(MinecraftForgeClient.getRenderLayer()) {
 				case SOLID:
-					//Base
 					addBaseQuads(quads, format, facing);
 					break;
 				case CUTOUT_MIPPED:
-					//Overlay
 					addOverlayQuads(quads, format, facing, true, state.getValue(State.ACTIVE));
 					break;
 			}
@@ -104,35 +106,32 @@ public class BakedBlinker extends BakedBrightness {
 	}
 
 	private void addBaseQuads(List<BakedQuad> quads, VertexFormat format, EnumFacing facing) {
-		QuadBuilder base_quads = QuadBuilder.withFormat(format)
+		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(2, 0, 2)
 				.setTo(14, 1, 14)
 				.addAll(2F, 14F, 2F, 2F, base)
 				.addFace(UP, 2F, 14F, 3F, 14F, base)
 				.addFace(DOWN, 2F, 14F, 2F, 14F, base)
-				.rotate(facing, DOWN);
-		quads.addAll(base_quads.bakeJava());
+				.rotate(facing, DOWN)
+				.bakeJava()
+		);
 	}
 
 	private void addOverlayQuads(List<BakedQuad> quads, VertexFormat format, EnumFacing facing, boolean bright, boolean on) {
-		QuadBuilder overlay_quads = QuadBuilder.withFormat(format)
+		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(2, 0, 2)
 				.setTo(14, 1, 14)
 				.addAll(2F, 14F, 2F, 2F, on ? top_on : top_off)
 				.addFace(UP, 2F, 14F, 2F, 14F, on ? top_on : top_off)
 				.addFace(DOWN, 2F, 14F, 2F, 14F, on ? bottom_on : bottom_off)
 				.setHasBrightness(bright)
-				.rotate(facing, DOWN);
-		quads.addAll(overlay_quads.bakeJava());
+				.rotate(facing, DOWN)
+				.bakeJava()
+		);
 	}
 
 	@Override
-	public Map<ItemCameraTransforms.TransformType, TRSRTransformation> getTransforms() {
+	public Map<ItemCameraTransforms.TransformType, TRSRTransformation> getTransformsJava() {
 		return TRANSFORMS;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return base;
 	}
 }

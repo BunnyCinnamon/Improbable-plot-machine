@@ -10,10 +10,10 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedRender;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQSquared;
 import arekkuusu.solar.common.lib.LibNames;
+import net.katsstuff.mirror.client.baked.BakedRender;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -61,7 +61,8 @@ public class BlockQSquared extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, () -> new BakedRender()
-				.setParticle(ResourceLibrary.Q_SQUARED));
+				.setParticle(ResourceLibrary.Q_SQUARED)
+		);
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

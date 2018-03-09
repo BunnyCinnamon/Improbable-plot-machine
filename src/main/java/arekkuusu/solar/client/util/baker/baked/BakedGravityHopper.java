@@ -8,10 +8,11 @@
 package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.mirror.client.baked.BakedBrightness;
+import net.katsstuff.mirror.client.baked.BakedPerspective;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -42,22 +43,25 @@ import static net.minecraft.util.EnumFacing.UP;
 public class BakedGravityHopper extends BakedBrightness {
 
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
-			.put(ItemCameraTransforms.TransformType.GUI, get(0F, 0F, 0F, 30F, 45F, 0F, 0.75F))
-			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, get(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, get(0F, 0F, 0F, 0F, 45F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, get(0F, 0F, 0F, 0F, 225F, 0F, 0.5F))
-			.put(ItemCameraTransforms.TransformType.GROUND, get(0F, 3.5F, 0F, 0F, 0F, 0F, 0.6F))
-			.put(ItemCameraTransforms.TransformType.FIXED, get(0F, 1F, 0F, 0F, 0F, 0F, 0.6F))
+			.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.mkTransform(0F, 0F, 0F, 30F, 45F, 0F, 0.75F))
+			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, 0F, 0F, 0F, 45F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, 0F, 0F, 0F, 225F, 0F, 0.5F))
+			.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 0F, 0F, 0F, 0.6F))
+			.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 1F, 0F, 0F, 0F, 0F, 0.6F))
 			.build();
 	private TextureAtlasSprite[] overlay = new TextureAtlasSprite[3];
 	private TextureAtlasSprite base;
 
 	@Override
-	public ImmutableCollection getTextures() {
-		return ImmutableList.copyOf(
-				ResourceLibrary.GRAVITY_HOPPER_OVERLAY
-		);
+	public ResourceLocation[] getTextures() {
+		return ResourceLibrary.GRAVITY_HOPPER_OVERLAY;
+	}
+
+	@Override
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.GRAVITY_HOPPER;
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class BakedGravityHopper extends BakedBrightness {
 	}
 
 	@Override
-	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
 		List<BakedQuad> quads = Lists.newArrayList();
 		if(state == null) {
 			//Base
@@ -107,12 +111,7 @@ public class BakedGravityHopper extends BakedBrightness {
 	}
 
 	@Override
-	public Map<ItemCameraTransforms.TransformType, TRSRTransformation> getTransforms() {
+	public Map<ItemCameraTransforms.TransformType, TRSRTransformation> getTransformsJava() {
 		return TRANSFORMS;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return base;
 	}
 }

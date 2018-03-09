@@ -9,9 +9,9 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.common.block.BlockMonolithicGlyph;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -40,11 +40,15 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 	private TextureAtlasSprite base;
 
 	@Override
-	public ImmutableCollection getTextures() {
-		return new ImmutableList.Builder<>()
-				.addAll(Arrays.asList(ResourceLibrary.MONOLITHIC_OVERLAY))
-				.add(ResourceLibrary.MONOLITHIC)
-				.build();
+	public ResourceLocation[] getTextures() {
+		ResourceLocation[] textures = Arrays.copyOf(ResourceLibrary.MONOLITHIC_OVERLAY, 17);
+		textures[16] = ResourceLibrary.MONOLITHIC;
+		return textures;
+	}
+
+	@Override
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.MONOLITHIC;
 	}
 
 	@Override
@@ -57,7 +61,7 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 	}
 
 	@Override
-	protected List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
 		List<BakedQuad> quads = Lists.newArrayList();
 		switch(MinecraftForgeClient.getRenderLayer()) {
 			case SOLID:
@@ -89,10 +93,5 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 	@Override
 	public ItemOverrideList getOverrides() {
 		return ItemOverrideList.NONE;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return base;
 	}
 }

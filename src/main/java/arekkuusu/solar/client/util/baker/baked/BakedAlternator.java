@@ -9,9 +9,9 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -40,12 +40,17 @@ public class BakedAlternator extends BakedBrightness {
 	private TextureAtlasSprite overlay_off;
 
 	@Override
-	public ImmutableCollection getTextures() {
-		return ImmutableList.of(
+	public ResourceLocation[] getTextures() {
+		return new ResourceLocation[]{
 				ResourceLibrary.ALTERNATOR_BASE,
 				ResourceLibrary.ALTERNATOR_OVERLAY_ON,
 				ResourceLibrary.ALTERNATOR_OVERLAY_OFF
-		);
+		};
+	}
+
+	@Override
+	public ResourceLocation getParticle() {
+		return ResourceLibrary.ALTERNATOR_BASE;
 	}
 
 	@Override
@@ -57,21 +62,17 @@ public class BakedAlternator extends BakedBrightness {
 	}
 
 	@Override
-	List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
 		List<BakedQuad> quads = Lists.newArrayList();
 		if(state == null) {
-			//Base
 			addBaseQuads(quads, format);
-			//Overlay
 			addOverlayQuads(quads, format, false, true);
 		} else {
 			switch(MinecraftForgeClient.getRenderLayer()) {
 				case SOLID:
-					//Base
 					addBaseQuads(quads, format);
 					break;
 				case CUTOUT_MIPPED:
-					//Overlay
 					addOverlayQuads(quads, format, true, state.getValue(State.ACTIVE));
 					break;
 			}
@@ -99,18 +100,12 @@ public class BakedAlternator extends BakedBrightness {
 	}
 
 	private void addOverlayQuads(List<BakedQuad> quads, VertexFormat format, boolean bright, boolean active) {
-		quads.addAll(
-				QuadBuilder.withFormat(format)
-						.setFrom(2.5F, 2.5F, 2.5F)
-						.setTo(13.5F, 13.5F, 13.5F)
-						.addAll(0F, 11F, 0F, 11F, active ? overlay_on : overlay_off)
-						.setHasBrightness(bright)
-						.bakeJava()
+		quads.addAll(QuadBuilder.withFormat(format)
+				.setFrom(2.5F, 2.5F, 2.5F)
+				.setTo(13.5F, 13.5F, 13.5F)
+				.addAll(0F, 11F, 0F, 11F, active ? overlay_on : overlay_off)
+				.setHasBrightness(bright)
+				.bakeJava()
 		);
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return base;
 	}
 }
