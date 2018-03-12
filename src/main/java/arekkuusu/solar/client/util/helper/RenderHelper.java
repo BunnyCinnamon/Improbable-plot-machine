@@ -163,7 +163,10 @@ public final class RenderHelper {
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			ShaderLibrary.ALPHA.begin();
-			ShaderLibrary.ALPHA.setF("alpha", 0.4F);
+			ShaderLibrary.ALPHA.getUniformJ("alpha").ifPresent(alpha -> {
+				alpha.set(0.4F);
+				alpha.upload();
+			});
 			GLHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
 			Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 

@@ -15,7 +15,6 @@ import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.baker.DummyModelLoader;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.client.util.helper.RenderHelper;
-import arekkuusu.solar.client.util.resource.ShaderManager;
 import arekkuusu.solar.client.util.resource.SpriteManager;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.proxy.IProxy;
@@ -58,7 +57,6 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		registerResourceReloadListener(SpriteManager.INSTANCE);
-		registerResourceReloadListener(ShaderManager.INSTANCE);
 		registerResourceReloadListener(DummyModelLoader.INSTANCE);
 		ModelLoaderRegistry.registerLoader(DummyModelLoader.INSTANCE);
 		ModRenders.preInit();
@@ -82,9 +80,5 @@ public class ClientProxy implements IProxy {
 	public static void registerResourceReloadListener(IResourceManagerReloadListener listener) {
 		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
 				.registerReloadListener(listener);
-	}
-
-	public static boolean isOptifineInstalled() {
-		return FMLClientHandler.instance().hasOptifine();
 	}
 }

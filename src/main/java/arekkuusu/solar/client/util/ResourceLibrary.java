@@ -11,9 +11,7 @@ import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.common.lib.LibMod;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import net.katsstuff.mirror.client.helper.Location;
-import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
-import net.katsstuff.mirror.client.helper.TextureLocation;
+import net.katsstuff.mirror.client.helper.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -72,6 +70,8 @@ public final class ResourceLibrary {
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");
 	public static final ResourceLocation THEOREMA = getTexture(TextureLocation.Blocks(), "theorema");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(TextureLocation.Model(), "eye_of_schrodinger");
+	//Shader
+	public static final ResourceLocation BLEND_SHADER = getShader(ShaderLocation.Program(), "blend");
 
 	private static ResourceLocation getBlockTexture(String name) {
 		ResourceLocation location = ResourceHelperStatic.getAtlas(LibMod.MOD_ID, TextureLocation.Blocks(), name);
@@ -87,5 +87,9 @@ public final class ResourceLibrary {
 		ResourceLocation rl = ResourceHelperStatic.getAtlas(LibMod.MOD_ID, location, name);
 		ATLAS_SET.add(rl);
 		return rl;
+	}
+
+	private static ResourceLocation getShader(Location location, String name) {
+		return ResourceHelperStatic.getLocation(LibMod.MOD_ID, AssetLocation.Shaders(), location, name, "");
 	}
 }

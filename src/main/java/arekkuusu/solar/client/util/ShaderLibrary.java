@@ -7,11 +7,17 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util;
 
-import arekkuusu.solar.client.util.resource.ShaderManager;
-import arekkuusu.solar.client.util.resource.shader.ShaderResource;
 import arekkuusu.solar.common.Solar;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import net.katsstuff.mirror.client.shaders.*;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by <Arekkuusu> on 08/10/2017.
@@ -20,7 +26,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public final class ShaderLibrary {
 
-	public static final ShaderResource ALPHA = ShaderManager.load("alpha", "alpha");
+	public static final MirrorShaderProgram ALPHA = loadProgram(
+			ResourceLibrary.BLEND_SHADER,
+			ImmutableList.of(ShaderType.fragment(),  ShaderType.vertex()),
+			ImmutableMap.of("alpha", UniformType.unFloat())
+	);
+
+	private static MirrorShaderProgram loadProgram(ResourceLocation location, List<ShaderType> shaders, Map<String, UniformType> types) {
+		Map<String, UniformBase<? extends UniformType>> uniforms = Maps.newHashMap();
+		types.forEach((k, v) -> uniforms.put(k, new UniformBase<>(v, 1)));
+		return ShaderManager.createProgram(location, shaders, uniforms, true);
+	}
 
 	public static void init() {
 		Solar.LOG.info("[BAKING PIE!]");
