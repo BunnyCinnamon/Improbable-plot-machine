@@ -8,8 +8,8 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.tool.FixedMaterial;
-import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.lib.LibNames;
+import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLiving;
@@ -37,7 +37,7 @@ public class BlockMonolithic extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-		TooltipBuilder.inline().addI18("monolithic_description", TooltipBuilder.DARK_GRAY_ITALIC).build(tooltip);
+		Tooltip.inline().addI18n("tlp.monolithic_description.name", Tooltip.DarkGrayItalic()).build(tooltip);
 	}
 
 	@Override

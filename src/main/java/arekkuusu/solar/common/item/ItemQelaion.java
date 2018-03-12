@@ -9,8 +9,9 @@ package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.block.ModBlocks;
+import net.katsstuff.mirror.client.helper.KeyCondition;
+import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -19,8 +20,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-
-import static arekkuusu.solar.client.util.helper.TooltipBuilder.KeyCondition.SHIFT_KEY_DOWN;
 
 /**
  * Created by <Snack> on 24/02/2018.
@@ -35,15 +34,16 @@ public class ItemQelaion extends ItemBaseBlock implements IEntangledStack {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		getKey(stack).ifPresent(uuid -> TooltipBuilder.inline().condition(SHIFT_KEY_DOWN)
-				.ifPresent(builder -> getInfo(builder, uuid)
+		getKey(stack).ifPresent(uuid -> Tooltip.inline().condition(KeyCondition.ShiftKeyDown$.MODULE$)
+				.ifTrueJ(builder -> getInfo(builder, uuid)
 						.condition(() -> NBTHelper.hasUniqueID(stack, "nodes"))
-						.ifPresent(sub -> {
-							sub.addI18("tag_nodes", TooltipBuilder.DARK_GRAY_ITALIC).add(": ").end();
-							String key = NBTHelper.getUniqueID(stack, "nodes").toString();
-							sub.add(" > ").add(key.substring(0, 18)).end();
-							sub.add(" > ").add(key.substring(18)).end();
+						.ifTrueJ(sub -> { String key = NBTHelper.getUniqueID(stack, "nodes").toString();
+							return sub.addI18n("tlp.tag_nodes.name", Tooltip.DarkGrayItalic())
+									.add(": ").newline()
+									.add(" > ").add(key.substring(0, 18)).newline()
+									.add(" > ").add(key.substring(18)).newline();
 						}).apply()
-				).build(tooltip));
+				).apply().build(tooltip)
+		);
 	}
 }

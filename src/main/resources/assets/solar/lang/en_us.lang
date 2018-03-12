@@ -47,10 +47,8 @@ entity.quingentilliard_item.name=Entity Item
 entity.quantum_quartz.name=Entity Item
 
 //Tooltip
-tlp.shift_for_info.name=<shift for info>
-tlp.ctrl_for_info.name=<ctrl for detailed-info>
-tlp.quantum_data.name=Quantum Data
 tlp.uuid_key.name=Uuid
 tlp.tag_nodes.name=Nodes
 tlp.item_filter.name=Item Filter
+tlp.quantum_data.name=Quantum Data
 tlp.monolithic_description.name=Immovable Object

@@ -9,7 +9,7 @@ package arekkuusu.solar.api.entanglement;
 
 import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.client.util.helper.TooltipBuilder;
+import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,12 +25,11 @@ import java.util.UUID;
 public interface IEntangledStack {
 
 	@SideOnly(Side.CLIENT)
-	default TooltipBuilder getInfo(TooltipBuilder builder, UUID uuid) {
-		builder.addI18("uuid_key", TooltipBuilder.DARK_GRAY_ITALIC).add(": ").end();
+	default Tooltip getInfo(Tooltip builder, UUID uuid) {
 		String key = uuid.toString();
-		builder.add(" > ").add(key.substring(0, 18)).end();
-		builder.add(" > ").add(key.substring(18)).end();
-		return builder;
+		return builder.addI18n("tlp.uuid_key.name", Tooltip.DarkGrayItalic()).add(": ").newline()
+				.add(" > ").add(key.substring(0, 18)).newline()
+				.add(" > ").add(key.substring(18)).newline();
 	}
 
 	default void setKey(ItemStack stack, UUID uuid) {

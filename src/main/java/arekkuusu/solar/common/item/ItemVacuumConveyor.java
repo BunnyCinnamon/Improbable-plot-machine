@@ -8,8 +8,8 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.block.ModBlocks;
+import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -32,14 +32,13 @@ public class ItemVacuumConveyor extends ItemBaseBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		TooltipBuilder.inline()
+		Tooltip.inline()
 				.condition(() -> NBTHelper.hasTag(stack, "lookup"))
-				.ifPresent(sub -> sub
-						.addI18("item_filter", TooltipBuilder.DARK_GRAY_ITALIC)
-						.add(": ", TooltipBuilder.DARK_GRAY_ITALIC)
-						.add(new ItemStack(stack.getOrCreateSubCompound("lookup")).getDisplayName(), TooltipBuilder.GRAY_ITALIC)
-						.end()
-						.skip()
-				).build(tooltip);
+				.ifTrueJ(sub -> sub
+						.addI18n("tlp.item_filter.name", Tooltip.DarkGrayItalic()).add(": ")
+						.add(new ItemStack(stack.getOrCreateSubCompound("lookup")).getDisplayName(), Tooltip.GrayItalic())
+						.newline()
+						.newline()
+				).apply().build(tooltip);
 	}
 }

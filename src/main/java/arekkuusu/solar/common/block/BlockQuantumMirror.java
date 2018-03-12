@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.helper.InventoryHelper;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedQuantumMirror;
@@ -50,7 +51,7 @@ public class BlockQuantumMirror extends BlockBase {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote && !player.isSneaking()) {
-			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> mirror.handleItemTransfer(player, hand));
+			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> InventoryHelper.handleItemTransfer(mirror, player, hand));
 		}
 		return true;
 	}

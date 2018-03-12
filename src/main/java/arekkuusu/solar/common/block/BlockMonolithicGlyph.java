@@ -11,8 +11,8 @@ import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedMonolithicGlyph;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.client.util.helper.TooltipBuilder;
 import arekkuusu.solar.common.lib.LibNames;
+import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -48,7 +48,7 @@ public class BlockMonolithicGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-		TooltipBuilder.inline().addI18("monolithic_description", TooltipBuilder.DARK_GRAY_ITALIC).build(tooltip);
+		Tooltip.inline().addI18n("tlp.monolithic_description.name", Tooltip.DarkGrayItalic()).build(tooltip);
 	}
 
 	@Override

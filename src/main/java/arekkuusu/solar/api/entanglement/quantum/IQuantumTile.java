@@ -25,32 +25,6 @@ import javax.annotation.Nullable;
  */
 public interface IQuantumTile extends IEntangledTile {
 
-	@SuppressWarnings({"ConstantConditions", "unchecked"})
-	default void handleItemTransfer(EntityPlayer player, EnumHand hand) {
-		if(hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler handler = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			ItemStack inserted = player.getHeldItem(hand);
-
-			if(!inserted.isEmpty()) {
-				for(int i = 0; i < handler.getSlots(); i++) {
-					ItemStack test = handler.insertItem(i, inserted, true);
-					if(test != inserted) {
-						player.setHeldItem(hand, handler.insertItem(i, inserted, false));
-						break;
-					}
-				}
-			} else {
-				for(int i = 0; i < handler.getSlots(); i++) {
-					ItemStack test = handler.extractItem(i, handler.getSlotLimit(i), false);
-					if(!test.isEmpty()) {
-						player.setHeldItem(hand, test);
-						break;
-					}
-				}
-			}
-		}
-	}
-
 	default void takeItem(EntityPlayer player) {
 		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 		if(hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
