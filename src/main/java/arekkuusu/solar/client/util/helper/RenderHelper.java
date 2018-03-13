@@ -139,7 +139,7 @@ public final class RenderHelper {
 		}
 		GlStateManager.alphaFunc(516, 0.1F);
 		GlStateManager.enableRescaleNormal();
-		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
+		//net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
 		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		Minecraft.getMinecraft().getRenderManager().renderEngine.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
 		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -149,7 +149,7 @@ public final class RenderHelper {
 		render.renderItem(stack, transformedModel);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		Minecraft.getMinecraft().getRenderManager().renderEngine.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
-		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+		//net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 		GlStateManager.disableRescaleNormal();
 	}
 

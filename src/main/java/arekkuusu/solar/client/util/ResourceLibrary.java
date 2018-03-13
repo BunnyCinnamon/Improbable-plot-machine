@@ -29,8 +29,7 @@ public final class ResourceLibrary {
 	public static final Set<ResourceLocation> ATLAS_SET;
 	static {
 		ATLAS_SET = Sets.newHashSet();
-		getBlockTexture("qimranut/overlay_front");
-		getBlockTexture("qimranut/overlay_back");
+		getBlockTexture("qimranut/overlay");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation[] MONOLITHIC_OVERLAY = ResourceHelperStatic.from(16, "monolithic/glyph_overlay_",

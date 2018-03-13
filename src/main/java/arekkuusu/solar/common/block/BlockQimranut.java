@@ -115,7 +115,6 @@ public class BlockQimranut extends BlockBaseFacing {
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
-		facing = facing.getOpposite();
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 15);
 			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 15);
@@ -125,17 +124,6 @@ public class BlockQimranut extends BlockBaseFacing {
 					.multiply(speed)
 					.rotate(x.multiply(z));
 			FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0x49FFFF, Light.GLOW);
-		}
-
-		if(rand.nextFloat() < 0.1F) {
-			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 5);
-			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 5);
-			double speed = 0.01D + rand.nextDouble() * 0.01D;
-			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-					.asImmutable()
-					.multiply(speed)
-					.rotate(x.multiply(z));
-			FXUtil.spawnNeutron(world, back, speedVec, 40, 0.1F, 0x000000, false);
 		}
 	}
 
