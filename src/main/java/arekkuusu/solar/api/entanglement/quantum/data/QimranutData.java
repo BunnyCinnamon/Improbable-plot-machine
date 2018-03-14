@@ -50,7 +50,7 @@ public class QimranutData implements IQuantumData<NBTTagCompound> {
 	public void read(NBTTagCompound tag) {
 		this.pos = new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
 		if(tag.hasKey("facing")) {
-			this.facing = EnumFacing.valueOf(tag.getString("facing"));
+			this.facing = EnumFacing.byName(tag.getString("facing"));
 		} else this.facing = null;
 	}
 
