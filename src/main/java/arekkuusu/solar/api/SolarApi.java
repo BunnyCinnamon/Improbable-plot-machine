@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -11,6 +11,7 @@ import arekkuusu.solar.api.entanglement.linked.ISimpleLinkedTile;
 import arekkuusu.solar.api.entanglement.quantum.data.IQuantumData;
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
 import arekkuusu.solar.api.util.Pair;
+import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -26,27 +27,26 @@ import java.util.UUID;
 public class SolarApi {
 
 	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = Maps.newHashMap();
-	private static final Map<UUID, Integer> RELATIVITY_POWER_MAP = Maps.newHashMap();
 	private static final Map<UUID, Pair<ISimpleLinkedTile>> LINKED_MAP = Maps.newHashMap();
-	private static IQuantumData quantumData;
+	private static WorldQuantumData quantumData;
 
 	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {
-		return RELATIVITY_MAP; //Goodbye arms!
-	}
-
-	public static Map<UUID, Integer> getRelativityPowerMap() {
-		return RELATIVITY_POWER_MAP; //Goodbye legs!
+		return RELATIVITY_MAP;
 	}
 
 	public static Map<UUID, Pair<ISimpleLinkedTile>> getSimpleLinkMap() {
-		return LINKED_MAP; //Goodbye head!
+		return LINKED_MAP;
 	}
 
-	public static synchronized IQuantumData getQuantumData() {
-		return quantumData; //Goodbye whatever is left of you
+	public static Map<UUID, IQuantumData<?>> getDataMap() {
+		return getQuantumData().DATA_MAP;
 	}
 
-	public static synchronized void setQuantumData(IQuantumData quantumData) {
+	public static synchronized WorldQuantumData getQuantumData() {
+		return quantumData;
+	}
+
+	public static synchronized void setQuantumData(WorldQuantumData quantumData) {
 		SolarApi.quantumData = quantumData; //Do you hear that? That's the sound of forgiveness...
 	}
 }

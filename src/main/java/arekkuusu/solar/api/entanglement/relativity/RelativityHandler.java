@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -8,6 +8,8 @@
 package arekkuusu.solar.api.entanglement.relativity;
 
 import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.entanglement.quantum.QuantumDataHandler;
+import arekkuusu.solar.api.entanglement.quantum.data.PowerData;
 import com.google.common.collect.Lists;
 import net.minecraft.tileentity.TileEntity;
 
@@ -118,7 +120,9 @@ public final class RelativityHandler {
 	 * @return The Redstone power from 0 to 15.
 	 */
 	public static <T extends TileEntity & IRelativePower> int getPower(T tile) {
-		return SolarApi.getRelativityPowerMap().getOrDefault(tile.getKey().orElse(null), 0);
+		return tile.getKey().map(uuid -> QuantumDataHandler.<PowerData>get(uuid)
+				.map(PowerData::getI).orElse(0)
+		).orElse(0);
 	}
 
 	/**
@@ -131,15 +135,15 @@ public final class RelativityHandler {
 	 * @param <T>      An impl of {@param tile}.
 	 */
 	public static <T extends TileEntity & IRelativePower> void setPower(T tile, int newPower, boolean update) {
-		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityPowerMap().compute(uuid, (key, prevPower) ->
-				newPower > 0 ? newPower : null
+		tile.getKey().ifPresent(uuid -> QuantumDataHandler.<PowerData>get(uuid).ifPresent(power ->
+				power.setI(newPower)
 		));
 		if(update) {
-			updateAllRelatives(IRelativePower.class, tile);
+			updatePower(IRelativePower.class, tile);
 		}
 	}
 
-	public static <T extends IRelativePower> void updateAllRelatives(Class<T> type, T tile) {
+	public static <T extends IRelativePower> void updatePower(Class<T> type, T tile) {
 		tile.getKey().ifPresent(uuid -> {
 			SolarApi.getRelativityMap().computeIfPresent(uuid, (k, list) -> {
 				list.stream()

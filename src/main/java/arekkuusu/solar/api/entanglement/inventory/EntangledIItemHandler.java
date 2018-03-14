@@ -1,13 +1,16 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.quantum;
+package arekkuusu.solar.api.entanglement.inventory;
 
 import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.entanglement.quantum.QuantumDataHandler;
+import arekkuusu.solar.api.entanglement.quantum.data.QuantumIItemData;
+import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
@@ -16,7 +19,7 @@ import java.util.*;
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
  */
-public final class QuantumHandler {
+public final class EntangledIItemHandler {
 
 	public static final String NBT_TAG = "quantum_data";
 
@@ -27,7 +30,7 @@ public final class QuantumHandler {
 	 * @return If the key is entangled.
 	 */
 	public static boolean isEntangled(UUID uuid) {
-		return SolarApi.getQuantumData().isEntangled(uuid);
+		return QuantumDataHandler.get(uuid).isPresent();
 	}
 
 	/**
@@ -39,7 +42,10 @@ public final class QuantumHandler {
 	 * @return The copy of ItemStack.
 	 */
 	public static ItemStack getEntanglementStack(UUID uuid, int slot) {
-		return SolarApi.getQuantumData().getEntanglementStack(uuid, slot);
+		if(hasSlot(uuid, slot)) {
+			return getEntanglement(uuid).stacks.get(slot).copy();
+		}
+		return ItemStack.EMPTY;
 	}
 
 	/**
@@ -51,7 +57,18 @@ public final class QuantumHandler {
 	 * @param slot  Position in the list.
 	 */
 	public static void setEntanglementStack(UUID uuid, ItemStack stack, int slot) {
-		SolarApi.getQuantumData().setEntanglementStack(uuid, stack, slot);
+		QuantumIItemData data = getEntanglement(uuid);
+		List<ItemStack> list = data.stacks;
+		if(!hasSlot(uuid, slot)) {
+			if(!stack.isEmpty()) {
+				list.add(stack);
+			}
+		} else if(!stack.isEmpty()) {
+			list.set(slot, stack);
+		} else {
+			list.remove(slot);
+		}
+		data.dirty();
 	}
 
 	/**
@@ -63,7 +80,7 @@ public final class QuantumHandler {
 	 */
 	public static void addEntanglementStack(UUID uuid, ItemStack stack) {
 		if(!stack.isEmpty()) {
-			SolarApi.getQuantumData().setEntanglementStack(uuid, stack, -1);
+			setEntanglementStack(uuid, stack, -1);
 		}
 	}
 
@@ -76,7 +93,7 @@ public final class QuantumHandler {
 	 */
 	public static void removeEntanglementStack(UUID uuid, int slot) {
 		if(hasSlot(uuid, slot)) {
-			SolarApi.getQuantumData().setEntanglementStack(uuid, ItemStack.EMPTY, slot);
+			setEntanglementStack(uuid, ItemStack.EMPTY, slot);
 		}
 	}
 
@@ -87,7 +104,8 @@ public final class QuantumHandler {
 	 * @param slot Position in the list.
 	 */
 	public static boolean hasSlot(UUID uuid, int slot) {
-		return SolarApi.getQuantumData().hasSlot(uuid, slot);
+		List<ItemStack> stacks = getEntanglement(uuid).stacks;
+		return slot < 0 || stacks.size() - 1 >= slot;
 	}
 
 	/**
@@ -96,8 +114,8 @@ public final class QuantumHandler {
 	 * @param uuid Key to the group of entangled items.
 	 * @return {@link ArrayList}.
 	 */
-	public static List<ItemStack> getEntanglement(UUID uuid) {
-		return SolarApi.getQuantumData().getEntanglement(uuid);
+	public static QuantumIItemData getEntanglement(UUID uuid) {
+		return QuantumDataHandler.getOrCreate(uuid, QuantumIItemData::new);
 	}
 
 	/**
@@ -105,7 +123,11 @@ public final class QuantumHandler {
 	 *
 	 * @return {@link HashMap}
 	 */
-	public static Map<UUID, List<ItemStack>> getEntanglements() {
-		return SolarApi.getQuantumData().getEntanglements();
+	public static Map<UUID, QuantumIItemData> getEntanglements() {
+		Map<UUID, QuantumIItemData> map = Maps.newHashMap();
+		SolarApi.getDataMap().forEach((k, v) -> {
+			if(v instanceof QuantumIItemData) map.put(k, (QuantumIItemData) v);
+		});
+		return map;
 	}
 }

@@ -1,15 +1,15 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.common.handler.data;
+package arekkuusu.solar.api.entanglement.inventory.data;
 
-import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
-import arekkuusu.solar.api.entanglement.quantum.data.QuantumDataHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.QuantumStackWrapper;
+import arekkuusu.solar.api.entanglement.inventory.IQuantumIItemStack;
+import arekkuusu.solar.api.entanglement.inventory.data.EntangledIItemWrapper;
+import arekkuusu.solar.api.entanglement.inventory.data.EntangledStackWrapper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -23,16 +23,16 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumStackProvider<T extends Item & IQuantumStack> implements ICapabilityProvider {
+public class EntangledStackProvider<T extends Item & IQuantumIItemStack> implements ICapabilityProvider {
 
-	private final QuantumDataHandler handler;
+	private final EntangledIItemWrapper handler;
 
-	public QuantumStackProvider(QuantumDataHandler handler) {
+	public EntangledStackProvider(EntangledIItemWrapper handler) {
 		this.handler = handler;
 	}
 
-	public QuantumStackProvider(T quantum, ItemStack stack, int size) {
-		handler = new QuantumStackWrapper<>(quantum, stack, size);
+	public EntangledStackProvider(T quantum, ItemStack stack, int size) {
+		handler = new EntangledStackWrapper<>(quantum, stack, size);
 	}
 
 	@Override

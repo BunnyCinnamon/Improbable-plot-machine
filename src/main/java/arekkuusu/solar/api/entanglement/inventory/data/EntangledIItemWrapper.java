@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.quantum.data;
+package arekkuusu.solar.api.entanglement.inventory.data;
 
-import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
+import arekkuusu.solar.api.entanglement.inventory.IQuantumIItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -20,11 +20,11 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
  */
-public abstract class QuantumDataHandler implements IItemHandlerModifiable {
+public abstract class EntangledIItemWrapper implements IItemHandlerModifiable {
 
 	private final int slots;
 
-	QuantumDataHandler(int slots) {
+	EntangledIItemWrapper(int slots) {
 		this.slots = slots;
 	}
 
@@ -59,8 +59,8 @@ public abstract class QuantumDataHandler implements IItemHandlerModifiable {
 	}
 
 	public final boolean isEntangled(ItemStack stack) {
-		if(stack.getItem() instanceof IQuantumStack) {
-			Optional<UUID> optional = ((IQuantumStack) stack.getItem()).getKey(stack);
+		if(stack.getItem() instanceof IQuantumIItemStack) {
+			Optional<UUID> optional = ((IQuantumIItemStack) stack.getItem()).getKey(stack);
 			return optional.isPresent();
 		}
 		return false;
@@ -91,12 +91,12 @@ public abstract class QuantumDataHandler implements IItemHandlerModifiable {
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return getKey().map(uuid -> QuantumHandler.getEntanglementStack(uuid, slot)).orElse(ItemStack.EMPTY);
+		return getKey().map(uuid -> EntangledIItemHandler.getEntanglementStack(uuid, slot)).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
 	public void setStackInSlot(int slot, ItemStack stack) {
-		getKey().ifPresent(uuid -> QuantumHandler.setEntanglementStack(uuid, stack, slot));
+		getKey().ifPresent(uuid -> EntangledIItemHandler.setEntanglementStack(uuid, stack, slot));
 	}
 
 	@Override

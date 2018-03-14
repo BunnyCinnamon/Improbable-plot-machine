@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -12,7 +12,12 @@ import arekkuusu.solar.common.block.ModBlocks;
 import net.katsstuff.mirror.client.helper.KeyCondition;
 import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,6 +34,11 @@ public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
 	public ItemQimranut(){
 		super(ModBlocks.QIMRANUT);
 		setMaxStackSize(2);
+	}
+
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		return EnumActionResult.PASS;
 	}
 
 	@Override

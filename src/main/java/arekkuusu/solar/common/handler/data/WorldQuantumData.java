@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -7,21 +7,17 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.data;
 
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
 import arekkuusu.solar.api.entanglement.quantum.data.IQuantumData;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.lib.LibMod;
-import arekkuusu.solar.common.network.PacketHelper;
 import com.google.common.collect.Maps;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,9 +25,9 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 02/08/2017.
  * It's distributed as part of Solar.
  */
-public class WorldQuantumData extends WorldSavedData implements IQuantumData {
+public class WorldQuantumData extends WorldSavedData {
 
-	private static final String NAME = LibMod.MOD_ID + ":" + QuantumHandler.NBT_TAG;
+	private static final String NAME = LibMod.MOD_ID + ":" + EntangledIItemHandler.NBT_TAG;
 
 	public static WorldQuantumData get(World world) {
 		MapStorage storage = world.getMapStorage();
@@ -44,7 +40,7 @@ public class WorldQuantumData extends WorldSavedData implements IQuantumData {
 		return data;
 	}
 
-	private final Map<UUID, List<ItemStack>> ENTANGLEMENT_MAP = Maps.newHashMap();
+	public final Map<UUID, IQuantumData<?>> DATA_MAP = Maps.newHashMap();
 
 	public WorldQuantumData(String name) {
 		super(name);
@@ -52,13 +48,18 @@ public class WorldQuantumData extends WorldSavedData implements IQuantumData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagList list = (NBTTagList) compound.getTag(QuantumHandler.NBT_TAG);
-		list.forEach(stackList -> {
-			NBTTagList stacks = (NBTTagList) ((NBTTagCompound) stackList).getTag("list");
-			UUID key = ((NBTTagCompound) stackList).getUniqueId("key");
-			if(key != null) {
-				getEntanglement(key).clear();
-				stacks.forEach(tag -> getEntanglement(key).add(new ItemStack((NBTTagCompound) tag)));
+		NBTTagList list = (NBTTagList) compound.getTag(EntangledIItemHandler.NBT_TAG);
+		list.forEach(base -> {
+			NBTTagCompound tag = (NBTTagCompound) base;
+			UUID key = tag.getUniqueId("key");
+			String cl = tag.getString("class");
+			IQuantumData<?> data;
+			try {
+				data = (IQuantumData<?>) Class.forName(cl).newInstance();
+				data.deserializeNBT(tag);
+				DATA_MAP.put(key, data);
+			} catch(Exception e) {
+				Solar.LOG.fatal("[WorldQuantumData] - Unable to instantiate class :" + cl, e);
 			}
 		});
 	}
@@ -66,38 +67,14 @@ public class WorldQuantumData extends WorldSavedData implements IQuantumData {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
-		getEntanglements().forEach((uuid, itemStacks) -> {
-			NBTTagList stackList = new NBTTagList();
-			itemStacks.forEach(stack -> stackList.appendTag(stack.writeToNBT(new NBTTagCompound())));
-			NBTTagCompound nbt = new NBTTagCompound();
-			nbt.setUniqueId("key", uuid);
-			nbt.setTag("list", stackList);
-			list.appendTag(nbt);
+		DATA_MAP.forEach((k, v) -> {
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setUniqueId("key", k);
+			tag.setString("class", v.getClass().getName());
+			tag.setTag("data", v.write());
+			list.appendTag(tag);
 		});
-		compound.setTag(QuantumHandler.NBT_TAG, list);
+		compound.setTag(EntangledIItemHandler.NBT_TAG, list);
 		return compound;
-	}
-
-	@Override
-	public void setEntanglementStack(UUID uuid, ItemStack stack, int slot) {
-		List<ItemStack> list = getEntanglement(uuid);
-		if(!hasSlot(uuid, slot)) {
-			if(!stack.isEmpty()) {
-				list.add(stack);
-			}
-		} else if(!stack.isEmpty()) {
-			list.set(slot, stack);
-		} else {
-			list.remove(slot);
-		}
-		if(FMLCommonHandler.instance().getSide() == Side.SERVER) {
-			PacketHelper.sendQuantumChange(uuid, stack, slot);
-		}
-		markDirty();
-	}
-
-	@Override
-	public Map<UUID, List<ItemStack>> getEntanglements() {
-		return ENTANGLEMENT_MAP;
 	}
 }

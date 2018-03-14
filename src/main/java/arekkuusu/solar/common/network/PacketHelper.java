@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -7,7 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
+import arekkuusu.solar.api.entanglement.quantum.data.QuantumIItemData;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.entity.EntityCrystalQuartzItem;
 import net.katsstuff.mirror.data.Vector3;
@@ -34,48 +35,28 @@ public class PacketHelper {
 		tag.setTag("stack", stack.writeToNBT(new NBTTagCompound()));
 		tag.setUniqueId("uuid", uuid);
 		tag.setInteger("slot", slot);
-		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.Q_SYNC_CHANGE, tag));
+		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.QUANTUM_CHANGE, tag));
 	}
 
 	public static void sendQuantumChanges(UUID uuid) {
+		QuantumIItemData data = EntangledIItemHandler.getEntanglement(uuid);
 		NBTTagCompound tag = new NBTTagCompound();
-		NBTTagList list = new NBTTagList();
-		QuantumHandler.getEntanglement(uuid).forEach(stack -> {
-			list.appendTag(stack.writeToNBT(new NBTTagCompound()));
-		});
-		tag.setTag("list", list);
+		tag.setTag("list", data.write());
 		tag.setUniqueId("uuid", uuid);
-		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.Q_SYNC_SOME, tag));
+		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.QUANTUM_SYNC, tag));
 	}
 
 	public static void syncQuantumTo(EntityPlayerMP player) {
 		NBTTagCompound compound = new NBTTagCompound();
 		NBTTagList tags = new NBTTagList();
-		QuantumHandler.getEntanglements().forEach((uuid, stacks) -> {
+		EntangledIItemHandler.getEntanglements().forEach((uuid, data) -> {
 			NBTTagCompound tag = new NBTTagCompound();
-			NBTTagList list = new NBTTagList();
-			stacks.forEach(stack -> list.appendTag(stack.writeToNBT(new NBTTagCompound())));
-			tag.setTag("list", list);
+			tag.setTag("list", data.write());
 			tag.setUniqueId("uuid", uuid);
 			tags.appendTag(tag);
 		});
 		compound.setTag("tags", tags);
-		PacketHandler.NETWORK.sendTo(new ServerToClientPacket(PacketHandler.Q_SYNC_ALL, compound), player);
-	}
-
-	public static void syncQuantumToAll() {
-		NBTTagCompound compound = new NBTTagCompound();
-		NBTTagList tags = new NBTTagList();
-		QuantumHandler.getEntanglements().forEach((uuid, stacks) -> {
-			NBTTagCompound tag = new NBTTagCompound();
-			NBTTagList list = new NBTTagList();
-			stacks.forEach(stack -> list.appendTag(stack.writeToNBT(new NBTTagCompound())));
-			tag.setTag("list", list);
-			tag.setUniqueId("uuid", uuid);
-			tags.appendTag(tag);
-		});
-		compound.setTag("tags", tags);
-		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.Q_SYNC_ALL, compound));
+		PacketHandler.NETWORK.sendTo(new ServerToClientPacket(PacketHandler.QUANTUM_SYNC_ALL, compound), player);
 	}
 
 	public static void sendPhenomenaPacket(TilePhenomena phenomena) {

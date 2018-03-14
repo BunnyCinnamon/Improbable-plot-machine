@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -7,9 +7,9 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.quantum.IQuantumTile;
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.QuantumTileWrapper;
+import arekkuusu.solar.api.entanglement.IEntangledTile;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
+import arekkuusu.solar.api.entanglement.inventory.data.EntangledTileWrapper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -23,12 +23,12 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 14/09/2017.
  * It's distributed as part of Solar.
  */
-public abstract class TileQuantumBase<Q extends QuantumTileWrapper> extends TileBase implements IQuantumTile {
+public abstract class TileEntangledBase<Q extends EntangledTileWrapper> extends TileBase implements IEntangledTile {
 
 	private final Q handler;
 	private UUID key = null;
 
-	public TileQuantumBase() {
+	public TileEntangledBase() {
 		this.handler = createHandler();
 	}
 
@@ -66,7 +66,7 @@ public abstract class TileQuantumBase<Q extends QuantumTileWrapper> extends Tile
 
 	@Override
 	public void setKey(@Nullable UUID key) {
-		if(!getKey().isPresent() || QuantumHandler.getEntanglement(this.key).isEmpty()) {
+		if(!getKey().isPresent() || EntangledIItemHandler.getEntanglement(this.key).stacks.isEmpty()) {
 			this.key = key;
 		}
 	}

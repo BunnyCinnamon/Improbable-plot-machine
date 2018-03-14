@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement;
 
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
 import arekkuusu.solar.api.helper.NBTHelper;
 import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.item.ItemStack;
@@ -33,11 +33,11 @@ public interface IEntangledStack {
 	}
 
 	default void setKey(ItemStack stack, UUID uuid) {
-		stack.getOrCreateSubCompound(QuantumHandler.NBT_TAG).setUniqueId("key", uuid);
+		stack.getOrCreateSubCompound(EntangledIItemHandler.NBT_TAG).setUniqueId("key", uuid);
 	}
 
 	default Optional<UUID> getKey(ItemStack stack) {
-		Optional<NBTTagCompound> optional = NBTHelper.getNBTTag(stack, QuantumHandler.NBT_TAG);
+		Optional<NBTTagCompound> optional = NBTHelper.getNBTTag(stack, EntangledIItemHandler.NBT_TAG);
 		return optional.map(nbtTagCompound -> nbtTagCompound.getUniqueId("key"));
 	}
 }

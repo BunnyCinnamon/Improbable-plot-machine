@@ -1,11 +1,11 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.quantum;
+package arekkuusu.solar.api.entanglement.inventory;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import net.katsstuff.mirror.client.helper.KeyCondition;
@@ -23,13 +23,13 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 09/08/2017.
  * It's distributed as part of Solar.
  */
-public interface IQuantumStack extends IEntangledStack {
+public interface IQuantumIItemStack extends IEntangledStack {
 
 	@SideOnly(Side.CLIENT)
 	default void addTooltipInfo(ItemStack stack, List<String> tooltip) {
 		getKey(stack).ifPresent(uuid -> Tooltip.inline()
 				.condition(KeyCondition.ShiftKeyDown$.MODULE$)
-				.ifTrueJ(builder -> getDetailedInfo(builder, QuantumHandler.getEntanglement(uuid), uuid)).apply()
+				.ifTrueJ(builder -> getDetailedInfo(builder, EntangledIItemHandler.getEntanglement(uuid).stacks, uuid)).apply()
 				.build(tooltip)
 		);
 	}
@@ -50,7 +50,7 @@ public interface IQuantumStack extends IEntangledStack {
 	default void setKey(ItemStack stack, UUID uuid) {
 		Optional<UUID> optional = getKey(stack);
 		if(!optional.isPresent()) {
-			stack.getOrCreateSubCompound(QuantumHandler.NBT_TAG).setUniqueId("key", uuid);
+			stack.getOrCreateSubCompound(EntangledIItemHandler.NBT_TAG).setUniqueId("key", uuid);
 		}
 	}
 }

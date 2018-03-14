@@ -1,6 +1,6 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package arekkuusu.solar.api.entanglement.quantum.data;
+package arekkuusu.solar.api.entanglement.inventory.data;
 
 import mcp.MethodsReturnNonnullByDefault;
 

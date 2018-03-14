@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -25,7 +25,6 @@ import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -72,8 +71,7 @@ public class ClientProxy implements IProxy {
 
 	@SubscribeEvent
 	public static void disconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-		SolarApi.getRelativityPowerMap().clear();
-		SolarApi.getRelativityMap().clear();
+		SolarApi.getDataMap().clear();
 		SolarApi.setQuantumData(null);
 	}
 

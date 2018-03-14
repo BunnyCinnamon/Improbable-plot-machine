@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.RenderHelper;
@@ -43,7 +43,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 			case 0:
 				Optional<UUID> optional = mirror.getKey();
 				if(optional.isPresent()) {
-					ItemStack stack = QuantumHandler.getEntanglementStack(optional.get(), 0);
+					ItemStack stack = EntangledIItemHandler.getEntanglementStack(optional.get(), 0);
 					if(!stack.isEmpty()) {
 						renderItem(stack, tick, x, y, z, partialTicks);
 					}

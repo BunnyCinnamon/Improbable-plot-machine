@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.quantum.data;
+package arekkuusu.solar.api.entanglement.inventory.data;
 
-import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
+import arekkuusu.solar.api.entanglement.inventory.IQuantumIItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -18,12 +18,12 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
  */
-public class QuantumStackWrapper<T extends Item & IQuantumStack> extends QuantumDataHandler {
+public class EntangledStackWrapper<T extends Item & IQuantumIItemStack> extends EntangledIItemWrapper {
 
 	private final T quantum;
 	private final ItemStack stack;
 
-	public QuantumStackWrapper(T quantum, ItemStack stack, int size) {
+	public EntangledStackWrapper(T quantum, ItemStack stack, int size) {
 		super(size);
 		this.quantum = quantum;
 		this.stack = stack;

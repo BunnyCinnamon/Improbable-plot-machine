@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -7,12 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.lib.LibMod;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import net.katsstuff.mirror.client.particles.GlowTexture;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.client.Minecraft;
@@ -31,7 +30,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -42,38 +40,25 @@ public class PacketHandler {
 
 	public static final List<IPacketHandler> HANDLERS = Lists.newArrayList();
 
-	public static final IPacketHandler Q_SYNC_ALL = (compound, context) -> {
-		Map<UUID, List<ItemStack>> map = Maps.newHashMap();
+	public static final IPacketHandler QUANTUM_SYNC_ALL = (compound, context) -> {
 		NBTTagList tags = (NBTTagList) compound.getTag("tags");
 		for(NBTBase nbt : tags) {
 			NBTTagCompound tag = (NBTTagCompound) nbt;
-			NBTTagList list = (NBTTagList) tag.getTag("list");
 			UUID uuid = tag.getUniqueId("uuid");
-			List<ItemStack> stacks = Lists.newArrayList();
-			for(NBTBase stack : list) {
-				stacks.add(new ItemStack((NBTTagCompound) stack));
-			}
-			map.put(uuid, stacks);
+			EntangledIItemHandler.getEntanglement(uuid).deserializeNBT(tag);
 		}
-		QuantumHandler.getEntanglements().putAll(map);
 	};
 
-	public static final IPacketHandler Q_SYNC_SOME = (compound, context) -> {
-		NBTTagList list = (NBTTagList) compound.getTag("list");
+	public static final IPacketHandler QUANTUM_SYNC = (compound, context) -> {
 		UUID uuid = compound.getUniqueId("uuid");
-		List<ItemStack> stacks = Lists.newArrayList();
-		for(NBTBase stack : list) {
-			stacks.add(new ItemStack((NBTTagCompound) stack));
-		}
-
-		QuantumHandler.getEntanglements().replace(uuid, stacks);
+		EntangledIItemHandler.getEntanglement(uuid).deserializeNBT(compound);
 	};
 
-	public static final IPacketHandler Q_SYNC_CHANGE = (compound, context) -> {
+	public static final IPacketHandler QUANTUM_CHANGE = (compound, context) -> {
 		ItemStack stack = new ItemStack((NBTTagCompound) compound.getTag("stack"));
 		UUID uuid = compound.getUniqueId("uuid");
 		int slot = compound.getInteger("slot");
-		QuantumHandler.setEntanglementStack(uuid, stack, slot);
+		EntangledIItemHandler.setEntanglementStack(uuid, stack, slot);
 	};
 
 	public static final IPacketHandler PHENOMENA = (compound, context) -> {
@@ -108,7 +93,7 @@ public class PacketHandler {
 						speed, 60, 0.35F + (world.rand.nextFloat() * 0.5F), 0xFF0303, GlowTexture.GLINT);
 			}
 			for(int i = 0; i < 15; i++) {
-				Vector3 offset = Vector3.rotateRandom().multiply(0.05D).add(from);
+				Vector3 offset = Vector3.rotateRandom().multiply(0.05D).add(to);
 				Vector3 speed = Vector3.rotateRandom().multiply(0.1D);
 				FXUtil.spawnTunneling(world, offset,
 						speed, 60, 0.35F + (world.rand.nextFloat() * 0.5F), 0x49FFFF, GlowTexture.GLINT);
@@ -123,9 +108,9 @@ public class PacketHandler {
 		register(ServerToClientPacket.Handler.class, ServerToClientPacket.class, Side.CLIENT);
 		register(ClientToServerPacket.Handler.class, ClientToServerPacket.class, Side.SERVER);
 
-		HANDLERS.add(Q_SYNC_ALL);
-		HANDLERS.add(Q_SYNC_SOME);
-		HANDLERS.add(Q_SYNC_CHANGE);
+		HANDLERS.add(QUANTUM_SYNC_ALL);
+		HANDLERS.add(QUANTUM_SYNC);
+		HANDLERS.add(QUANTUM_CHANGE);
 		HANDLERS.add(PHENOMENA);
 		HANDLERS.add(QUARTZ_EFFECT);
 	}

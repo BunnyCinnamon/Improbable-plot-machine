@@ -7,34 +7,32 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement.quantum.data;
 
-import arekkuusu.solar.api.SolarApi;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Created by <Snack> on 14/03/2018.
  * It's distributed as part of Solar.
  */
-public interface IQuantumData<T extends NBTBase> extends INBTSerializable<NBTTagCompound> {
+public class QimranutData implements IQuantumData<NBTTagCompound> {
+
+	private BlockPos pos;
+	private EnumFacing facing;
 
 	@Override
-	default void deserializeNBT(NBTTagCompound nbt) {
-		//noinspection unchecked
-		read((T) nbt.getTag("data"));
+	public void read(NBTTagCompound tag) {
+		this.pos = new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
+		this.facing = EnumFacing.valueOf(tag.getString("facing"));
 	}
 
 	@Override
-	default NBTTagCompound serializeNBT() {
+	public NBTTagCompound write() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setTag("data", write());
+		tag.setInteger("x", pos.getX());
+		tag.setInteger("y", pos.getY());
+		tag.setInteger("z", pos.getZ());
+		tag.setString("facing", facing.getName());
 		return tag;
 	}
-
-	default void dirty() {
-		SolarApi.getQuantumData().markDirty();
-	}
-
-	void read(T tag);
-	T write();
 }
