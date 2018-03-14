@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -7,8 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util.baker.baked;
 
-import arekkuusu.solar.api.entanglement.quantum.IQuantumStack;
-import arekkuusu.solar.api.entanglement.quantum.QuantumHandler;
+import arekkuusu.solar.api.entanglement.inventory.IQuantumIItemStack;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
 import arekkuusu.solar.client.render.SpecialModelRenderer;
 import net.katsstuff.mirror.client.baked.BakedRender;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -46,9 +46,9 @@ public class BakedQuantumMirror extends BakedRender {
 
 		@Override
 		public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
-			Optional<UUID> optional = ((IQuantumStack) stack.getItem()).getKey(stack);
+			Optional<UUID> optional = ((IQuantumIItemStack) stack.getItem()).getKey(stack);
 			if(optional.isPresent()) {
-				ItemStack mirrored = QuantumHandler.getEntanglementStack(optional.get(), 0);
+				ItemStack mirrored = EntangledIItemHandler.getEntanglementStack(optional.get(), 0);
 				if(!mirrored.isEmpty()) {
 					SpecialModelRenderer.setTempItemRenderer(mirrored);
 				}

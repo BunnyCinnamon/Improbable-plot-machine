@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -18,9 +18,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * This class was created by Arekkuusu on 02/03/2017.
- * It's distributed as part of Witchworks under
- * the MIT license.
+ * Created by <Arekkuusu> on 14/03/2018.
+ * It's distributed as part of Solar.
  */
 @SuppressWarnings("unused")
 public final class NBTHelper {

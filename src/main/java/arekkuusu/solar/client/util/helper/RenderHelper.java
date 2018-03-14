@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / solar 2017
+ * Arekkuusu / solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Arekkuusu / Solar 2017
+ * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
@@ -50,9 +50,9 @@ public class ServerProxy implements IProxy {
 
 	@Mod.EventHandler
 	public static void serverStop(FMLServerStoppedEvent event) {
-		SolarApi.getRelativityPowerMap().clear();
 		SolarApi.getRelativityMap().clear();
 		SolarApi.getSimpleLinkMap().clear();
+		SolarApi.getDataMap().clear();
 		SolarApi.setQuantumData(null);
 	}
 }

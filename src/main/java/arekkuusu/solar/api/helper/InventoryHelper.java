@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Arekkuusu / Solar 2018
+ *
+ * This project is licensed under the MIT.
+ * The source code is available on github:
+ * https://github.com/ArekkuusuJerii/Solar#solar
+ ******************************************************************************/
 package arekkuusu.solar.api.helper;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,6 +14,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+/**
+ * Created by <Snack> on 14/03/2018.
+ * It's distributed as part of Solar.
+ */
 public final class InventoryHelper {
 
 	@SuppressWarnings({"ConstantConditions", "unchecked"})
