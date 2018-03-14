@@ -135,9 +135,7 @@ public final class RelativityHandler {
 	 * @param <T>      An impl of {@param tile}.
 	 */
 	public static <T extends TileEntity & IRelativePower> void setPower(T tile, int newPower, boolean update) {
-		tile.getKey().ifPresent(uuid -> QuantumDataHandler.<PowerData>get(uuid).ifPresent(power ->
-				power.setI(newPower)
-		));
+		tile.getKey().ifPresent(uuid -> QuantumDataHandler.getOrCreate(uuid, PowerData::new).setI(newPower));
 		if(update) {
 			updatePower(IRelativePower.class, tile);
 		}

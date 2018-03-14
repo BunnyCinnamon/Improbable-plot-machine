@@ -24,6 +24,11 @@ public class QuantumIItemData implements IQuantumData<NBTTagList> {
 	public List<ItemStack> stacks = Lists.newArrayList();
 
 	@Override
+	public boolean save() {
+		return !stacks.isEmpty();
+	}
+
+	@Override
 	public void read(NBTTagList tag) {
 		stacks.clear();
 		for(NBTBase base : tag) {

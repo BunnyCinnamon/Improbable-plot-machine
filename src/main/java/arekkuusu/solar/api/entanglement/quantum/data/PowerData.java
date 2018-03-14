@@ -18,12 +18,19 @@ public class PowerData implements IQuantumData<NBTTagInt> {
 	private int i;
 
 	public void setI(int i) {
+		if(i > 15) i = 15;
+		if(i < 0) i = 0;
 		this.i = i;
 		dirty();
 	}
 
 	public int getI() {
 		return i;
+	}
+
+	@Override
+	public boolean save() {
+		return i != 0;
 	}
 
 	@Override

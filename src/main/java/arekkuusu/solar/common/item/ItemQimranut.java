@@ -8,37 +8,37 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.entanglement.quantum.QuantumDataHandler;
+import arekkuusu.solar.api.entanglement.quantum.data.QimranutData;
 import arekkuusu.solar.common.block.ModBlocks;
+import arekkuusu.solar.common.lib.LibMod;
 import net.katsstuff.mirror.client.helper.KeyCondition;
 import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 24/12/2017.
  * It's distributed as part of Solar.
  */
+@Mod.EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.SERVER)
 public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
 
 	public ItemQimranut(){
 		super(ModBlocks.QIMRANUT);
-		setMaxStackSize(2);
-	}
-
-	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		return EnumActionResult.PASS;
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
@@ -46,5 +46,21 @@ public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		getKey(stack).ifPresent(uuid -> Tooltip.inline().condition(KeyCondition.ShiftKeyDown$.MODULE$)
 				.ifTrueJ(builder -> getInfo(builder, uuid)).apply().build(tooltip));
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void pickSource(PlayerInteractEvent.LeftClickBlock event) {
+		ItemStack stack = event.getItemStack();
+		if(stack.getItem() == this) {
+			if(!getKey(stack).isPresent()) {
+				setKey(stack, UUID.randomUUID());
+			}
+			getKey(stack).ifPresent(uuid -> {
+				QimranutData data = QuantumDataHandler.getOrCreate(uuid, QimranutData::new);
+				data.setFacing(event.getFace());
+				data.setPos(event.getPos());
+				event.setCanceled(true);
+			});
+		}
 	}
 }

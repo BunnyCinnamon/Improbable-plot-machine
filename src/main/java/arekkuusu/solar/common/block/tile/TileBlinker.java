@@ -44,7 +44,6 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 
-
 	@Override
 	public void onLoad() {
 		if(!world.isRemote) {

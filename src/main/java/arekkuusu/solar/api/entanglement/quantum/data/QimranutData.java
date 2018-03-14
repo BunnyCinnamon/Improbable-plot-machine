@@ -11,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by <Snack> on 14/03/2018.
  * It's distributed as part of Solar.
@@ -20,10 +22,36 @@ public class QimranutData implements IQuantumData<NBTTagCompound> {
 	private BlockPos pos;
 	private EnumFacing facing;
 
+	public void setPos(BlockPos pos) {
+		this.pos = pos;
+		dirty();
+	}
+
+	public BlockPos getPos() {
+		return pos;
+	}
+
+	public void setFacing(@Nullable EnumFacing facing) {
+		this.facing = facing;
+		dirty();
+	}
+
+	@Nullable
+	public EnumFacing getFacing() {
+		return facing;
+	}
+
+	@Override
+	public boolean save() {
+		return pos != null;
+	}
+
 	@Override
 	public void read(NBTTagCompound tag) {
 		this.pos = new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
-		this.facing = EnumFacing.valueOf(tag.getString("facing"));
+		if(tag.hasKey("facing")) {
+			this.facing = EnumFacing.valueOf(tag.getString("facing"));
+		} else this.facing = null;
 	}
 
 	@Override
@@ -32,7 +60,9 @@ public class QimranutData implements IQuantumData<NBTTagCompound> {
 		tag.setInteger("x", pos.getX());
 		tag.setInteger("y", pos.getY());
 		tag.setInteger("z", pos.getZ());
-		tag.setString("facing", facing.getName());
+		if(facing != null) {
+			tag.setString("facing", facing.getName());
+		}
 		return tag;
 	}
 }

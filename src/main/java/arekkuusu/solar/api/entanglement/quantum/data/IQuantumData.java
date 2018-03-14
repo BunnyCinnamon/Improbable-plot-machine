@@ -35,6 +35,7 @@ public interface IQuantumData<T extends NBTBase> extends INBTSerializable<NBTTag
 		SolarApi.getQuantumData().markDirty();
 	}
 
+	boolean save();
 	void read(T tag);
 	T write();
 }

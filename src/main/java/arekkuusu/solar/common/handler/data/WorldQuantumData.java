@@ -68,11 +68,13 @@ public class WorldQuantumData extends WorldSavedData {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
 		DATA_MAP.forEach((k, v) -> {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setUniqueId("key", k);
-			tag.setString("class", v.getClass().getName());
-			tag.setTag("data", v.write());
-			list.appendTag(tag);
+			if(v.save()) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setUniqueId("key", k);
+				tag.setString("class", v.getClass().getName());
+				tag.setTag("data", v.write());
+				list.appendTag(tag);
+			}
 		});
 		compound.setTag(EntangledIItemHandler.NBT_TAG, list);
 		return compound;
