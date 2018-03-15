@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement.inventory.data;
 
-import arekkuusu.solar.api.entanglement.inventory.IQuantumIItemStack;
+import arekkuusu.solar.api.entanglement.inventory.IEntangledIItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -18,7 +18,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
  */
-public class EntangledStackWrapper<T extends Item & IQuantumIItemStack> extends EntangledIItemWrapper {
+public class EntangledStackWrapper<T extends Item & IEntangledIItemStack> extends EntangledIItemWrapper {
 
 	private final T quantum;
 	private final ItemStack stack;

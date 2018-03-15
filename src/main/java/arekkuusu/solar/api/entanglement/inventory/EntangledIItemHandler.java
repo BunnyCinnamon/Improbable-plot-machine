@@ -9,7 +9,7 @@ package arekkuusu.solar.api.entanglement.inventory;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.entanglement.quantum.QuantumDataHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.QuantumIItemData;
+import arekkuusu.solar.api.entanglement.quantum.data.QuantumStackData;
 import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 
@@ -57,7 +57,7 @@ public final class EntangledIItemHandler {
 	 * @param slot  Position in the list.
 	 */
 	public static void setEntanglementStack(UUID uuid, ItemStack stack, int slot) {
-		QuantumIItemData data = getEntanglement(uuid);
+		QuantumStackData data = getEntanglement(uuid);
 		List<ItemStack> list = data.stacks;
 		if(!hasSlot(uuid, slot)) {
 			if(!stack.isEmpty()) {
@@ -114,8 +114,8 @@ public final class EntangledIItemHandler {
 	 * @param uuid Key to the group of entangled items.
 	 * @return {@link ArrayList}.
 	 */
-	public static QuantumIItemData getEntanglement(UUID uuid) {
-		return QuantumDataHandler.getOrCreate(uuid, QuantumIItemData::new);
+	public static QuantumStackData getEntanglement(UUID uuid) {
+		return QuantumDataHandler.getOrCreate(uuid, QuantumStackData::new);
 	}
 
 	/**
@@ -123,10 +123,10 @@ public final class EntangledIItemHandler {
 	 *
 	 * @return {@link HashMap}
 	 */
-	public static Map<UUID, QuantumIItemData> getEntanglements() {
-		Map<UUID, QuantumIItemData> map = Maps.newHashMap();
-		SolarApi.getDataMap().forEach((k, v) -> {
-			if(v instanceof QuantumIItemData) map.put(k, (QuantumIItemData) v);
+	public static Map<UUID, QuantumStackData> getEntanglements() {
+		Map<UUID, QuantumStackData> map = Maps.newHashMap();
+		SolarApi.getWorldData().saved.forEach((k, v) -> {
+			if(v instanceof QuantumStackData) map.put(k, (QuantumStackData) v);
 		});
 		return map;
 	}

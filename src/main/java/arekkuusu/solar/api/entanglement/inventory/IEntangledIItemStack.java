@@ -23,7 +23,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 09/08/2017.
  * It's distributed as part of Solar.
  */
-public interface IQuantumIItemStack extends IEntangledStack {
+public interface IEntangledIItemStack extends IEntangledStack {
 
 	@SideOnly(Side.CLIENT)
 	default void addTooltipInfo(ItemStack stack, List<String> tooltip) {

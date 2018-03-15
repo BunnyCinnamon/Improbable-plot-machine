@@ -8,10 +8,9 @@
 package arekkuusu.solar.api;
 
 import arekkuusu.solar.api.entanglement.linked.ISimpleLinkedTile;
-import arekkuusu.solar.api.entanglement.quantum.data.IQuantumData;
+import arekkuusu.solar.api.entanglement.quantum.WorldData;
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
 import arekkuusu.solar.api.util.Pair;
-import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -27,26 +26,22 @@ import java.util.UUID;
 public class SolarApi {
 
 	private static final Map<UUID, List<IRelativeTile>> RELATIVITY_MAP = Maps.newHashMap();
-	private static final Map<UUID, Pair<ISimpleLinkedTile>> LINKED_MAP = Maps.newHashMap();
-	private static WorldQuantumData quantumData;
+	private static final Map<UUID, Pair<ISimpleLinkedTile>> LINK_MAP = Maps.newHashMap();
+	private static WorldData worldData;
 
 	public static Map<UUID, List<IRelativeTile>> getRelativityMap() {
 		return RELATIVITY_MAP;
 	}
 
 	public static Map<UUID, Pair<ISimpleLinkedTile>> getSimpleLinkMap() {
-		return LINKED_MAP;
+		return LINK_MAP;
 	}
 
-	public static Map<UUID, IQuantumData<?>> getDataMap() {
-		return getQuantumData().DATA_MAP;
+	public static synchronized WorldData getWorldData() {
+		return worldData;
 	}
 
-	public static synchronized WorldQuantumData getQuantumData() {
-		return quantumData;
-	}
-
-	public static synchronized void setQuantumData(WorldQuantumData quantumData) {
-		SolarApi.quantumData = quantumData; //Do you hear that? That's the sound of forgiveness...
+	public static synchronized void setWorldData(WorldData worldData) {
+		SolarApi.worldData = worldData; //Do you hear that? That's the sound of forgiveness...
 	}
 }

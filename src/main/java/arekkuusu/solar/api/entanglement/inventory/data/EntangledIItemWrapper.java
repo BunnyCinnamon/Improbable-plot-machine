@@ -8,7 +8,7 @@
 package arekkuusu.solar.api.entanglement.inventory.data;
 
 import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
-import arekkuusu.solar.api.entanglement.inventory.IQuantumIItemStack;
+import arekkuusu.solar.api.entanglement.inventory.IEntangledIItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -59,8 +59,8 @@ public abstract class EntangledIItemWrapper implements IItemHandlerModifiable {
 	}
 
 	public final boolean isEntangled(ItemStack stack) {
-		if(stack.getItem() instanceof IQuantumIItemStack) {
-			Optional<UUID> optional = ((IQuantumIItemStack) stack.getItem()).getKey(stack);
+		if(stack.getItem() instanceof IEntangledIItemStack) {
+			Optional<UUID> optional = ((IEntangledIItemStack) stack.getItem()).getKey(stack);
 			return optional.isPresent();
 		}
 		return false;

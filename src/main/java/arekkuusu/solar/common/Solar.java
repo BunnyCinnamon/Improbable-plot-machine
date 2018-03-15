@@ -8,6 +8,7 @@
 package arekkuusu.solar.common;
 
 import arekkuusu.solar.common.entity.ModEntities;
+import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.handler.gen.ModGen;
 import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.network.PacketHandler;
@@ -26,7 +27,9 @@ import static net.minecraftforge.fml.common.Mod.Instance;
  * Created by <Arekkuusu> on 21/06/2017.
  * It's distributed as part of Solar.
  */
-@Mod(modid = LibMod.MOD_ID, name = LibMod.MOD_NAME, version = LibMod.MOD_VERSION, acceptedMinecraftVersions = "[1.12.2]")
+@Mod(modid = LibMod.MOD_ID, name = LibMod.MOD_NAME, version = LibMod.MOD_VERSION, dependencies = "required-after:mirror;",
+	acceptedMinecraftVersions = "[1.12.2]"
+)
 public class Solar {
 
 	@SidedProxy(clientSide = LibMod.CLIENT_PROXY, serverSide = LibMod.SERVER_PROXY)
@@ -39,6 +42,7 @@ public class Solar {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		PROXY.preInit(event);
+		WorldQuantumData.init(event.getAsmData());
 		PacketHandler.init();
 		ModEntities.init();
 		ModGen.init();

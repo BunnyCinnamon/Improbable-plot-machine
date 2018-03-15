@@ -8,7 +8,7 @@
 package arekkuusu.solar.api.entanglement.quantum;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.api.entanglement.quantum.data.IQuantumData;
+import arekkuusu.solar.api.entanglement.quantum.data.INBTData;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -20,18 +20,20 @@ import java.util.function.Supplier;
  */
 public final class QuantumDataHandler {
 
-	public static <S extends IQuantumData<?>> void add(UUID key, S t) {
-		SolarApi.getDataMap().putIfAbsent(key, t);
-		SolarApi.getQuantumData().markDirty();
+	public static <S extends INBTData<?>> void add(UUID key, S t) {
+		WorldData data = SolarApi.getWorldData();
+		data.saved.putIfAbsent(key, t);
+		data.markDirty();
 	}
 
 	public static void remove(UUID key) {
-		SolarApi.getDataMap().remove(key);
-		SolarApi.getQuantumData().markDirty();
+		WorldData data = SolarApi.getWorldData();
+		data.saved.remove(key);
+		data.markDirty();
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <S extends IQuantumData<?>> S getOrCreate(UUID key, Supplier<S> supplier) {
+	public static <S extends INBTData<?>> S getOrCreate(UUID key, Supplier<S> supplier) {
 		return (S) get(key).orElseGet(() -> {
 			S data = supplier.get();
 			add(key, data);
@@ -40,7 +42,7 @@ public final class QuantumDataHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <S extends IQuantumData<?>> Optional<S> get(UUID key) {
-		return Optional.ofNullable((S) SolarApi.getDataMap().get(key));
+	public static <S extends INBTData<?>> Optional<S> get(UUID key) {
+		return Optional.ofNullable((S) SolarApi.getWorldData().saved.get(key));
 	}
 }

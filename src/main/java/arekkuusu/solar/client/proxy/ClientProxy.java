@@ -71,8 +71,7 @@ public class ClientProxy implements IProxy {
 
 	@SubscribeEvent
 	public static void disconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-		SolarApi.getDataMap().clear();
-		SolarApi.setQuantumData(null);
+		SolarApi.setWorldData(null);
 	}
 
 	public static void registerResourceReloadListener(IResourceManagerReloadListener listener) {

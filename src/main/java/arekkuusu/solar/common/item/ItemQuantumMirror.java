@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.entanglement.inventory.IQuantumIItemStack;
+import arekkuusu.solar.api.entanglement.inventory.IEntangledIItemStack;
 import arekkuusu.solar.api.entanglement.inventory.data.EntangledStackWrapper;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
@@ -29,7 +29,7 @@ import java.util.List;
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Solar.
  */
-public class ItemQuantumMirror extends ItemBaseBlock implements IQuantumIItemStack {
+public class ItemQuantumMirror extends ItemBaseBlock implements IEntangledIItemStack {
 
 	public ItemQuantumMirror() {
 		super(ModBlocks.QUANTUM_MIRROR);

@@ -17,7 +17,8 @@ import javax.annotation.Nullable;
  * Created by <Snack> on 14/03/2018.
  * It's distributed as part of Solar.
  */
-public class QimranutData implements IQuantumData<NBTTagCompound> {
+@INBTData.NBTHolder(modId = "solar", name = "qimranut_data")
+public class QimranutData implements INBTData<NBTTagCompound> {
 
 	private BlockPos pos;
 	private EnumFacing facing;

@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.network;
 
 import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.QuantumIItemData;
+import arekkuusu.solar.api.entanglement.quantum.data.QuantumStackData;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.entity.EntityCrystalQuartzItem;
 import net.katsstuff.mirror.data.Vector3;
@@ -39,7 +39,7 @@ public class PacketHelper {
 	}
 
 	public static void sendQuantumChanges(UUID uuid) {
-		QuantumIItemData data = EntangledIItemHandler.getEntanglement(uuid);
+		QuantumStackData data = EntangledIItemHandler.getEntanglement(uuid);
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setTag("list", data.write());
 		tag.setUniqueId("uuid", uuid);

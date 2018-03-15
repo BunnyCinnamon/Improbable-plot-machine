@@ -8,26 +8,64 @@
 package arekkuusu.solar.common.handler.data;
 
 import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.IQuantumData;
+import arekkuusu.solar.api.entanglement.quantum.WorldData;
+import arekkuusu.solar.api.entanglement.quantum.data.INBTData;
+import arekkuusu.solar.api.entanglement.quantum.data.INBTData.NBTHolder;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.lib.LibMod;
-import com.google.common.collect.Maps;
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * Created by <Arekkuusu> on 02/08/2017.
  * It's distributed as part of Solar.
  */
-public class WorldQuantumData extends WorldSavedData {
+public class WorldQuantumData extends WorldData {
 
 	private static final String NAME = LibMod.MOD_ID + ":" + EntangledIItemHandler.NBT_TAG;
+
+	public WorldQuantumData(String name) {
+		super(name);
+	}
+
+	public static void init(ASMDataTable table) {
+		Stopwatch stopwatch = Stopwatch.createStarted();
+		List<ASMDataTable.ASMData> loaders = Lists.newArrayList(table.getAll(NBTHolder.class.getName()));
+		loaders.sort((l, r) -> l.getObjectName().compareToIgnoreCase(r.getClassName()));
+		for(ASMDataTable.ASMData loader : loaders) {
+			try {
+				Class<?> data = Class.forName(loader.getClassName());
+				if(INBTData.class.isAssignableFrom(data)) {
+					if(Stream.of(data.getConstructors()).anyMatch(c -> c.getParameterCount() == 0)) {
+						NBTHolder nbtData = data.getAnnotation(NBTHolder.class);
+						String modId = nbtData.modId();
+						String name = nbtData.name();
+						ResourceLocation location = new ResourceLocation(modId, name);
+						//noinspection unchecked
+						DATA_MAP.put(location, (Class<INBTData<?>>) data);
+					} else {
+						Solar.LOG.error("[WorldQuantumData] - Class {} has no empty constructor", data.getName());
+					}
+				} else {
+					Solar.LOG.error("[WorldQuantumData] - Class {} is annotated with @NBTHolder but is not an INBTData", data.getName());
+				}
+			} catch(ClassNotFoundException e) {
+				Solar.LOG.error("[WorldQuantumData] - Failed to find class {}", loader.getClassName());
+				e.printStackTrace();
+			}
+		}
+		Solar.LOG.info("Discovered {} NBT data holder(s) in {}", loaders.size(), stopwatch.stop());
+	}
 
 	public static WorldQuantumData get(World world) {
 		MapStorage storage = world.getMapStorage();
@@ -40,26 +78,22 @@ public class WorldQuantumData extends WorldSavedData {
 		return data;
 	}
 
-	public final Map<UUID, IQuantumData<?>> DATA_MAP = Maps.newHashMap();
-
-	public WorldQuantumData(String name) {
-		super(name);
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		NBTTagList list = (NBTTagList) compound.getTag(EntangledIItemHandler.NBT_TAG);
 		list.forEach(base -> {
 			NBTTagCompound tag = (NBTTagCompound) base;
+			String modId = tag.getString("modId");
+			String name = tag.getString("name");
+			ResourceLocation location = new ResourceLocation(modId, name);
 			UUID key = tag.getUniqueId("key");
-			String cl = tag.getString("class");
-			IQuantumData<?> data;
 			try {
-				data = (IQuantumData<?>) Class.forName(cl).newInstance();
+				INBTData<?> data = DATA_MAP.get(location).newInstance();
 				data.deserializeNBT(tag);
-				DATA_MAP.put(key, data);
+				saved.put(key, data);
 			} catch(Exception e) {
-				Solar.LOG.fatal("[WorldQuantumData] - Unable to instantiate class :" + cl, e);
+				Solar.LOG.fatal("[WorldQuantumData] - Unable to instantiate data holder \"{}\"", location);
+				e.printStackTrace();
 			}
 		});
 	}
@@ -67,11 +101,14 @@ public class WorldQuantumData extends WorldSavedData {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
-		DATA_MAP.forEach((k, v) -> {
-			if(v.save()) {
+		saved.forEach((k, v) -> {
+			//noinspection SuspiciousMethodCalls
+			if(v.save() && DATA_MAP.containsValue(v.getClass())) {
+				NBTHolder nbtData = v.getClass().getAnnotation(NBTHolder.class);
 				NBTTagCompound tag = new NBTTagCompound();
+				tag.setString("modId", nbtData.modId());
+				tag.setString("name", nbtData.name());
 				tag.setUniqueId("key", k);
-				tag.setString("class", v.getClass().getName());
 				tag.setTag("data", v.write());
 				list.appendTag(tag);
 			}

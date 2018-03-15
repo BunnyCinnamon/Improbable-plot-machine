@@ -12,11 +12,30 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Created by <Snack> on 14/03/2018.
  * It's distributed as part of Solar.
  */
-public interface IQuantumData<T extends NBTBase> extends INBTSerializable<NBTTagCompound> {
+public interface INBTData<T extends NBTBase> extends INBTSerializable<NBTTagCompound> {
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	@interface NBTHolder {
+		/**
+		 * The unique mod Identifier of this mod.
+		 */
+		String modId();
+
+		/**
+		 * The unique Identifier of the saved data
+		 */
+		String name();
+	}
 
 	@Override
 	default void deserializeNBT(NBTTagCompound nbt) {
@@ -32,7 +51,7 @@ public interface IQuantumData<T extends NBTBase> extends INBTSerializable<NBTTag
 	}
 
 	default void dirty() {
-		SolarApi.getQuantumData().markDirty();
+		SolarApi.getWorldData().markDirty();
 	}
 
 	boolean save();

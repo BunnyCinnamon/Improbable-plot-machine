@@ -54,9 +54,9 @@ public final class CommonEvents {
 
 	@SubscribeEvent
 	public static void loadQuantumData(WorldEvent.Load event) {
-		if(SolarApi.getQuantumData() == null) {
+		if(SolarApi.getWorldData() == null) {
 			Solar.LOG.info("[WorldQuantumData] Loading Data");
-			SolarApi.setQuantumData(WorldQuantumData.get(event.getWorld()));
+			SolarApi.setWorldData(WorldQuantumData.get(event.getWorld()));
 		}
 	}
 }

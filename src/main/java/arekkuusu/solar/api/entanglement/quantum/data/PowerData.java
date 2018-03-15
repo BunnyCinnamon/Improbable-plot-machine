@@ -13,7 +13,8 @@ import net.minecraft.nbt.NBTTagInt;
  * Created by <Snack> on 14/03/2018.
  * It's distributed as part of Solar.
  */
-public class PowerData implements IQuantumData<NBTTagInt> {
+@INBTData.NBTHolder(modId = "solar", name = "power_data")
+public class PowerData implements INBTData<NBTTagInt> {
 
 	private int i;
 

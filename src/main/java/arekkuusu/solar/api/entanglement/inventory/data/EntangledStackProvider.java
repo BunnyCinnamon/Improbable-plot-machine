@@ -7,9 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement.inventory.data;
 
-import arekkuusu.solar.api.entanglement.inventory.IQuantumIItemStack;
-import arekkuusu.solar.api.entanglement.inventory.data.EntangledIItemWrapper;
-import arekkuusu.solar.api.entanglement.inventory.data.EntangledStackWrapper;
+import arekkuusu.solar.api.entanglement.inventory.IEntangledIItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -23,7 +21,7 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
  */
-public class EntangledStackProvider<T extends Item & IQuantumIItemStack> implements ICapabilityProvider {
+public class EntangledStackProvider<T extends Item & IEntangledIItemStack> implements ICapabilityProvider {
 
 	private final EntangledIItemWrapper handler;
 
