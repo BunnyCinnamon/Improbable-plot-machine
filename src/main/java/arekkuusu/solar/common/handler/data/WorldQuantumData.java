@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  */
 public class WorldQuantumData extends WorldData {
 
-	private static final String NAME = LibMod.MOD_ID + ":" + EntangledIItemHandler.NBT_TAG;
+	private static final String NAME = LibMod.MOD_ID + ":" + "quantum_data";
 
 	public WorldQuantumData(String name) {
 		super(name);

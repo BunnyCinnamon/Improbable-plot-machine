@@ -21,7 +21,7 @@ import java.util.*;
  */
 public final class EntangledIItemHandler {
 
-	public static final String NBT_TAG = "quantum_data";
+	public static final String NBT_TAG = "entangled_data";
 
 	/**
 	 * Check if the {@param uuid} is entangled to any group.

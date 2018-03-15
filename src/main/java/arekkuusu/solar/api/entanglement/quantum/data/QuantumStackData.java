@@ -19,7 +19,7 @@ import java.util.List;
  * Created by <Snack> on 14/03/2018.
  * It's distributed as part of Solar.
  */
-@INBTData.NBTHolder(modId = "solar", name = "quantum_stack_data")
+@INBTData.NBTHolder(modId = "solar", name = "quantum_stack_nbt")
 public class QuantumStackData implements INBTData<NBTTagList> {
 
 	public List<ItemStack> stacks = Lists.newArrayList();
