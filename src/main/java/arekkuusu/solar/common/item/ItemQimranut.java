@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,7 +33,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 24/12/2017.
  * It's distributed as part of Solar.
  */
-@Mod.EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.SERVER)
+@EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.SERVER)
 public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
 
 	public ItemQimranut(){
