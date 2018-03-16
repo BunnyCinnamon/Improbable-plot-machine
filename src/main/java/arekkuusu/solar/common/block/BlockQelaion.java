@@ -17,6 +17,7 @@ import arekkuusu.solar.client.util.baker.baked.BakedQelaion;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQelaion;
 import arekkuusu.solar.common.item.ModItems;
+import arekkuusu.solar.common.lib.LibMod;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableList;
 import net.katsstuff.mirror.data.Quat;
@@ -36,6 +37,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -49,6 +54,7 @@ import java.util.UUID;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
+@EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.SERVER)
 public class BlockQelaion extends BlockBase {
 
 	public static final AxisAlignedBB BB = new AxisAlignedBB(0.0625, 0.0625, 0.0625,0.9375, 0.9375, 0.9375);
@@ -56,6 +62,7 @@ public class BlockQelaion extends BlockBase {
 
 	public BlockQelaion() {
 		super(LibNames.QELAION, FixedMaterial.DONT_MOVE);
+		MinecraftForge.EVENT_BUS.register(this);
 		setDefaultState(getDefaultState().withProperty(HAS_NODE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
@@ -193,5 +200,10 @@ public class BlockQelaion extends BlockBase {
 	public void registerModel() {
 		DummyBakedRegistry.register(this, BakedQelaion::new);
 		ModelHandler.registerModel(this, 0, "");
+	}
+
+	@SubscribeEvent
+	public void worldTick(TickEvent.WorldTickEvent event) {
+		TileQelaion.ITERATION = 0; // A world tick has passed, therefore loop is reset
 	}
 }

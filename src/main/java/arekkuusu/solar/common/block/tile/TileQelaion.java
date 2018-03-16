@@ -31,6 +31,11 @@ import java.util.stream.Collectors;
  */
 public class TileQelaion extends TileRelativeBase {
 
+	public static int ITERATION; //Keeps track of calls to prevent infinite loops
+	private static boolean canIterate() {
+		return ITERATION++ <= 4;
+	}
+
 	private List<EnumFacing> facings = Lists.newArrayList();
 	private int facingIndex;
 	private UUID nodes;
@@ -39,20 +44,19 @@ public class TileQelaion extends TileRelativeBase {
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 		markDirty();
-		return hasAccess(capability, facing, 0);
+		return canIterate() && hasAccess(capability, facing);
 	}
 
-	public boolean hasAccess(Capability<?> capability, @Nullable EnumFacing from, int level) {
-		if(level < 0 || level++ > 4) return false; //Do not go deeper than 4 levels. Why? Yes.
+	public boolean hasAccess(Capability<?> capability, @Nullable EnumFacing from) {
 		if(from != null && facings.contains(from.getOpposite())) return false;
 		ImmutableList<TileQelaion> nodes;
 		if(facingIndex < facings.size()) {
-			return hasFacing(capability, facingIndex, level);
+			return hasFacing(capability, facingIndex);
 		} else if((nodes = getNodeList()).isEmpty() && !facings.isEmpty()) {
-			return hasFacing(capability, 0, level);
+			return hasFacing(capability, 0);
 		} else if(!nodes.isEmpty()) {
 			if(nodeIndex + 1 > nodes.size()) nodeIndex = 0;
-			if(!nodes.get(nodeIndex).hasAccess(capability, null, level)) {
+			if(!nodes.get(nodeIndex).hasAccess(capability, null)) {
 				nodeIndex++;
 				return false;
 			}
@@ -61,8 +65,8 @@ public class TileQelaion extends TileRelativeBase {
 		return super.hasCapability(capability, from);
 	}
 
-	private boolean hasFacing(Capability<?> capability, int index, int level) {
-		if(fromFacing(capability, index, level) == null) {
+	private boolean hasFacing(Capability<?> capability, int index) {
+		if(fromFacing(capability, index) == null) {
 			if(++facingIndex > facings.size()) {
 				facingIndex = 0;
 			}
@@ -76,38 +80,35 @@ public class TileQelaion extends TileRelativeBase {
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		markDirty();
-		return access(capability, facing, 0);
+		return canIterate() ? fromAccess(capability, facing) : null;
 	}
 
 	@Nullable
-	public <T> T access(Capability<T> capability, @Nullable EnumFacing from, int level) {
-		if(level < 0 || level++ > 4) return null; //Do not go deeper than 4 levels. Why? Yes.
+	public <T> T fromAccess(Capability<T> capability, @Nullable EnumFacing from) {
 		if(from != null && facings.contains(from.getOpposite())) return null;
 		ImmutableList<TileQelaion> nodes;
 		if(facingIndex < facings.size()) {
-			return fromFacing(capability, facingIndex++, level);
+			return fromFacing(capability, facingIndex++);
 		} else if((nodes = getNodeList()).isEmpty() && !facings.isEmpty()) {
 			facingIndex = 0;
-			return fromFacing(capability, facingIndex++, level);
+			return fromFacing(capability, facingIndex++);
 		} else if(!nodes.isEmpty()) {
 			if(nodeIndex + 1 > nodes.size()) nodeIndex = 0;
 			facingIndex = 0;
-			return nodes.get(nodeIndex++).access(capability, null, level);
+			return nodes.get(nodeIndex++).fromAccess(capability, null);
 		}
 		return super.getCapability(capability, from);
 	}
 
 	@Nullable
-	private <T> T fromFacing(Capability<T> capability, int index, int level) {
+	private <T> T fromFacing(Capability<T> capability, int index) {
 		EnumFacing facing = facings.get(index);
 		BlockPos pos = getPos().offset(facing);
 		IBlockState state = world.getBlockState(pos);
 		if(state.getBlock().hasTileEntity(state)) {
 			TileEntity tile = world.getTileEntity(pos);
 			if(tile != null) {
-				return tile instanceof TileQelaion ?
-						((TileQelaion) tile).access(capability, facing, level)
-						: tile.getCapability(capability, facing.getOpposite());
+				return tile.getCapability(capability, facing.getOpposite());
 			}
 		}
 		return null;
