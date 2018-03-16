@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 
@@ -29,26 +30,35 @@ import java.util.stream.Collectors;
  * Created by <Snack> on 24/02/2018.
  * It's distributed as part of Solar.
  */
-public class TileQelaion extends TileRelativeBase {
-
-	public static int ITERATION; //Keeps track of calls to prevent infinite loops
-	private static boolean canIterate() {
-		return ITERATION++ <= 4;
-	}
+public class TileQelaion extends TileRelativeBase implements ITickable {
 
 	private List<EnumFacing> facings = Lists.newArrayList();
 	private int facingIndex;
 	private UUID nodes;
 	private int nodeIndex;
 
+	private int iteration; //Keeps track of calls to prevent infinite loops
+	private boolean fake; //If it first tested a capability before accessing it
+
+	@Override
+	public void update() { // A tick has passed, therefore loop is reset
+		this.iteration = 0;
+		this.fake = false;
+	}
+
+	private boolean breakIteration() {
+		return iteration++ > 4;
+	}
+
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 		markDirty();
-		return canIterate() && hasAccess(capability, facing);
+		this.fake = true; //Validates the fake access
+		return hasAccess(capability, facing);
 	}
 
 	public boolean hasAccess(Capability<?> capability, @Nullable EnumFacing from) {
-		if(from != null && facings.contains(from.getOpposite())) return false;
+		if((from != null && facings.contains(from.getOpposite())) || breakIteration()) return false;
 		ImmutableList<TileQelaion> nodes;
 		if(facingIndex < facings.size()) {
 			return hasFacing(capability, facingIndex);
@@ -80,12 +90,16 @@ public class TileQelaion extends TileRelativeBase {
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		markDirty();
-		return canIterate() ? fromAccess(capability, facing) : null;
+		if(this.fake) { //Invalidates the fake access and resets the iteration
+			this.fake = false;
+			this.iteration = 0;
+		}
+		return fromAccess(capability, facing);
 	}
 
 	@Nullable
 	public <T> T fromAccess(Capability<T> capability, @Nullable EnumFacing from) {
-		if(from != null && facings.contains(from.getOpposite())) return null;
+		if((from != null && facings.contains(from.getOpposite())) || breakIteration()) return null;
 		ImmutableList<TileQelaion> nodes;
 		if(facingIndex < facings.size()) {
 			return fromFacing(capability, facingIndex++);
