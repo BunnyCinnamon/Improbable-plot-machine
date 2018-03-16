@@ -51,11 +51,14 @@ public class TileGravityHopper extends TileBase implements ITickable {
 	public void update() {
 		if(!world.isRemote) {
 			if(cooldown <= 0) {
-				traceBlock(getFacing()).ifPresent(out -> {
-					traceBlock(getFacing().getOpposite()).ifPresent(in -> {
-						ItemStack stack = transferOut(out, true);
-						if(!stack.isEmpty() && transferIn(in, stack, true)) {
-							if(transferIn(in, transferOut(out, false), false)) cooldown = 5;
+				EnumFacing facing = getFacing();
+				traceBlock(facing).ifPresent(out -> {
+					traceBlock(facing.getOpposite()).ifPresent(in -> {
+						Pair<IItemHandler, ISidedInventory> invOut = getInventory(out, facing.getOpposite());
+						Pair<IItemHandler, ISidedInventory> invIn = getInventory(in, facing);
+						ItemStack stack = transferOut(invOut, true);
+						if(!stack.isEmpty() && transferIn(invIn, stack, true)) {
+							if(transferIn(invIn, transferOut(invOut, false), false)) cooldown = 5;
 						}
 					});
 				});
@@ -95,16 +98,13 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		return Pair.of(null, null);
 	}
 
-	private ItemStack transferOut(BlockPos pos, boolean test) {
-		EnumFacing facing = getFacing().getOpposite();
-		Pair<IItemHandler, ISidedInventory> inv = getInventory(pos, facing);
+	private ItemStack transferOut(Pair<IItemHandler, ISidedInventory> inv, boolean test) {
 		if(inv.getKey() != null) {
 			IItemHandler handler = inv.getKey();
 			ISidedInventory tile = inv.getValue();
-
 			for(int slot = 0; slot < handler.getSlots(); slot++) {
 				ItemStack in = handler.getStackInSlot(slot);
-				if(!in.isEmpty() && (tile == null || tile.canExtractItem(slot, in, facing))) {
+				if(!in.isEmpty() && (tile == null || tile.canExtractItem(slot, in, getFacing().getOpposite()))) {
 					return handler.extractItem(slot, Integer.MAX_VALUE, test);
 				}
 			}
@@ -112,17 +112,16 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		return ItemStack.EMPTY;
 	}
 
-	private boolean transferIn(BlockPos pos, ItemStack inserted, boolean test) {
-		EnumFacing facing = getFacing();
-		Pair<IItemHandler, ISidedInventory> inv = getInventory(pos, facing);
+	private boolean transferIn(Pair<IItemHandler, ISidedInventory> inv, ItemStack inserted, boolean test) {
 		if(inv.getKey() != null) {
 			IItemHandler handler = inv.getKey();
 			ISidedInventory tile = inv.getValue();
-
 			for(int slot = 0; slot < handler.getSlots(); slot++) {
 				ItemStack inSlot = handler.getStackInSlot(slot);
-				if(tile != null && !tile.canInsertItem(slot, inserted, facing)) return false;
-				if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted) && (inSlot.getCount() < inSlot.getMaxStackSize() && inSlot.getCount() < handler.getSlotLimit(slot)))) {
+				if(tile != null && !tile.canInsertItem(slot, inserted, getFacing())) return false;
+				if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted)
+						&& (inSlot.getCount() < inSlot.getMaxStackSize()
+						&& inSlot.getCount() < handler.getSlotLimit(slot)))) {
 					return handler.insertItem(slot, inserted, test) != inserted;
 				}
 			}
