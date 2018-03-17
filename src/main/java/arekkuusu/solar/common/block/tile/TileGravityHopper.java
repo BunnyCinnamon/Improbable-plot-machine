@@ -55,9 +55,9 @@ public class TileGravityHopper extends TileBase implements ITickable {
 				traceBlock(facing).ifPresent(out -> {
 					traceBlock(facing.getOpposite()).ifPresent(in -> {
 						Pair<IItemHandler, ISidedInventory> invOut = getInventory(out, facing.getOpposite());
-						Pair<IItemHandler, ISidedInventory> invIn = getInventory(in, facing);
+						Pair<IItemHandler, ISidedInventory> invIn;
 						ItemStack stack = transferOut(invOut, true);
-						if(!stack.isEmpty() && transferIn(invIn, stack, true)) {
+						if(!stack.isEmpty() && transferIn(invIn = getInventory(in, facing), stack, true)) {
 							if(transferIn(invIn, transferOut(invOut, false), false)) cooldown = 5;
 						}
 					});
@@ -76,7 +76,8 @@ public class TileGravityHopper extends TileBase implements ITickable {
 				IBlockState state = world.getBlockState(pos);
 				if(state.getBlock().hasTileEntity(state)) {
 					TileEntity tile = world.getTileEntity(pos);
-					if(tile != null && (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
+					if(tile != null && !(tile instanceof TileGravityHopper)
+							&& (tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing.getOpposite())
 							|| tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))) {
 						return Optional.of(pos.toImmutable());
 					}
