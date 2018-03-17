@@ -64,7 +64,7 @@ public class WorldQuantumData extends WorldData {
 				e.printStackTrace();
 			}
 		}
-		Solar.LOG.info("Discovered {} NBT data holder(s) in {}", loaders.size(), stopwatch.stop());
+		Solar.LOG.info("[Discovered {} NBT data holder(s) in {}]", loaders.size(), stopwatch.stop());
 	}
 
 	public static WorldQuantumData get(World world) {
