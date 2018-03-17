@@ -62,12 +62,12 @@ public class BlockQimranut extends BlockBaseFacing {
 			.put(EnumFacing.WEST, new AxisAlignedBB(0.375, 0.1875, 0.1875, 0.125, 0.8125, 0.8125))
 			.build();
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.4D, 0.5D))
-			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.6D, 0.5D))
-			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.6D))
-			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.4D))
-			.put(EnumFacing.EAST, Vector3.apply(0.4D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, Vector3.apply(0.6D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.2D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.8D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.8D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.2D))
+			.put(EnumFacing.EAST, Vector3.apply(0.2D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.8D, 0.5D, 0.5D))
 			.build();
 
 	public BlockQimranut() {
@@ -114,8 +114,7 @@ public class BlockQimranut extends BlockBaseFacing {
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		Vector3 back = getOffSet(facing, pos);
-		facing = facing.getOpposite();
+		Vector3 back = getOffSet(facing.getOpposite(), pos);
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 75);
 			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 75);
@@ -134,6 +133,14 @@ public class BlockQimranut extends BlockBaseFacing {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+				.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.5, 0.25, 0.75, 0.9375, 0.75))
+				.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.0625, 0.25, 0.75, 0.5, 0.75))
+				.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.5, 0.75, 0.75, 0.0625))
+				.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.5, 0.75, 0.75, 0.9375))
+				.put(EnumFacing.EAST, new AxisAlignedBB(0.9375, 0.25, 0.25, 0.5, 0.75, 0.75))
+				.put(EnumFacing.WEST, new AxisAlignedBB(0.5, 0.25, 0.25, 0.0625, 0.75, 0.75))
+				.build();
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
