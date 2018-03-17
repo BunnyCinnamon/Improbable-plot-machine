@@ -27,6 +27,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import scala.Predef;
+import scala.collection.JavaConverters;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -43,7 +45,6 @@ import static net.minecraft.util.EnumFacing.UP;
 @SideOnly(Side.CLIENT)
 public class BakedBlinker extends BakedBrightness {
 
-	@SuppressWarnings("WeakerAccess")
 	public static final Map<ItemCameraTransforms.TransformType, TRSRTransformation> TRANSFORMS = ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
 			.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.mkTransform(0F, 4F, 0F, 30F, 45F, 0F, 0.75F))
 			.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 75F, 45F, 0F, 0.5F))
@@ -128,6 +129,11 @@ public class BakedBlinker extends BakedBrightness {
 				.rotate(facing, DOWN)
 				.bakeJava()
 		);
+	}
+
+	@Override
+	public scala.collection.immutable.Map<ItemCameraTransforms.TransformType, TRSRTransformation> getTransforms() {
+		return JavaConverters.mapAsScalaMapConverter(TRANSFORMS).asScala().toMap(Predef.$conforms()); // Lies
 	}
 
 	@Override
