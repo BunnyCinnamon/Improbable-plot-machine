@@ -11,7 +11,7 @@ import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.common.block.BlockQelaion;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,7 +22,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -32,10 +34,11 @@ import java.util.stream.Collectors;
  */
 public class TileQelaion extends TileRelativeBase implements ITickable {
 
-	private List<EnumFacing> facings = Lists.newArrayList();
+	private Set<EnumFacing> facings = Sets.newLinkedHashSet();
 	private int facingIndex;
-	private UUID nodes;
 	private int nodeIndex;
+	private int outputs;
+	private UUID nodes;
 
 	private int iteration; //Keeps track of calls to prevent infinite loops
 	private boolean fake; //If it first tested a capability before accessing it
@@ -58,11 +61,11 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 	}
 
 	public boolean hasAccess(Capability<?> capability, @Nullable EnumFacing from) {
-		if((from != null && facings.contains(from.getOpposite())) || breakIteration()) return false;
+		if(from == null || breakIteration()) return false;
 		ImmutableList<TileQelaion> nodes;
-		if(facingIndex < facings.size()) {
+		if(facingIndex < outputs) {
 			return hasFacing(capability, facingIndex);
-		} else if((nodes = getNodeList()).isEmpty() && !facings.isEmpty()) {
+		} else if((nodes = getNodeList()).isEmpty() && outputs > 0) {
 			return hasFacing(capability, 0);
 		} else if(!nodes.isEmpty()) {
 			if(nodeIndex + 1 > nodes.size()) nodeIndex = 0;
@@ -77,7 +80,7 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 
 	private boolean hasFacing(Capability<?> capability, int index) {
 		if(fromFacing(capability, index) == null) {
-			if(++facingIndex > facings.size()) {
+			if(++facingIndex > outputs) {
 				facingIndex = 0;
 			}
 			return false;
@@ -99,11 +102,11 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 
 	@Nullable
 	public <T> T fromAccess(Capability<T> capability, @Nullable EnumFacing from) {
-		if((from != null && facings.contains(from.getOpposite())) || breakIteration()) return null;
+		if(from == null || breakIteration()) return null;
 		ImmutableList<TileQelaion> nodes;
-		if(facingIndex < facings.size()) {
+		if(facingIndex < outputs) {
 			return fromFacing(capability, facingIndex++);
-		} else if((nodes = getNodeList()).isEmpty() && !facings.isEmpty()) {
+		} else if((nodes = getNodeList()).isEmpty() && outputs > 0) {
 			facingIndex = 0;
 			return fromFacing(capability, facingIndex++);
 		} else if(!nodes.isEmpty()) {
@@ -116,7 +119,7 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 
 	@Nullable
 	private <T> T fromFacing(Capability<T> capability, int index) {
-		EnumFacing facing = facings.get(index);
+		EnumFacing facing = getOutputs().get(index);
 		BlockPos pos = getPos().offset(facing);
 		IBlockState state = world.getBlockState(pos);
 		if(state.getBlock().hasTileEntity(state)) {
@@ -149,51 +152,64 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 		markDirty();
 	}
 
-	public ImmutableList<EnumFacing> getFacings() {
-		return ImmutableList.copyOf(facings);
-	}
-
-	public void putFacing(EnumFacing facing) {
+	public void put(EnumFacing facing) {
 		if(facings.contains(facing)) {
 			facings.remove(facing);
 		} else facings.add(facing);
-		updatePosition(world, getPos());
+		outputs = getOutputs().size();
+		world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
+		updatePosition(world, pos);
 		markDirty();
+	}
+
+	public List<EnumFacing> getOutputs() {
+		return Arrays.stream(EnumFacing.values()).filter(this::isOutput).collect(Collectors.toList());
+	}
+
+	public boolean isOutput(EnumFacing facing) {
+		return !facings.contains(facing);
+	}
+
+	public List<EnumFacing> getInputs() {
+		return ImmutableList.copyOf(facings);
+	}
+
+	public boolean isInput(EnumFacing facing) {
+		return facings.contains(facing);
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
 		super.readNBT(compound);
-		if(compound.hasUniqueId("nodes")) {
+		if(compound.hasUniqueId("nodes"))
 			nodes = compound.getUniqueId("nodes");
-		}
-		if(compound.hasKey("facingIndex")) {
+		if(compound.hasKey("facingIndex"))
 			facingIndex = compound.getInteger("facingIndex");
-		}
-		if(compound.hasKey("nodeIndex")) {
+		if(compound.hasKey("nodeIndex"))
 			nodeIndex = compound.getInteger("nodeIndex");
-		}
 		facings.clear();
-		NBTTagList list = compound.getTagList("facings", 10);
-		for(int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound tag = list.getCompoundTagAt(i);
-			facings.add(EnumFacing.byName(tag.getString("facing")));
+		NBTTagList facingsNBT = compound.getTagList("facings", 10);
+		for(int i = 0; i < facingsNBT.tagCount(); i++) {
+			NBTTagCompound tag = facingsNBT.getCompoundTagAt(i);
+			EnumFacing facing = EnumFacing.byName(tag.getString("facing"));
+			facings.add(facing);
 		}
+		outputs = getOutputs().size();
+		if(pos != null) world.markBlockRangeForRenderUpdate(pos, pos); // End me
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
 		super.writeNBT(compound);
-		NBTTagList list = new NBTTagList();
-		facings.forEach(facing -> {
+		NBTTagList facingsNBT = new NBTTagList();
+		facings.forEach(k -> {
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("facing", facing.getName());
-			list.appendTag(tag);
+			tag.setString("facing", k.getName());
+			facingsNBT.appendTag(tag);
 		});
-		compound.setTag("facings", list);
-		if(nodes != null) {
+		compound.setTag("facings", facingsNBT);
+		if(nodes != null)
 			compound.setUniqueId("nodes", nodes);
-		}
 		compound.setInteger("facingIndex", facingIndex);
 		compound.setInteger("nodeIndex", nodeIndex);
 	}

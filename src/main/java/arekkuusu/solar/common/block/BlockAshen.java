@@ -66,7 +66,7 @@ public class BlockAshen extends BlockBase {
 
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.withProperty(Direction.DIR_LISTED, Direction.getDirectionForState(state, world, pos));
+		return state.withProperty(Direction.DIR_LISTED, Direction.getDirectionForBlock(this, world, pos));
 	}
 
 	@Override

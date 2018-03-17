@@ -30,6 +30,7 @@ public final class ResourceLibrary {
 	static {
 		ATLAS_SET = Sets.newHashSet();
 		getBlockTexture("qimranut/overlay");
+		getBlockTexture("qelaion/inside");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation[] MONOLITHIC_OVERLAY = ResourceHelperStatic.from(16, "monolithic/glyph_overlay_",
@@ -61,7 +62,6 @@ public final class ResourceLibrary {
 	public static final ResourceLocation ALTERNATOR_OVERLAY_OFF = getBlockTexture("alternator/overlay_off");
 	public static final ResourceLocation HYPER_CONDUCTOR = getBlockTexture("hyper_conductor");
 	public static final ResourceLocation QELAION_BASE = getBlockTexture("qelaion/base");
-	public static final ResourceLocation QELAION_INSIDE = getBlockTexture("qelaion/inside");
 	public static final ResourceLocation QELAION_ON = getBlockTexture("qelaion/on");
 	public static final ResourceLocation QELAION_OFF = getBlockTexture("qelaion/off");
 	//Raw Textures

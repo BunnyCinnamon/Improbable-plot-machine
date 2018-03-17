@@ -9,6 +9,7 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.api.state.Direction;
 import arekkuusu.solar.api.tool.FixedMaterial;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
@@ -18,7 +19,6 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileQelaion;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
-import com.google.common.collect.ImmutableList;
 import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.properties.PropertyBool;
@@ -37,10 +37,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -74,7 +76,7 @@ public class BlockQelaion extends BlockBase {
 				TileQelaion qelaion = optional.get();
 				Optional<UUID> nodes = ((IEntangledStack) stack.getItem()).getKey(stack);
 				Optional<UUID> parent = qelaion.getKey();
-				if(nodes.isPresent() && parent.isPresent() && !nodes.get().equals(parent.get())) {
+				if(nodes.isPresent() && parent.isPresent()) {
 					qelaion.setNodes(nodes.get());
 					return true;
 				}
@@ -83,7 +85,7 @@ public class BlockQelaion extends BlockBase {
 		} else if(stack.isEmpty()) {
 				getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
 					if(!player.isSneaking()) {
-						qelaion.putFacing(facing);
+						qelaion.put(facing);
 					} else qelaion.setNodes(null);
 				});
 		}
@@ -131,10 +133,9 @@ public class BlockQelaion extends BlockBase {
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
-			ImmutableList<EnumFacing> facings = qelaion.getFacings();
 			Vector3 posVec = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
-			for(EnumFacing facing : EnumFacing.values()) {
-				boolean on = facings.contains(facing);
+			boolean on = state.getValue(HAS_NODE);
+			for(EnumFacing facing : qelaion.getOutputs()) {
 				for(int i = 0; i < 1 + rand.nextInt(3); i++) {
 					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 6);
 					Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 6);
@@ -166,7 +167,18 @@ public class BlockQelaion extends BlockBase {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, HAS_NODE);
+		return new BlockStateContainer.Builder(this).add(HAS_NODE).add(Direction.DIR_UNLISTED).build();
+	}
+
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		Optional<TileQelaion> optional = getTile(TileQelaion.class, world, pos);
+		if(optional.isPresent()) {
+			List<EnumFacing> closed = optional.get().getInputs();
+			Direction direction = Direction.getDirectionFromFacings(closed.toArray(new EnumFacing[closed.size()]));
+			return ((IExtendedBlockState) state).withProperty(Direction.DIR_UNLISTED, direction);
+		}
+		return super.getExtendedState(state, world, pos);
 	}
 
 	@Override

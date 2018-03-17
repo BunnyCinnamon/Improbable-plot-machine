@@ -7,6 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.api.state;
 
+import com.google.common.collect.Sets;
+import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -16,9 +18,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Created by <Arekkuusu> on 03/11/2017.
@@ -98,6 +100,15 @@ public enum Direction implements IStringSerializable { //Forgive me...
 		this.booleans = booleans;
 	}
 
+	public Set<EnumFacing> getFacings() {
+		Set<EnumFacing> facings = Sets.newHashSet();
+		EnumFacing[] values = EnumFacing.values();
+		for(int i = 0; i < booleans.length; i++) {
+			if(booleans[i]) facings.add(values[i]);
+		}
+		return facings;
+	}
+
 	public boolean apply(Boolean[] booleans) {
 		for(int i = 0; i < this.booleans.length; i++) {
 			if(i >= booleans.length || this.booleans[i] != booleans[i]) return false;
@@ -110,13 +121,29 @@ public enum Direction implements IStringSerializable { //Forgive me...
 		return name().toLowerCase(Locale.ROOT);
 	}
 
-	public static Direction getDirectionForState(IBlockState state, IBlockAccess world, BlockPos origin) {
-		List<Boolean> list = Arrays.stream(EnumFacing.values()).map(facing -> {
-			IBlockState found = world.getBlockState(origin.offset(facing));
-			return found.getBlock() == state.getBlock();
-		}).collect(Collectors.toList());
-		Boolean[] booleans = list.toArray(new Boolean[list.size()]);
+	public static Direction getDirectionFromFacings(EnumFacing... facings) {
+		EnumFacing[] values = EnumFacing.values();
+		Boolean[] booleans = new Boolean[values.length];
+		for(int i = 0; i < values.length; i++) {
+			EnumFacing facing = values[i];
+			booleans[i] = Arrays.stream(facings).anyMatch(f -> f == facing);
+		}
+		return Arrays.stream(Direction.values()).filter(c -> c.apply(booleans)).findAny().orElse(FULL);
+	}
 
+	public static Direction getDirectionForBlock(Block block, IBlockAccess world, BlockPos origin) {
+		Boolean[] booleans = Arrays.stream(EnumFacing.values()).map(facing -> {
+			IBlockState found = world.getBlockState(origin.offset(facing));
+			return found.getBlock() == block;
+		}).toArray(Boolean[]::new);
+		return Arrays.stream(Direction.values()).filter(c -> c.apply(booleans)).findAny().orElse(FULL);
+	}
+
+	public static Direction getDirectionForState(IBlockState state, IBlockAccess world, BlockPos origin) {
+		Boolean[] booleans = Arrays.stream(EnumFacing.values()).map(facing -> {
+			IBlockState found = world.getBlockState(origin.offset(facing));
+			return found == state;
+		}).toArray(Boolean[]::new);
 		return Arrays.stream(Direction.values()).filter(c -> c.apply(booleans)).findAny().orElse(FULL);
 	}
 
