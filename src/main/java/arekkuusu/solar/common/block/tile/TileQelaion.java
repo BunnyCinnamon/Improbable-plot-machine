@@ -195,7 +195,7 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 			facings.add(facing);
 		}
 		outputs = getOutputs().size();
-		if(pos != null) world.markBlockRangeForRenderUpdate(pos, pos); // End me
+		if(pos != null && world != null && world.isRemote) world.markBlockRangeForRenderUpdate(pos, pos); // End me
 	}
 
 	@Override
