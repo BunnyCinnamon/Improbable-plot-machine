@@ -118,11 +118,11 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			IItemHandler handler = inv.getKey();
 			ISidedInventory tile = inv.getValue();
 			for(int slot = 0; slot < handler.getSlots(); slot++) {
-				ItemStack inSlot = handler.getStackInSlot(slot);
 				if(tile != null && !tile.canInsertItem(slot, inserted, getFacing())) return false;
+				ItemStack inSlot = handler.getStackInSlot(slot);
 				if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted)
-						&& (inSlot.getCount() < inSlot.getMaxStackSize()
-						&& inSlot.getCount() < handler.getSlotLimit(slot)))) {
+						&& (inSlot.getCount() + inserted.getCount() < inSlot.getMaxStackSize()
+						&& inSlot.getCount() + inserted.getCount() < handler.getSlotLimit(slot)))) {
 					return handler.insertItem(slot, inserted, test) != inserted;
 				}
 			}
