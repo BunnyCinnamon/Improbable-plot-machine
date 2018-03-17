@@ -86,8 +86,8 @@ public class BakedAlternator extends BakedBrightness {
 				.setTo(7.5F, 15.5F, 7.5F)
 				.addFace(EnumFacing.UP, 9F, 16F, 9F, 16F, base)
 				.addFace(EnumFacing.DOWN, 9F, 16F, 0F, 7F, base)
-				.addFace(EnumFacing.SOUTH, 9F, 16F, 0F, 7F, base)
-				.addFace(EnumFacing.NORTH, 9F, 16F, 9F, 16F, base)
+				.addFace(EnumFacing.NORTH, 9F, 16F, 0F, 7F, base)
+				.addFace(EnumFacing.SOUTH, 9F, 16F, 9F, 16F, base)
 				.addFace(EnumFacing.WEST, 0F, 7F, 0F, 7F, base)
 				.addFace(EnumFacing.EAST, 0F, 7F, 9F, 16F, base);
 		for(int i = 0; i < 2; i++) {
