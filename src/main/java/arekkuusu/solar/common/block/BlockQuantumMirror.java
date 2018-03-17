@@ -10,6 +10,7 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.helper.InventoryHelper;
 import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedQuantumMirror;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -142,7 +143,9 @@ public class BlockQuantumMirror extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedQuantumMirror::new);
+		DummyBakedRegistry.register(this, () -> new BakedQuantumMirror()
+				.setParticle(ResourceLibrary.TRANSPARENT)
+		);
 		ModelHandler.registerModel(this, 0);
 	}
 }
