@@ -24,7 +24,6 @@ public final class ModEntities {
 	public static void init() {
 		register(EntityStaticItem.class, "static_item");
 		register(EntityTemporalItem.class, "temporal_item");
-		register(EntityCrystalQuartzItem.class, "crystal_quartz");
 		register(EntityEyeOfSchrodinger.class, "eye_of_schrodinger", 0x222222);
 	}
 

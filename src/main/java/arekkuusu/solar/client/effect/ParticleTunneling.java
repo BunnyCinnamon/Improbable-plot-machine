@@ -22,19 +22,6 @@ public class ParticleTunneling extends ParticleMute {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
-		if(rand.nextInt(6) == 0) {
-			this.particleAge++;
-		}
-		float life = (float) this.particleAge / (float) this.particleMaxAge;
-		this.particleScale = initScale - initScale * life;
-		this.particleAlpha = 0.5F * (1.0f - life);
-		this.prevParticleAngle = particleAngle;
-		this.particleAngle += 1.0f;
-	}
-
-	@Override
 	public boolean shouldDisableDepth() {
 		return true;
 	}

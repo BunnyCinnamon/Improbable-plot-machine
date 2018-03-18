@@ -10,8 +10,6 @@ package arekkuusu.solar.common.network;
 import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
 import arekkuusu.solar.api.entanglement.quantum.data.QuantumStackData;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
-import arekkuusu.solar.common.entity.EntityCrystalQuartzItem;
-import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -67,22 +65,6 @@ public class PacketHelper {
 		tag.setInteger("z", pos.getZ());
 		TargetPoint point = fromTileEntity(phenomena, 25);
 		PacketHandler.NETWORK.sendToAllAround(new ServerToClientPacket(PacketHandler.PHENOMENA, tag), point);
-	}
-
-	public static void sendQuartzEffectPacket(EntityCrystalQuartzItem item, Vector3 from, Vector3 to) {
-		TargetPoint point = fromEntity(item, 25);
-		NBTTagCompound tag = new NBTTagCompound();
-		NBTTagCompound fromNBT = new NBTTagCompound();
-		fromNBT.setDouble("x", from.x());
-		fromNBT.setDouble("y", from.x());
-		fromNBT.setDouble("z", from.x());
-		NBTTagCompound toNBT = new NBTTagCompound();
-		toNBT.setDouble("x", to.x());
-		toNBT.setDouble("y", to.x());
-		toNBT.setDouble("z", to.x());
-		tag.setTag("from", fromNBT);
-		tag.setTag("to", toNBT);
-		PacketHandler.NETWORK.sendToAllAround(new ServerToClientPacket(PacketHandler.QUARTZ_EFFECT, tag), point);
 	}
 
 	public static TargetPoint fromWorldPos(World world, BlockPos pos, int range) {
