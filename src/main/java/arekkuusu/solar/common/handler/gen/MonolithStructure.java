@@ -11,6 +11,7 @@ import arekkuusu.solar.common.block.BlockLargePot;
 import arekkuusu.solar.common.block.BlockMonolithicGlyph;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.gen.ModGen.Structure;
+import net.katsstuff.mirror.data.MutableVector3;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -40,44 +41,48 @@ public class MonolithStructure extends BaseGen {
 		succ *= z >> 2;
 		random.setSeed(good * succ ^ world.getSeed());
 		//Generate
-		if (GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.rarity > 0D
-				&& GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.rarity / 100D > random.nextDouble()) {
+		if (GEN_CONFIG.monolith.structure.rarity > 0D
+				&& GEN_CONFIG.monolith.structure.rarity / 100D > random.nextDouble()) {
 			BlockPos origin = new BlockPos(x, 0, z);
 			//Gen Monolith
 			BlockPos surface = world.getTopSolidOrLiquidBlock(origin.add(8, 0, 8));
 			BlockPos pos = origin.add(5, Math.max(surface.getY() - (5 + random.nextInt(3)), 8), 4);
 			Structure.MONOLITH_CUBE.generate(world, pos.down(7), new PlacementSettings());
 			//Randomize glyphs
-			Vector3 start = new Vector3.WrappedVec3i(pos).asImmutable().add(0,-4,6);
+			BlockPos.MutableBlockPos start = new BlockPos.MutableBlockPos(pos.getX(), pos.getY() - 4, pos.getZ() + 6);
 			Arrays.stream(EnumFacing.HORIZONTALS).forEach(facing -> {
 				for (int i = 0; i < 6; i++) {
-					IBlockState glyph = ModBlocks.MONOLITHIC_GLYPH.getDefaultState().withProperty(BlockMonolithicGlyph.GLYPH, random.nextInt(16));
-					world.setBlockState(start.toBlockPos(), glyph);
-					start.offset(new Vector3.WrappedVec3i(facing.getOpposite().getDirectionVec()).asImmutable(), 1);
+					IBlockState glyph = ModBlocks.MONOLITHIC_GLYPH.getDefaultState()
+							.withProperty(BlockMonolithicGlyph.GLYPH, random.nextInt(16));
+					world.setBlockState(start, glyph);
+					start.move(facing.getOpposite(), 1);
 				}
 			});
 			//Add loot
 			BlockPos loot = pos.down(7).add(1, 1, 1);
 			for (int i = 0; i < 6 + random.nextInt(6); i++) {
-				if (GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.loot / 100D > random.nextDouble()) {
+				if (GEN_CONFIG.monolith.structure.loot / 100D > random.nextDouble()) {
 					BlockPos inside = loot.add(random.nextInt(4), 0, random.nextInt(4));
-					IBlockState pot = ModBlocks.LARGE_POT.getDefaultState().withProperty(BlockLargePot.POT_VARIANT, random.nextInt(3));
+					IBlockState pot = ModBlocks.LARGE_POT.getDefaultState()
+							.withProperty(BlockLargePot.POT_VARIANT, random.nextInt(3));
 					world.setBlockState(inside, pot);
 				}
 			}
 			//Gen ruin
-			if (GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.well) {
+			if (GEN_CONFIG.monolith.structure.well) {
 				Structure.MONOLITH_RUIN.generate(world, pos, new PlacementSettings());
 			}
-			int size = random.nextInt(GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.size / 2);
-			size += GEN_CONFIG.MONOLITH_CONFIG.MONOLITH_STRUCTURE.size / 2;
-			for (int i = 0; i < size; i++) {
-				BlockPos top = world.getTopSolidOrLiquidBlock(randomVector().add(x, 1, z).toBlockPos());
-				int below = random.nextInt(3);
-				if (top.getY() > below) {
-					top = top.add(0, -below, 0);
+			if(GEN_CONFIG.monolith.structure.ruins > 0) {
+				int size = (GEN_CONFIG.monolith.structure.ruins / 100) * 32;
+				size += random.nextInt((int) (((double) GEN_CONFIG.monolith.structure.ruins / 100D) * 64D));
+				for(int i = 0; i < size; i++) {
+					BlockPos top = world.getTopSolidOrLiquidBlock(randomVector().add(x, 1, z).toBlockPos());
+					int below = random.nextInt(3);
+					if(top.getY() > below) {
+						top = top.add(0, -below, 0);
+					}
+					world.setBlockState(top, ModBlocks.ASHEN.getDefaultState());
 				}
-				world.setBlockState(top, ModBlocks.ASHEN.getDefaultState());
 			}
 		}
 	}

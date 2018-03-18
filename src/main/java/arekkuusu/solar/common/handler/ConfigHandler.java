@@ -9,6 +9,8 @@ package arekkuusu.solar.common.handler;
 
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.Config.RangeDouble;
+import net.minecraftforge.common.config.Config.RangeInt;
 
 import static net.minecraftforge.common.config.Config.Comment;
 import static net.minecraftforge.common.config.Config.LangKey;
@@ -27,22 +29,27 @@ public final class ConfigHandler {
 
 	public static class Gen {
 
-		public final AshenCubeStructureConfig ASHEN_CUBE_STRUCTURE = new AshenCubeStructureConfig();
-		public final MonolithConfig MONOLITH_CONFIG = new MonolithConfig();
+		public final AshenCubeStructureConfig ashen_cube = new AshenCubeStructureConfig();
+		public final MonolithConfig monolith = new MonolithConfig();
 
 		public static class AshenCubeStructureConfig {
 
-			public final AshenWeights WEIGHTS = new AshenWeights();
+			@Config.RequiresMcRestart
+			public final AshenWeights weights = new AshenWeights();
 
 			@Comment("If the structure should generate underground only")
 			public boolean underground = true;
 			@Comment("Max amount of \"nuggets\" allowed in one Structure")
+			@RangeInt(min = 0, max = 255)
 			public int size = 25;
-			@Comment("Spread of \"nuggets\" in the Structure")
+			@Comment("Height spread of \"nuggets\" in the Structure")
+			@RangeInt(min = 0, max = 255)
 			public double spread = 15;
 			@Comment("Chance of 0-100% for loot")
+			@RangeDouble(min = 0, max = 100)
 			public double loot = 15;
 			@Comment("Chance of 0-100% to generate")
+			@RangeDouble(min = 0, max = 100)
 			public double rarity = 0.01;
 
 			public static class AshenWeights {
@@ -57,28 +64,34 @@ public final class ConfigHandler {
 
 		public static class MonolithConfig {
 
-			public final MonolithStructure MONOLITH_STRUCTURE = new MonolithStructure();
-			public final ObeliskDecorator OBELISK_DECORATOR = new ObeliskDecorator();
+			public final MonolithStructure structure = new MonolithStructure();
+			public final ObeliskDecorator decorator = new ObeliskDecorator();
 
 			public static class MonolithStructure {
 
 				@Comment("Chance of 0-100% to generate")
+				@RangeDouble(min = 0, max = 100)
 				public double rarity = 0.001;
 				@Comment("If the well generates")
 				public boolean well = true;
-				@Comment("How buried in ruins is this structure")
-				public int size = 65;
+				@Comment("How buried in ruins is this structure 0-100%")
+				@RangeInt(min = 0, max = 100)
+				public int ruins = 64;
 				@Comment("Chance of 0-100% for loot")
+				@RangeDouble(min = 0, max = 100)
 				public double loot = 15;
 			}
 
 			public static class ObeliskDecorator {
 
-				public final ObeliskWeights WEIGHTS = new ObeliskWeights();
+				@Config.RequiresMcRestart
+				public final ObeliskWeights weights = new ObeliskWeights();
 
 				@Comment("Chance of 0-100% to generate")
+				@RangeDouble(min = 0, max = 100)
 				public double rarity = 0.05;
 				@Comment("Max amount of obelisks allowed in one chunk")
+				@RangeInt(min = 0, max = 16)
 				public int size = 1;
 
 				public static class ObeliskWeights {
