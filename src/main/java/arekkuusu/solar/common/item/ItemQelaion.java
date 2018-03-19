@@ -38,7 +38,8 @@ public class ItemQelaion extends ItemBaseBlock implements IEntangledStack {
 				.ifTrueJ(builder -> getInfo(builder, uuid)
 						.condition(() -> NBTHelper.hasUniqueID(stack, "nodes"))
 						.ifTrueJ(sub -> { String key = NBTHelper.getUniqueID(stack, "nodes").toString();
-							return sub.addI18n("tlp.tag_nodes.name", Tooltip.DarkGrayItalic())
+							return sub.newline()
+									.addI18n("tlp.tag_nodes.name", Tooltip.DarkGrayItalic())
 									.add(": ").newline()
 									.add(" > ").add(key.substring(0, 18)).newline()
 									.add(" > ").add(key.substring(18)).newline();

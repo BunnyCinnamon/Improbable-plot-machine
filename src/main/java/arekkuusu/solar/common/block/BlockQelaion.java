@@ -83,11 +83,11 @@ public class BlockQelaion extends BlockBase {
 				return false;
 			}
 		} else if(stack.isEmpty()) {
-				getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
-					if(!player.isSneaking()) {
-						qelaion.put(facing);
-					} else qelaion.setNodes(null);
-				});
+			getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
+				if(!player.isSneaking()) {
+					qelaion.put(facing);
+				} else qelaion.setNodes(null);
+			});
 		}
 		return false;
 	}
@@ -135,7 +135,8 @@ public class BlockQelaion extends BlockBase {
 		getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
 			Vector3 posVec = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 			boolean on = state.getValue(HAS_NODE);
-			for(EnumFacing facing : qelaion.getOutputs()) {
+			for(EnumFacing facing : EnumFacing.values()) {
+				if(qelaion.isInput(facing)) continue;
 				for(int i = 0; i < 1 + rand.nextInt(3); i++) {
 					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 6);
 					Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 6);

@@ -48,7 +48,7 @@ entity.quantum_quartz.name=Entity Item
 
 //Tooltip
 tlp.uuid_key.name=Uuid
-tlp.tag_nodes.name=Nodes
+tlp.tag_nodes.name=Node link
 tlp.item_filter.name=Item Filter
 tlp.quantum_data.name=Quantum Data
 tlp.monolithic_description.name=Immovable Object

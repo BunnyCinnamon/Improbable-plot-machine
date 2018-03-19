@@ -15,6 +15,8 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -34,7 +36,7 @@ import java.util.stream.Collectors;
  */
 public class TileQelaion extends TileRelativeBase implements ITickable {
 
-	private Set<EnumFacing> facings = Sets.newLinkedHashSet();
+	private Set<EnumFacing> facings = Sets.newLinkedHashSet(Arrays.asList(EnumFacing.values()));
 	private int facingIndex;
 	private int nodeIndex;
 	private int outputs;
@@ -55,13 +57,14 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		if(facing == null) return false;
 		markDirty();
 		this.fake = true; //Validates the fake access
 		return hasAccess(capability, facing);
 	}
 
 	public boolean hasAccess(Capability<?> capability, @Nullable EnumFacing from) {
-		if(from == null || breakIteration()) return false;
+		if(breakIteration()) return false;
 		ImmutableList<TileQelaion> nodes;
 		if(facingIndex < outputs) {
 			return hasFacing(capability, facingIndex);
@@ -92,6 +95,7 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if(facing == null) return null;
 		markDirty();
 		if(this.fake) { //Invalidates the fake access and resets the iteration
 			this.fake = false;
@@ -102,7 +106,7 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 
 	@Nullable
 	public <T> T fromAccess(Capability<T> capability, @Nullable EnumFacing from) {
-		if(from == null || breakIteration()) return null;
+		if(breakIteration()) return null;
 		ImmutableList<TileQelaion> nodes;
 		if(facingIndex < outputs) {
 			return fromFacing(capability, facingIndex++);
@@ -179,6 +183,13 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 	}
 
 	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		super.onDataPacket(net, pkt);
+		IBlockState state = world.getBlockState(pos);
+		world.notifyBlockUpdate(pos, state, state, 16);
+	}
+
+	@Override
 	void readNBT(NBTTagCompound compound) {
 		super.readNBT(compound);
 		if(compound.hasUniqueId("nodes"))
@@ -195,7 +206,6 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 			facings.add(facing);
 		}
 		outputs = getOutputs().size();
-		if(pos != null && world != null && world.isRemote) world.markBlockRangeForRenderUpdate(pos, pos); // End me
 	}
 
 	@Override
