@@ -249,6 +249,36 @@
 			"all": "solar:blocks/ashen/ashen_blank"
 		}
 	  },
+	  "ring_horizontal_up": {
+		"textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
+	  "ring_horizontal_down": {
+		"textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
+	  "ring_vertical_north": {
+		"textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
+	  "ring_vertical_south": {
+		"textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
+	  "ring_vertical_east": {
+		"textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
+	  "ring_vertical_west": {
+		"textures": {
+			"all": "solar:blocks/ashen/ashen_blank"
+		}
+	  },
 	  "full": {
 	    "textures": {
 			"all": "solar:blocks/ashen/ashen_blank"

@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  * Created by <Arekkuusu> on 03/11/2017.
  * It's distributed as part of Solar.
  */
-public enum Direction implements IStringSerializable { //Forgive me...
+public enum Direction implements IStringSerializable { //Forgive me... 64 in total
 	//NONE
 	NON(false, false, false, false, false, false),
 	//Single
@@ -89,6 +89,13 @@ public enum Direction implements IStringSerializable { //Forgive me...
 	HORIZONTAL(false, false, true, true, true, true),
 	VERTICAL_X(true, true, false, false, true, true),
 	VERTICAL_Y(true, true, true, true, false, false),
+	//Quintuple
+	RING_HORIZONTAL_UP(false, true, true, true, true, true),
+	RING_HORIZONTAL_DOWN(true, false, true, true, true, true),
+	RING_VERTICAL_NORTH(false, true, true, false, true, true),
+	RING_VERTICAL_SOUTH(false, true, false, true, true, true),
+	RING_VERTICAL_EAST(false, true, true, true, false, true),
+	RING_VERTICAL_WEST(false, true, true, true, true, false),
 	//FULL
 	FULL(true, true, true, true, true, true);
 
@@ -110,8 +117,8 @@ public enum Direction implements IStringSerializable { //Forgive me...
 	}
 
 	public boolean apply(Boolean[] booleans) {
-		for(int i = 0; i < this.booleans.length; i++) {
-			if(i >= booleans.length || this.booleans[i] != booleans[i]) return false;
+		for(int i = 0; i < 6; i++) {
+			if(this.booleans[i] != booleans[i]) return false;
 		}
 		return true;
 	}
@@ -123,8 +130,8 @@ public enum Direction implements IStringSerializable { //Forgive me...
 
 	public static Direction getDirectionFromFacings(EnumFacing... facings) {
 		EnumFacing[] values = EnumFacing.values();
-		Boolean[] booleans = new Boolean[values.length];
-		for(int i = 0; i < values.length; i++) {
+		Boolean[] booleans = new Boolean[6];
+		for(int i = 0; i < 6; i++) {
 			EnumFacing facing = values[i];
 			booleans[i] = Arrays.stream(facings).anyMatch(f -> f == facing);
 		}
