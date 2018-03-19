@@ -9,7 +9,6 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import net.katsstuff.mirror.client.baked.Baked;
 import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.BakedPerspective;
@@ -51,6 +50,7 @@ public class BakedGravityHopper extends BakedBrightness {
 			.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 0F, 0F, 0F, 0.6F))
 			.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 1F, 0F, 0F, 0F, 0F, 0.6F))
 			.build();
+	private final QuadCache cache = new QuadCache();
 	private TextureAtlasSprite[] overlay = new TextureAtlasSprite[3];
 	private TextureAtlasSprite base;
 
@@ -70,31 +70,28 @@ public class BakedGravityHopper extends BakedBrightness {
 			this.overlay[i] = sprites.apply(ResourceLibrary.GRAVITY_HOPPER_OVERLAY[i]);
 		}
 		this.base = sprites.apply(ResourceLibrary.GRAVITY_HOPPER);
+		this.cache.reloadTextures();
 		return this;
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
-		List<BakedQuad> quads = Lists.newArrayList();
-		if(state == null) {
-			//Base
-			addCube(format, quads, EnumFacing.UP, base, base, base, false);
-			//Overlay
-			addCube(format, quads, EnumFacing.UP, overlay[0], overlay[1], overlay[2], false);
-		} else {
-			EnumFacing face = state.getValue(BlockDirectional.FACING);
-			switch(MinecraftForgeClient.getRenderLayer()) {
-				case SOLID:
-					//Base
-					addCube(format, quads, face, base, base, base, false);
-					break;
-				case CUTOUT_MIPPED:
-					//Overlay
-					addCube(format, quads, face, overlay[0], overlay[1], overlay[2], true);
-					break;
+		return cache.compute(state, quads -> {
+			if(state == null) {
+				addCube(format, quads, EnumFacing.UP, base, base, base, false);
+				addCube(format, quads, EnumFacing.UP, overlay[0], overlay[1], overlay[2], false);
+			} else {
+				EnumFacing face = state.getValue(BlockDirectional.FACING);
+				switch(MinecraftForgeClient.getRenderLayer()) {
+					case SOLID:
+						addCube(format, quads, face, base, base, base, false);
+						break;
+					case CUTOUT_MIPPED:
+						addCube(format, quads, face, overlay[0], overlay[1], overlay[2], true);
+						break;
+				}
 			}
-		}
-		return quads;
+		});
 	}
 
 	private void addCube(VertexFormat format, List<BakedQuad> quads, EnumFacing facing, TextureAtlasSprite up, TextureAtlasSprite down, TextureAtlasSprite side, boolean shine) {

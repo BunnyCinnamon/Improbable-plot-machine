@@ -10,7 +10,6 @@ package arekkuusu.solar.client.util.baker.baked;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import net.katsstuff.mirror.client.baked.Baked;
 import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.BakedPerspective;
@@ -54,6 +53,7 @@ public class BakedBlinker extends BakedBrightness {
 			.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, 3.8F, 0F, 0F, 0F, 0F, 0.25F))
 			.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 1F, 0F, 0F, -90F, 90F, 0.5F))
 			.build();
+	private final QuadCache cache = new QuadCache();
 	private TextureAtlasSprite base;
 	private TextureAtlasSprite top_on;
 	private TextureAtlasSprite bottom_on;
@@ -78,32 +78,33 @@ public class BakedBlinker extends BakedBrightness {
 
 	@Override
 	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
-		base = sprites.apply(ResourceLibrary.BLINKER_BASE);
-		top_on = sprites.apply(ResourceLibrary.BLINKER_TOP_ON);
-		bottom_on = sprites.apply(ResourceLibrary.BLINKER_BOTTOM_ON);
-		top_off = sprites.apply(ResourceLibrary.BLINKER_TOP_OFF);
-		bottom_off = sprites.apply(ResourceLibrary.BLINKER_BOTTOM_OFF);
+		this.base = sprites.apply(ResourceLibrary.BLINKER_BASE);
+		this.top_on = sprites.apply(ResourceLibrary.BLINKER_TOP_ON);
+		this.bottom_on = sprites.apply(ResourceLibrary.BLINKER_BOTTOM_ON);
+		this.top_off = sprites.apply(ResourceLibrary.BLINKER_TOP_OFF);
+		this.bottom_off = sprites.apply(ResourceLibrary.BLINKER_BOTTOM_OFF);
+		this.cache.reloadTextures();
 		return this;
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
-		List<BakedQuad> quads = Lists.newArrayList();
-		if(state == null) {
-			addBaseQuads(quads, format, EnumFacing.DOWN);
-			addOverlayQuads(quads, format, EnumFacing.DOWN, false, true);
-		} else {
-			EnumFacing facing = state.getValue(BlockDirectional.FACING);
-			switch(MinecraftForgeClient.getRenderLayer()) {
-				case SOLID:
-					addBaseQuads(quads, format, facing);
-					break;
-				case CUTOUT_MIPPED:
-					addOverlayQuads(quads, format, facing, true, state.getValue(State.ACTIVE));
-					break;
+		return cache.compute(state, quads -> {
+			if(state == null) {
+				addBaseQuads(quads, format, EnumFacing.DOWN);
+				addOverlayQuads(quads, format, EnumFacing.DOWN, true);
+			} else {
+				EnumFacing facing = state.getValue(BlockDirectional.FACING);
+				switch(MinecraftForgeClient.getRenderLayer()) {
+					case SOLID:
+						addBaseQuads(quads, format, facing);
+						break;
+					case CUTOUT_MIPPED:
+						addOverlayQuads(quads, format, facing, state.getValue(State.ACTIVE));
+						break;
+				}
 			}
-		}
-		return quads;
+		});
 	}
 
 	private void addBaseQuads(List<BakedQuad> quads, VertexFormat format, EnumFacing facing) {
@@ -118,14 +119,14 @@ public class BakedBlinker extends BakedBrightness {
 		);
 	}
 
-	private void addOverlayQuads(List<BakedQuad> quads, VertexFormat format, EnumFacing facing, boolean bright, boolean on) {
+	private void addOverlayQuads(List<BakedQuad> quads, VertexFormat format, EnumFacing facing, boolean on) {
 		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(2, 0, 2)
 				.setTo(14, 1, 14)
 				.addAll(2F, 14F, 2F, 2F, on ? top_on : top_off)
 				.addFace(UP, 2F, 14F, 2F, 14F, on ? top_on : top_off)
 				.addFace(DOWN, 2F, 14F, 2F, 14F, on ? bottom_on : bottom_off)
-				.setHasBrightness(bright)
+				.setHasBrightness(true)
 				.rotate(facing, DOWN)
 				.bakeJava()
 		);

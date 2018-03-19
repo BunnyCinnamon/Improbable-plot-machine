@@ -33,6 +33,7 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class BakedSchrodingerGlyph extends BakedBrightness {
 
+	private final QuadCache cache = new QuadCache();
 	private TextureAtlasSprite overlay;
 	private TextureAtlasSprite base;
 
@@ -53,26 +54,27 @@ public class BakedSchrodingerGlyph extends BakedBrightness {
 	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
 		this.overlay = sprites.apply(ResourceLibrary.SCHRODINGER_GLYPH);
 		this.base = sprites.apply(ResourceLibrary.PRIMAL_STONE);
+		this.cache.reloadTextures();
 		return this;
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
-		List<BakedQuad> quads = Lists.newArrayList();
-		if(state == null) {
-			addBaseQuads(quads, format);
-			addOverlayQuads(quads, format, false);
-		} else {
-			switch(MinecraftForgeClient.getRenderLayer()) {
-				case SOLID:
-					addBaseQuads(quads, format);
-					break;
-				case CUTOUT_MIPPED:
-					addOverlayQuads(quads, format, true);
-					break;
+		return cache.compute(state, quads -> {
+			if(state == null) {
+				addBaseQuads(quads, format);
+				addOverlayQuads(quads, format, false);
+			} else {
+				switch(MinecraftForgeClient.getRenderLayer()) {
+					case SOLID:
+						addBaseQuads(quads, format);
+						break;
+					case CUTOUT_MIPPED:
+						addOverlayQuads(quads, format, true);
+						break;
+				}
 			}
-		}
-		return quads;
+		});
 	}
 
 	private void addBaseQuads(List<BakedQuad> quads, VertexFormat format) {

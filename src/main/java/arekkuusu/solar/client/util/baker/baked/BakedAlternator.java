@@ -9,7 +9,6 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
-import com.google.common.collect.Lists;
 import net.katsstuff.mirror.client.baked.Baked;
 import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
@@ -35,16 +34,17 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class BakedAlternator extends BakedBrightness {
 
+	private QuadCache cache = new QuadCache();
 	private TextureAtlasSprite base;
-	private TextureAtlasSprite overlay_on;
-	private TextureAtlasSprite overlay_off;
+	private TextureAtlasSprite on;
+	private TextureAtlasSprite off;
 
 	@Override
 	public ResourceLocation[] getTextures() {
 		return new ResourceLocation[]{
 				ResourceLibrary.ALTERNATOR_BASE,
-				ResourceLibrary.ALTERNATOR_OVERLAY_ON,
-				ResourceLibrary.ALTERNATOR_OVERLAY_OFF
+				ResourceLibrary.ALTERNATOR_ON,
+				ResourceLibrary.ALTERNATOR_OFF
 		};
 	}
 
@@ -56,28 +56,27 @@ public class BakedAlternator extends BakedBrightness {
 	@Override
 	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
 		this.base = sprites.apply(ResourceLibrary.ALTERNATOR_BASE);
-		this.overlay_on = sprites.apply(ResourceLibrary.ALTERNATOR_OVERLAY_ON);
-		this.overlay_off = sprites.apply(ResourceLibrary.ALTERNATOR_OVERLAY_OFF);
+		this.on = sprites.apply(ResourceLibrary.ALTERNATOR_ON);
+		this.off = sprites.apply(ResourceLibrary.ALTERNATOR_OFF);
+		this.cache.reloadTextures();
 		return this;
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
-		List<BakedQuad> quads = Lists.newArrayList();
-		if(state == null) {
-			addBaseQuads(quads, format);
-			addOverlayQuads(quads, format, false, true);
-		} else {
-			switch(MinecraftForgeClient.getRenderLayer()) {
+		return cache.compute(state, quads -> {
+			if(state == null) {
+				addBaseQuads(quads, format);
+				addInQuads(quads, format, true);
+			} else switch(MinecraftForgeClient.getRenderLayer()) {
 				case SOLID:
 					addBaseQuads(quads, format);
 					break;
 				case CUTOUT_MIPPED:
-					addOverlayQuads(quads, format, true, state.getValue(State.ACTIVE));
+					addInQuads(quads, format, state.getValue(State.ACTIVE));
 					break;
 			}
-		}
-		return quads;
+		});
 	}
 
 	private void addBaseQuads(List<BakedQuad> quads, VertexFormat format) {
@@ -99,12 +98,12 @@ public class BakedAlternator extends BakedBrightness {
 		}
 	}
 
-	private void addOverlayQuads(List<BakedQuad> quads, VertexFormat format, boolean bright, boolean active) {
+	private void addInQuads(List<BakedQuad> quads, VertexFormat format, boolean active) {
 		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(2.5F, 2.5F, 2.5F)
 				.setTo(13.5F, 13.5F, 13.5F)
-				.addAll(0F, 11F, 0F, 11F, active ? overlay_on : overlay_off)
-				.setHasBrightness(bright)
+				.addAll(0F, 11F, 0F, 11F, active ? on : off)
+				.setHasBrightness(true)
 				.bakeJava()
 		);
 	}

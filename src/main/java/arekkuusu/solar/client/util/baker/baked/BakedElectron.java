@@ -9,7 +9,6 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.ResourceLibrary;
-import com.google.common.collect.Lists;
 import net.katsstuff.mirror.client.baked.Baked;
 import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
@@ -33,6 +32,7 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class BakedElectron extends BakedBrightness {
 
+	private final QuadCache cache = new QuadCache();
 	private TextureAtlasSprite base_on;
 	private TextureAtlasSprite base_off;
 
@@ -53,18 +53,19 @@ public class BakedElectron extends BakedBrightness {
 	public Baked applyTextures(Function<ResourceLocation, TextureAtlasSprite> sprites) {
 		this.base_on = sprites.apply(ResourceLibrary.ELECTRON_ON);
 		this.base_off = sprites.apply(ResourceLibrary.ELECTRON_OFF);
+		this.cache.reloadTextures();
 		return this;
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
-		List<BakedQuad> quads = Lists.newArrayList();
-		if(state == null) {
-			addBase(quads, format, false);
-		} else {
-			addBase(quads, format, state.getValue(State.POWER) > 0);
-		}
-		return quads;
+		return cache.compute(state, quads -> {
+			if(state == null) {
+				addBase(quads, format, false);
+			} else {
+				addBase(quads, format, state.getValue(State.POWER) > 0);
+			}
+		});
 	}
 
 	private void addBase(List<BakedQuad> quads, VertexFormat format, boolean on) {

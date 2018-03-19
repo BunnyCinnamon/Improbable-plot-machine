@@ -9,7 +9,6 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.common.block.BlockMonolithicGlyph;
-import com.google.common.collect.Lists;
 import net.katsstuff.mirror.client.baked.Baked;
 import net.katsstuff.mirror.client.baked.BakedBrightness;
 import net.katsstuff.mirror.client.baked.QuadBuilder;
@@ -36,6 +35,7 @@ import java.util.function.Function;
 @SideOnly(Side.CLIENT)
 public class BakedMonolithicGlyph extends BakedBrightness {
 
+	private final QuadCache cache = new QuadCache();
 	private TextureAtlasSprite[] overlay = new TextureAtlasSprite[16];
 	private TextureAtlasSprite base;
 
@@ -57,37 +57,36 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 			this.overlay[i] = sprites.apply(ResourceLibrary.MONOLITHIC_OVERLAY[i]);
 		}
 		this.base = sprites.apply(ResourceLibrary.MONOLITHIC);
+		this.cache.reloadTextures();
 		return this;
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
-		List<BakedQuad> quads = Lists.newArrayList();
-		switch(MinecraftForgeClient.getRenderLayer()) {
-			case SOLID:
-				//Base
-				quads.addAll(QuadBuilder.withFormat(format)
-						.setFrom(0, 0, 0)
-						.setTo(16, 16, 16)
-						.addAll(base)
-						.bakeJava()
-				);
-				break;
-			case CUTOUT_MIPPED:
-				//Overlay
-				if(state != null) {
-					int glyph = state.getValue(BlockMonolithicGlyph.GLYPH);
+		return cache.compute(state, quads -> {
+			switch(MinecraftForgeClient.getRenderLayer()) {
+				case SOLID:
 					quads.addAll(QuadBuilder.withFormat(format)
 							.setFrom(0, 0, 0)
 							.setTo(16, 16, 16)
-							.setHasBrightness(true)
-							.addAll(overlay[glyph])
+							.addAll(base)
 							.bakeJava()
 					);
-				}
-				break;
-		}
-		return quads;
+					break;
+				case CUTOUT_MIPPED:
+					if(state != null) {
+						int glyph = state.getValue(BlockMonolithicGlyph.GLYPH);
+						quads.addAll(QuadBuilder.withFormat(format)
+								.setFrom(0, 0, 0)
+								.setTo(16, 16, 16)
+								.setHasBrightness(true)
+								.addAll(overlay[glyph])
+								.bakeJava()
+						);
+					}
+					break;
+			}
+		});
 	}
 
 	@Override

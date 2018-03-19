@@ -58,8 +58,8 @@ public final class ResourceLibrary {
 	public static final ResourceLocation VACUUM_CONVEYOR = getBlockTexture("vacuum_conveyor");
 	public static final ResourceLocation MECHANICAL_TRANSLOCATOR = getBlockTexture("mechanical_translocator");
 	public static final ResourceLocation ALTERNATOR_BASE = getBlockTexture("alternator/base");
-	public static final ResourceLocation ALTERNATOR_OVERLAY_ON = getBlockTexture("alternator/overlay_on");
-	public static final ResourceLocation ALTERNATOR_OVERLAY_OFF = getBlockTexture("alternator/overlay_off");
+	public static final ResourceLocation ALTERNATOR_ON = getBlockTexture("alternator/on");
+	public static final ResourceLocation ALTERNATOR_OFF = getBlockTexture("alternator/off");
 	public static final ResourceLocation HYPER_CONDUCTOR = getBlockTexture("hyper_conductor");
 	public static final ResourceLocation QELAION_BASE = getBlockTexture("qelaion/base");
 	public static final ResourceLocation QELAION_ON = getBlockTexture("qelaion/on");
