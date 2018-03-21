@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement.neutron.data;
 
-import arekkuusu.solar.api.entanglement.inventory.IEntangledIItemStack;
+import arekkuusu.solar.api.entanglement.IEntangledStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -18,7 +18,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
-public class NeutronStackWrapper<T extends Item & IEntangledIItemStack> extends NeutronWrapper {
+public class NeutronStackWrapper<T extends Item & IEntangledStack> extends NeutronWrapper {
 
 	private final T holder;
 	private final ItemStack stack;
