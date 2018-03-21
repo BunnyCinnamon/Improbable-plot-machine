@@ -58,7 +58,7 @@ public final class RayTraceHelper {
 		return result == null ? null : new RayTraceResult(result.hitVec.addVector(x, y, z), result.sideHit, pos);
 	}
 
-	public static RayTraceResult tracePlayerHighlight(EntityPlayerMP player) {
+	public static RayTraceResult tracePlayerHighlight(EntityPlayer player) {
 		Vec3d eyes = player.getPositionEyes(1F);
 		Vec3d look = player.getLookVec();
 		double range = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();

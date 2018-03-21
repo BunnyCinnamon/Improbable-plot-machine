@@ -11,12 +11,15 @@ import arekkuusu.solar.common.entity.ModEntities;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.handler.gen.ModGen;
 import arekkuusu.solar.common.lib.LibMod;
+import arekkuusu.solar.common.network.GuiHandler;
 import arekkuusu.solar.common.network.PacketHandler;
 import arekkuusu.solar.common.proxy.IProxy;
+import arekkuusu.solar.common.theorem.ModTheorems;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +39,6 @@ public class Solar {
 	public static IProxy PROXY;
 	@Instance
 	public static Solar INSTANCE;
-	//Logger used to log stuff in the loggerino
 	public static Logger LOG = LogManager.getLogger(LibMod.MOD_NAME);
 
 	@EventHandler
@@ -45,11 +47,13 @@ public class Solar {
 		WorldQuantumData.init(event.getAsmData());
 		PacketHandler.init();
 		ModEntities.init();
+		ModTheorems.init();
 		ModGen.init();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		PROXY.init(event);
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 	}
 }

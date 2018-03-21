@@ -10,7 +10,7 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;

@@ -84,6 +84,7 @@ public abstract class TileSimpleLinkBase extends TileBase implements ISimpleLink
 		remove();
 		this.key = key;
 		add();
+		markDirty();
 	}
 
 	@Override

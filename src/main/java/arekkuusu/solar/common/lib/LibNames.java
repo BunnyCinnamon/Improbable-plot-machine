@@ -38,7 +38,7 @@ public class LibNames {
 	public static final String MECHANICAL_TRANSLOCATOR = "mechanical_translocator";
 	public static final String ALTERNATOR = "alternator";
 	public static final String QELAION = "qelaion";
-	public static final String POCKET_STAR = "pocket_star";
 	public static final String DILATON = "dilaton";
 	public static final String DILATON_EXTENSION = "dilaton_extension";
+	public static final String NEUTRON_BATTERY = "neutron_battery";
 }

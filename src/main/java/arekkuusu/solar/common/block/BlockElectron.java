@@ -9,7 +9,7 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.sound.SolarSounds;
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.api.tool.FixedDamage;
+import arekkuusu.solar.api.util.FixedDamage;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedElectron;

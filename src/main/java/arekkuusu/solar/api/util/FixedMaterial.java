@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.tool;
+package arekkuusu.solar.api.util;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;

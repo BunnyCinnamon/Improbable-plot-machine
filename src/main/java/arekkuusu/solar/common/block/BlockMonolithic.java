@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.common.lib.LibNames;
 import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.block.state.IBlockState;

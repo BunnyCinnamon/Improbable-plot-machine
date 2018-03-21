@@ -50,6 +50,7 @@ public final class ModBlocks {
 	public static final Block DILATON = PLACE_HOLDER;
 	public static final Block DILATON_EXTENSION = PLACE_HOLDER;
 	public static final Block QELAION = PLACE_HOLDER;
+	public static final Block NEUTRON_BATTERY = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -75,6 +76,7 @@ public final class ModBlocks {
 		registry.register(new BlockDilaton());
 		registry.register(new BlockDilaton.BlockDilatonExtension());
 		registry.register(new BlockQelaion());
+		registry.register(new BlockNeutronBattery());
 		registerTiles();
 	}
 
@@ -92,6 +94,7 @@ public final class ModBlocks {
 		registerTile(TileAlternator.class, LibNames.ALTERNATOR);
 		registerTile(TileDilaton.class, LibNames.DILATON);
 		registerTile(TileQelaion.class, LibNames.QELAION);
+		registerTile(TileNeutronBattery.class, LibNames.NEUTRON_BATTERY);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {

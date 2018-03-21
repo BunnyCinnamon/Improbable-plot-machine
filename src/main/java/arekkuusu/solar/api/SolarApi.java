@@ -18,9 +18,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * This class was created by <Arekkuusu> on 21/06/2017.
- * It's distributed as part of Solar under
- * the MIT license.
+ * Created by <Arekkuusu> on 21/06/2017.
+ * It's distributed as part of Solar.
  */
 //If you modify any of these I will break your bones
 public class SolarApi {

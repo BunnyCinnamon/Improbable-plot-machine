@@ -68,6 +68,7 @@ public abstract class TileEntangledBase<Q extends EntangledTileWrapper> extends 
 	public void setKey(@Nullable UUID key) {
 		if(!getKey().isPresent() || EntangledIItemHandler.getEntanglement(this.key).stacks.isEmpty()) {
 			this.key = key;
+			markDirty();
 		}
 	}
 }

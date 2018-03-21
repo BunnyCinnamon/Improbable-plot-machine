@@ -78,6 +78,7 @@ public abstract class TileRelativeBase extends TileBase implements IRelativeTile
 		remove();
 		this.key = key;
 		add();
+		markDirty();
 	}
 
 	@Override

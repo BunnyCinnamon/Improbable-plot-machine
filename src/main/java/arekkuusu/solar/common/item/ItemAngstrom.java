@@ -12,9 +12,7 @@ import arekkuusu.solar.common.block.ModBlocks;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -36,8 +34,8 @@ public class ItemAngstrom extends ItemBaseBlock {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand); //Not entirely convinced it works
-		RayTraceResult result = world.isRemote ? RayTraceHelper.tracePlayerHighlight((EntityPlayerSP) player) : RayTraceHelper.tracePlayerHighlight((EntityPlayerMP) player);
+		ItemStack stack = player.getHeldItem(hand);
+		RayTraceResult result = RayTraceHelper.tracePlayerHighlight(player);
 		if(result.typeOfHit != RayTraceResult.Type.BLOCK) {
 			if(!world.isRemote) {
 				Vector3 vec = Vector3.apply(player.posX, player.posY + player.getEyeHeight(), player.posZ)

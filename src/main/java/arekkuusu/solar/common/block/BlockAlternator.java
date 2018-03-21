@@ -9,7 +9,7 @@ package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.api.tool.FixedMaterial;
+import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedAlternator;
 import arekkuusu.solar.client.util.helper.ModelHandler;

@@ -26,7 +26,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 10/12/2017.
  * It's distributed as part of Solar.
  */
-public class PacketHelper {
+public final class PacketHelper {
 
 	public static void sendQuantumChange(UUID uuid, ItemStack stack, int slot) {
 		NBTTagCompound tag = new NBTTagCompound();
