@@ -61,6 +61,7 @@ public final class ModItems {
 		registry.register(new ItemDilaton());
 		registry.register(itemBlock(ModBlocks.DILATON_EXTENSION));
 		registry.register(new ItemQelaion());
+		registry.register(new ItemNeutronBattery());
 	}
 
 	@SuppressWarnings("ConstantConditions")

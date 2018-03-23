@@ -39,6 +39,7 @@ tile.alternator.name=Alternator
 tile.dilaton.name=Dilaton
 tile.dilaton_extension.name=Dilaton Extension
 tile.qelaion.name=Qelaion
+tile.neutron_battery.name=Neutron Battery
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger

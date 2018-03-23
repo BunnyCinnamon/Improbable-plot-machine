@@ -9,6 +9,7 @@ package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.IEntangledTile;
 import arekkuusu.solar.api.entanglement.neutron.data.NeutronTileWrapper;
+import arekkuusu.solar.common.block.BlockNeutronBattery;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -33,6 +34,10 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 		handler = new NeutronTileWrapper<>(this, capacity.max);
 	}
 
+	public Capacity getCapacityLazy() {
+		return getStateValue(BlockNeutronBattery.CAPACITY, pos).orElse(Capacity.BLUE);
+	}
+
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 		return capability == ModCapability.NEUTRON_CAPABILITY || hasCapability(capability, facing);
@@ -48,7 +53,7 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 
 	@Override
 	public Optional<UUID> getKey() {
-		return Optional.empty();
+		return Optional.ofNullable(key);
 	}
 
 	@Override
@@ -72,14 +77,16 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 	}
 
 	public enum Capacity implements IStringSerializable {
-		BLUE(64),
-		GREEN(512),
-		PINK(4096);
+		BLUE(64, 0x2FFEEB),
+		GREEN(512, 0x29FF75),
+		PINK(4096, 0xFF39BA);
 
 		public final int max;
+		public final int color;
 
-		Capacity(int max) {
+		Capacity(int max, int color) {
 			this.max = max;
+			this.color = color;
 		}
 
 		@Override

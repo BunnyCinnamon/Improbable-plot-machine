@@ -31,6 +31,9 @@ public final class ResourceLibrary {
 		ATLAS_SET = Sets.newHashSet();
 		getBlockTexture("qimranut/overlay");
 		getBlockTexture("qelaion/inside");
+		getBlockTexture("neutron_battery/blue");
+		getBlockTexture("neutron_battery/green");
+		getBlockTexture("neutron_battery/pink");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation[] MONOLITHIC_OVERLAY = ResourceHelperStatic.from(16, "monolithic/glyph_overlay_",
@@ -64,6 +67,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation QELAION_BASE = getBlockTexture("qelaion/base");
 	public static final ResourceLocation QELAION_ON = getBlockTexture("qelaion/on");
 	public static final ResourceLocation QELAION_OFF = getBlockTexture("qelaion/off");
+	public static final ResourceLocation NEUTRON_BATTERY = getBlockTexture("neutron_battery/base");
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");

@@ -49,7 +49,11 @@ public enum BlockBaker {
 	QIMRANUT("qimranut"),
 	QIMRANUT_("qimranut_"),
 	QIMRANUT_RING("qimranut_ring"),
-	QELAION("qelaion");
+	QELAION("qelaion"),
+	NEUTRON_BATTERY_BASE("neutron_battery_base"),
+	NEUTRON_BATTERY_BLUE("neutron_battery_blue"),
+	NEUTRON_BATTERY_GREEN("neutron_battery_green"),
+	NEUTRON_BATTERY_PINK("neutron_battery_pink");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;

@@ -12,10 +12,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * Created by <Arekkuusu> on 14/03/2018.
@@ -81,6 +83,16 @@ public final class NBTHelper {
 
 	public static UUID getUniqueID(ItemStack stack, String tag) {
 		return fixNBT(stack).getUniqueId(tag);
+	}
+
+	public static <T extends Enum<T> & IStringSerializable> void setEnum(ItemStack stack, T t, String tag) {
+		String value = t.getName();
+		fixNBT(stack).setString(tag, value);
+	}
+
+	public static <T extends Enum<T> & IStringSerializable> Optional<T> getEnum(Class<T> clazz, ItemStack stack, String tag) {
+		String value = fixNBT(stack).getString(tag);
+		return Stream.of(clazz.getEnumConstants()).filter(e -> e.getName().equals(value)).findAny();
 	}
 
 	public static <T extends NBTBase> T setNBT(ItemStack stack, String tag, T base) {

@@ -41,49 +41,10 @@ import java.util.function.Consumer;
 public final class RenderHelper {
 
 	private static final Random BEAM_RAND = new Random();
-	private static int sphere;
-	private static int cube;
 
 	public static void bake() {
-		//--------------------Sphere--------------------//
-		sphere = addDraw(new Sphere(), GLU.GLU_FILL, GLU.GLU_FLAT, form -> form.draw(1F, 16, 16));
-
-		//---------------------Cube---------------------//
-		cube = addDraw(new Cube(), GLU.GLU_FILL, GLU.GLU_FLAT, Cube::draw);
-
-		//-----------------Json Models-----------------//
 		BlockBaker.bakeAll();
 		Solar.LOG.info("[PIE HAS BEEN SUCCESSFULLY BAKED!]");
-	}
-
-	private static <T extends Quadric> int addDraw(T form, int draw, int normal, Consumer<T> consumer) {
-		form.setDrawStyle(draw);
-		form.setNormals(normal);
-		int id = GL11.glGenLists(1);
-
-		GL11.glNewList(id, GL11.GL_COMPILE);
-		consumer.accept(form);
-		GL11.glEndList();
-
-		return id;
-	}
-
-	public static void drawSphere(int color, float alpha) {
-		float r = (color >> 16 & 255) / 255.0F;
-		float g = (color >> 8 & 255) / 255.0F;
-		float b = (color & 255) / 255.0F;
-
-		GlStateManager.color(r, g, b, alpha);
-		GL11.glCallList(sphere);
-	}
-
-	public static void drawCube(int color, float alpha) {
-		float r = (color >> 16 & 255) / 255.0F;
-		float g = (color >> 8 & 255) / 255.0F;
-		float b = (color & 255) / 255.0F;
-
-		GlStateManager.color(r, g, b, alpha);
-		GL11.glCallList(cube);
 	}
 
 	public static float getRenderWorldTime(float partialTicks) {
