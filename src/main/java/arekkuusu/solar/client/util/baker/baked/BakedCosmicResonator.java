@@ -44,7 +44,7 @@ public class BakedCosmicResonator extends BakedBrightness {
 
 	@Override
 	public ResourceLocation[] getTextures() {
-		return (ResourceLocation[]) ResourceLibrary.MOON_PHASES.values().toArray();
+		return ResourceLibrary.MOON_PHASES.values().toArray(new ResourceLocation[0]);
 	}
 
 	@Override
