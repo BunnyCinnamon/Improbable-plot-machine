@@ -31,7 +31,7 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
 		ItemStack stack = SpecialModelRenderer.getTempItemRenderer();
-		renderModel(NBTHelper.getEnum(Capacity.class, stack, "capacity").orElse(Capacity.BLUE), x, y, z, partialTicks);
+		renderModel(NBTHelper.getEnum(Capacity.class, stack, "neutron_nbt").orElse(Capacity.BLUE), x, y, z, partialTicks);
 	}
 
 	private void renderModel(Capacity capacity, double x, double y, double z, float partialTicks) {
