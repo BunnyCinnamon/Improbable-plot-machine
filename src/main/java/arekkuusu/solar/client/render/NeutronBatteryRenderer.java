@@ -8,13 +8,12 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
-import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery.Capacity;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 
@@ -36,15 +35,14 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 	}
 
 	private void renderModel(Capacity capacity, double x, double y, double z, float partialTicks) {
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		BlockBaker.render(BlockBaker.NEUTRON_BATTERY_BASE);
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
-		GLHelper.lightMap(255F, 255F);
+		ShaderLibrary.BRIGHT.begin();
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
 		RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 0.5F, 15F);
 		switch(capacity) {
 			case BLUE:
@@ -57,7 +55,7 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 				BlockBaker.render(BlockBaker.NEUTRON_BATTERY_PINK);
 				break;
 		}
-		GLHelper.lightMap(prevU, prevV);
+		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();

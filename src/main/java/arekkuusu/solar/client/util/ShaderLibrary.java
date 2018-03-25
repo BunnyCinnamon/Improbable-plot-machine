@@ -31,6 +31,11 @@ public final class ShaderLibrary {
 			ImmutableList.of(ShaderType.fragment(),  ShaderType.vertex()),
 			ImmutableMap.of("alpha", UniformType.unFloat())
 	);
+	public static final MirrorShaderProgram BRIGHT = loadProgram(
+			ResourceLibrary.BRIGHT_SHADER,
+			ImmutableList.of(ShaderType.fragment(),  ShaderType.vertex()),
+			ImmutableMap.of("brightness", UniformType.unFloat())
+	);
 
 	private static MirrorShaderProgram loadProgram(ResourceLocation location, List<ShaderType> shaders, Map<String, UniformType> types) {
 		Map<String, UniformBase<? extends UniformType>> uniforms = Maps.newHashMap();

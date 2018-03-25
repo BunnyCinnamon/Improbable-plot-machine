@@ -32,6 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 /**
  * Created by <Arekkuusu> on 20/03/2018.
@@ -53,6 +54,11 @@ public class BlockNeutronBattery extends BlockBase {
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		ItemStack stack = placer.getHeldItem(hand);
 		return getDefaultState().withProperty(CAPACITY, NBTHelper.getEnum(Capacity.class, stack, "capacity").orElse(Capacity.BLUE));
+	}
+
+	@Override
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+
 	}
 
 	@Override

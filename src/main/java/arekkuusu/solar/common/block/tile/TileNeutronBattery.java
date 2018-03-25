@@ -34,6 +34,8 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 		handler = new NeutronTileWrapper<>(this, capacity.max);
 	}
 
+	public TileNeutronBattery() {} //Why...
+
 	public Capacity getCapacityLazy() {
 		return getStateValue(BlockNeutronBattery.CAPACITY, pos).orElse(Capacity.BLUE);
 	}

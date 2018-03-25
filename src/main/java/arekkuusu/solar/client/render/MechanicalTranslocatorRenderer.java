@@ -7,12 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
-import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileMechanicalTranslocator;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
 
@@ -41,8 +40,6 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 	}
 
 	private void renderModel(@Nullable EnumFacing facing, float tick, boolean active, double x, double y, double z, float partialTicks) {
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -72,7 +69,8 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		GlStateManager.popMatrix();
 		if(active) {
 			GlStateManager.disableLighting();
-			GLHelper.lightMap(255F, 255F);
+			ShaderLibrary.BRIGHT.begin();
+			ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
 		}
 		//Middle
 		GlStateManager.pushMatrix();
@@ -102,8 +100,8 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		/*--- Inwards ---*/
 		GlStateManager.popMatrix();
 		if(active) {
-			GLHelper.lightMap(prevU, prevV);
 			GlStateManager.enableLighting();
+			ShaderLibrary.BRIGHT.end();
 		}
 		GlStateManager.popMatrix();
 	}

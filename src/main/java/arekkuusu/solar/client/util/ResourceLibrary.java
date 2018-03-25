@@ -75,6 +75,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(TextureLocation.Model(), "eye_of_schrodinger");
 	//Shader
 	public static final ResourceLocation BLEND_SHADER = getShader(ShaderLocation.Program(), "blend");
+	public static final ResourceLocation BRIGHT_SHADER = getShader(ShaderLocation.Program(), "bright");
 
 	private static ResourceLocation getBlockTexture(String name) {
 		ResourceLocation location = ResourceHelperStatic.getAtlas(LibMod.MOD_ID, TextureLocation.Blocks(), name);

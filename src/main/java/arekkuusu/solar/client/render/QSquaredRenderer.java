@@ -7,12 +7,15 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import arekkuusu.solar.common.block.tile.TileQSquared;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,9 +43,8 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 
 	private void renderModel(float tick, double x, double y, double z) {
 		ProfilerHelper.begin("[Q²] - Rendering waves");
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
-		GLHelper.lightMap(255F, 255F);
+		ShaderLibrary.BRIGHT.begin();
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
@@ -51,7 +53,7 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
-		GLHelper.lightMap(prevU, prevV);
+		ShaderLibrary.BRIGHT.end();
 		ProfilerHelper.end();
 	}
 

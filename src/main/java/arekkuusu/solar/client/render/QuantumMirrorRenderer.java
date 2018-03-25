@@ -8,6 +8,7 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.RenderHelper;
@@ -63,13 +64,13 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 			renderItem(stack, tick, x, y, z, partialTicks);
 		}
 		GLHelper.disableDepth();
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
-		float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
-		if(brigthness < 0) brigthness *= -1;
-		brigthness *= 255F;
 		GlStateManager.disableLighting();
-		GLHelper.lightMap(brigthness, brigthness);
+		ShaderLibrary.BRIGHT.begin();
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
+			if(brigthness < 0) brigthness *= -1;
+			b.set(brigthness);
+		});
 		//
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
@@ -81,7 +82,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
 		//
-		GLHelper.lightMap(prevU, prevV);
+		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		GLHelper.enableDepth();
 	}

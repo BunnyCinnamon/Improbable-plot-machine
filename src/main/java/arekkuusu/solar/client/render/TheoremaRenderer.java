@@ -8,10 +8,13 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
-import arekkuusu.solar.client.util.helper.GLHelper;
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.common.block.tile.TileTheorema;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
@@ -45,9 +48,8 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 	}
 
 	private void renderModel(@Nullable TileTheorema pandora, double x, double y, double z) {
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
-		GLHelper.lightMap(255F, 255F);
+		ShaderLibrary.BRIGHT.begin();
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
 		RAND.setSeed(31100L);
 		GlStateManager.texGen(GlStateManager.TexGen.S, 9216);
 		GlStateManager.texGen(GlStateManager.TexGen.T, 9216);
@@ -146,7 +148,7 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		GlStateManager.disableTexGenCoord(GlStateManager.TexGen.T);
 		GlStateManager.disableTexGenCoord(GlStateManager.TexGen.R);
 		GlStateManager.enableLighting();
-		GLHelper.lightMap(prevU, prevV);
+		ShaderLibrary.BRIGHT.end();
 	}
 
 	private int getPasses(double squared) {
