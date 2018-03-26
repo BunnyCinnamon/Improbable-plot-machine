@@ -43,7 +43,7 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
-		RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 0.5F, 15F);
+		RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 1.5F, 15F);
 		switch(capacity) {
 			case BLUE:
 				BlockBaker.render(BlockBaker.NEUTRON_BATTERY_BLUE);
