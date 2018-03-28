@@ -5,10 +5,11 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.neutron.data;
+package arekkuusu.solar.api.entanglement.energy.data;
 
-import arekkuusu.solar.api.entanglement.IEntangledTile;
-import net.minecraft.tileentity.TileEntity;
+import arekkuusu.solar.api.entanglement.IEntangledStack;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -17,17 +18,19 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
-public class NeutronTileWrapper<T extends TileEntity & IEntangledTile> extends NeutronWrapper {
+public class LumenStackWrapper<T extends Item & IEntangledStack> extends LumenWrapper {
 
-	private T tile;
+	private final T holder;
+	private final ItemStack stack;
 
-	public NeutronTileWrapper(T tile, int max) {
+	public LumenStackWrapper(T holder, ItemStack stack, int max) {
 		super(max);
-		this.tile = tile;
+		this.holder = holder;
+		this.stack = stack;
 	}
 
 	@Override
 	public Optional<UUID> getKey() {
-		return tile.getKey();
+		return holder.getKey(stack);
 	}
 }

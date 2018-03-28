@@ -5,9 +5,9 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.neutron.data;
+package arekkuusu.solar.api.entanglement.energy.data;
 
-import arekkuusu.solar.api.entanglement.neutron.NeutronHandler;
+import arekkuusu.solar.api.entanglement.energy.NeutronHandler;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -16,11 +16,11 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
-public abstract class NeutronWrapper implements INeutron {
+public abstract class LumenWrapper implements ILumen {
 
 	private int max;
 
-	public NeutronWrapper(int max) {
+	public LumenWrapper(int max) {
 		this.max = max;
 	}
 

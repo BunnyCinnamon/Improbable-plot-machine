@@ -5,10 +5,10 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.neutron;
+package arekkuusu.solar.api.entanglement.energy;
 
 import arekkuusu.solar.api.entanglement.quantum.QuantumDataHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.NeutronData;
+import arekkuusu.solar.api.entanglement.quantum.data.LumenData;
 
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ public final class NeutronHandler {
 		getNeutronData(uuid).set(neutrons);
 	}
 
-	public static NeutronData getNeutronData(UUID uuid) {
-		return QuantumDataHandler.getOrCreate(uuid, NeutronData::new);
+	public static LumenData getNeutronData(UUID uuid) {
+		return QuantumDataHandler.getOrCreate(uuid, LumenData::new);
 	}
 }

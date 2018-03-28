@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.IEntangledTile;
-import arekkuusu.solar.api.entanglement.neutron.data.NeutronTileWrapper;
+import arekkuusu.solar.api.entanglement.energy.data.LumenTileWrapper;
 import arekkuusu.solar.common.block.BlockNeutronBattery;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,11 +27,11 @@ import java.util.UUID;
  */
 public class TileNeutronBattery extends TileBase implements IEntangledTile {
 
-	private NeutronTileWrapper<TileNeutronBattery> handler;
+	private LumenTileWrapper<TileNeutronBattery> handler;
 	private UUID key;
 
 	public TileNeutronBattery(Capacity capacity) {
-		handler = new NeutronTileWrapper<>(this, capacity.max);
+		handler = new LumenTileWrapper<>(this, capacity.max);
 	}
 
 	public TileNeutronBattery() {} //Why...
@@ -42,14 +42,14 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.NEUTRON_CAPABILITY || hasCapability(capability, facing);
+		return capability == ModCapability.LUMEN_CAPABILITY || hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.NEUTRON_CAPABILITY
-				? ModCapability.NEUTRON_CAPABILITY.cast(handler)
+		return capability == ModCapability.LUMEN_CAPABILITY
+				? ModCapability.LUMEN_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
 	}
 

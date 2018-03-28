@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.neutron.data;
+package arekkuusu.solar.api.entanglement.energy.data;
 
 import java.util.concurrent.Callable;
 
@@ -13,12 +13,12 @@ import java.util.concurrent.Callable;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
-public interface INeutron {
-	Callable<INeutron> DEFAULT = Empty::new;
+public interface ILumen {
+	Callable<ILumen> DEFAULT = Empty::new;
 	int get();
 	void set(int neutrons);
 }
-class Empty implements INeutron {
+class Empty implements ILumen {
 
 	private int neutrons;
 

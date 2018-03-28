@@ -8,8 +8,8 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.entanglement.neutron.data.NeutronStackProvider;
-import arekkuusu.solar.api.entanglement.neutron.data.NeutronStackWrapper;
+import arekkuusu.solar.api.entanglement.energy.data.LumenStackProvider;
+import arekkuusu.solar.api.entanglement.energy.data.LumenStackWrapper;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery.Capacity;
@@ -46,7 +46,7 @@ public class ItemNeutronBattery extends ItemBaseBlock implements IEntangledStack
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new NeutronStackProvider<>(new NeutronStackWrapper<ItemNeutronBattery>(this, stack, 0) {
+		return new LumenStackProvider<>(new LumenStackWrapper<ItemNeutronBattery>(this, stack, 0) {
 			@Override
 			public int getMax() {
 				return NBTHelper.getEnum(Capacity.class, stack, "capacity").orElse(Capacity.BLUE).max;

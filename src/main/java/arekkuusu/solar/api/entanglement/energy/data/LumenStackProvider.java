@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.api.entanglement.neutron.data;
+package arekkuusu.solar.api.entanglement.energy.data;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import net.minecraft.item.Item;
@@ -22,18 +22,18 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 21/03/2018.
  * It's distributed as part of Solar.
  */
-public class NeutronStackProvider<T extends Item & IEntangledStack> implements ICapabilityProvider {
+public class LumenStackProvider<T extends Item & IEntangledStack> implements ICapabilityProvider {
 
-	@CapabilityInject(INeutron.class)
-	public static Capability<INeutron> NEUTRON_CAPABILITY = null;
-	private final NeutronStackWrapper<T> handler;
+	@CapabilityInject(ILumen.class)
+	public static Capability<ILumen> NEUTRON_CAPABILITY = null;
+	private final LumenStackWrapper<T> handler;
 
-	public NeutronStackProvider(NeutronStackWrapper<T> handler) {
+	public LumenStackProvider(LumenStackWrapper<T> handler) {
 		this.handler = handler;
 	}
 
-	public NeutronStackProvider(T holder, ItemStack stack, int max) {
-		this.handler = new NeutronStackWrapper<>(holder, stack, max);
+	public LumenStackProvider(T holder, ItemStack stack, int max) {
+		this.handler = new LumenStackWrapper<>(holder, stack, max);
 	}
 
 	@Override

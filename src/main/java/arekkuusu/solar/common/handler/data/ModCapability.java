@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.handler.data;
 
-import arekkuusu.solar.api.entanglement.neutron.data.INeutron;
+import arekkuusu.solar.api.entanglement.energy.data.ILumen;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.EnumFacing;
@@ -23,24 +23,23 @@ import java.util.concurrent.Callable;
  */
 public final class ModCapability {
 
-	@CapabilityInject(INeutron.class)
-	public static Capability<INeutron> NEUTRON_CAPABILITY = null;
+	@CapabilityInject(ILumen.class)
+	public static Capability<ILumen> LUMEN_CAPABILITY = null;
 
 	public void init() {
-		register(INeutron.class, new Capability.IStorage<INeutron>() {
-
+		register(ILumen.class, new Capability.IStorage<ILumen>() {
 			@Override
-			public NBTBase writeNBT(Capability<INeutron> capability, INeutron instance, EnumFacing side) {
+			public NBTBase writeNBT(Capability<ILumen> capability, ILumen instance, EnumFacing side) {
 				return new NBTTagInt(instance.get());
 			}
 
 			@Override
-			public void readNBT(Capability<INeutron> capability, INeutron instance, EnumFacing side, NBTBase nbt) {
+			public void readNBT(Capability<ILumen> capability, ILumen instance, EnumFacing side, NBTBase nbt) {
 				if(nbt instanceof NBTTagInt) {
 					instance.set(((NBTTagInt) nbt).getInt());
 				}
 			}
-		}, INeutron.DEFAULT);
+		}, ILumen.DEFAULT);
 	}
 
 	private <T> void register(Class<T> type, Capability.IStorage<T> storage, Callable<? extends T> factory) {

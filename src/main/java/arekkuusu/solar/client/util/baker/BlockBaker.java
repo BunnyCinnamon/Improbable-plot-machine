@@ -53,7 +53,13 @@ public enum BlockBaker {
 	NEUTRON_BATTERY_BASE("neutron_battery_base"),
 	NEUTRON_BATTERY_BLUE("neutron_battery_blue"),
 	NEUTRON_BATTERY_GREEN("neutron_battery_green"),
-	NEUTRON_BATTERY_PINK("neutron_battery_pink");
+	NEUTRON_BATTERY_PINK("neutron_battery_pink"),
+	PHOLARIZER_BASE("pholarizer_base"),
+	PHOLARIZER_RING("pholarizer_ring"),
+	PHOLARIZER_PILLAR_0("pholarizer_pillar_0"),
+	PHOLARIZER_PILLAR_1("pholarizer_pillar_1"),
+	PHOLARIZER_PILLAR_2("pholarizer_pillar_2"),
+	PHOLARIZER_PILLAR_3("pholarizer_pillar_3");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;
