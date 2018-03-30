@@ -14,15 +14,15 @@ public class PholarizerRenderer extends SpecialModelRenderer<TilePholarizer> {
 
 	@Override
 	void renderTile(TilePholarizer te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		renderModel(te.getFacingLazy(), x, y, z, partialTicks);
+		renderModel(te.getFacingLazy(), te.getPolarizationLazy().isPositive(), x, y, z, partialTicks);
 	}
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		renderModel(null, x, y, z, partialTicks);
+		renderModel(null, true, x, y, z, partialTicks);
 	}
 
-	private void renderModel(@Nullable EnumFacing facing, double x, double y, double z, float partialTicks) {
+	private void renderModel(@Nullable EnumFacing facing, boolean active, double x, double y, double z, float partialTicks) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -51,6 +51,7 @@ public class PholarizerRenderer extends SpecialModelRenderer<TilePholarizer> {
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
+		BlockBaker.render(active ? BlockBaker.PHOLARIZER_POSITIVE : BlockBaker.PHOLARIZER_NEGATIVE);
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);

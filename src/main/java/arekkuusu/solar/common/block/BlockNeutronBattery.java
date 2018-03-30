@@ -18,6 +18,8 @@ import arekkuusu.solar.client.util.baker.baked.BakedNeutronBattery;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery.Capacity;
+import arekkuusu.solar.common.handler.data.ModCapability;
+import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.properties.PropertyEnum;
@@ -25,6 +27,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -61,6 +64,18 @@ public class BlockNeutronBattery extends BlockBase {
 	}
 
 	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
+		if(!stack.isEmpty() && stack.getItem() == ModItems.NEUTRON_BATTERY) {
+			if(!world.isRemote) getTile(TileNeutronBattery.class, world, pos).ifPresent(neutron -> {
+				neutron.getKey().ifPresent(uuid -> ((IEntangledStack) stack.getItem()).setKey(stack, uuid));
+			});
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileNeutronBattery.class, world, pos).ifPresent(neutron -> {
@@ -69,6 +84,9 @@ public class BlockNeutronBattery extends BlockBase {
 					entangled.setKey(stack, UUID.randomUUID());
 				}
 				entangled.getKey(stack).ifPresent(neutron::setKey);
+				if(placer instanceof EntityPlayer && ((EntityPlayer) placer).capabilities.isCreativeMode) {
+					neutron.getCapability(ModCapability.LUMEN_CAPABILITY, EnumFacing.UP).set(neutron.getCapacityLazy().max); //FIXME: remove
+				}
 			});
 		}
 	}

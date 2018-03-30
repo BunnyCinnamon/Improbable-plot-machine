@@ -25,6 +25,7 @@ public final class ModEntities {
 		register(EntityStaticItem.class, "static_item");
 		register(EntityTemporalItem.class, "temporal_item");
 		register(EntityEyeOfSchrodinger.class, "eye_of_schrodinger", 0x222222);
+		register(EntityLumen.class, "lumen");
 	}
 
 	private static <T extends Entity> void register(Class<T> clazz, String name) {

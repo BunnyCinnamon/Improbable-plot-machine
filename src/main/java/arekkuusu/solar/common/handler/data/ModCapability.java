@@ -26,7 +26,7 @@ public final class ModCapability {
 	@CapabilityInject(ILumen.class)
 	public static Capability<ILumen> LUMEN_CAPABILITY = null;
 
-	public void init() {
+	public static void init() {
 		register(ILumen.class, new Capability.IStorage<ILumen>() {
 			@Override
 			public NBTBase writeNBT(Capability<ILumen> capability, ILumen instance, EnumFacing side) {
@@ -42,7 +42,7 @@ public final class ModCapability {
 		}, ILumen.DEFAULT);
 	}
 
-	private <T> void register(Class<T> type, Capability.IStorage<T> storage, Callable<? extends T> factory) {
+	private static <T> void register(Class<T> type, Capability.IStorage<T> storage, Callable<? extends T> factory) {
 		CapabilityManager.INSTANCE.register(type, storage, factory);
 	}
 }

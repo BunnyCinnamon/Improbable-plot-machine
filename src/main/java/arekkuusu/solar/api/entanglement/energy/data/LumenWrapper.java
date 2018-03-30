@@ -44,6 +44,7 @@ public abstract class LumenWrapper implements ILumen {
 
 	public abstract Optional<UUID> getKey();
 
+	@Override
 	public int drain(int amount) {
 		return getKey().map(uuid -> {
 			if(amount > 0) {
@@ -58,10 +59,12 @@ public abstract class LumenWrapper implements ILumen {
 		}).orElse(0);
 	}
 
+	@Override
 	public int fill(int amount) {
 		return getKey().map(uuid -> {
 			if(amount > 0) {
 				int contained = get();
+				if(contained >= getMax()) return amount;
 				int sum = contained + amount;
 				int remain = 0;
 				if(sum > getMax()) {

@@ -8,9 +8,11 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
+import arekkuusu.solar.client.render.entity.LumenRenderer;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.*;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
+import arekkuusu.solar.common.entity.EntityLumen;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -32,6 +34,7 @@ public final class ModRenders {
 
 	public static void preInit() {
 		registerEntity(EntityEyeOfSchrodinger.class, EyeOfSchrodingerRenderer::new);
+		registerEntity(EntityLumen.class, LumenRenderer::new);
 	}
 
 	public static void init() {

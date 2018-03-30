@@ -32,12 +32,10 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
 		int slots = inv.getHeight() * inv.getWidth();
-		if(slots < 9 || slots % 2 != 0) return false;
-		int center = (int) ((float)slots / 2F);
+		int center = (int) ((float) slots / 2F);
 		ItemStack checked = inv.getStackInSlot(center);
 		if(checked.isEmpty() || !checked.hasTagCompound()) return false;
 		int amount = 0;
-
 		for(int j = 0; j < slots; j++) {
 			ItemStack stack = inv.getStackInSlot(j);
 			if(!stack.isEmpty() && (hasNoTag(stack) || stack.getItem() != checked.getItem())) return false;
@@ -45,18 +43,16 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 				amount++;
 			}
 		}
-
 		return amount > 0;
 	}
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
 		int slots = inv.getHeight() * inv.getWidth();
-		int center = (int) ((float)slots / 2F);
+		int center = (int) ((float) slots / 2F);
 		ItemStack checked = inv.getStackInSlot(center);
 		if(checked.isEmpty() || !checked.hasTagCompound()) return ItemStack.EMPTY;
 		int amount = 0;
-
 		for(int j = 0; j < slots; j++) {
 			ItemStack stack = inv.getStackInSlot(j);
 			if(!stack.isEmpty() && (hasNoTag(stack) || stack.getItem() != checked.getItem())) return ItemStack.EMPTY;
@@ -64,7 +60,6 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 				amount++;
 			}
 		}
-
 		if(amount > 0) {
 			ItemStack entanglement = new ItemStack(checked.getItem(), amount);
 			getKey(checked).ifPresent(uuid -> setKey(entanglement, uuid));
@@ -99,7 +94,7 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 
 	@Override
 	public boolean canFit(int width, int height) {
-		return true;
+		return width % 2 != 0 || height % 2 != 0;
 	}
 
 	@Override

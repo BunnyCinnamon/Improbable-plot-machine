@@ -8,6 +8,8 @@
 package arekkuusu.solar.common.handler.recipe;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
+import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -34,7 +36,6 @@ public class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 				cleared = inSlot;
 			} else if(!cleared.isEmpty() && !inSlot.isEmpty()) return false;
 		}
-
 		return !cleared.isEmpty() && cleared.getItem() instanceof IEntangledStack;
 	}
 
@@ -47,9 +48,9 @@ public class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 				cleared = inSlot;
 			} else if(!cleared.isEmpty() && !inSlot.isEmpty()) return ItemStack.EMPTY;
 		}
-
 		if(!cleared.isEmpty() && cleared.getItem() instanceof IEntangledStack) {
-			return new ItemStack(cleared.getItem(), cleared.getCount());
+			NBTHelper.removeTag(cleared, EntangledIItemHandler.NBT_TAG);
+			return cleared;
 		}
 		return ItemStack.EMPTY;
 	}

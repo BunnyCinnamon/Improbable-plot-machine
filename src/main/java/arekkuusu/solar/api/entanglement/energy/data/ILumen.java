@@ -17,6 +17,8 @@ public interface ILumen {
 	Callable<ILumen> DEFAULT = Empty::new;
 	int get();
 	void set(int neutrons);
+	int drain(int amount);
+	int fill(int amount);
 }
 class Empty implements ILumen {
 
@@ -30,5 +32,29 @@ class Empty implements ILumen {
 	@Override
 	public void set(int neutrons) {
 		this.neutrons = neutrons;
+	}
+
+	@Override
+	public int drain(int amount) {
+		if(amount > 0) {
+			int contained = get();
+			int drained = amount < Integer.MAX_VALUE ? amount : Integer.MAX_VALUE;
+			int remain = contained;
+			int removed = remain < drained ? contained : drained;
+			remain -= removed;
+			set(remain);
+			return removed;
+		} else return 0;
+	}
+
+	@Override
+	public int fill(int amount) {
+		if(amount > 0) {
+			int contained = get();
+			int sum = contained + amount;
+			int remain = 0;
+			set(sum);
+			return remain;
+		} else return 0;
 	}
 }

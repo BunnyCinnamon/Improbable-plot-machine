@@ -11,9 +11,12 @@ import arekkuusu.solar.api.entanglement.IEntangledTile;
 import arekkuusu.solar.api.entanglement.energy.data.LumenTileWrapper;
 import arekkuusu.solar.common.block.BlockNeutronBattery;
 import arekkuusu.solar.common.handler.data.ModCapability;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
@@ -31,10 +34,15 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 	private UUID key;
 
 	public TileNeutronBattery(Capacity capacity) {
-		handler = new LumenTileWrapper<>(this, capacity.max);
+		this.handler = new LumenTileWrapper<>(this, capacity.max);
 	}
 
 	public TileNeutronBattery() {} //Why...
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		return oldState != newState;
+	}
 
 	public Capacity getCapacityLazy() {
 		return getStateValue(BlockNeutronBattery.CAPACITY, pos).orElse(Capacity.BLUE);
@@ -42,13 +50,13 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.LUMEN_CAPABILITY || hasCapability(capability, facing);
+		return capability == ModCapability.LUMEN_CAPABILITY && facing == EnumFacing.UP || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.LUMEN_CAPABILITY
+		return capability == ModCapability.LUMEN_CAPABILITY && facing == EnumFacing.UP
 				? ModCapability.LUMEN_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
 	}
@@ -69,6 +77,7 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 		if(compound.hasUniqueId("key")) {
 			this.key = compound.getUniqueId("key");
 		}
+		handler = new LumenTileWrapper<>(this, compound.getInteger("capacity"));
 	}
 
 	@Override
@@ -76,6 +85,7 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 		if(key != null) {
 			compound.setUniqueId("key", key);
 		}
+		compound.setInteger("capacity", getCapacityLazy().max);
 	}
 
 	public enum Capacity implements IStringSerializable {

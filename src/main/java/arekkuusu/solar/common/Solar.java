@@ -8,6 +8,7 @@
 package arekkuusu.solar.common;
 
 import arekkuusu.solar.common.entity.ModEntities;
+import arekkuusu.solar.common.handler.data.ModCapability;
 import arekkuusu.solar.common.handler.data.WorldQuantumData;
 import arekkuusu.solar.common.handler.gen.ModGen;
 import arekkuusu.solar.common.lib.LibMod;
@@ -46,6 +47,7 @@ public class Solar {
 		PROXY.preInit(event);
 		WorldQuantumData.init(event.getAsmData());
 		PacketHandler.init();
+		ModCapability.init();
 		ModEntities.init();
 		ModTheorems.init();
 		ModGen.init();
