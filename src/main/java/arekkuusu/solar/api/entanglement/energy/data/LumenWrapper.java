@@ -34,6 +34,7 @@ public abstract class LumenWrapper implements ILumen {
 		getKey().ifPresent(uuid -> NeutronHandler.setNeutrons(uuid, neutrons));
 	}
 
+	@Override
 	public int getMax() {
 		return max;
 	}

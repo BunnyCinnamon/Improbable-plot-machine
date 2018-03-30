@@ -19,6 +19,7 @@ public interface ILumen {
 	void set(int neutrons);
 	int drain(int amount);
 	int fill(int amount);
+	int getMax();
 }
 class Empty implements ILumen {
 
@@ -38,7 +39,7 @@ class Empty implements ILumen {
 	public int drain(int amount) {
 		if(amount > 0) {
 			int contained = get();
-			int drained = amount < Integer.MAX_VALUE ? amount : Integer.MAX_VALUE;
+			int drained = amount < getMax() ? amount : getMax();
 			int remain = contained;
 			int removed = remain < drained ? contained : drained;
 			remain -= removed;
@@ -51,10 +52,16 @@ class Empty implements ILumen {
 	public int fill(int amount) {
 		if(amount > 0) {
 			int contained = get();
+			if(contained >= getMax()) return amount;
 			int sum = contained + amount;
 			int remain = 0;
 			set(sum);
 			return remain;
 		} else return 0;
+	}
+
+	@Override
+	public int getMax() {
+		return Integer.MAX_VALUE;
 	}
 }
