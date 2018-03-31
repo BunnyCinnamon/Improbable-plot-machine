@@ -116,10 +116,15 @@ public class EntityLumen extends Entity {
 		}
 
 		@Override
+		public int getMax() {
+			return Integer.MAX_VALUE;
+		}
+
+		@Override
 		public int drain(int amount) {
 			if(amount > 0) {
 				int contained = get();
-				int drained = amount < Integer.MAX_VALUE ? amount : Integer.MAX_VALUE;
+				int drained = amount < getMax() ? amount : getMax();
 				int remain = contained;
 				int removed = remain < drained ? contained : drained;
 				remain -= removed;
