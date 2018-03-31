@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.entanglement.energy.data.ILumen;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.FXUtil;
@@ -68,7 +69,10 @@ public class BlockNeutronBattery extends BlockBase {
 		ItemStack stack = player.getHeldItem(hand);
 		if(!stack.isEmpty() && stack.getItem() == ModItems.NEUTRON_BATTERY) {
 			if(!world.isRemote) getTile(TileNeutronBattery.class, world, pos).ifPresent(neutron -> {
-				neutron.getKey().ifPresent(uuid -> ((IEntangledStack) stack.getItem()).setKey(stack, uuid));
+				IEntangledStack entangled = ((IEntangledStack) stack.getItem());
+				if(!entangled.getKey(stack).isPresent()) {
+					neutron.getKey().ifPresent(uuid -> entangled.setKey(stack, uuid));
+				}
 			});
 			return true;
 		}
@@ -85,7 +89,10 @@ public class BlockNeutronBattery extends BlockBase {
 				}
 				entangled.getKey(stack).ifPresent(neutron::setKey);
 				if(placer instanceof EntityPlayer && ((EntityPlayer) placer).capabilities.isCreativeMode) {
-					neutron.getCapability(ModCapability.LUMEN_CAPABILITY, EnumFacing.UP).set(neutron.getCapacityLazy().max); //FIXME: remove
+					ILumen lumen = neutron.getCapability(ModCapability.LUMEN_CAPABILITY, EnumFacing.UP);
+					if(lumen != null) {
+						lumen.set(neutron.getCapacityLazy().max); //CHEATER!!
+					}
 				}
 			});
 		}
