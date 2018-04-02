@@ -35,6 +35,11 @@ public class BlockTheorema extends BlockBase {
 	}
 
 	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
@@ -53,7 +58,7 @@ public class BlockTheorema extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, () -> new BakedRender()
-				.setParticle(ResourceLibrary.THEOREMA)
+				.setParticle(ResourceLibrary.TRANSPARENT)
 		);
 		ModelHandler.registerModel(this, 0, "");
 	}

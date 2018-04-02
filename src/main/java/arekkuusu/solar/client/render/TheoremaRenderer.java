@@ -8,8 +8,8 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
-import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.common.block.tile.TileTheorema;
+import net.katsstuff.mirror.client.helper.Blending;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GLAllocation;
@@ -32,10 +32,10 @@ import java.util.Random;
 @SideOnly(Side.CLIENT)
 public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Taken from the End Portal
 
-	private static final FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
-	private static final FloatBuffer VIEW = GLAllocation.createDirectFloatBuffer(16);
+	private static final FloatBuffer BUFFER_PROJECTION = GLAllocation.createDirectFloatBuffer(16);
+	private static final FloatBuffer BUFFER_VIEW = GLAllocation.createDirectFloatBuffer(16);
 	private final FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
-	private final Random RAND = new Random(31100L);
+	private final Random RANDOM = new Random(31100L);
 
 	@Override
 	void renderTile(TileTheorema pandora, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
@@ -48,9 +48,7 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 	}
 
 	private void renderModel(@Nullable TileTheorema pandora, double x, double y, double z) {
-		ShaderLibrary.BRIGHT.begin();
-		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
-		RAND.setSeed(31100L);
+		RANDOM.setSeed(31100L);
 		GlStateManager.texGen(GlStateManager.TexGen.S, 9216);
 		GlStateManager.texGen(GlStateManager.TexGen.T, 9216);
 		GlStateManager.texGen(GlStateManager.TexGen.R, 9216);
@@ -62,8 +60,8 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		GlStateManager.enableTexGenCoord(GlStateManager.TexGen.R);
 		bindTexture(ResourceLibrary.THEOREMA);
 		GlStateManager.disableLighting();
-		GlStateManager.getFloat(2982, VIEW);
-		GlStateManager.getFloat(2983, PROJECTION);
+		GlStateManager.getFloat(2982, BUFFER_VIEW);
+		GlStateManager.getFloat(2983, BUFFER_PROJECTION);
 		double squared = x * x + y * y + z * z;
 		int passes = getPasses(squared);
 		boolean fog = false;
@@ -91,12 +89,12 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 			GlStateManager.translate(17F / passOffset, (2F + passOffset / 1.5F) * ((float) Minecraft.getSystemTime() % 800000F / 800000F), 0F);
 			GlStateManager.rotate((passOffset * passOffset * 4321F + passOffset * 9F) * 2F, 0F, 0F, 1F);
 			GlStateManager.scale(4.5F - passOffset / 6F, 4.5F - passOffset / 6F, 1F);
-			GlStateManager.multMatrix(PROJECTION);
-			GlStateManager.multMatrix(VIEW);
+			GlStateManager.multMatrix(BUFFER_PROJECTION);
+			GlStateManager.multMatrix(BUFFER_VIEW);
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder buff = tessellator.getBuffer();
 			buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-			float mod = RAND.nextFloat();
+			float mod = RANDOM.nextFloat();
 			float r = (mod * 0.75F) * colorOffset;
 			float g = (mod * 0.75F) * colorOffset;
 			float b = (mod * 1F) * colorOffset;
@@ -148,7 +146,6 @@ public class TheoremaRenderer extends SpecialModelRenderer<TileTheorema> { //Tak
 		GlStateManager.disableTexGenCoord(GlStateManager.TexGen.T);
 		GlStateManager.disableTexGenCoord(GlStateManager.TexGen.R);
 		GlStateManager.enableLighting();
-		ShaderLibrary.BRIGHT.end();
 	}
 
 	private int getPasses(double squared) {
