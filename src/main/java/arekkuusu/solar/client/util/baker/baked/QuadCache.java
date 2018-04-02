@@ -9,18 +9,14 @@ package arekkuusu.solar.client.util.baker.baked;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.client.MinecraftForgeClient;
-import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -29,28 +25,26 @@ import java.util.function.Consumer;
  */
 public final class QuadCache {
 
-	private Map<IBlockState, Pair<List<BakedQuad>, Set<BlockRenderLayer>>> formats = Maps.newHashMap();
+	private Map<IBlockState, Map<BlockRenderLayer, List<BakedQuad>>> formats = Maps.newHashMap();
 
 	public List<BakedQuad> compute(@Nullable IBlockState state, Consumer<List<BakedQuad>> f) {
+		BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
 		if(!formats.containsKey(state)) {
+			Map<BlockRenderLayer, List<BakedQuad>> map = Maps.newHashMap();
 			List<BakedQuad> quads = Lists.newArrayList();
-			Set<BlockRenderLayer> layers = Sets.newHashSet(MinecraftForgeClient.getRenderLayer());
 			f.accept(quads);
-			formats.put(state, Pair.of(quads, layers));
-		} else if(state != null && hasRenderLayer(state)) {
-			List<BakedQuad> quads = formats.get(state).getKey();
-			Set<BlockRenderLayer> layers = formats.get(state).getValue();
+			map.put(layer, quads);
+			formats.put(state, map);
+		} else if(state != null && !hasRenderLayer(state, layer)) {
+			List<BakedQuad> quads = Lists.newArrayList();
 			f.accept(quads);
-			layers.add(MinecraftForgeClient.getRenderLayer());
+			formats.get(state).put(layer, quads);
 		}
-		return formats.get(state).getKey();
+		return formats.get(state).get(layer);
 	}
 
-	private boolean hasRenderLayer(IBlockState state) {
-		Set<BlockRenderLayer> layers = formats.get(state).getValue();
-		return Arrays.stream(BlockRenderLayer.values())
-				.filter(l -> state.getBlock().canRenderInLayer(state, l))
-				.anyMatch(l -> !layers.contains(l));
+	private boolean hasRenderLayer(IBlockState state, BlockRenderLayer layer) {
+		return formats.get(state).containsKey(layer);
 	}
 
 	public void reloadTextures() {
