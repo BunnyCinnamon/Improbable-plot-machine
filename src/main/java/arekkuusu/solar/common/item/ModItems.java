@@ -33,6 +33,7 @@ public final class ModItems {
 	public static final Item PLASMON = PLACE_HOLDER;
 	public static final Item QELAION = PLACE_HOLDER;
 	public static final Item NEUTRON_BATTERY = PLACE_HOLDER;
+	public static final Item QUANTUM_MIRROR = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));

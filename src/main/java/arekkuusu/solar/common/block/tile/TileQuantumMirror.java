@@ -29,6 +29,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 public class TileQuantumMirror extends TileEntangledBase<EntangledTileWrapper> implements ITickable {
 
 	public static final int SLOTS = 1;
+	private boolean dirty;
 
 	@Override
 	public EntangledTileWrapper createHandler() {
@@ -40,6 +41,14 @@ public class TileQuantumMirror extends TileEntangledBase<EntangledTileWrapper> i
 		if(world.isRemote && world.rand.nextInt(10) == 0) {
 			Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 			FXUtil.spawnMute(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
+		}
+		if(!world.isRemote && dirty) {
+			getKey().ifPresent(uuid -> {
+				if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+					PacketHelper.sendQuantumChanges(uuid);
+				}
+			});
+			dirty = false;
 		}
 	}
 
@@ -71,11 +80,7 @@ public class TileQuantumMirror extends TileEntangledBase<EntangledTileWrapper> i
 
 		@Override
 		protected void onChange(int slot) {
-			tile.getKey().ifPresent(uuid -> {
-				if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-					PacketHelper.sendQuantumChange(uuid, getStackInSlot(slot), slot);
-				}
-			});
+			tile.dirty = true;
 		}
 	}
 }
