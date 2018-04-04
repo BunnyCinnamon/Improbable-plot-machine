@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
@@ -33,10 +34,13 @@ public class TileQimranut extends TileBase implements IEntangledTile {
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 		return getFacingLazy() == facing ? getSource().map(data -> {
-			IBlockState state = world.getBlockState(data.getPos());
-			if(state.getBlock().hasTileEntity(state)) {
-				TileEntity tile = world.getTileEntity(data.getPos());
-				return (tile != null && !(tile instanceof TileQimranut)) && tile.hasCapability(capability, data.getFacing());
+			World world = data.getWorld();
+			if(world != null) {
+				IBlockState state = world.getBlockState(data.getPos());
+				if(state.getBlock().hasTileEntity(state)) {
+					TileEntity tile = world.getTileEntity(data.getPos());
+					return (tile != null && !(tile instanceof TileQimranut)) && tile.hasCapability(capability, data.getFacing());
+				}
 			}
 			return false;
 		}).orElse(false) : false;
@@ -46,10 +50,13 @@ public class TileQimranut extends TileBase implements IEntangledTile {
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		return getFacingLazy() == facing ? getSource().map(data -> {
-			IBlockState state = world.getBlockState(data.getPos());
-			if(state.getBlock().hasTileEntity(state)) {
-				TileEntity tile = world.getTileEntity(data.getPos());
-				return tile != null && !(tile instanceof TileQimranut) ? tile.getCapability(capability, data.getFacing()) : null;
+			World world = data.getWorld();
+			if(world != null) {
+				IBlockState state = world.getBlockState(data.getPos());
+				if(state.getBlock().hasTileEntity(state)) {
+					TileEntity tile = world.getTileEntity(data.getPos());
+					return tile != null && !(tile instanceof TileQimranut) ? tile.getCapability(capability, data.getFacing()) : null;
+				}
 			}
 			return null;
 		}).orElse(null) : null;
@@ -59,11 +66,12 @@ public class TileQimranut extends TileBase implements IEntangledTile {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 
-	public void setSource(BlockPos pos, EnumFacing facing) {
+	public void setSource(World world, BlockPos pos, EnumFacing facing) {
 		getKey().ifPresent(uuid -> {
 			QimranutData data = QuantumDataHandler.getOrCreate(uuid, QimranutData::new);
 			data.setPos(pos);
 			data.setFacing(facing);
+			data.setWorld(world);
 		});
 	}
 

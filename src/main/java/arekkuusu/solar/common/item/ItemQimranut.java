@@ -52,15 +52,18 @@ public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
 	public void pickSource(PlayerInteractEvent.LeftClickBlock event) {
 		ItemStack stack = event.getItemStack();
 		if(stack.getItem() == this) {
-			if(!getKey(stack).isPresent()) {
-				setKey(stack, UUID.randomUUID());
+			if(!event.getWorld().isRemote) {
+				if(!getKey(stack).isPresent()) {
+					setKey(stack, UUID.randomUUID());
+				}
+				getKey(stack).ifPresent(uuid -> {
+					QimranutData data = QuantumDataHandler.getOrCreate(uuid, QimranutData::new);
+					data.setFacing(event.getFace());
+					data.setPos(event.getPos());
+					data.setWorld(event.getWorld());
+				});
 			}
-			getKey(stack).ifPresent(uuid -> {
-				QimranutData data = QuantumDataHandler.getOrCreate(uuid, QimranutData::new);
-				data.setFacing(event.getFace());
-				data.setPos(event.getPos());
-				event.setCanceled(true);
-			});
+			event.setCanceled(true);
 		}
 	}
 }

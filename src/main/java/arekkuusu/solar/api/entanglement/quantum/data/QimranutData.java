@@ -10,6 +10,8 @@ package arekkuusu.solar.api.entanglement.quantum.data;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 
 import javax.annotation.Nullable;
 
@@ -22,6 +24,17 @@ public class QimranutData implements INBTData<NBTTagCompound> {
 
 	private BlockPos pos;
 	private EnumFacing facing;
+	private Integer worldId; //Stores the world id, NOT the world instance, as it can unload when it feels like it
+
+	@Nullable
+	public World getWorld() {
+		return worldId != null ? DimensionManager.getWorld(worldId) : null;
+	}
+
+	public void setWorld(World world) {
+		this.worldId = world.provider.getDimension();
+		dirty();
+	}
 
 	public void setPos(BlockPos pos) {
 		this.pos = pos;
@@ -50,6 +63,7 @@ public class QimranutData implements INBTData<NBTTagCompound> {
 	@Override
 	public void read(NBTTagCompound tag) {
 		this.pos = new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
+		this.worldId = tag.getInteger("worldId");
 		if(tag.hasKey("facing")) {
 			this.facing = EnumFacing.byName(tag.getString("facing"));
 		} else this.facing = null;
@@ -61,6 +75,7 @@ public class QimranutData implements INBTData<NBTTagCompound> {
 		tag.setInteger("x", pos.getX());
 		tag.setInteger("y", pos.getY());
 		tag.setInteger("z", pos.getZ());
+		tag.setInteger("worldId", worldId);
 		if(facing != null) {
 			tag.setString("facing", facing.getName());
 		}
