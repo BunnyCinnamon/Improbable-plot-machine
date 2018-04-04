@@ -25,6 +25,12 @@ import java.util.UUID;
  */
 public interface IEntangledIItemStack extends IEntangledStack {
 
+	/**
+	 * Adds information to the {@param tooltip} list
+	 *
+	 * @param stack   The {@link ItemStack}
+	 * @param tooltip The {@link List<String>}
+	 */
 	@SideOnly(Side.CLIENT)
 	default void addTooltipInfo(ItemStack stack, List<String> tooltip) {
 		getKey(stack).ifPresent(uuid -> Tooltip.inline()
@@ -34,6 +40,14 @@ public interface IEntangledIItemStack extends IEntangledStack {
 		);
 	}
 
+	/**
+	 * Adds the quantum entangled inventory contents to the {@param builder}
+	 *
+	 * @param builder The {@link Tooltip} builder
+	 * @param stacks  The {@link ItemStack}
+	 * @param uuid    An {@link UUID}
+	 * @return
+	 */
 	@SideOnly(Side.CLIENT)
 	default Tooltip getDetailedInfo(Tooltip builder, List<ItemStack> stacks, UUID uuid) {
 		builder = builder.addI18n("tlp.quantum_data.name", Tooltip.DarkGrayItalic()).add(": ").newline();
@@ -47,10 +61,11 @@ public interface IEntangledIItemStack extends IEntangledStack {
 		return sub.condition(KeyCondition.ControlKeyDown$.MODULE$).ifTrueJ(b -> getInfo(sub, uuid)).apply();
 	}
 
-	default void setKey(ItemStack stack, UUID uuid) {
+	@Override
+	default void setKey(ItemStack stack, UUID key) {
 		Optional<UUID> optional = getKey(stack);
 		if(!optional.isPresent()) {
-			stack.getOrCreateSubCompound(EntangledIItemHandler.NBT_TAG).setUniqueId("key", uuid);
+			stack.getOrCreateSubCompound(EntangledIItemHandler.NBT_TAG).setUniqueId("key", key);
 		}
 	}
 }

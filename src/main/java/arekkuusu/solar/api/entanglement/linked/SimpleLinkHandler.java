@@ -22,21 +22,21 @@ public final class SimpleLinkHandler {
 
 	/**
 	 * If the given {@link @tile} of type {@link ISimpleLinkedTile}
-	 * is linked to another tile in some other place.
+	 * is linked to another tile in some other place
 	 *
-	 * @param tile The {@link ISimpleLinkedTile} to be tested.
-	 * @param <T>  An impl of {@param tile}.
-	 * @return If the {@param tile} is linked to another tile.
+	 * @param tile The {@link ISimpleLinkedTile} to be tested
+	 * @param <T>  An impl of {@param tile}
+	 * @return If the {@param tile} is linked to another tile
 	 */
 	public static <T extends TileEntity & ISimpleLinkedTile> boolean isLinked(T tile) {
 		return tile.getKey().map(uuid -> SolarApi.getSimpleLinkMap().containsKey(uuid)).orElse(false);
 	}
 
 	/**
-	 * Add the given {@param tile} to a holder with its link.
+	 * Add the given {@param tile} to a holder with its link
 	 *
-	 * @param tile The {@link ISimpleLinkedTile} to be added.
-	 * @param <T>  An impl of {@param tile}.
+	 * @param tile The {@link ISimpleLinkedTile} to be added
+	 * @param <T>  An impl of {@param tile}
 	 */
 	public static <T extends TileEntity & ISimpleLinkedTile> void addLink(T tile) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getSimpleLinkMap().compute(uuid, (key, pair) -> {
@@ -49,10 +49,10 @@ public final class SimpleLinkHandler {
 	}
 
 	/**
-	 * Remove the given {@param tile} to a holder with its link.
+	 * Remove the given {@param tile} to a holder with its link
 	 *
-	 * @param tile The {@link ISimpleLinkedTile} to be removed.
-	 * @param <T>  An impl of {@param tile}.
+	 * @param tile The {@link ISimpleLinkedTile} to be removed
+	 * @param <T>  An impl of {@param tile}
 	 */
 	public static <T extends TileEntity & ISimpleLinkedTile> void removeLink(T tile) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getSimpleLinkMap().compute(uuid, (key, pair) -> {
@@ -68,9 +68,9 @@ public final class SimpleLinkHandler {
 	/**
 	 * Returns the inverse link of the given {@param tile}
 	 *
-	 * @param tile The {@link ISimpleLinkedTile}.
-	 * @param <T>  An impl of {@param tile}.
-	 * @return The inverse.
+	 * @param tile The {@link ISimpleLinkedTile}
+	 * @param <T>  An impl of {@param tile}
+	 * @return The inverse
 	 */
 	@Nullable
 	public static <T extends TileEntity & ISimpleLinkedTile> ISimpleLinkedTile getInverseLink(T tile) {
@@ -83,8 +83,8 @@ public final class SimpleLinkHandler {
 	/**
 	 * Returns the pair of the given {@param uuid}
 	 *
-	 * @param uuid The key.
-	 * @return The pair.
+	 * @param uuid The key
+	 * @return The pair
 	 */
 	public static Pair<ISimpleLinkedTile> getPair(UUID uuid) {
 		if(SolarApi.getSimpleLinkMap().containsKey(uuid)) {

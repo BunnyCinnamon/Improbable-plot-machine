@@ -17,20 +17,27 @@ import java.util.UUID;
 /**
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
+ *
+ * Default implementation for {@link ItemStack} with a quantum entangled inventory
  */
 public class EntangledStackWrapper<T extends Item & IEntangledIItemStack> extends EntangledIItemWrapper {
 
-	private final T quantum;
+	private final T holder;
 	private final ItemStack stack;
 
-	public EntangledStackWrapper(T quantum, ItemStack stack, int size) {
-		super(size);
-		this.quantum = quantum;
+	/**
+	 * @param holder An {@link Item} class implementing {@link T}
+	 * @param stack  The {@link ItemStack}
+	 * @param slots  Slot amount
+	 */
+	public EntangledStackWrapper(T holder, ItemStack stack, int slots) {
+		super(slots);
+		this.holder = holder;
 		this.stack = stack;
 	}
 
 	@Override
 	public Optional<UUID> getKey() {
-		return quantum.getKey(stack);
+		return holder.getKey(stack);
 	}
 }

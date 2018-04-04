@@ -21,6 +21,13 @@ import java.util.UUID;
  */
 public interface IEntangledTile {
 
+	/**
+	 * Adds the {@param uuid} information to the {@param builder}
+	 *
+	 * @param builder The {@link Tooltip} builder
+	 * @param uuid    An {@link UUID}
+	 * @return The tooltip with the {@param uuid} information
+	 */
 	@SideOnly(Side.CLIENT)
 	default Tooltip getInfo(Tooltip builder, UUID uuid) {
 		String key = uuid.toString();
@@ -29,7 +36,17 @@ public interface IEntangledTile {
 				.add(" > ").add(key.substring(18)).skipLine();
 	}
 
+	/**
+	 * Gets the {@link UUID} if it exists
+	 *
+	 * @return An {@link Optional<UUID>} containing the key
+	 */
 	Optional<UUID> getKey();
 
+	/**
+	 * Sets the {@param key}
+	 *
+	 * @param key An {@link UUID}
+	 */
 	void setKey(@Nullable UUID key);
 }

@@ -7,7 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.api.entanglement.energy.data;
 
-import arekkuusu.solar.api.entanglement.energy.NeutronHandler;
+import arekkuusu.solar.api.entanglement.energy.LumenHandler;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -15,23 +15,28 @@ import java.util.UUID;
 /**
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
+ *
+ * Default quantum entangled {@link ILumen} implementation
  */
 public abstract class LumenWrapper implements ILumen {
 
 	private int max;
 
+	/**
+	 * @param max Lumen capacity
+	 */
 	public LumenWrapper(int max) {
 		this.max = max;
 	}
 
 	@Override
 	public int get() {
-		return getKey().map(NeutronHandler::getNeutrons).orElse(0);
+		return getKey().map(LumenHandler::getNeutrons).orElse(0);
 	}
 
 	@Override
 	public void set(int neutrons) {
-		getKey().ifPresent(uuid -> NeutronHandler.setNeutrons(uuid, neutrons));
+		getKey().ifPresent(uuid -> LumenHandler.setNeutrons(uuid, neutrons));
 	}
 
 	@Override
@@ -39,10 +44,11 @@ public abstract class LumenWrapper implements ILumen {
 		return max;
 	}
 
-	public void setMax(int max) {
-		this.max = max;
-	}
-
+	/**
+	 * Gets the {@link UUID} of the lumen storage if it exists
+	 *
+	 * @return An {@link Optional<UUID>} containing the key
+	 */
 	public abstract Optional<UUID> getKey();
 
 	@Override

@@ -16,11 +16,17 @@ import java.util.UUID;
 /**
  * Created by <Arekkuusu> on 02/09/2017.
  * It's distributed as part of Solar.
+ *
+ * Default implementation for {@link TileEntity} with a quantum entangled inventory
  */
 public class EntangledTileWrapper<T extends TileEntity & IEntangledTile> extends EntangledIItemWrapper {
 
 	protected final T tile;
 
+	/**
+	 * @param tile   A {@link TileEntity} instance implementing {@link T}
+	 * @param slots  Slot amount
+	 */
 	public EntangledTileWrapper(T tile, int slots) {
 		super(slots);
 		this.tile = tile;

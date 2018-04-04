@@ -115,7 +115,7 @@ public enum Direction implements IStringSerializable { //Forgive me... 64 in tot
 		return facings;
 	}
 
-	public boolean apply(Boolean[] booleans) {
+	public boolean matches(Boolean[] booleans) {
 		for(int i = 0; i < 6; i++) {
 			if(this.booleans[i] != booleans[i]) return false;
 		}
@@ -134,7 +134,7 @@ public enum Direction implements IStringSerializable { //Forgive me... 64 in tot
 			EnumFacing facing = values[i];
 			booleans[i] = Arrays.stream(facings).anyMatch(f -> f == facing);
 		}
-		return Arrays.stream(Direction.values()).filter(c -> c.apply(booleans)).findAny().orElse(FULL);
+		return Arrays.stream(Direction.values()).filter(c -> c.matches(booleans)).findAny().orElse(FULL);
 	}
 
 	public static Direction getDirectionForBlock(Block block, IBlockAccess world, BlockPos origin) {
@@ -142,7 +142,7 @@ public enum Direction implements IStringSerializable { //Forgive me... 64 in tot
 			IBlockState found = world.getBlockState(origin.offset(facing));
 			return found.getBlock() == block;
 		}).toArray(Boolean[]::new);
-		return Arrays.stream(Direction.values()).filter(c -> c.apply(booleans)).findAny().orElse(FULL);
+		return Arrays.stream(Direction.values()).filter(c -> c.matches(booleans)).findAny().orElse(FULL);
 	}
 
 	public static Direction getDirectionForState(IBlockState state, IBlockAccess world, BlockPos origin) {
@@ -150,7 +150,7 @@ public enum Direction implements IStringSerializable { //Forgive me... 64 in tot
 			IBlockState found = world.getBlockState(origin.offset(facing));
 			return found == state;
 		}).toArray(Boolean[]::new);
-		return Arrays.stream(Direction.values()).filter(c -> c.apply(booleans)).findAny().orElse(FULL);
+		return Arrays.stream(Direction.values()).filter(c -> c.matches(booleans)).findAny().orElse(FULL);
 	}
 
 	public static class UnlistedDirection implements IUnlistedProperty<Direction> {

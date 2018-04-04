@@ -17,12 +17,19 @@ import java.util.UUID;
 /**
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
+ *
+ * Default implementation for {@link ItemStack} with a quantum entangled lumen storage
  */
 public class LumenStackWrapper<T extends Item & IEntangledStack> extends LumenWrapper {
 
 	private final T holder;
 	private final ItemStack stack;
 
+	/**
+	 * @param holder An {@link Item} class implementing {@link T}
+	 * @param stack  The {@link ItemStack}
+	 * @param max    Lumen capacity
+	 */
 	public LumenStackWrapper(T holder, ItemStack stack, int max) {
 		super(max);
 		this.holder = holder;

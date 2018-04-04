@@ -10,17 +10,15 @@ package arekkuusu.solar.api.entanglement.inventory.data;
 import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
 import arekkuusu.solar.api.entanglement.inventory.IEntangledIItemStack;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
-
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
+ *
+ * Default implementation for quantum entangled inventories
  */
-public abstract class EntangledIItemWrapper implements IItemHandlerModifiable {
+public abstract class EntangledIItemWrapper implements IEntangledIItem {
 
 	private final int slots;
 
@@ -28,14 +26,27 @@ public abstract class EntangledIItemWrapper implements IItemHandlerModifiable {
 		this.slots = slots;
 	}
 
-	public abstract Optional<UUID> getKey();
-
+	/**
+	 * Called when a slot changes
+	 *
+	 * @param slot The slot
+	 */
 	protected void onChange(int slot) {}
+
+	/**
+	 * Checks whenever the {@param stack} can be inserted or not
+	 *
+	 * @param stack The {@link ItemStack} inserted
+	 * @return If it can insert
+	 */
+	public boolean canInsert(ItemStack stack) {
+		return !(stack.getItem() instanceof IEntangledIItemStack);
+	}
 
 	@Override
 	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 		if(stack.isEmpty()) return ItemStack.EMPTY;
-		if(!getKey().isPresent() || isEntangled(stack)) return stack;
+		if(!getKey().isPresent() || !canInsert(stack)) return stack;
 		ItemStack existing = getStackInSlot(slot);
 		int limit = stack.getMaxStackSize();
 		if(!existing.isEmpty()) {
@@ -56,14 +67,6 @@ public abstract class EntangledIItemWrapper implements IItemHandlerModifiable {
 			onChange(slot);
 		}
 		return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
-	}
-
-	public final boolean isEntangled(ItemStack stack) {
-		if(stack.getItem() instanceof IEntangledIItemStack) {
-			Optional<UUID> optional = ((IEntangledIItemStack) stack.getItem()).getKey(stack);
-			return optional.isPresent();
-		}
-		return false;
 	}
 
 	@Override

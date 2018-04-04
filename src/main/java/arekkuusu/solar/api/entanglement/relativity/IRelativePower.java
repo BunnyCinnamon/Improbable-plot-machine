@@ -15,5 +15,8 @@ import arekkuusu.solar.api.entanglement.IEntangledTile;
  */
 public interface IRelativePower extends IEntangledTile {
 
+	/**
+	 * Updates this tile when the power amount changes
+	 */
 	void onPowerUpdate();
 }

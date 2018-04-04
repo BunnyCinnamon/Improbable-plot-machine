@@ -24,6 +24,13 @@ import java.util.UUID;
  */
 public interface IEntangledStack {
 
+	/**
+	 * Adds the {@param uuid} information to the {@param builder}
+	 *
+	 * @param builder The {@link Tooltip} builder
+	 * @param uuid    An {@link UUID}
+	 * @return The tooltip with the {@param uuid} information
+	 */
 	@SideOnly(Side.CLIENT)
 	default Tooltip getInfo(Tooltip builder, UUID uuid) {
 		String key = uuid.toString();
@@ -32,12 +39,22 @@ public interface IEntangledStack {
 				.add(" > ").add(key.substring(18)).newline();
 	}
 
-	default void setKey(ItemStack stack, UUID uuid) {
-		stack.getOrCreateSubCompound(EntangledIItemHandler.NBT_TAG).setUniqueId("key", uuid);
-	}
-
+	/**
+	 * Gets the {@link UUID} if it exists
+	 *
+	 * @return An {@link Optional<UUID>} containing the key
+	 */
 	default Optional<UUID> getKey(ItemStack stack) {
 		Optional<NBTTagCompound> optional = NBTHelper.getNBTTag(stack, EntangledIItemHandler.NBT_TAG);
 		return optional.map(nbtTagCompound -> nbtTagCompound.getUniqueId("key"));
+	}
+
+	/**
+	 * Sets the {@param key}
+	 *
+	 * @param key An {@link UUID}
+	 */
+	default void setKey(ItemStack stack, UUID key) {
+		stack.getOrCreateSubCompound(EntangledIItemHandler.NBT_TAG).setUniqueId("key", key);
 	}
 }

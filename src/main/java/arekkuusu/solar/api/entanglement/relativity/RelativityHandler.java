@@ -26,22 +26,22 @@ import java.util.UUID;
 public final class RelativityHandler {
 
 	/**
-	 * Checks if a {@param tile} is a relative list.
+	 * Checks if a {@param tile} is a relative list
 	 *
-	 * @param tile The {@link IRelativeTile} to be tested.
-	 * @param <T>  An impl of {@param tile}.
-	 * @return If the {@param tile} is relative to others.
+	 * @param tile The {@link IRelativeTile} to be tested
+	 * @param <T>  An impl of {@param tile}
+	 * @return If the {@param tile} is relative to others
 	 */
 	public static <T extends TileEntity & IRelativeTile> boolean isRelative(T tile) {
 		return tile.getKey().map(uuid -> SolarApi.getRelativityMap().containsKey(uuid)).orElse(false);
 	}
 
 	/**
-	 * Add the given {@link IRelativeTile} to the relative list.
+	 * Add the given {@link IRelativeTile} to the relative list
 	 *
-	 * @param tile     The {@link TileEntity} to be added.
-	 * @param runnable If the {@param tile} is added, run {@param <T>}.
-	 * @param <T>      An impl of {@param tile}.
+	 * @param tile     The {@link TileEntity} to be added
+	 * @param runnable If the {@param tile} is added, run {@param <T>}
+	 * @param <T>      An impl of {@param tile}
 	 */
 	public static <T extends TileEntity & IRelativeTile> void addRelative(T tile, @Nullable Runnable runnable) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
@@ -56,11 +56,11 @@ public final class RelativityHandler {
 	}
 
 	/**
-	 * Remove the given {@link IRelativeTile} from the relative list.
+	 * Remove the given {@link IRelativeTile} from the relative list
 	 *
-	 * @param tile     The {@link TileEntity} to be removed.
-	 * @param runnable If the {@param tile} is removed, run {@param <T>}.
-	 * @param <T>      An impl of {@param tile}.
+	 * @param tile     The {@link TileEntity} to be removed
+	 * @param runnable If the {@param tile} is removed, run {@param <T>}
+	 * @param <T>      An impl of {@param tile}
 	 */
 	public static <T extends TileEntity & IRelativeTile> void removeRelative(T tile, @Nullable Runnable runnable) {
 		tile.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
@@ -75,10 +75,10 @@ public final class RelativityHandler {
 	}
 
 	/**
-	 * Gets a list of relative tiles of the same {@param tile}.
+	 * Gets a list of relative tiles of the same {@param tile}
 	 *
-	 * @param tile The {@link TileEntity} relative.
-	 * @param <T>  An impl of {@param tile}.
+	 * @param tile The {@link TileEntity} relative
+	 * @param <T>  An impl of {@param tile}
 	 * @return The list
 	 */
 	public static <T extends TileEntity & IRelativeTile> List<IRelativeTile> getRelatives(T tile) {
@@ -89,7 +89,7 @@ public final class RelativityHandler {
 	}
 
 	/**
-	 * Gets a list of relative tiles of the same {@param uuid}.
+	 * Gets a list of relative tiles of the same {@param uuid}
 	 *
 	 * @param uuid The key
 	 * @return The list
@@ -102,10 +102,10 @@ public final class RelativityHandler {
 	}
 
 	/**
-	 * If the relative {@param tile} is powered by Redstone.
+	 * If the relative {@param tile} is powered by Redstone
 	 *
-	 * @param tile The relative tile {@link IRelativePower}.
-	 * @param <T>  An impl of {@param tile}.
+	 * @param tile The relative tile {@link IRelativePower}
+	 * @param <T>  An impl of {@param tile}
 	 * @return If the redstone level is higher than 0
 	 */
 	public static <T extends TileEntity & IRelativePower> boolean isPowered(T tile) {
@@ -113,11 +113,11 @@ public final class RelativityHandler {
 	}
 
 	/**
-	 * Get the Redstone power from the relative {@param tile}.
+	 * Get the Redstone power from the relative {@param tile}
 	 *
-	 * @param tile The relative tile {@link IRelativePower}.
-	 * @param <T>  An impl of {@param tile}.
-	 * @return The Redstone power from 0 to 15.
+	 * @param tile The relative tile {@link IRelativePower}
+	 * @param <T>  An impl of {@param tile}
+	 * @return The Redstone power from 0 to 15
 	 */
 	public static <T extends TileEntity & IRelativePower> int getPower(T tile) {
 		return tile.getKey().map(uuid -> QuantumDataHandler.<PowerData>get(uuid)
@@ -128,11 +128,11 @@ public final class RelativityHandler {
 	/**
 	 * Set the Redstone power to the relative {@param tile},
 	 * this will update all other relative tiles, as long as
-	 * they are loaded in the world.
+	 * they are loaded in the world
 	 *
-	 * @param tile     The relative tile {@link IRelativePower}.
-	 * @param newPower The new redstone power.
-	 * @param <T>      An impl of {@param tile}.
+	 * @param tile     The relative tile {@link IRelativePower}
+	 * @param newPower The new redstone power
+	 * @param <T>      An impl of {@param tile}
 	 */
 	public static <T extends TileEntity & IRelativePower> void setPower(T tile, int newPower, boolean update) {
 		tile.getKey().ifPresent(uuid -> QuantumDataHandler.getOrCreate(uuid, PowerData::new).setI(newPower));

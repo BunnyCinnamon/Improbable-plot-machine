@@ -21,17 +21,31 @@ import javax.annotation.Nullable;
 /**
  * Created by <Arekkuusu> on 21/03/2018.
  * It's distributed as part of Solar.
+ *
+ * Provides an {@link ILumen} capability for an {@link ItemStack} inside a {@link LumenStackWrapper} implementation
  */
 public class LumenStackProvider<T extends Item & IEntangledStack> implements ICapabilityProvider {
 
 	@CapabilityInject(ILumen.class)
 	public static Capability<ILumen> NEUTRON_CAPABILITY = null;
-	private final LumenStackWrapper<T> handler;
+	private final LumenWrapper handler;
 
-	public LumenStackProvider(LumenStackWrapper<T> handler) {
+	/**
+	 * Constructor for a custom {@link LumenWrapper} implementation
+	 *
+	 * @param handler lumen wrapper provider
+	 */
+	public LumenStackProvider(LumenWrapper handler) {
 		this.handler = handler;
 	}
 
+	/**
+	 * Constructor for a default {@link LumenStackWrapper<T>} implementation
+	 *
+	 * @param holder The {@link Item} class
+	 * @param stack  The {@link ItemStack}
+	 * @param max    Lumen capacity
+	 */
 	public LumenStackProvider(T holder, ItemStack stack, int max) {
 		this.handler = new LumenStackWrapper<>(holder, stack, max);
 	}
@@ -43,7 +57,7 @@ public class LumenStackProvider<T extends Item & IEntangledStack> implements ICa
 
 	@Nullable
 	@Override
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+	public <C> C getCapability(@Nonnull Capability<C> capability, @Nullable EnumFacing facing) {
 		return facing == null && capability == NEUTRON_CAPABILITY
 				?  NEUTRON_CAPABILITY.cast(handler)
 				: null;

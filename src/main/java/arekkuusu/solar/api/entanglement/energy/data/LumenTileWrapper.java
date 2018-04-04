@@ -16,11 +16,17 @@ import java.util.UUID;
 /**
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
+ *
+ * Default implementation for {@link TileEntity} with a quantum entangled lumen storage
  */
 public class LumenTileWrapper<T extends TileEntity & IEntangledTile> extends LumenWrapper {
 
 	private T tile;
 
+	/**
+	 * @param tile A {@link TileEntity} instance implementing {@link T}
+	 * @param max  Lumen capacity
+	 */
 	public LumenTileWrapper(T tile, int max) {
 		super(max);
 		this.tile = tile;

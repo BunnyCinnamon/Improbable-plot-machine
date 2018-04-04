@@ -14,11 +14,46 @@ import java.util.concurrent.Callable;
  * It's distributed as part of Solar.
  */
 public interface ILumen {
+	/**
+	 * Default {@link ILumen} provider
+	 */
 	Callable<ILumen> DEFAULT = Empty::new;
+
+	/**
+	 * Gets the current amount of lumen
+	 *
+	 * @return Lumen
+	 */
 	int get();
+
+	/**
+	 * Sets the current amount of lumen
+	 *
+	 * @param neutrons Lumen
+	 */
 	void set(int neutrons);
+
+	/**
+	 * Drains a certain amount of lumen
+	 *
+	 * @param amount Lumen to drain
+	 * @return Lumen drained
+	 */
 	int drain(int amount);
+
+	/**
+	 * Fills a certain amount of lumen
+	 *
+	 * @param amount Lumen to fill
+	 * @return Lumen remain
+	 */
 	int fill(int amount);
+
+	/**
+	 * Maximum lumen capacity
+	 *
+	 * @return Lumen capacity
+	 */
 	int getMax();
 }
 class Empty implements ILumen {
