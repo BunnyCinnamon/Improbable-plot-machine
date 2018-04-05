@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "solar:blocks/pholarizer/base",
-		"particle": "solar:blocks/pholarizer/base"
+		"0": "solar:blocks/pholarizer",
+		"particle": "solar:blocks/pholarizer"
 	},
 	"elements": [
 		{
@@ -10,14 +10,13 @@
 			"from": [-1, -1.5, 1],
 			"to": [0, 2.5, 2],
 			"faces": {
-				"north": {"uv": [10, 1, 11, 5], "texture": "#0"},
-				"east": {"uv": [11, 3, 12, 7], "texture": "#0"},
-				"south": {"uv": [7, 2, 8, 6], "texture": "#0"},
-				"west": {"uv": [12, 3, 13, 7], "texture": "#0"},
-				"up": {"uv": [6, 3, 7, 4], "texture": "#0"},
-				"down": {"uv": [6, 5, 7, 6], "texture": "#0"}
-			},
-			"type": "cube"
+				"north": {"uv": [7, 3, 8, 7], "texture": "#0"},
+				"east": {"uv": [7, 3, 8, 7], "texture": "#0"},
+				"south": {"uv": [7, 3, 8, 7], "texture": "#0"},
+				"west": {"uv": [7, 3, 8, 7], "texture": "#0"},
+				"up": {"uv": [7, 1, 8, 2], "texture": "#0"},
+				"down": {"uv": [7, 2, 8, 3], "texture": "#0"}
+			}
 		}
 	]
 }

@@ -68,7 +68,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation QELAION_ON = getBlockTexture("qelaion/on");
 	public static final ResourceLocation QELAION_OFF = getBlockTexture("qelaion/off");
 	public static final ResourceLocation NEUTRON_BATTERY = getBlockTexture("neutron_battery/base");
-	public static final ResourceLocation PHOLARIZER = getBlockTexture("pholarizer/base");
+	public static final ResourceLocation PHOLARIZER = getBlockTexture("pholarizer");
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");

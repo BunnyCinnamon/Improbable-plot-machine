@@ -1,6 +1,8 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
+import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -8,12 +10,15 @@ import arekkuusu.solar.common.block.tile.TilePholarizer;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.mirror.client.baked.BakedRender;
+import net.katsstuff.mirror.data.Quat;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -28,6 +33,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
 
 @SuppressWarnings("deprecation")
 public class BlockPholarizer extends BlockBaseFacing {
@@ -41,6 +48,14 @@ public class BlockPholarizer extends BlockBaseFacing {
 			.put(EnumFacing.EAST, new AxisAlignedBB(0.875, 0.25, 0.25, 0.125, 0.75, 0.75))
 			.put(EnumFacing.WEST, new AxisAlignedBB(0.875, 0.25, 0.25, 0.125, 0.75, 0.75))
 			.build();
+	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.8D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.2D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.2D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.8D))
+			.put(EnumFacing.EAST, Vector3.apply(0.8D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.2D, 0.5D, 0.5D))
+			.build();
 
 	public BlockPholarizer() {
 		super(LibNames.PHOLARIZER, FixedMaterial.DONT_MOVE);
@@ -52,11 +67,32 @@ public class BlockPholarizer extends BlockBaseFacing {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(!world.isRemote) {
+		ItemStack stack = player.getHeldItem(hand);
+		if(!world.isRemote && stack.isEmpty()) {
 			Polarization polarization = state.getValue(POLARIZATION).isPositive() ? Polarization.NEGATIVE : Polarization.POSITIVE;
 			world.setBlockState(pos, state.withProperty(POLARIZATION, polarization));
 		}
-		return true;
+		return stack.isEmpty();
+	}
+
+	@Override
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		Vector3 back = getOffSet(facing, pos);
+		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
+			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
+			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 45);
+			double speed = 0.005D + rand.nextDouble() * 0.005D;
+			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					.asImmutable()
+					.multiply(speed)
+					.rotate(x.multiply(z));
+			FXUtil.spawnLight(world, back, speedVec, 45, 1.5F, 0xFFE23F, Light.GLOW);
+		}
+	}
+
+	private Vector3 getOffSet(EnumFacing facing, BlockPos pos) {
+		return FACING_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override

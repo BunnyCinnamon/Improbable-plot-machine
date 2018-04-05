@@ -124,7 +124,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 
 	@Override
 	public boolean hasFastRenderer() {
-		return true;
+		return hasCooldown();
 	}
 
 	@Override

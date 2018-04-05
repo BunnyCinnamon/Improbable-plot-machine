@@ -52,6 +52,7 @@ public final class ModBlocks {
 	public static final Block QELAION = PLACE_HOLDER;
 	public static final Block NEUTRON_BATTERY = PLACE_HOLDER;
 	public static final Block PHOLARIZER = PLACE_HOLDER;
+	public static final Block FISSION_INDUCER = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
@@ -79,6 +80,7 @@ public final class ModBlocks {
 		registry.register(new BlockQelaion());
 		registry.register(new BlockNeutronBattery());
 		registry.register(new BlockPholarizer());
+		registry.register(new BlockFissionInducer());
 		registerTiles();
 	}
 

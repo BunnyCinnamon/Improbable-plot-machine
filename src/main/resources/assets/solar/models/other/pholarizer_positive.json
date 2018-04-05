@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "solar:blocks/pholarizer/base",
-		"particle": "solar:blocks/pholarizer/base"
+		"0": "solar:blocks/pholarizer",
+		"particle": "solar:blocks/pholarizer"
 	},
 	"elements": [
 		{

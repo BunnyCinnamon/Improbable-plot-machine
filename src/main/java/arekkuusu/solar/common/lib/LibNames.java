@@ -42,4 +42,5 @@ public class LibNames {
 	public static final String DILATON_EXTENSION = "dilaton_extension";
 	public static final String NEUTRON_BATTERY = "neutron_battery";
 	public static final String PHOLARIZER = "pholarizer";
+	public static final String FISSION_INDUCER = "fission_inducer";
 }
