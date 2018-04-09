@@ -116,14 +116,14 @@ public class BlockQimranut extends BlockBaseFacing {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
-			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 75);
-			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 75);
+			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
+			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 45);
 			double speed = 0.005D + rand.nextDouble() * 0.005D;
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0x1BE564, Light.GLOW);
+			FXUtil.spawnLight(world, back, speedVec, 45, 1F, 0x1BE564, Light.GLOW);
 		}
 	}
 

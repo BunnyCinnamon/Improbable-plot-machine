@@ -43,4 +43,7 @@ public class LibNames {
 	public static final String NEUTRON_BATTERY = "neutron_battery";
 	public static final String PHOLARIZER = "pholarizer";
 	public static final String FISSION_INDUCER = "fission_inducer";
+	public static final String GOLD_FLUID = "gold";
+	public static final String MOLTEN_GOLD = "molten_gold";
+	public static final String LUMINIC_MECHANISM = "luminic_mechanism";
 }

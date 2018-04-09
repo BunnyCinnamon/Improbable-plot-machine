@@ -61,16 +61,26 @@ public class EntityLumen extends Entity {
 				FXUtil.spawnTunneling(world, pos, vec, 30 + world.rand.nextInt(40), 2F, 0xFFE077, GlowTexture.GLINT);
 			}
 		} else {
-			double rest = 1D * (1 - (double) handler.get() / 1000D);
-			motionX *= rest;
-			motionY *= rest;
-			motionZ *= rest;
+			double rest = (0.25D - (double) handler.get() / 500D);
+			motionX = MathHelper.clamp(motionX, -rest, rest);
+			motionY = MathHelper.clamp(motionY, -rest, rest);
+			motionZ = MathHelper.clamp(motionZ, -rest, rest);
 			if(tick++ % 80 == 0 && tick > 1) {
 				handler.set((int) ((float) handler.get() * 0.75F));
 			}
 			if(handler.get() <= 0) setDead();
 		}
 		move(MoverType.SELF, motionX, motionY, motionZ);
+	}
+
+	@Override
+	protected boolean canTriggerWalking() {
+		return false;
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
 	}
 
 	@Override

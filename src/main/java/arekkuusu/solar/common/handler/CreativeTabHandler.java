@@ -95,6 +95,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.CELESTIAL_RESONATOR);
 			addBlock(ModBlocks.NEUTRON_BATTERY);
 			addBlock(ModBlocks.PHOLARIZER);
+			addBlock(ModBlocks.FISSION_INDUCER);
 			addItem(ModItems.SINGULARITY);
 			addItem(ModItems.CRYSTAL_QUARTZ);
 			addItem(ModItems.PLASMON);

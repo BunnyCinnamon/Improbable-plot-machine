@@ -61,7 +61,11 @@ public enum BlockBaker {
 	PHOLARIZER_PILLAR_2("pholarizer_pillar_2"),
 	PHOLARIZER_PILLAR_3("pholarizer_pillar_3"),
 	PHOLARIZER_POSITIVE("pholarizer_positive"),
-	PHOLARIZER_NEGATIVE("pholarizer_negative");
+	PHOLARIZER_NEGATIVE("pholarizer_negative"),
+	FISSION_INDUCER_TOP("fission_inducer_top"),
+	FISSION_INDUCER_CENTER("fission_inducer_center"),
+	FISSION_INDUCER_INSIDE("fission_inducer_inside"),
+	FISSION_INDUCER_BOTTOM("fission_inducer_bottom");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;

@@ -38,8 +38,7 @@ public final class PacketHelper {
 
 	public static void sendQuantumChanges(UUID uuid) {
 		QuantumStackData data = EntangledIItemHandler.getEntanglement(uuid);
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setTag("list", data.write());
+		NBTTagCompound tag = data.serializeNBT();
 		tag.setUniqueId("uuid", uuid);
 		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.QUANTUM_SYNC, tag));
 	}

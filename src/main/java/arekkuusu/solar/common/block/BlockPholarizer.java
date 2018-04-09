@@ -87,7 +87,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			FXUtil.spawnLight(world, back, speedVec, 45, 1.5F, 0xFFE23F, Light.GLOW);
+			FXUtil.spawnLight(world, back, speedVec, 45, 0.5F, 0xFFE23F, Light.GLOW);
 		}
 	}
 

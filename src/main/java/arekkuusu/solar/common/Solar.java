@@ -16,6 +16,7 @@ import arekkuusu.solar.common.network.GuiHandler;
 import arekkuusu.solar.common.network.PacketHandler;
 import arekkuusu.solar.common.proxy.IProxy;
 import arekkuusu.solar.common.theorem.ModTheorems;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -41,6 +42,10 @@ public class Solar {
 	@Instance
 	public static Solar INSTANCE;
 	public static Logger LOG = LogManager.getLogger(LibMod.MOD_NAME);
+
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

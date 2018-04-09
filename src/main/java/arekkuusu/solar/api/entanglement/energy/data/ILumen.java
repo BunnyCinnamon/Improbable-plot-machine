@@ -58,16 +58,16 @@ public interface ILumen {
 }
 class Empty implements ILumen {
 
-	private int neutrons;
+	private int lumen;
 
 	@Override
 	public int get() {
-		return neutrons;
+		return lumen;
 	}
 
 	@Override
 	public void set(int neutrons) {
-		this.neutrons = neutrons;
+		this.lumen = neutrons;
 	}
 
 	@Override

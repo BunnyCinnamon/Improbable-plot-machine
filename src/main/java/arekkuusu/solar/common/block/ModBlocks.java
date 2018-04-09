@@ -7,6 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
+import arekkuusu.solar.common.block.fluid.BlockMoltenGold;
+import arekkuusu.solar.common.block.fluid.ModFluids;
 import arekkuusu.solar.common.block.tile.*;
 import arekkuusu.solar.common.handler.CreativeTabHandler;
 import arekkuusu.solar.common.lib.LibMod;
@@ -53,8 +55,10 @@ public final class ModBlocks {
 	public static final Block NEUTRON_BATTERY = PLACE_HOLDER;
 	public static final Block PHOLARIZER = PLACE_HOLDER;
 	public static final Block FISSION_INDUCER = PLACE_HOLDER;
+	public static final Block MOLTEN_GOLD = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
+		ModFluids.FLUIDS.forEach(registry::register);
 		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
 		registry.register(new BlockMonolithicGlyph());
 		registry.register(new BlockQuantumMirror());
@@ -81,6 +85,7 @@ public final class ModBlocks {
 		registry.register(new BlockNeutronBattery());
 		registry.register(new BlockPholarizer());
 		registry.register(new BlockFissionInducer());
+		registry.register(new BlockMoltenGold());
 		registerTiles();
 	}
 
@@ -100,6 +105,7 @@ public final class ModBlocks {
 		registerTile(TileQelaion.class, LibNames.QELAION);
 		registerTile(TileNeutronBattery.class, LibNames.NEUTRON_BATTERY);
 		registerTile(TilePholarizer.class, LibNames.PHOLARIZER);
+		registerTile(TileFissionInducer.class, LibNames.FISSION_INDUCER);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {
