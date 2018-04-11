@@ -65,6 +65,7 @@ public final class ModItems {
 		registry.register(new ItemNeutronBattery());
 		registry.register(itemBlock(ModBlocks.PHOLARIZER));
 		registry.register(itemBlock(ModBlocks.FISSION_INDUCER));
+		registry.register(itemBlock(ModBlocks.LUMINIC_MECHANISM));
 	}
 
 	@SuppressWarnings("ConstantConditions")

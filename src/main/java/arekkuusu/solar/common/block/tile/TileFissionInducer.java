@@ -8,10 +8,11 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.client.effect.FXUtil;
-import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.fluid.ModFluids;
+import net.katsstuff.mirror.client.particles.GlowTexture;
 import net.katsstuff.mirror.data.Vector3;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -29,6 +30,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 /**
  * Created by <Arekkuusu> on 4/5/2018.
@@ -36,57 +38,66 @@ import javax.annotation.Nullable;
  */
 public class TileFissionInducer extends TileBase implements ITickable {
 
+	private static final BlockPos[] POSITIONS = {
+			new BlockPos(1, 0, 1 ),
+			new BlockPos(-1, 0, -1 ),
+			new BlockPos(1, 0, 0 ),
+			new BlockPos(0, 0, 1 ),
+			new BlockPos(-1, 0, 0 ),
+			new BlockPos(0, 0, -1 ),
+			new BlockPos(-1, 0, 1 ),
+			new BlockPos(1, 0, -1 )
+	};
 	public static final int MAX_CAPACITY = 10000;
+	private int[] ticks = new int[POSITIONS.length];
 	private final FluidTank fluidHandler;
-	private BlockPos from;
-	private BlockPos to;
 	private int tick;
 
 	public TileFissionInducer() {
 		fluidHandler = new FluidTank(new FluidStack(ModFluids.GOLD, 0), MAX_CAPACITY);
-	}
-
-	@Override
-	public void onLoad() {
-		from = pos.add(-1,-1,-1);
-		to = pos.add(1,1,1);
+		Arrays.fill(ticks, -1);
 	}
 
 	@Override
 	public void update() {
 		if(!world.isRemote) {
 			if(tick++ % 20 == 0 && canFill()) {
-				BlockPos.getAllInBox(from, to).forEach(p -> {
-					if(world.rand.nextDouble() < 0.01D) {
-						IBlockState state = world.getBlockState(p);
-						if(state.getBlock() == Blocks.GOLD_BLOCK) {
-							world.setBlockState(p, ModBlocks.MOLTEN_GOLD.getDefaultState());
-						} else if(state.getBlock() == ModBlocks.MOLTEN_GOLD) {
+				for(int i = 0; i < POSITIONS.length; i++) {
+					BlockPos position = POSITIONS[i].add(getPos());
+					IBlockState state = world.getBlockState(position);
+					if(state.getBlock() == Blocks.GOLD_BLOCK) {
+						if(ticks[i]++ >= 10) {
+							world.playEvent(2001, position, Block.getStateId(state));
+							world.setBlockState(position, ModBlocks.MOLTEN_GOLD.getDefaultState());
+							ticks[i] = -1;
+						}
+					} else if(state.getBlock() == ModBlocks.MOLTEN_GOLD) {
+						if(ticks[i]++ >= 25) {
+							world.playEvent(2001, position, Block.getStateId(state));
 							FluidStack stack = new FluidStack(ModFluids.GOLD, Fluid.BUCKET_VOLUME);
-							((IFluidBlock) ModFluids.GOLD.getBlock()).place(world, p, stack, true);
-						} else if(state.getBlock() instanceof IFluidBlock) {
-							IFluidBlock f = (IFluidBlock) state.getBlock();
-							if(f.getFluid() == ModFluids.GOLD && f.canDrain(world, p)) {
-								if(fluidHandler.fill(f.drain(world, p, true), true) == Fluid.BUCKET_VOLUME) {
-									world.setBlockToAir(p);
-								}
+							((IFluidBlock) ModFluids.GOLD.getBlock()).place(world, position, stack, true);
+							ticks[i] = -1;
+						}
+					} else if(state.getBlock() instanceof IFluidBlock) {
+						IFluidBlock f = (IFluidBlock) state.getBlock();
+						if(f.getFluid() == ModFluids.GOLD && f.canDrain(world, position)) {
+							FluidStack stack = f.drain(world, position, false);
+							if(stack != null && stack.amount == Fluid.BUCKET_VOLUME) {
+								fluidHandler.fill(f.drain(world, position, true), true);
 							}
 						}
 					}
-				});
+				}
 			}
 			applyGravity();
-		} else if(tick++ % 5 == 0) {
-			BlockPos.getAllInBox(from, to).forEach(p -> {
-				if(world.rand.nextFloat() < 0.4F) {
-					IBlockState state = world.getBlockState(p);
-					if(state.getBlock() == Blocks.GOLD_BLOCK || state.getBlock() == ModBlocks.MOLTEN_GOLD) {
-						Vector3 pos = Vector3.randomVector().add(p.getX(), p.getY(), p.getZ());
-						int color = world.rand.nextBoolean() ? 0xff5000 : 0xfff200;
-						FXUtil.spawnLight(world, pos, Vector3.Zero(), 10, 0.2F, color, Light.GLOW);
-					}
-				}
-			});
+		} else for(BlockPos position : POSITIONS) {
+			IBlockState state = world.getBlockState(position.add(getPos()));
+			if(state.getBlock() == Blocks.GOLD_BLOCK || state.getBlock() == ModBlocks.MOLTEN_GOLD) {
+				Vector3 pos = new Vector3.WrappedVec3i(position.add(getPos())).asImmutable().add(Math.random(), 0.75, Math.random());
+				Vector3 speed = Vector3.apply(0, 0.05, 0).multiply(world.rand.nextFloat());
+				int color = world.rand.nextBoolean() ? 0xff5000 : 0xfff200;
+				FXUtil.spawnTunneling(world, pos, speed, 20, 1F, color, GlowTexture.STAR);
+			}
 		}
 	}
 

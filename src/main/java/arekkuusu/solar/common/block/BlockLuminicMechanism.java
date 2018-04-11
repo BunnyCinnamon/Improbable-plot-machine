@@ -8,10 +8,13 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
+import arekkuusu.solar.common.block.tile.TileLuminicMechanism;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -33,6 +36,12 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return null;
+		return new TileLuminicMechanism();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerModel() {
+
 	}
 }
