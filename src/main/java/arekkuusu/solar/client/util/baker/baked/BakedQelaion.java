@@ -17,6 +17,7 @@ import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -61,11 +62,11 @@ public class BakedQelaion extends BakedBrightness {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return cache.compute(state, quads -> {
 			boolean hasNode = state != null && state.getValue(BlockQelaion.HAS_NODE);
 			quads.addAll(BlockBaker.QELAION.getQuads());
-			quads.addAll(QuadBuilder.withFormat(format)
+			quads.addAll(QuadBuilder.withFormat(DefaultVertexFormats.ITEM)
 					.setFrom(5, 5, 5)
 					.setTo(11, 11, 11)
 					.addAll(0, 9, 0, 9, hasNode ? on : off)
@@ -75,7 +76,7 @@ public class BakedQelaion extends BakedBrightness {
 			if(state instanceof IExtendedBlockState) {
 				Direction direction = ((IExtendedBlockState) state).getValue(Direction.DIR_UNLISTED);
 				if(direction != null && direction != Direction.NON) {
-					QuadBuilder builder = QuadBuilder.withFormat(format)
+					QuadBuilder builder = QuadBuilder.withFormat(format())
 							.setFrom(2, 2, 2)
 							.setTo(14, 14, 14);
 					for(EnumFacing facing : direction.getFacings())

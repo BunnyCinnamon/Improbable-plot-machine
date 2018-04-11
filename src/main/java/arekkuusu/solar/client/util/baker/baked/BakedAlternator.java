@@ -15,6 +15,7 @@ import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -63,17 +64,17 @@ public class BakedAlternator extends BakedBrightness {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return cache.compute(state, quads -> {
 			if(state == null) {
-				addBaseQuads(quads, format);
-				addInQuads(quads, format, true);
+				addBaseQuads(quads, DefaultVertexFormats.ITEM);
+				addInQuads(quads, DefaultVertexFormats.ITEM, true);
 			} else switch(MinecraftForgeClient.getRenderLayer()) {
 				case SOLID:
-					addBaseQuads(quads, format);
+					addBaseQuads(quads, format());
 					break;
 				case CUTOUT_MIPPED:
-					addInQuads(quads, format, state.getValue(State.ACTIVE));
+					addInQuads(quads, format(), state.getValue(State.ACTIVE));
 					break;
 			}
 		});

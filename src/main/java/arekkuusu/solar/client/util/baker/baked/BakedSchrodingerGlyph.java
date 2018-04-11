@@ -15,6 +15,7 @@ import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -59,18 +60,18 @@ public class BakedSchrodingerGlyph extends BakedBrightness {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return cache.compute(state, quads -> {
 			if(state == null) {
-				addBaseQuads(quads, format);
-				addOverlayQuads(quads, format, false);
+				addBaseQuads(quads, DefaultVertexFormats.ITEM);
+				addOverlayQuads(quads, DefaultVertexFormats.ITEM, false);
 			} else {
 				switch(MinecraftForgeClient.getRenderLayer()) {
 					case SOLID:
-						addBaseQuads(quads, format);
+						addBaseQuads(quads, format());
 						break;
 					case CUTOUT_MIPPED:
-						addOverlayQuads(quads, format, true);
+						addOverlayQuads(quads, format(), true);
 						break;
 				}
 			}

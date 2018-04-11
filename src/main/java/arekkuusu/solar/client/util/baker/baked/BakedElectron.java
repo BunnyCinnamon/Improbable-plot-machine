@@ -15,6 +15,7 @@ import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -58,12 +59,12 @@ public class BakedElectron extends BakedBrightness {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return cache.compute(state, quads -> {
 			if(state == null) {
-				addBase(quads, format, false);
+				addBase(quads, DefaultVertexFormats.ITEM, false);
 			} else {
-				addBase(quads, format, state.getValue(State.POWER) > 0);
+				addBase(quads, format(), state.getValue(State.POWER) > 0);
 			}
 		});
 	}

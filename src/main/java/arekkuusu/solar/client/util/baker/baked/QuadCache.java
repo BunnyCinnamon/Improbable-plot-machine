@@ -15,6 +15,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -25,29 +26,29 @@ import java.util.function.Consumer;
  */
 public final class QuadCache {
 
-	private Map<IBlockState, Map<BlockRenderLayer, List<BakedQuad>>> formats = Maps.newHashMap();
+	private Map<IBlockState, Map<BlockRenderLayer, List<BakedQuad>>> quads = Maps.newHashMap();
 
 	public List<BakedQuad> compute(@Nullable IBlockState state, Consumer<List<BakedQuad>> f) {
 		BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
-		if(!formats.containsKey(state)) {
+		if(!quads.containsKey(state)) {
 			Map<BlockRenderLayer, List<BakedQuad>> map = Maps.newHashMap();
 			List<BakedQuad> quads = Lists.newArrayList();
 			f.accept(quads);
 			map.put(layer, quads);
-			formats.put(state, map);
+			this.quads.put(state, map);
 		} else if(state != null && !hasRenderLayer(state, layer)) {
 			List<BakedQuad> quads = Lists.newArrayList();
 			f.accept(quads);
-			formats.get(state).put(layer, quads);
+			this.quads.get(state).put(layer, quads);
 		}
-		return formats.get(state).get(layer);
+		return quads.get(state).getOrDefault(layer, Collections.emptyList());
 	}
 
 	private boolean hasRenderLayer(IBlockState state, BlockRenderLayer layer) {
-		return formats.get(state).containsKey(layer);
+		return quads.get(state).containsKey(layer);
 	}
 
 	public void reloadTextures() {
-		this.formats.clear();
+		this.quads.clear();
 	}
 }

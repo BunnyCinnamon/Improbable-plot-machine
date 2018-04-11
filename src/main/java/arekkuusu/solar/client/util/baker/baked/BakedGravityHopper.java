@@ -18,6 +18,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -75,19 +76,19 @@ public class BakedGravityHopper extends BakedBrightness {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return cache.compute(state, quads -> {
 			if(state == null) {
-				addCube(format, quads, EnumFacing.UP, base, base, base, false);
-				addCube(format, quads, EnumFacing.UP, overlay[0], overlay[1], overlay[2], false);
+				addCube(DefaultVertexFormats.ITEM, quads, EnumFacing.UP, base, base, base, false);
+				addCube(DefaultVertexFormats.ITEM, quads, EnumFacing.UP, overlay[0], overlay[1], overlay[2], false);
 			} else {
 				EnumFacing face = state.getValue(BlockDirectional.FACING);
 				switch(MinecraftForgeClient.getRenderLayer()) {
 					case SOLID:
-						addCube(format, quads, face, base, base, base, false);
+						addCube(format(), quads, face, base, base, base, false);
 						break;
 					case CUTOUT_MIPPED:
-						addCube(format, quads, face, overlay[0], overlay[1], overlay[2], true);
+						addCube(format(), quads, face, overlay[0], overlay[1], overlay[2], true);
 						break;
 				}
 			}

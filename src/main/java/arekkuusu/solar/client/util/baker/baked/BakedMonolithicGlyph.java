@@ -16,6 +16,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -62,11 +63,11 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return cache.compute(state, quads -> {
 			switch(MinecraftForgeClient.getRenderLayer()) {
 				case SOLID:
-					quads.addAll(QuadBuilder.withFormat(format)
+					quads.addAll(QuadBuilder.withFormat(DefaultVertexFormats.ITEM)
 							.setFrom(0, 0, 0)
 							.setTo(16, 16, 16)
 							.addAll(base)
@@ -76,7 +77,7 @@ public class BakedMonolithicGlyph extends BakedBrightness {
 				case CUTOUT_MIPPED:
 					if(state != null) {
 						int glyph = state.getValue(BlockMonolithicGlyph.GLYPH);
-						quads.addAll(QuadBuilder.withFormat(format)
+						quads.addAll(QuadBuilder.withFormat(format())
 								.setFrom(0, 0, 0)
 								.setTo(16, 16, 16)
 								.setHasBrightness(true)

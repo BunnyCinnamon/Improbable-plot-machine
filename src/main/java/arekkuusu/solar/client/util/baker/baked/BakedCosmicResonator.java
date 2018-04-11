@@ -16,6 +16,7 @@ import net.katsstuff.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -63,10 +64,10 @@ public class BakedCosmicResonator extends BakedBrightness {
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, VertexFormat format) {
+	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return cache.compute(state, quads -> {
 			if(state == null) {
-				quads.addAll(QuadBuilder.withFormat(format)
+				quads.addAll(QuadBuilder.withFormat(DefaultVertexFormats.ITEM)
 						.setFrom(5, 5, 5)
 						.setTo(11, 11, 11)
 						.addAll(5F, 11F, 5F, 11F, full_moon)
@@ -74,7 +75,7 @@ public class BakedCosmicResonator extends BakedBrightness {
 				);
 			} else {
 				MoonPhase phase = state.getValue(MOON_PHASE);
-				QuadBuilder builder = QuadBuilder.withFormat(format)
+				QuadBuilder builder = QuadBuilder.withFormat(format())
 						.setFrom(5, 5, 5)
 						.setTo(11, 11, 11)
 						.setHasBrightness(true);
