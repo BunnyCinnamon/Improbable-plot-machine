@@ -19,6 +19,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -43,20 +45,18 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote) {
-			if(handler.get() < handler.getMax() && tick++ % 20 == 0){
-				BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(getPos());
+			if(handler.get() < handler.getMax() && tick++ % 20 == 0) {
 				EnumFacing facing = getFacingLazy();
-				for(int i = 0; i < 2; i++) {
-					IBlockState state = world.getBlockState(pos.move(facing));
-					if(state.getBlock().hasTileEntity(state)) {
-						TileEntity tile = world.getTileEntity(pos);
-						if(tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite())) {
-							IFluidHandler fluid = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
-							FluidStack stack = fluid != null ? fluid.drain(500, false) : null;
-							if(stack != null && stack.amount == 500) {
-								fluid.drain(500, true);
-								handler.fill(1);
-							}
+				BlockPos pos = getPos().offset(facing.getOpposite());
+				IBlockState state = world.getBlockState(pos);
+				if(state.getBlock().hasTileEntity(state)) {
+					TileEntity tile = world.getTileEntity(pos);
+					if(tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing)) {
+						IFluidHandler fluid = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
+						FluidStack stack = fluid != null ? fluid.drain(500, false) : null;
+						if(stack != null && stack.amount == 500) {
+							fluid.drain(500, true);
+							handler.fill(1);
 						}
 					}
 				}
@@ -67,10 +67,16 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 
 	private void spit() {
 		if(handler.get() >= 16) {
-			EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), handler.drain(16));
+			Vector3 pos = new Vector3.WrappedVec3i(getFacingLazy().getDirectionVec()).asImmutable()
+					.multiply(0.5D).add(
+							getPos().getX() + 0.5D,
+							getPos().getY() + 0.5D,
+							getPos().getZ() + 0.5D
+					);
+			EntityLumen lumen = EntityLumen.spawn(world, pos, handler.drain(16));
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 			Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
-			Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getOpposite().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
+			Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
 			lumen.motionX = vec.x();
 			lumen.motionY = vec.y();
 			lumen.motionZ = vec.z();

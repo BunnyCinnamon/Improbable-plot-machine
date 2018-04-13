@@ -56,10 +56,7 @@ public enum BlockBaker {
 	NEUTRON_BATTERY_PINK("neutron_battery_pink"),
 	PHOLARIZER_BASE("pholarizer_base"),
 	PHOLARIZER_RING("pholarizer_ring"),
-	PHOLARIZER_PILLAR_0("pholarizer_pillar_0"),
-	PHOLARIZER_PILLAR_1("pholarizer_pillar_1"),
-	PHOLARIZER_PILLAR_2("pholarizer_pillar_2"),
-	PHOLARIZER_PILLAR_3("pholarizer_pillar_3"),
+	PHOLARIZER_PILLAR("pholarizer_pillar"),
 	PHOLARIZER_POSITIVE("pholarizer_positive"),
 	PHOLARIZER_NEGATIVE("pholarizer_negative"),
 	FISSION_INDUCER_TOP("fission_inducer_top"),
@@ -70,9 +67,7 @@ public enum BlockBaker {
 	ELECTRON_RING_X("electron_ring_x"),
 	ELECTRON_RING_Z("electron_ring_z"),
 	LUMINIC_MECHANISM("luminic_mechanism"),
-	LUMINIC_MECHANISM_("luminic_mechanism_"),
-	LUMINIC_MECHANISM_INNER_TOP("luminic_mechanism_inner_top"),
-	LUMINIC_MECHANISM_INNER_BOTTOM("luminic_mechanism_inner_bottom");
+	LUMINIC_MECHANISM_("luminic_mechanism_");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;

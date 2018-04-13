@@ -41,12 +41,12 @@ import java.util.Random;
 public class BlockLuminicMechanism extends BlockBaseFacing {
 
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.2D, 0.5D))
-			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.8D, 0.5D))
-			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.8D))
-			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.2D))
-			.put(EnumFacing.EAST, Vector3.apply(0.2D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, Vector3.apply(0.8D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.1D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.9D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.9D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.1D))
+			.put(EnumFacing.EAST, Vector3.apply(0.1D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.9D, 0.5D, 0.5D))
 			.build();
 
 	public BlockLuminicMechanism() {

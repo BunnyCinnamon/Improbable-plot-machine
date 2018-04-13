@@ -43,6 +43,7 @@ tile.neutron_battery.name=Neutron Battery
 tile.pholarizer.name=Pholarizer
 tile.fission_inducer.name=Fission Inducer
 tile.luminic_mechanism.name=Luminic Mechanism
+fluid.tile.gold=Gold
 
 //Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger
