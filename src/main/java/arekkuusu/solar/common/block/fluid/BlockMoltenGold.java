@@ -58,17 +58,27 @@ public class BlockMoltenGold extends BlockBase {
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	public int tickRate(World worldIn) {
+		return 20;
+	}
+
+	@Override
+	public void onBlockAdded(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+		world.scheduleUpdate(pos, this, tickRate(world));
+	}
+
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		BlockPos blockpos = pos.up();
-		IBlockState iblockstate = worldIn.getBlockState(blockpos);
+		IBlockState iblockstate = world.getBlockState(blockpos);
 		if(iblockstate.getBlock() == Blocks.WATER || iblockstate.getBlock() == Blocks.FLOWING_WATER) {
-			worldIn.setBlockToAir(blockpos);
-			worldIn.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
-			if(worldIn instanceof WorldServer) {
-				((WorldServer) worldIn).spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.25D, (double) blockpos.getZ() + 0.5D, 8, 0.5D, 0.25D, 0.5D, 0.0D);
+			world.setBlockState(pos, Blocks.GOLD_BLOCK.getDefaultState());
+			world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+			if(world instanceof WorldServer) {
+				((WorldServer) world).spawnParticle(EnumParticleTypes.SMOKE_LARGE, (double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.25D, (double) blockpos.getZ() + 0.5D, 8, 0.5D, 0.25D, 0.5D, 0.0D);
 			}
 		}
-		if(worldIn.getGameRules().getBoolean("doFireTick")) {
+		if(world.getGameRules().getBoolean("doFireTick")) {
 			int i = rand.nextInt(3);
 			if(i > 0) {
 				BlockPos pos1 = pos;
@@ -76,15 +86,15 @@ public class BlockMoltenGold extends BlockBase {
 				for(int j = 0; j < i; ++j) {
 					pos1 = pos1.add(rand.nextInt(3) - 1, 1, rand.nextInt(3) - 1);
 
-					if(pos1.getY() >= 0 && pos1.getY() < worldIn.getHeight() && !worldIn.isBlockLoaded(pos1)) {
+					if(pos1.getY() >= 0 && pos1.getY() < world.getHeight() && !world.isBlockLoaded(pos1)) {
 						return;
 					}
 
-					IBlockState block = worldIn.getBlockState(pos1);
+					IBlockState block = world.getBlockState(pos1);
 
-					if(block.getBlock().isAir(block, worldIn, pos1)) {
-						if(this.isSurroundingBlockFlammable(worldIn, pos1)) {
-							worldIn.setBlockState(pos1, Blocks.FIRE.getDefaultState());
+					if(block.getBlock().isAir(block, world, pos1)) {
+						if(this.isSurroundingBlockFlammable(world, pos1)) {
+							world.setBlockState(pos1, Blocks.FIRE.getDefaultState());
 							return;
 						}
 					} else if(block.getMaterial().blocksMovement()) {
@@ -95,16 +105,17 @@ public class BlockMoltenGold extends BlockBase {
 				for(int k = 0; k < 3; ++k) {
 					BlockPos blockpos1 = pos.add(rand.nextInt(3) - 1, 0, rand.nextInt(3) - 1);
 
-					if(blockpos1.getY() >= 0 && blockpos1.getY() < 256 && !worldIn.isBlockLoaded(blockpos1)) {
+					if(blockpos1.getY() >= 0 && blockpos1.getY() < 256 && !world.isBlockLoaded(blockpos1)) {
 						return;
 					}
 
-					if(worldIn.isAirBlock(blockpos1.up()) && this.getCanBlockBurn(worldIn, blockpos1)) {
-						worldIn.setBlockState(blockpos1.up(), Blocks.FIRE.getDefaultState());
+					if(world.isAirBlock(blockpos1.up()) && this.getCanBlockBurn(world, blockpos1)) {
+						world.setBlockState(blockpos1.up(), Blocks.FIRE.getDefaultState());
 					}
 				}
 			}
 		}
+		world.scheduleUpdate(pos, this, tickRate(world));
 	}
 
 	private boolean isSurroundingBlockFlammable(World worldIn, BlockPos pos) {

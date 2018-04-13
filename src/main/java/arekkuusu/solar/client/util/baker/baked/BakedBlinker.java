@@ -112,7 +112,7 @@ public class BakedBlinker extends BakedBrightness {
 		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(2, 0, 2)
 				.setTo(14, 1, 14)
-				.addAll(2F, 14F, 2F, 2F, base)
+				.addAll(2F, 14F, 2F, 3F, base)
 				.addFace(UP, 2F, 14F, 3F, 14F, base)
 				.addFace(DOWN, 2F, 14F, 2F, 14F, base)
 				.rotate(facing, DOWN)
@@ -124,7 +124,7 @@ public class BakedBlinker extends BakedBrightness {
 		quads.addAll(QuadBuilder.withFormat(format)
 				.setFrom(2, 0, 2)
 				.setTo(14, 1, 14)
-				.addAll(2F, 14F, 2F, 2F, on ? top_on : top_off)
+				.addAll(2F, 14F, 2F, 3F, on ? top_on : top_off)
 				.addFace(UP, 2F, 14F, 2F, 14F, on ? top_on : top_off)
 				.addFace(DOWN, 2F, 14F, 2F, 14F, on ? bottom_on : bottom_off)
 				.setHasBrightness(true)
@@ -135,6 +135,7 @@ public class BakedBlinker extends BakedBrightness {
 
 	@Override
 	public scala.collection.immutable.Map<ItemCameraTransforms.TransformType, TRSRTransformation> getTransforms() {
+		// noinspection unchecked
 		return JavaConverters.mapAsScalaMapConverter(TRANSFORMS).asScala().toMap(Predef.$conforms()); // Lies
 	}
 

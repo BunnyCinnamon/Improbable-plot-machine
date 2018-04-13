@@ -55,11 +55,15 @@ public class TilePholarizer extends TileBase implements ITickable {
 					e.motionY += (y / sqrt) * strength * power;
 					e.motionZ += (z / sqrt) * strength * power;
 				});
-				world.getEntitiesWithinAABB(EntityLumen.class, new AxisAlignedBB(pos.up()).shrink(0.25)).stream().filter(e ->
+				world.getEntitiesWithinAABB(EntityLumen.class, new AxisAlignedBB(pos.up()).grow(1D)).stream().filter(e ->
 						!e.isDead && e.hasCapability(ModCapability.LUMEN_CAPABILITY, null)
 				).forEach(e -> {
 					ILumen lumen = e.getCapability(ModCapability.LUMEN_CAPABILITY, null);
-					lumen.set(wrapper.fill(lumen.get()));
+					int drained = lumen.drain(1);
+					int remain = wrapper.fill(drained);
+					if(remain > 0) {
+						lumen.set(lumen.get() + remain);
+					}
 					if(lumen.get() <= 0) e.setDead();
 				});
 			}
@@ -74,7 +78,7 @@ public class TilePholarizer extends TileBase implements ITickable {
 		TileEntity tile;
 		if(state.getBlock().hasTileEntity(state) && (tile = world.getTileEntity(pos)).hasCapability(ModCapability.LUMEN_CAPABILITY, facing)) {
 			ILumen wrapper = tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing);
-			if(wrapper.get() > 16) {
+			if(wrapper.get() >= 16) {
 				EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), wrapper.drain(64));
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);

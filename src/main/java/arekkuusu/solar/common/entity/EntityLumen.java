@@ -53,15 +53,16 @@ public class EntityLumen extends Entity {
 		super.onUpdate();
 		if(world.isRemote) {
 			int lumen = MathHelper.clamp(handler.get(), 0, 4);
+			float scale = 2F * ((float) lumen / 4F);
 			Vector3 pos = Vector3.apply(posX, posY, posZ);
 			for(int i = 0; i < lumen; i++) {
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Vector3 vec = Vector3.apply(motionX, motionY, motionZ).rotate(x.multiply(z)).multiply(0.1D);
-				FXUtil.spawnTunneling(world, pos, vec, 30 + world.rand.nextInt(40), 2F, 0xFFE077, GlowTexture.GLINT);
+				FXUtil.spawnTunneling(world, pos, vec, 30 + world.rand.nextInt(40), scale, 0xFFE077, GlowTexture.GLINT);
 			}
 		} else {
-			double rest = (0.25D - (double) handler.get() / 500D);
+			double rest = 0.128D;//(0.25D - (double) handler.get() / 500D);
 			motionX = MathHelper.clamp(motionX, -rest, rest);
 			motionY = MathHelper.clamp(motionY, -rest, rest);
 			motionZ = MathHelper.clamp(motionZ, -rest, rest);

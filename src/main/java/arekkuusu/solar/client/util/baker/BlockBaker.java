@@ -65,7 +65,14 @@ public enum BlockBaker {
 	FISSION_INDUCER_TOP("fission_inducer_top"),
 	FISSION_INDUCER_CENTER("fission_inducer_center"),
 	FISSION_INDUCER_INSIDE("fission_inducer_inside"),
-	FISSION_INDUCER_BOTTOM("fission_inducer_bottom");
+	FISSION_INDUCER_BOTTOM("fission_inducer_bottom"),
+	ELECTRON("electron"),
+	ELECTRON_RING_X("electron_ring_x"),
+	ELECTRON_RING_Z("electron_ring_z"),
+	LUMINIC_MECHANISM("luminic_mechanism"),
+	LUMINIC_MECHANISM_("luminic_mechanism_"),
+	LUMINIC_MECHANISM_INNER_TOP("luminic_mechanism_inner_top"),
+	LUMINIC_MECHANISM_INNER_BOTTOM("luminic_mechanism_inner_bottom");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;

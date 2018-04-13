@@ -11,17 +11,21 @@ import arekkuusu.solar.api.sound.SolarSounds;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedDamage;
 import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedElectron;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.common.block.tile.TileElectron;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
+import net.katsstuff.mirror.client.baked.BakedRender;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -31,6 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 /**
@@ -121,6 +126,11 @@ public class BlockElectron extends BlockBase {
 	}
 
 	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	}
+
+	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
@@ -136,9 +146,22 @@ public class BlockElectron extends BlockBase {
 	}
 
 	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileElectron();
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedElectron::new);
-		ModelHandler.registerModel(this, 0, "");
+		DummyBakedRegistry.register(this, () -> new BakedRender()
+				.setParticle(ResourceLibrary.ELECTRON)
+		);
+		ModelHandler.registerModel(this, 0);
 	}
 }

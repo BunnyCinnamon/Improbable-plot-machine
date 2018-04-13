@@ -50,11 +50,11 @@ public class TileFissionInducer extends TileBase implements ITickable {
 	};
 	public static final int MAX_CAPACITY = 10000;
 	private int[] ticks = new int[POSITIONS.length];
-	private final FluidTank fluidHandler;
+	private final FluidTank handler;
 	private int tick;
 
 	public TileFissionInducer() {
-		fluidHandler = new FluidTank(new FluidStack(ModFluids.GOLD, 0), MAX_CAPACITY);
+		handler = new FluidTank(new FluidStack(ModFluids.GOLD, 0), MAX_CAPACITY);
 		Arrays.fill(ticks, -1);
 	}
 
@@ -78,12 +78,12 @@ public class TileFissionInducer extends TileBase implements ITickable {
 							((IFluidBlock) ModFluids.GOLD.getBlock()).place(world, position, stack, true);
 							ticks[i] = -1;
 						}
-					} else if(state.getBlock() instanceof IFluidBlock) {
+					} else if(state.getBlock() instanceof IFluidBlock && world.rand.nextFloat() < 0.25F) {
 						IFluidBlock f = (IFluidBlock) state.getBlock();
 						if(f.getFluid() == ModFluids.GOLD && f.canDrain(world, position)) {
 							FluidStack stack = f.drain(world, position, false);
 							if(stack != null && stack.amount == Fluid.BUCKET_VOLUME) {
-								fluidHandler.fill(f.drain(world, position, true), true);
+								handler.fill(f.drain(world, position, true), true);
 							}
 						}
 					}
@@ -117,7 +117,7 @@ public class TileFissionInducer extends TileBase implements ITickable {
 	}
 
 	public boolean canFill() {
-		return fluidHandler.canFill() && fluidHandler.getFluidAmount() < fluidHandler.getCapacity();
+		return handler.canFill() && handler.getFluidAmount() < handler.getCapacity();
 	}
 
 	public EnumFacing getFacingLazy() {
@@ -136,17 +136,17 @@ public class TileFissionInducer extends TileBase implements ITickable {
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		EnumFacing f = getFacingLazy();
 		return (f == facing || f.getOpposite() == facing) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-				? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(fluidHandler)
+				? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		fluidHandler.readFromNBT(compound);
+		handler.readFromNBT(compound);
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		fluidHandler.writeToNBT(compound);
+		handler.writeToNBT(compound);
 	}
 }

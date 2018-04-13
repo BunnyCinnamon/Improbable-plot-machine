@@ -35,6 +35,8 @@ public final class ResourceLibrary {
 		getBlockTexture("neutron_battery/green");
 		getBlockTexture("neutron_battery/pink");
 		getBlockTexture("fission_inducer/center");
+		getBlockTexture("luminic_mechanism/bottom");
+		getBlockTexture("luminic_mechanism/sides");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation[] MONOLITHIC_OVERLAY = ResourceHelperStatic.from(16, "monolithic/glyph_overlay_",
@@ -56,8 +58,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation BLINKER_TOP_OFF = getBlockTexture("blinker/top_off");
 	public static final ResourceLocation BLINKER_BOTTOM_OFF = getBlockTexture("blinker/bottom_off");
 	public static final ResourceLocation Q_SQUARED = getBlockTexture("q_squared");
-	public static final ResourceLocation ELECTRON_ON = getBlockTexture("electron/on");
-	public static final ResourceLocation ELECTRON_OFF = getBlockTexture("electron/off");
+	public static final ResourceLocation ELECTRON = getBlockTexture("electron");
 	public static final ResourceLocation QIMRANUT_BASE = getBlockTexture("qimranut/base");
 	public static final ResourceLocation VACUUM_CONVEYOR = getBlockTexture("vacuum_conveyor");
 	public static final ResourceLocation MECHANICAL_TRANSLOCATOR = getBlockTexture("mechanical_translocator");
@@ -71,6 +72,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation NEUTRON_BATTERY = getBlockTexture("neutron_battery/base");
 	public static final ResourceLocation PHOLARIZER = getBlockTexture("pholarizer");
 	public static final ResourceLocation FISSION_INDUCER = getBlockTexture("fission_inducer/base");
+	public static final ResourceLocation LUMINIC_MECHANISM_BASE = getBlockTexture("luminic_mechanism/base");
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");

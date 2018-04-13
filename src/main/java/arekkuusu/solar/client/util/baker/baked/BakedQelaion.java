@@ -65,8 +65,9 @@ public class BakedQelaion extends BakedBrightness {
 	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return cache.compute(state, quads -> {
 			boolean hasNode = state != null && state.getValue(BlockQelaion.HAS_NODE);
+			VertexFormat format = state != null ? format() : DefaultVertexFormats.ITEM;
 			quads.addAll(BlockBaker.QELAION.getQuads());
-			quads.addAll(QuadBuilder.withFormat(DefaultVertexFormats.ITEM)
+			quads.addAll(QuadBuilder.withFormat(format)
 					.setFrom(5, 5, 5)
 					.setTo(11, 11, 11)
 					.addAll(0, 9, 0, 9, hasNode ? on : off)
@@ -76,7 +77,7 @@ public class BakedQelaion extends BakedBrightness {
 			if(state instanceof IExtendedBlockState) {
 				Direction direction = ((IExtendedBlockState) state).getValue(Direction.DIR_UNLISTED);
 				if(direction != null && direction != Direction.NON) {
-					QuadBuilder builder = QuadBuilder.withFormat(format())
+					QuadBuilder builder = QuadBuilder.withFormat(format)
 							.setFrom(2, 2, 2)
 							.setTo(14, 14, 14);
 					for(EnumFacing facing : direction.getFacings())
