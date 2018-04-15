@@ -91,15 +91,16 @@ public class TileFissionInducer extends TileBase implements ITickable {
 					BlockPos position = positions[i].add(getPos());
 					IBlockState state = world.getBlockState(position);
 					if(state.getBlock() == Blocks.GOLD_BLOCK) {
-						if(ticks[i]++ >= 2) {
+						if(ticks[i]++ >= 4) {
 							world.setBlockState(position, ModBlocks.MOLTEN_GOLD.getDefaultState());
 							ticks[i] = -1;
 						}
 					} else if(state.getBlock() == ModBlocks.MOLTEN_GOLD) {
-						if(ticks[i]++ >= 15) {
+						if(ticks[i]++ >= 30) {
 							world.playEvent(2001, position, Block.getStateId(state));
-							FluidStack stack = new FluidStack(ModFluids.GOLD, Fluid.BUCKET_VOLUME);
-							((IFluidBlock) ModFluids.GOLD.getBlock()).place(world, position, stack, true);
+							FluidStack stack = new FluidStack(ModFluids.GOLD, 1000);
+							handler.fill(stack, true);
+							world.setBlockToAir(position);
 							ticks[i] = -1;
 						}
 					} else if(state.getBlock() instanceof IFluidBlock && ticks[i]++ >= 1) {
@@ -112,7 +113,7 @@ public class TileFissionInducer extends TileBase implements ITickable {
 							}
 						}
 						ticks[i] = -1;
-					}
+					} else ticks[i] = -1;
 				}
 				if(empty) {
 					world.playSound(null, getPos(), SoundEvents.ITEM_BUCKET_EMPTY_LAVA, SoundCategory.BLOCKS, 1F, 1F);

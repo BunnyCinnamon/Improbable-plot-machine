@@ -19,8 +19,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -53,9 +51,9 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 					TileEntity tile = world.getTileEntity(pos);
 					if(tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing)) {
 						IFluidHandler fluid = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
-						FluidStack stack = fluid != null ? fluid.drain(500, false) : null;
-						if(stack != null && stack.amount == 500) {
-							fluid.drain(500, true);
+						FluidStack stack = fluid != null ? fluid.drain(250, false) : null;
+						if(stack != null && stack.amount == 250) {
+							fluid.drain(250, true);
 							handler.fill(1);
 						}
 					}

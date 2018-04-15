@@ -36,6 +36,7 @@ import java.util.Random;
  * Created by <Arekkuusu> on 4/8/2018.
  * It's distributed as part of Solar.
  */
+@SuppressWarnings("deprecation")
 public class BlockMoltenGold extends BlockBase {
 
 	public BlockMoltenGold() {
