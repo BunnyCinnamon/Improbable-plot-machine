@@ -44,7 +44,10 @@ public class QSquaredRenderer extends SpecialModelRenderer<TileQSquared> {
 	private void renderModel(float tick, double x, double y, double z) {
 		ProfilerHelper.begin("[Q²] - Rendering waves");
 		ShaderLibrary.BRIGHT.begin();
-		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			b.set(0F);
+			b.upload();
+		});
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();

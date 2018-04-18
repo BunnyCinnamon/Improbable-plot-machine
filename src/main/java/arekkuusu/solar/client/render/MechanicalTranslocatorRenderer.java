@@ -70,7 +70,10 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		if(active) {
 			GlStateManager.disableLighting();
 			ShaderLibrary.BRIGHT.begin();
-			ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
+			ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+				b.set(0F);
+				b.upload();
+			});
 		}
 		//Middle
 		GlStateManager.pushMatrix();

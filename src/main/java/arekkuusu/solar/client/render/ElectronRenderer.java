@@ -37,32 +37,28 @@ public class ElectronRenderer extends SpecialModelRenderer<TileElectron> {
 		if(active) {
 			GlStateManager.disableLighting();
 			ShaderLibrary.BRIGHT.begin();
-			ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
+			ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+				b.set(0F);
+				b.upload();
+			});
 		} else tick *= 0.25F;
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(0.75F, 0.75F, 0.75F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 1F, 0F);
-		GlStateManager.rotate(partialTicks + tick * 0.75F % 720F, 1F, 0F, 0F);
+		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 1F, 0F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 0F, 1F);
 		BlockBaker.render(BlockBaker.ELECTRON);
 		GlStateManager.popMatrix();
 
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(0.75F, 0.75F, 0.75F);
-		GlStateManager.rotate(partialTicks + tick % 360F, 0F, -1F, 0F);
-		GlStateManager.rotate(partialTicks + tick % 720F, -1F, 0F, 0F);
-		GlStateManager.rotate(partialTicks + tick % 360F, 0F, 0F, -1F);
-		GlStateManager.pushMatrix();
-		GlStateManager.rotate(partialTicks + tick % 360F, 1F, 0F, 0F);
-		BlockBaker.render(BlockBaker.ELECTRON_RING_X);
-		GlStateManager.popMatrix();
-
-		GlStateManager.pushMatrix();
-		GlStateManager.rotate(partialTicks + tick % 360F, 0F, 1F, 0F);
-		BlockBaker.render(BlockBaker.ELECTRON_RING_Z);
-		GlStateManager.popMatrix();
+		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, -1F, 0F);
+		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, -1F, 0F, 0F);
+		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 0F, -1F);
+		//GlStateManager.rotate(partialTicks + tick % 360F, 0F, 1F, 0F);
+		BlockBaker.render(BlockBaker.ELECTRON_RING);
 		GlStateManager.popMatrix();
 		if(active) {
 			GlStateManager.enableLighting();

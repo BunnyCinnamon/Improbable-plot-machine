@@ -50,7 +50,10 @@ public class PholarizerRenderer extends SpecialModelRenderer<TilePholarizer> {
 		//Piece
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
-		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			b.set(0F);
+			b.upload();
+		});
 		BlockBaker.render(active ? BlockBaker.PHOLARIZER_POSITIVE : BlockBaker.PHOLARIZER_NEGATIVE);
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		GlStateManager.pushMatrix();

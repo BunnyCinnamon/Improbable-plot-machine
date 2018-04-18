@@ -42,7 +42,10 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
-		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			b.set(0F);
+			b.upload();
+		});
 		RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 1.5F, 15F);
 		switch(capacity) {
 			case BLUE:

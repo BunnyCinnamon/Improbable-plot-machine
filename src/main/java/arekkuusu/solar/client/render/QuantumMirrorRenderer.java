@@ -68,8 +68,9 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
 			float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
-			if(brigthness < 0) brigthness *= -1;
+			if(brigthness > 0) brigthness *= -1;
 			b.set(brigthness);
+			b.upload();
 		});
 		//
 		GlStateManager.pushMatrix();
@@ -77,7 +78,7 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.translate(x, y, z + 0.5F);
 		SpriteLibrary.QUANTUM_MIRROR.bindManager();
 		renderMirror(tick, 0.75F, 0.5F, partialTicks);
-		renderMirror(tick, 0.5F, 0.75F, partialTicks);
+		renderMirror(-tick, 0.5F, 0.75F, partialTicks);
 		renderMirror(tick, -0.3F, 1F, partialTicks);
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
@@ -96,13 +97,14 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 	}
 
 	private void renderModel(float tick, double x, double y, double z, float partialTicks) {
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
-		float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
-		if(brigthness < 0) brigthness *= -1;
-		brigthness *= 255F;
 		GlStateManager.disableLighting();
-		GLHelper.lightMap(brigthness, brigthness);
+		ShaderLibrary.BRIGHT.begin();
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
+			if(brigthness > 0) brigthness *= -1;
+			b.set(brigthness);
+			b.upload();
+		});
 		//
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
@@ -111,13 +113,13 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.translate(x, y, z + 0.5F);
 		SpriteLibrary.QUANTUM_MIRROR.bindManager();
 		renderMirror(tick, 0.75F, 0.5F, partialTicks);
-		renderMirror(tick, 0.5F, 0.75F, partialTicks);
+		renderMirror(-tick, 0.5F, 0.75F, partialTicks);
 		renderMirror(tick, -0.3F, 1F, partialTicks);
 		GlStateManager.disableBlend();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
 		//
-		GLHelper.lightMap(prevU, prevV);
+		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 	}
 

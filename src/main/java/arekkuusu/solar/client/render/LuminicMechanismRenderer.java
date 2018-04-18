@@ -59,7 +59,10 @@ public class LuminicMechanismRenderer extends SpecialModelRenderer<TileLuminicMe
 		BlockBaker.render(BlockBaker.LUMINIC_MECHANISM);
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
-		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			b.set(0F);
+			b.upload();
+		});
 		BlockBaker.render(BlockBaker.LUMINIC_MECHANISM_);
 		GlStateManager.enableLighting();
 		ShaderLibrary.BRIGHT.end();

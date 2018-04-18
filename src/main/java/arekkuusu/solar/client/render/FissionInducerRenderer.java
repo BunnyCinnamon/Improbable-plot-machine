@@ -73,7 +73,10 @@ public class FissionInducerRenderer extends SpecialModelRenderer<TileFissionIndu
 		//Inside
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
-		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> b.set(1F));
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			b.set(0F);
+			b.upload();
+		});
 		BlockBaker.render(BlockBaker.FISSION_INDUCER_INSIDE);
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
