@@ -33,7 +33,7 @@ public class TileHyperConductor extends TileBase {
 		if(!world.isRemote) {
 			BlockPos from = pos.add(-2, -2, -2);
 			BlockPos to = pos.add(2, 2, 2);
-			BlockPos.getAllInBoxMutable(from, to).forEach(this::addElectron);
+			BlockPos.getAllInBox(from, to).forEach(this::addElectron);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class TileHyperConductor extends TileBase {
 	}
 
 	private boolean isInRange(BlockPos pos) {
-		return getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 8;
+		return getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 2;
 	}
 
 	private void inverseElectron(BlockPos pos) {
