@@ -32,7 +32,11 @@ import static net.minecraftforge.fml.common.Mod.Instance;
  * Created by <Arekkuusu> on 21/06/2017.
  * It's distributed as part of Solar.
  */
-@Mod(modid = LibMod.MOD_ID, name = LibMod.MOD_NAME, version = LibMod.MOD_VERSION, dependencies = "required-after:mirror;",
+@Mod( // *evil chuckles*
+	modid = LibMod.MOD_ID,
+	name = LibMod.MOD_NAME,
+	version = LibMod.MOD_VERSION,
+	dependencies = "required-after:mirror;",
 	acceptedMinecraftVersions = "[1.12.2]"
 )
 public class Solar {
