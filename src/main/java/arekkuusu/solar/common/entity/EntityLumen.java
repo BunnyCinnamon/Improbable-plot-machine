@@ -59,7 +59,7 @@ public class EntityLumen extends Entity {
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Vector3 vec = Vector3.apply(motionX, motionY, motionZ).rotate(x.multiply(z)).multiply(0.1D);
-				FXUtil.spawnTunneling(world, pos, vec, 30 + world.rand.nextInt(40), scale, 0xFFE077, GlowTexture.GLINT);
+				FXUtil.spawnLumen(world, pos, vec, 30 + world.rand.nextInt(40), scale, GlowTexture.GLINT);
 			}
 		} else {
 			double rest = 0.128D;//(0.25D - (double) handler.get() / 500D);

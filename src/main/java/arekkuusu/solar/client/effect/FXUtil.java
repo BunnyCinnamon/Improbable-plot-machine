@@ -54,6 +54,12 @@ public final class FXUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 		}
 	}
 
+	public static void spawnLumen(World world, Vector3 pos, Vector3 speed, int age, float scale, GlowTexture glow) {
+		if(doParticle()) {
+			add(new ParticleLuminescence(world, pos, speed, scale, age, glow));
+		}
+	}
+
 	public static void spawnTunneling(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
 		if(doParticle()) {
 			add(new ParticleTunneling(world, pos, speed, age, scale, rgb, glow));
