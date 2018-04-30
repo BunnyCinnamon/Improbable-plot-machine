@@ -56,10 +56,6 @@ public class PholarizerRenderer extends SpecialModelRenderer<TilePholarizer> {
 		});
 		BlockBaker.render(active ? BlockBaker.PHOLARIZER_POSITIVE : BlockBaker.PHOLARIZER_NEGATIVE);
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		GlStateManager.pushMatrix();
-		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-		BlockBaker.render(BlockBaker.PHOLARIZER_RING);
-		GlStateManager.popMatrix();
 		//Pillars
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.05F % 360F, 0F, -1F, 0F);
