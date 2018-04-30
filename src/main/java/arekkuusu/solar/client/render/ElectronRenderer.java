@@ -41,8 +41,8 @@ public class ElectronRenderer extends SpecialModelRenderer<TileElectron> {
 				b.set(0F);
 				b.upload();
 			});
-		}
-		tick *= 0.25F; //haha yes
+			tick *= 0.25F; //haha yes
+		} else 	tick *= -0.25F; //haha no
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 		GlStateManager.pushMatrix();
