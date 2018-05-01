@@ -7,12 +7,11 @@
  ******************************************************************************/
 package arekkuusu.solar.client.render;
 
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
-import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
 
@@ -34,8 +33,6 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 
 	private void renderModel(EnumFacing facing, double x, double y, double z, float partialTicks) {
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		final float prevU = OpenGlHelper.lastBrightnessX;
-		final float prevV = OpenGlHelper.lastBrightnessY;
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		//Top
 		GlStateManager.pushMatrix();
@@ -49,9 +46,12 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 		GlStateManager.popMatrix();
 		//Middle
 		GlStateManager.disableLighting();
-		GLHelper.lightMap(255F, 255F);
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			b.set(0F);
+			b.upload();
+		});
 		BlockBaker.render(BlockBaker.VACUUM_PIECE);
-		GLHelper.lightMap(prevU, prevV);
+		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		//Bottom
 		GlStateManager.pushMatrix();
