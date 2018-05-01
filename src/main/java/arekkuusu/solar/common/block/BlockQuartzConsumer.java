@@ -43,10 +43,10 @@ import java.util.Random;
 public class BlockQuartzConsumer extends BlockBase {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0, 0.875, 0.75, 0.9375, 0.125))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0, 0.125, 0.75, 0.9375, 0.875))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.875, 0, 0.25, 0.125, 0.9375, 0.75))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.875, 0, 0.25, 0.125, 0.9375, 0.75))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0, 0.375, 0.875, 0.9375, 0.625))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0, 0.375, 0.875, 0.9375, 0.625))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.625, 0, 0.875, 0.375, 0.9375, 0.125))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.625, 0, 0.875, 0.375, 0.9375, 0.125))
 			.build();
 
 	public BlockQuartzConsumer() {

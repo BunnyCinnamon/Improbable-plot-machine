@@ -43,6 +43,7 @@ tile.neutron_battery.name=Neutron Battery
 tile.pholarizer.name=Pholarizer
 tile.fission_inducer.name=Fission Inducer
 tile.luminic_mechanism.name=Luminic Mechanism
+tile.quartz_consumer.name=Quartz Consumer
 fluid.tile.gold=Gold
 
 //Entity
