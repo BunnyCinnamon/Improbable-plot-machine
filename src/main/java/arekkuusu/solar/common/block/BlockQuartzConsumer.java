@@ -12,21 +12,15 @@ import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.common.block.tile.TileQuartzConsumer;
 import arekkuusu.solar.common.lib.LibNames;
-import com.google.common.collect.ImmutableMap;
 import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -42,16 +36,10 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockQuartzConsumer extends BlockBase {
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0, 0.375, 0.875, 0.9375, 0.625))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0, 0.375, 0.875, 0.9375, 0.625))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.625, 0, 0.875, 0.375, 0.9375, 0.125))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.625, 0, 0.875, 0.375, 0.9375, 0.125))
-			.build();
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25, 0, 0.25, 0.75, 0.5625, 0.75);
 
 	public BlockQuartzConsumer() {
 		super(LibNames.QUARTZ_CONSUMER, FixedMaterial.DONT_MOVE);
-		setDefaultState(getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.NORTH));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
 	}
@@ -61,13 +49,11 @@ public class BlockQuartzConsumer extends BlockBase {
 		Vector3 posVec = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D, 0.55D, 0.5D);
 		getTile(TileQuartzConsumer.class, world, pos).ifPresent(t -> {
 			if(t.getHasItem()) {
-				EnumFacing facing = state.getValue(BlockHorizontal.FACING);
 				for(int i = 0; i < 3 + rand.nextInt(6); i++) {
 					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 5);
 					Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 5);
 					double speed = world.rand.nextDouble() * 0.03D;
-					facing = facing.getOpposite();
-					Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+					Vector3 speedVec = Vector3.Up()
 							.asImmutable()
 							.rotate(x.multiply(z))
 							.multiply(speed);
@@ -94,47 +80,12 @@ public class BlockQuartzConsumer extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		EnumFacing facing = state.getValue(BlockHorizontal.FACING);
-		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockHorizontal.FACING, EnumFacing.getHorizontal(meta));
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(BlockHorizontal.FACING).getHorizontalIndex();
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockHorizontal.FACING);
-	}
-
-	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		EnumFacing facing = rot.rotate(state.getValue(BlockHorizontal.FACING));
-		if(facing.getAxis().isHorizontal()) {
-			state = state.withProperty(BlockHorizontal.FACING, facing);
-		}
-		return state;
-	}
-
-	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror) {
-		return state.withProperty(BlockHorizontal.FACING, mirror.mirror(state.getValue(BlockHorizontal.FACING)));
+		return BB;
 	}
 
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
-		return face != EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+		return face != EnumFacing.DOWN ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
 	}
 
 	@Override
