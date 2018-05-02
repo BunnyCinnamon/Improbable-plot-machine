@@ -46,20 +46,10 @@ public class ElectronRenderer extends SpecialModelRenderer<TileElectron> {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 		GlStateManager.pushMatrix();
-		GlStateManager.scale(0.75F, 0.75F, 0.75F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 1F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 1F, 0F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 0F, 1F);
 		BlockBaker.render(BlockBaker.ELECTRON);
-		GlStateManager.popMatrix();
-
-		GlStateManager.pushMatrix();
-		GlStateManager.scale(0.75F, 0.75F, 0.75F);
-		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, -1F, 0F);
-		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, -1F, 0F, 0F);
-		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 0F, -1F);
-		//GlStateManager.rotate(partialTicks + tick % 360F, 0F, 1F, 0F);
-		BlockBaker.render(BlockBaker.ELECTRON_RING);
 		GlStateManager.popMatrix();
 		if(active) {
 			GlStateManager.enableLighting();
