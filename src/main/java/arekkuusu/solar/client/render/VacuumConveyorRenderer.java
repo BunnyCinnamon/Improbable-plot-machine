@@ -46,6 +46,7 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 		GlStateManager.popMatrix();
 		//Middle
 		GlStateManager.disableLighting();
+		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
 			b.set(0F);
 			b.upload();
