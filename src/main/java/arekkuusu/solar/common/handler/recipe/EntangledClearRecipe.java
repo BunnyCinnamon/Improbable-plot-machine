@@ -14,6 +14,7 @@ import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -29,30 +30,32 @@ public class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
-		ItemStack cleared = ItemStack.EMPTY;
+		ItemStack toClear = ItemStack.EMPTY;
 		for(int j = 0; j < inv.getSizeInventory(); j++) {
 			ItemStack inSlot = inv.getStackInSlot(j);
-			if(cleared.isEmpty() && !inSlot.isEmpty()) {
-				cleared = inSlot;
-			} else if(!cleared.isEmpty() && !inSlot.isEmpty()) return false;
+			if(toClear.isEmpty() && !inSlot.isEmpty()) toClear = inSlot;
+			else if(!inSlot.isEmpty()) return false;
 		}
-		return !cleared.isEmpty() && cleared.getItem() instanceof IEntangledStack;
+		return !toClear.isEmpty() && toClear.getItem() instanceof IEntangledStack;
 	}
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack cleared = ItemStack.EMPTY;
 		for(int j = 0; j < inv.getSizeInventory(); j++) {
 			ItemStack inSlot = inv.getStackInSlot(j);
-			if(cleared.isEmpty() && !inSlot.isEmpty()) {
-				cleared = inSlot;
-			} else if(!cleared.isEmpty() && !inSlot.isEmpty()) return ItemStack.EMPTY;
-		}
-		if(!cleared.isEmpty() && cleared.getItem() instanceof IEntangledStack) {
-			NBTHelper.removeTag(cleared, EntangledIItemHandler.NBT_TAG);
-			return cleared;
+			if(!inSlot.isEmpty()) {
+				ItemStack toClear = inSlot.copy();
+				NBTHelper.removeTag(toClear, EntangledIItemHandler.NBT_TAG);
+				toClear.setCount(1);
+				return toClear;
+			}
 		}
 		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+		return NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 	}
 
 	@Override

@@ -31,57 +31,62 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
-		int slots = inv.getHeight() * inv.getWidth();
-		int center = (int) ((float) slots / 2F);
-		ItemStack checked = inv.getStackInSlot(center);
-		if(checked.isEmpty() || !checked.hasTagCompound()) return false;
-		int amount = 0;
-		for(int j = 0; j < slots; j++) {
-			ItemStack stack = inv.getStackInSlot(j);
-			if(!stack.isEmpty() && (hasNoTag(stack) || stack.getItem() != checked.getItem())) return false;
-			if(!stack.isEmpty() && j != center) {
-				amount++;
+		ItemStack from = ItemStack.EMPTY;
+		ItemStack to = ItemStack.EMPTY;
+		for(int i = 0; i < inv.getSizeInventory(); i++) {
+			ItemStack inSlot = inv.getStackInSlot(i);
+			if(!inSlot.isEmpty()) {
+				if(from.isEmpty()) from = inSlot;
+				else if(to.isEmpty()) to = inSlot;
+				else return false;
 			}
 		}
-		return amount > 0;
+		return isEntangled(from) && from.getCount() == 1 && isEntangled(to);
 	}
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		int slots = inv.getHeight() * inv.getWidth();
-		int center = (int) ((float) slots / 2F);
-		ItemStack checked = inv.getStackInSlot(center);
-		if(checked.isEmpty() || !checked.hasTagCompound()) return ItemStack.EMPTY;
-		int amount = 0;
-		for(int j = 0; j < slots; j++) {
-			ItemStack stack = inv.getStackInSlot(j);
-			if(!stack.isEmpty() && (hasNoTag(stack) || stack.getItem() != checked.getItem())) return ItemStack.EMPTY;
-			if(!stack.isEmpty() && j != center) {
-				amount++;
+		ItemStack from = ItemStack.EMPTY;
+		ItemStack to = ItemStack.EMPTY;
+		for(int i = 0; i < inv.getSizeInventory(); i++) {
+			ItemStack inSlot = inv.getStackInSlot(i);
+			if(!inSlot.isEmpty()) {
+				if(from.isEmpty()) from = inSlot;
+				else if(to.isEmpty()) to = inSlot;
+				else return ItemStack.EMPTY;
 			}
 		}
-		if(amount > 0) {
-			ItemStack entanglement = new ItemStack(checked.getItem(), amount);
-			getKey(checked).ifPresent(uuid -> setKey(entanglement, uuid));
-			return entanglement;
-		}
-		return ItemStack.EMPTY;
+		if(isEntangled(from) && from.getCount() == 1 && (isEntangled(to) && hasNoTag(to))) {
+			ItemStack copied = to.copy();
+			copyTag(from, copied);
+			copied.setCount(1);
+			return copied;
+		} else return ItemStack.EMPTY;
 	}
 
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-		int slots = inv.getHeight() * inv.getWidth();
-		NonNullList<ItemStack> nonNullList = NonNullList.withSize(slots, ItemStack.EMPTY);
-		int center = (int) ((float) slots / 2);
+		NonNullList<ItemStack> list = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+		for(int i = 0; i < inv.getSizeInventory(); i++) {
+			ItemStack inSlot = inv.getStackInSlot(i);
+			if(!inSlot.isEmpty()) {
+				list.set(i, inSlot.copy());
+				break;
+			}
+		}
+		return list;
+	}
 
-		ItemStack stack = inv.getStackInSlot(center);
-		nonNullList.set(center, stack.copy());
-
-		return nonNullList;
+	private boolean isEntangled(ItemStack stack) {
+		return !stack.isEmpty() && stack.getItem() instanceof IEntangledStack;
 	}
 
 	private boolean hasNoTag(ItemStack stack) {
-		return !(stack.getItem() instanceof IEntangledStack) || !getKey(stack).isPresent();
+		return !getKey(stack).isPresent();
+	}
+
+	private void copyTag(ItemStack from, ItemStack to) {
+		getKey(from).ifPresent(uuid -> setKey(to, uuid));
 	}
 
 	private Optional<UUID> getKey(ItemStack stack) {
@@ -94,7 +99,7 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 
 	@Override
 	public boolean canFit(int width, int height) {
-		return width % 2 != 0 || height % 2 != 0;
+		return width > 1 || height > 1;
 	}
 
 	@Override
