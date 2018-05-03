@@ -67,6 +67,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.FISSION_INDUCER));
 		registry.register(itemBlock(ModBlocks.LUMINIC_MECHANISM));
 		registry.register(itemBlock(ModBlocks.QUARTZ_CONSUMER));
+		registry.register(itemBlock(ModBlocks.LUMEN_COMPRESSOR));
 	}
 
 	@SuppressWarnings("ConstantConditions")

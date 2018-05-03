@@ -8,22 +8,19 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedGravityHopper;
-import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileGravityHopper;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static net.minecraft.block.BlockDirectional.FACING;
 
@@ -72,7 +69,7 @@ public class BlockGravityHopper extends BlockBaseFacing {
 
 	@Override
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
+		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.SOLID;
 	}
 
 	@Override
@@ -83,12 +80,5 @@ public class BlockGravityHopper extends BlockBaseFacing {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileGravityHopper();
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedGravityHopper::new);
-		ModelHandler.registerModel(this, 0, "");
 	}
 }

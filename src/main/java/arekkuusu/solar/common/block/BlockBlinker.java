@@ -13,9 +13,6 @@ import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
-import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedBlinker;
-import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileBlinker;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
@@ -37,8 +34,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -220,7 +215,7 @@ public class BlockBlinker extends BlockBaseFacing {
 
 	@Override
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
+		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.SOLID;
 	}
 
 	@Override
@@ -232,12 +227,5 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileBlinker();
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedBlinker::new);
-		ModelHandler.registerModel(this, 0, "");
 	}
 }

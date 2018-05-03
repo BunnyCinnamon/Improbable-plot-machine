@@ -1,0 +1,36 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:gravity_hopper",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}],
+	"facing": {
+	  "up": {
+	  },
+	  "down": {
+		"x": 180
+	  },
+	  "north": {
+		"x": 90,
+		"y": 0
+	  },
+	  "south": {
+		"x": -90,
+		"y": 0
+	  },
+	  "east": {
+		"x": 90,
+		"y": 90
+	  },
+	  "west": {
+		"x": -90,
+		"y": 90
+	  }
+	}
+  }
+}

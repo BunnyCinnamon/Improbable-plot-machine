@@ -58,6 +58,7 @@ public final class ModBlocks {
 	public static final Block MOLTEN_GOLD = PLACE_HOLDER;
 	public static final Block LUMINIC_MECHANISM = PLACE_HOLDER;
 	public static final Block QUARTZ_CONSUMER = PLACE_HOLDER;
+	public static final Block LUMEN_COMPRESSOR = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
@@ -90,6 +91,7 @@ public final class ModBlocks {
 		registry.register(new BlockMoltenGold());
 		registry.register(new BlockLuminicMechanism());
 		registry.register(new BlockQuartzConsumer());
+		registry.register(new BlockLumenCompressor());
 		registerTiles();
 	}
 

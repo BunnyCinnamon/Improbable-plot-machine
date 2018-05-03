@@ -43,8 +43,8 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote) {
+			EnumFacing facing = getFacingLazy();
 			if(handler.get() < handler.getMax() && tick++ % 20 == 0) {
-				EnumFacing facing = getFacingLazy();
 				BlockPos pos = getPos().offset(facing.getOpposite());
 				IBlockState state = world.getBlockState(pos);
 				if(state.getBlock().hasTileEntity(state)) {
@@ -59,7 +59,11 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 					}
 				}
 			}
-			spit();
+			if(world.isAirBlock(pos.offset(facing))) {
+				spit();
+			} else {
+
+			}
 		}
 	}
 
@@ -79,6 +83,10 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 			lumen.motionY = vec.y();
 			lumen.motionZ = vec.z();
 		}
+	}
+
+	private void transfer() {
+
 	}
 
 	public EnumFacing getFacingLazy() {

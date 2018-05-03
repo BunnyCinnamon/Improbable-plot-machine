@@ -39,24 +39,15 @@ public final class ResourceLibrary {
 		getBlockTexture("luminic_mechanism/sides");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
-	public static final ResourceLocation[] MONOLITHIC_OVERLAY = ResourceHelperStatic.from(16, "monolithic/glyph_overlay_",
-			ResourceLibrary::getBlockTexture
-	);
 	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = ResourceHelperStatic.from(3, "gravity_hopper/glyph_",
 			ResourceLibrary::getBlockTexture
 	);
 	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = ResourceHelperStatic.from(MoonPhase.class, "moon_phase/",
 			ResourceLibrary::getBlockTexture
 	);
-	public static final ResourceLocation MONOLITHIC = getBlockTexture("monolithic/base");
 	public static final ResourceLocation GRAVITY_HOPPER = getBlockTexture("gravity_hopper/side");
 	public static final ResourceLocation PRIMAL_STONE = getBlockTexture("primal_stone");
 	public static final ResourceLocation SCHRODINGER_GLYPH = getBlockTexture("schrodinger_glyph");
-	public static final ResourceLocation BLINKER_BASE = getBlockTexture("blinker/base");
-	public static final ResourceLocation BLINKER_TOP_ON = getBlockTexture("blinker/top_on");
-	public static final ResourceLocation BLINKER_BOTTOM_ON = getBlockTexture("blinker/bottom_on");
-	public static final ResourceLocation BLINKER_TOP_OFF = getBlockTexture("blinker/top_off");
-	public static final ResourceLocation BLINKER_BOTTOM_OFF = getBlockTexture("blinker/bottom_off");
 	public static final ResourceLocation Q_SQUARED = getBlockTexture("q_squared");
 	public static final ResourceLocation ELECTRON = getBlockTexture("electron");
 	public static final ResourceLocation QIMRANUT_BASE = getBlockTexture("qimranut/base");

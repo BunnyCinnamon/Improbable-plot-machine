@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:lumen_compressor",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}]
+  }
+}

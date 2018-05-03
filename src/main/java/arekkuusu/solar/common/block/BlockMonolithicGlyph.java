@@ -8,9 +8,6 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedMonolithicGlyph;
-import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.lib.LibNames;
 import net.katsstuff.mirror.client.helper.Tooltip;
 import net.minecraft.block.properties.PropertyInteger;
@@ -73,7 +70,7 @@ public class BlockMonolithicGlyph extends BlockBase {
 
 	@Override
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT_MIPPED;
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
@@ -86,12 +83,5 @@ public class BlockMonolithicGlyph extends BlockBase {
 		for(int i = 0; i < 16; i++) {
 			items.add(new ItemStack(this, 1, i));
 		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedMonolithicGlyph::new);
-		ModelHandler.registerModel(this, 0, "");
 	}
 }

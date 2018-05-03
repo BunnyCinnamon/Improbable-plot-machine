@@ -23,6 +23,7 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -55,6 +56,7 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 		super(LibNames.LUMINIC_MECHANISM, FixedMaterial.DONT_MOVE);
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
+		setLightLevel(0.2F);
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		/*EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
 		for(int i = 0; i < 6 + rand.nextInt(6); i++) {
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
@@ -81,7 +83,7 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 			double speed = 0.015D + rand.nextDouble() * 0.025D;
 			Vector3 speedVec = Vector3.Down().multiply(speed);
 			FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
-		}
+		}*/
 	}
 
 	private Vector3 getOffSet(EnumFacing facing, BlockPos pos) {
@@ -89,8 +91,8 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
@@ -102,14 +104,5 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileLuminicMechanism();
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedRender()
-				.setParticle(ResourceLibrary.LUMINIC_MECHANISM_BASE)
-		);
-		ModelHandler.registerModel(this, 0);
 	}
 }

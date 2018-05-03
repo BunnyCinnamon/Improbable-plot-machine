@@ -47,4 +47,5 @@ public class LibNames {
 	public static final String MOLTEN_GOLD = "molten_gold";
 	public static final String LUMINIC_MECHANISM = "luminic_mechanism";
 	public static final String QUARTZ_CONSUMER = "quartz_consumer";
+	public static final String LUMEN_COMPRESSOR = "lumen_compressor";
 }
