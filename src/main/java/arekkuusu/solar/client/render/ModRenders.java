@@ -50,6 +50,7 @@ public final class ModRenders {
 		registerTESR(TilePholarizer.class, new PholarizerRenderer());
 		registerTESR(TileFissionInducer.class, new FissionInducerRenderer());
 		registerTESR(TileElectron.class, new ElectronRenderer());
+		registerTESR(TileLuminicMechanism.class, new LuminicMechanismRenderer());
 		registerTESR(TileQuartzConsumer.class, new QuartzConsumerRenderer());
 
 		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);

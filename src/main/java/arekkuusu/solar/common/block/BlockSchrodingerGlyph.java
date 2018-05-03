@@ -8,9 +8,6 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.client.effect.FXUtil;
-import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedSchrodingerGlyph;
-import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.solar.common.entity.Megumin;
 import arekkuusu.solar.common.lib.LibNames;
@@ -130,13 +127,6 @@ public class BlockSchrodingerGlyph extends BlockBase {
 
 	@Override
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT_MIPPED;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedSchrodingerGlyph::new);
-		ModelHandler.registerModel(this, 0, "");
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
 	}
 }

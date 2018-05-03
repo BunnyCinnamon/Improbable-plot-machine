@@ -8,6 +8,8 @@
 	"normal": [{
 	}],
     "inventory": [{
+	  "model": "solar:item/luminic_mechanism",
+	  "uvlock": false
 	}],
 	"facing": {
 	  "up": {

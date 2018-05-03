@@ -7,9 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.client.util;
 
-import arekkuusu.solar.api.state.MoonPhase;
 import arekkuusu.solar.common.lib.LibMod;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import net.katsstuff.mirror.client.helper.*;
 import net.minecraft.util.ResourceLocation;
@@ -35,27 +33,13 @@ public final class ResourceLibrary {
 		getBlockTexture("neutron_battery/green");
 		getBlockTexture("neutron_battery/pink");
 		getBlockTexture("fission_inducer/center");
-		getBlockTexture("luminic_mechanism/bottom");
-		getBlockTexture("luminic_mechanism/sides");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
-	public static final ResourceLocation[] GRAVITY_HOPPER_OVERLAY = ResourceHelperStatic.from(3, "gravity_hopper/glyph_",
-			ResourceLibrary::getBlockTexture
-	);
-	public static final ImmutableMap<MoonPhase, ResourceLocation> MOON_PHASES = ResourceHelperStatic.from(MoonPhase.class, "moon_phase/",
-			ResourceLibrary::getBlockTexture
-	);
-	public static final ResourceLocation GRAVITY_HOPPER = getBlockTexture("gravity_hopper/side");
-	public static final ResourceLocation PRIMAL_STONE = getBlockTexture("primal_stone");
-	public static final ResourceLocation SCHRODINGER_GLYPH = getBlockTexture("schrodinger_glyph");
 	public static final ResourceLocation Q_SQUARED = getBlockTexture("q_squared");
 	public static final ResourceLocation ELECTRON = getBlockTexture("electron");
 	public static final ResourceLocation QIMRANUT_BASE = getBlockTexture("qimranut/base");
 	public static final ResourceLocation VACUUM_CONVEYOR = getBlockTexture("vacuum_conveyor");
 	public static final ResourceLocation MECHANICAL_TRANSLOCATOR = getBlockTexture("mechanical_translocator");
-	public static final ResourceLocation ALTERNATOR_BASE = getBlockTexture("alternator/base");
-	public static final ResourceLocation ALTERNATOR_ON = getBlockTexture("alternator/on");
-	public static final ResourceLocation ALTERNATOR_OFF = getBlockTexture("alternator/off");
 	public static final ResourceLocation HYPER_CONDUCTOR = getBlockTexture("hyper_conductor");
 	public static final ResourceLocation QELAION_BASE = getBlockTexture("qelaion/base");
 	public static final ResourceLocation QELAION_ON = getBlockTexture("qelaion/on");
@@ -63,7 +47,6 @@ public final class ResourceLibrary {
 	public static final ResourceLocation NEUTRON_BATTERY = getBlockTexture("neutron_battery/base");
 	public static final ResourceLocation PHOLARIZER = getBlockTexture("pholarizer");
 	public static final ResourceLocation FISSION_INDUCER = getBlockTexture("fission_inducer/base");
-	public static final ResourceLocation LUMINIC_MECHANISM_BASE = getBlockTexture("luminic_mechanism/base");
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");

@@ -44,7 +44,6 @@ public final class ModBlocks {
 	public static final Block MONOLITHIC_GLYPH = PLACE_HOLDER;
 	public static final Block ANGSTROM = PLACE_HOLDER;
 	public static final Block QIMRANUT = PLACE_HOLDER;
-	public static final Block CELESTIAL_RESONATOR = PLACE_HOLDER;
 	public static final Block LARGE_POT = PLACE_HOLDER;
 	public static final Block VACUUM_CONVEYOR = PLACE_HOLDER;
 	public static final Block MECHANICAL_TRANSLOCATOR = PLACE_HOLDER;
@@ -77,7 +76,6 @@ public final class ModBlocks {
 		registry.register(new BlockMonolithic());
 		registry.register(new BlockAngstrom());
 		registry.register(new BlockQimranut());
-		registry.register(new BlockCelestialResonator());
 		registry.register(new BlockLargePot());
 		registry.register(new BlockVacuumConveyor());
 		registry.register(new BlockMechanicalTranslocator());

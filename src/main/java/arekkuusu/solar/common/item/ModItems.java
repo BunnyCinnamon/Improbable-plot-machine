@@ -51,7 +51,6 @@ public final class ModItems {
 		registry.register(new ItemMonolithicGlyph());
 		registry.register(new ItemAngstrom());
 		registry.register(new ItemQimranut());
-		registry.register(itemBlock(ModBlocks.CELESTIAL_RESONATOR));
 		registry.register(itemBlock(ModBlocks.LARGE_POT));
 		registry.register(new ItemBase(LibNames.ASH));
 		registry.register(new ItemBase(LibNames.SINGULARITY));

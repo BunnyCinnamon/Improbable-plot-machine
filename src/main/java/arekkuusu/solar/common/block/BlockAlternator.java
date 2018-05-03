@@ -11,7 +11,6 @@ import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
-import arekkuusu.solar.client.util.baker.baked.BakedAlternator;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileAlternator;
 import arekkuusu.solar.common.lib.LibNames;
@@ -148,7 +147,7 @@ public class BlockAlternator extends BlockBase {
 
 	@Override
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT_MIPPED || layer == BlockRenderLayer.SOLID;
+		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.SOLID;
 	}
 
 	@Override
@@ -160,12 +159,5 @@ public class BlockAlternator extends BlockBase {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileAlternator();
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedAlternator::new);
-		ModelHandler.registerModel(this, 0, "");
 	}
 }

@@ -66,7 +66,7 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		/*EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
 		for(int i = 0; i < 6 + rand.nextInt(6); i++) {
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
@@ -81,18 +81,13 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 		}
 		for(int i = 0; i < 5; i++) {
 			double speed = 0.015D + rand.nextDouble() * 0.025D;
-			Vector3 speedVec = Vector3.Down().multiply(speed);
+			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
 			FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
-		}*/
+		}
 	}
 
 	private Vector3 getOffSet(EnumFacing facing, BlockPos pos) {
 		return FACING_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
