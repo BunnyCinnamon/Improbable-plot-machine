@@ -72,11 +72,9 @@ public final class ConfigHandler {
 				@Comment("Chance of 0-100% to generate")
 				@RangeDouble(min = 0, max = 100)
 				public double rarity = 0.001;
-				@Comment("If the well generates")
-				public boolean well = true;
 				@Comment("How buried in ruins is this structure 0-100%")
 				@RangeInt(min = 0, max = 100)
-				public int ruins = 64;
+				public int ruined = 64;
 				@Comment("Chance of 0-100% for loot")
 				@RangeDouble(min = 0, max = 100)
 				public double loot = 15;

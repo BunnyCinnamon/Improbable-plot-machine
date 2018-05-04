@@ -79,7 +79,6 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.LARGE_POT);
 			addBlock(ModBlocks.PHENOMENA);
 			addBlock(ModBlocks.Q_SQUARED);
-			addBlock(ModBlocks.THEOREMA);
 			addBlock(ModBlocks.ANGSTROM);
 			addBlock(ModBlocks.ALTERNATOR);
 			addBlock(ModBlocks.DILATON);

@@ -36,7 +36,6 @@ public final class ModBlocks {
 	public static final Block BLINKER = PLACE_HOLDER;
 	public static final Block PHENOMENA = PLACE_HOLDER;
 	public static final Block Q_SQUARED = PLACE_HOLDER;
-	public static final Block THEOREMA = PLACE_HOLDER;
 	public static final Block HYPER_CONDUCTOR = PLACE_HOLDER;
 	public static final Block ELECTRON = PLACE_HOLDER;
 	public static final Block ASHEN = PLACE_HOLDER;
@@ -69,7 +68,6 @@ public final class ModBlocks {
 		registry.register(new BlockBlinker());
 		registry.register(new BlockPhenomena());
 		registry.register(new BlockQSquared());
-		registry.register(new BlockTheorema());
 		registry.register(new BlockHyperConductor());
 		registry.register(new BlockElectron());
 		registry.register(new BlockAshen());
@@ -99,7 +97,6 @@ public final class ModBlocks {
 		registerTile(TileBlinker.class, LibNames.BLINKER);
 		registerTile(TilePhenomena.class, LibNames.PHENOMENA);
 		registerTile(TileQSquared.class, LibNames.Q_SQUARED);
-		registerTile(TileTheorema.class, LibNames.THEOREMA);
 		registerTile(TileHyperConductor.class, LibNames.HYPER_CONDUCTOR);
 		registerTile(TileQimranut.class, LibNames.QIMRANUT);
 		registerTile(TileVacuumConveyor.class, LibNames.VACUUM_CONVEYOR);

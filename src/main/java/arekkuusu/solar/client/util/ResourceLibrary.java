@@ -50,7 +50,6 @@ public final class ResourceLibrary {
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");
-	public static final ResourceLocation THEOREMA = getTexture(TextureLocation.Blocks(), "theorema");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(TextureLocation.Model(), "eye_of_schrodinger");
 	//Shader
 	public static final ResourceLocation BLEND_SHADER = getShader(ShaderLocation.Program(), "blend");

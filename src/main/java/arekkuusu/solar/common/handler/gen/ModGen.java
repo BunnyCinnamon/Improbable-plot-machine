@@ -45,7 +45,6 @@ public final class ModGen {
 		ASHEN_NUGGET_SMALL("ashen_nugget_small"),
 		ASHEN_NUGGET_SPAWN("ashen_nugget_spawn"),
 		MONOLITH_CUBE("monolith_cube"),
-		MONOLITH_RUIN("monolith_ruin"),
 		MONOLITH_OBELISK("monolith_obelisk"),
 		MONOLITH_OBELISK_FRAGMENTED("monolith_obelisk_fragmented"),;
 

@@ -69,12 +69,9 @@ public class MonolithStructure extends BaseGen {
 				}
 			}
 			//Gen ruin
-			if (GEN_CONFIG.monolith.structure.well) {
-				Structure.MONOLITH_RUIN.generate(world, pos, new PlacementSettings());
-			}
-			if(GEN_CONFIG.monolith.structure.ruins > 0) {
-				int size = (GEN_CONFIG.monolith.structure.ruins / 100) * 32;
-				size += random.nextInt((int) (((double) GEN_CONFIG.monolith.structure.ruins / 100D) * 64D));
+			if(GEN_CONFIG.monolith.structure.ruined > 0) {
+				int size = (GEN_CONFIG.monolith.structure.ruined / 100) * 32;
+				size += random.nextInt((int) (((double) GEN_CONFIG.monolith.structure.ruined / 100D) * 64D));
 				for(int i = 0; i < size; i++) {
 					BlockPos top = world.getTopSolidOrLiquidBlock(randomVector().add(x, 1, z).toBlockPos());
 					int below = random.nextInt(3);

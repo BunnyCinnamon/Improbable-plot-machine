@@ -22,7 +22,7 @@ public class LibNames {
 	public static final String PHENOMENA = "phenomena";
 	public static final String CRYSTAL_QUARTZ = "crystal_quartz";
 	public static final String Q_SQUARED = "q_squared";
-	public static final String THEOREMA = "theorema";
+	/*public static final String THEOREMA = "theorema";*/
 	public static final String HYPER_CONDUCTOR = "hyper_conductor";
 	public static final String ELECTRON = "electron";
 	public static final String ASHEN = "ashen";
@@ -47,4 +47,5 @@ public class LibNames {
 	public static final String LUMINIC_MECHANISM = "luminic_mechanism";
 	public static final String QUARTZ_CONSUMER = "quartz_consumer";
 	public static final String LUMEN_COMPRESSOR = "lumen_compressor";
+	public static final String PHOTOQUANTIC = "photoquantic";
 }
