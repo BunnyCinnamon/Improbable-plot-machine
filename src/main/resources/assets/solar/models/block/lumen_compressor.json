@@ -1,11 +1,13 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "solar:blocks/lumen_compressor/base",
-		"1": "solar:blocks/lumen_compressor/overlay",
+		"0": "solar:blocks/lumen_compressor/sides",
+		"1": "solar:blocks/lumen_compressor/sides_overlay",
 		"2": "solar:blocks/lumen_compressor/top",
 		"3": "solar:blocks/lumen_compressor/overlay_top",
-		"particle": "solar:blocks/lumen_compressor/base"
+		"4": "solar:blocks/lumen_compressor/base",
+		"5": "solar:blocks/lumen_compressor/base_overlay",
+		"particle": "solar:blocks/lumen_compressor/sides"
 	},
 	"elements": [
 		{
@@ -61,7 +63,7 @@
 				"east": {"uv": [0, 3, 16, 16], "texture": "#0"},
 				"south": {"uv": [0, 3, 16, 16], "texture": "#0"},
 				"west": {"uv": [0, 3, 16, 16], "texture": "#0"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
+				"down": {"uv": [0, 0, 16, 16], "texture": "#4"}
 			}
 		},
 		{
@@ -91,7 +93,7 @@
 				"east": {"uv": [0, 3, 16, 16], "texture": "#1"},
 				"south": {"uv": [0, 3, 16, 16], "texture": "#1"},
 				"west": {"uv": [0, 3, 16, 16], "texture": "#1"},
-				"down": {"uv": [0, 0, 16, 16], "texture": "#1"}
+				"down": {"uv": [0, 0, 16, 16], "texture": "#5"}
 			}
 		}
 	],
