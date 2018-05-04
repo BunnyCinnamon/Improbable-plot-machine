@@ -58,6 +58,7 @@ public interface ILumen {
 }
 class Empty implements ILumen {
 
+	private int max = Integer.MAX_VALUE;
 	private int lumen;
 
 	@Override
@@ -97,6 +98,6 @@ class Empty implements ILumen {
 
 	@Override
 	public int getMax() {
-		return Integer.MAX_VALUE;
+		return max;
 	}
 }

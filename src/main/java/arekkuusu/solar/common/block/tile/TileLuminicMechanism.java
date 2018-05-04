@@ -7,37 +7,31 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
 import arekkuusu.solar.common.entity.EntityLumen;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by <Arekkuusu> on 4/9/2018.
  * It's distributed as part of Solar.
  */
-public class TileLuminicMechanism extends TileBase implements ITickable {
+public class TileLuminicMechanism extends TileLumenBase implements ITickable {
 
 	public static final int MAX_LUMEN = 16;
-	private final ILumen handler;
 	private int tick;
 
 	public TileLuminicMechanism() {
-		handler = new LuminicMechanismLumenHandler(this);
+		super(MAX_LUMEN);
 	}
 
 	@Override
@@ -59,11 +53,8 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 					}
 				}
 			}
-			if(world.isAirBlock(pos.offset(facing))) {
-				spit();
-			} else {
-
-			}
+			if(world.isAirBlock(pos.offset(facing))) spit();
+			else transfer();
 		}
 	}
 
@@ -86,88 +77,20 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 	}
 
 	private void transfer() {
-
+		if(handler.get() >= 1) {
+			EnumFacing facing = getFacingLazy();
+			BlockPos pos = getPos().offset(facing);
+			IBlockState state = world.getBlockState(pos);
+			if(state.getBlock().hasTileEntity(state)) {
+				getTile(TileEntity.class, world, pos)
+						.filter(t -> t.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
+						.map(t -> t.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
+						.ifPresent(lumen -> handler.drain(1 - lumen.fill(1)));
+			}
+		}
 	}
 
 	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.LUMEN_CAPABILITY || super.hasCapability(capability, facing);
-	}
-
-	@Nullable
-	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.LUMEN_CAPABILITY
-				? ModCapability.LUMEN_CAPABILITY.cast(handler)
-				: super.getCapability(capability, facing);
-	}
-
-	@Override
-	void readNBT(NBTTagCompound compound) {
-		handler.set(compound.getInteger("lumen"));
-	}
-
-	@Override
-	void writeNBT(NBTTagCompound compound) {
-		compound.setInteger("lumen", handler.get());
-	}
-
-	private static class LuminicMechanismLumenHandler implements ILumen {
-
-		private final TileLuminicMechanism tile;
-		private int lumen;
-
-		private LuminicMechanismLumenHandler(TileLuminicMechanism tile) {
-			this.tile = tile;
-		}
-
-		@Override
-		public int get() {
-			return lumen;
-		}
-
-		@Override
-		public void set(int neutrons) {
-			this.lumen = neutrons;
-			tile.markDirty();
-		}
-
-		@Override
-		public int drain(int amount) {
-			if(amount > 0) {
-				int contained = get();
-				int drained = amount < getMax() ? amount : getMax();
-				int remain = contained;
-				int removed = remain < drained ? contained : drained;
-				remain -= removed;
-				set(remain);
-				return removed;
-			} else return 0;
-		}
-
-		@Override
-		public int fill(int amount) {
-			if(amount > 0) {
-				int contained = get();
-				if(contained >= getMax()) return amount;
-				int sum = contained + amount;
-				int remain = 0;
-				if(sum > getMax()) {
-					remain = sum - getMax();
-					sum = getMax();
-				}
-				set(sum);
-				return remain;
-			} else return 0;
-		}
-
-		@Override
-		public int getMax() {
-			return MAX_LUMEN;
-		}
 	}
 }

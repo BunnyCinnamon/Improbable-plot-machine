@@ -113,6 +113,7 @@ public final class ModBlocks {
 		registerTile(TileLuminicMechanism.class, LibNames.LUMINIC_MECHANISM);
 		registerTile(TileElectron.class, LibNames.ELECTRON);
 		registerTile(TileQuartzConsumer.class, LibNames.QUARTZ_CONSUMER);
+		registerTile(TileLumenCompressor.class, LibNames.LUMEN_COMPRESSOR);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {
