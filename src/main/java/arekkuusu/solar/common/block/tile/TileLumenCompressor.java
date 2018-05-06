@@ -42,8 +42,8 @@ public class TileLumenCompressor extends TileLumenBase implements ITickable {
 
 	private void fancyStart() {
 		EnumFacing facing = getFacingLazy().getOpposite();
-		Vector3 posVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable()
-				.add(pos.getX(), pos.getY() + 0.15D, pos.getZ()).add(0.5D);
+		Vector3 facingVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
+		Vector3 posVec = facingVec.add(pos.getX(), pos.getY(), pos.getZ()).offset(facingVec, 0.15D).add(0.5D);
 		for(int i = 0; i < 6 + world.rand.nextInt(4); i++) {
 			float particleScale = 0.2F + 3F * world.rand.nextFloat();
 			Vector3 speedVec = Vector3.rotateRandom().multiply(0.005D + 0.01D * world.rand.nextDouble());
@@ -53,8 +53,8 @@ public class TileLumenCompressor extends TileLumenBase implements ITickable {
 
 	private void fancyUpdate() {
 		EnumFacing facing = getFacingLazy().getOpposite();
-		Vector3 posVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable()
-				.add(pos.getX(), pos.getY() + 0.15D, pos.getZ()).add(0.5D);
+		Vector3 facingVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
+		Vector3 posVec = facingVec.add(pos.getX(), pos.getY(), pos.getZ()).offset(facingVec, 0.15D).add(0.5D);
 		float particleScale = 0.5F + 5F * ((float) handler.get() / (float) handler.getMax());
 		for(int i = 0; i < 2 + world.rand.nextInt(3); i++) {
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 12F);

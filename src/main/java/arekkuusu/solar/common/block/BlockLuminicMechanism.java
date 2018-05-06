@@ -67,22 +67,25 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		Vector3 back = getOffSet(facing.getOpposite(), pos);
-		for(int i = 0; i < 6 + rand.nextInt(6); i++) {
-			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
-			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 45);
-			double speed = 0.015D + rand.nextDouble() * 0.015D;
-			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-					.asImmutable()
-					.multiply(speed)
-					.rotate(x.multiply(z));
-			Vector3 posVec = back.add(Vector3.rotateRandom().multiply(0.2D));
-			FXUtil.spawnLight(world, posVec, speedVec, 45, 1F, 0xFFE077, Light.GLOW);
-		}
-		for(int i = 0; i < 5; i++) {
-			double speed = 0.015D + rand.nextDouble() * 0.025D;
-			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
-			FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
+		IBlockState stateFacing = world.getBlockState(pos.offset(facing));
+		if(!stateFacing.getBlock().isFullCube(stateFacing)) {
+			Vector3 back = getOffSet(facing.getOpposite(), pos);
+			for(int i = 0; i < 6 + rand.nextInt(6); i++) {
+				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
+				Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 45);
+				double speed = 0.015D + rand.nextDouble() * 0.015D;
+				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+						.asImmutable()
+						.multiply(speed)
+						.rotate(x.multiply(z));
+				Vector3 posVec = back.add(Vector3.rotateRandom().multiply(0.2D));
+				FXUtil.spawnLight(world, posVec, speedVec, 45, 1F, 0xFFE077, Light.GLOW);
+			}
+			for(int i = 0; i < 5; i++) {
+				double speed = 0.015D + rand.nextDouble() * 0.025D;
+				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
+				FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
+			}
 		}
 	}
 

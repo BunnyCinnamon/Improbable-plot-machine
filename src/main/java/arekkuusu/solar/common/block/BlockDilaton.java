@@ -188,23 +188,6 @@ public class BlockDilaton extends BlockBaseFacing {
 		}
 
 		@Override
-		public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-			EnumFacing facing = state.getValue(BlockDirectional.FACING);
-			Vector3 posVec = VEC_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
-			facing = facing.getOpposite();
-			for(int i = 0; i < 1 + rand.nextInt(3); i++) {
-				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 15);
-				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 15);
-				double speed = world.rand.nextDouble() * 0.015D;
-				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
-						.asImmutable()
-						.multiply(speed)
-						.rotate(x.multiply(z));
-				FXUtil.spawnLight(world, posVec, speedVec, 30, 2F, 0x1BE564, Light.GLOW);
-			}
-		}
-
-		@Override
 		public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 			return BB_PIECE.get(state.getValue(BlockDirectional.FACING));
 		}
