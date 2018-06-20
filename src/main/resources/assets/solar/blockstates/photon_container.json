@@ -1,0 +1,19 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:photon_container",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}],
+	"active": {
+	  "true": {
+	  },
+	  "false": {
+	  }
+	}
+  }
+}

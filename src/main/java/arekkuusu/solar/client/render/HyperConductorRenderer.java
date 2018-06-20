@@ -57,7 +57,7 @@ public class HyperConductorRenderer extends SpecialModelRenderer<TileHyperConduc
 			GlStateManager.pushMatrix();
 			float offset[] = offsets[i];
 			wobble(tick, 1.5F, partialTicks, offset);
-			BlockBaker.render(models[i]);
+			models[i].render();
 			GlStateManager.popMatrix();
 		}
 		GlStateManager.disableCull();

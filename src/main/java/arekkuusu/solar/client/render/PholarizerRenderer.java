@@ -46,7 +46,7 @@ public class PholarizerRenderer extends SpecialModelRenderer<TilePholarizer> {
 			}
 		}
 		//Base
-		BlockBaker.render(BlockBaker.PHOLARIZER_BASE);
+		BlockBaker.PHOLARIZER_BASE.render();
 		//Piece
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
@@ -54,14 +54,15 @@ public class PholarizerRenderer extends SpecialModelRenderer<TilePholarizer> {
 			b.set(0F);
 			b.upload();
 		});
-		BlockBaker.render(active ? BlockBaker.PHOLARIZER_POSITIVE : BlockBaker.PHOLARIZER_NEGATIVE);
+		if(active) BlockBaker.PHOLARIZER_POSITIVE.render();
+		else BlockBaker.PHOLARIZER_NEGATIVE.render();
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		//Pillars
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.05F % 360F, 0F, -1F, 0F);
 		GlStateManager.pushMatrix();
 		RenderHelper.makeUpDownTranslation(tick * 1.5F, 0.045F, 0.75F, partialTicks);
-		BlockBaker.render(BlockBaker.PHOLARIZER_PILLAR);
+		BlockBaker.PHOLARIZER_PILLAR.render();
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 		ShaderLibrary.BRIGHT.end();

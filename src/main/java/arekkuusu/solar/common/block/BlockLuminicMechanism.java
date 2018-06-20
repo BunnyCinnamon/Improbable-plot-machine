@@ -44,12 +44,12 @@ import java.util.Random;
 public class BlockLuminicMechanism extends BlockBaseFacing {
 
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.1D, 0.5D))
-			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.9D, 0.5D))
-			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.9D))
-			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.1D))
-			.put(EnumFacing.EAST, Vector3.apply(0.1D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, Vector3.apply(0.9D, 0.5D, 0.5D))
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.05D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.95D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.95D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.05D))
+			.put(EnumFacing.EAST, Vector3.apply(0.05D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.95D, 0.5D, 0.5D))
 			.build();
 
 	public BlockLuminicMechanism() {
@@ -70,10 +70,10 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 		IBlockState stateFacing = world.getBlockState(pos.offset(facing));
 		if(!stateFacing.getBlock().isFullCube(stateFacing)) {
 			Vector3 back = getOffSet(facing.getOpposite(), pos);
-			for(int i = 0; i < 6 + rand.nextInt(6); i++) {
+			for(int i = 0; i < 3 + rand.nextInt(2); i++) {
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
 				Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 45);
-				double speed = 0.015D + rand.nextDouble() * 0.015D;
+				double speed = 0.005D + rand.nextDouble() * 0.015D;
 				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 						.asImmutable()
 						.multiply(speed)
@@ -81,8 +81,8 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 				Vector3 posVec = back.add(Vector3.rotateRandom().multiply(0.2D));
 				FXUtil.spawnLight(world, posVec, speedVec, 45, 1F, 0xFFE077, Light.GLOW);
 			}
-			for(int i = 0; i < 5; i++) {
-				double speed = 0.015D + rand.nextDouble() * 0.025D;
+			for(int i = 0; i < 3; i++) {
+				double speed = 0.005D + rand.nextDouble() * 0.015D;
 				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
 				FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
 			}

@@ -9,8 +9,8 @@ package arekkuusu.solar.client.util.helper;
 
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
-import arekkuusu.solar.client.util.baker.model.Cube;
 import arekkuusu.solar.common.Solar;
+import net.katsstuff.mirror.client.helper.Blending;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -25,12 +25,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
-import org.lwjgl.util.glu.Quadric;
-import org.lwjgl.util.glu.Sphere;
 
 import java.util.Random;
-import java.util.function.Consumer;
 
 /**
  * Created by <Arekkuusu> on 30/06/2017.
@@ -126,7 +122,7 @@ public final class RenderHelper {
 				alpha.set(0.4F);
 				alpha.upload();
 			});
-			GLHelper.BLEND_SRC_ALPHA$ONE_MINUS_SRC_ALPHA.blend();
+			Blending.Normal().apply();
 			Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 			GlStateManager.translate(-x, -y, -z);

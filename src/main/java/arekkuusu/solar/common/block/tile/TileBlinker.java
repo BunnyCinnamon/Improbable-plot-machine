@@ -29,7 +29,9 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower {
 
 	public int getRedstonePower() {
 		int power = 0;
+		EnumFacing ignored = getFacingLazy();
 		for(EnumFacing facing : EnumFacing.values()) {
+			if(facing == ignored) continue;
 			int detected = world.getRedstonePower(pos.offset(facing), facing);
 			if(detected > power) power = detected;
 		}
@@ -40,7 +42,7 @@ public class TileBlinker extends TileRelativeBase implements IRelativePower {
 		return getStateValue(State.ACTIVE, pos).orElse(false);
 	}
 
-	private EnumFacing getFacing() {
+	private EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 

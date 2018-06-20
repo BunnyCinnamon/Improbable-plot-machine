@@ -34,7 +34,7 @@ public class TileQuartzConsumer extends TileBase {
 		if(!stack.isEmpty() && stack.getItem() == ModItems.CRYSTAL_QUARTZ) {
 			if(!world.isRemote) {
 				markDirty();
-				updatePosition(world, pos);
+				sync();
 				handler.setStackInSlot(0, stack.copy());
 				stack.shrink(1);
 			}

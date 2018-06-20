@@ -51,6 +51,7 @@ public final class ModRenders {
 		registerTESR(TileElectron.class, new ElectronRenderer());
 		registerTESR(TileLuminicMechanism.class, new LuminicMechanismRenderer());
 		registerTESR(TileQuartzConsumer.class, new QuartzConsumerRenderer());
+		registerTESR(TileDifferentiator.class, new DifferentiatorRenderer());
 
 		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
 		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
@@ -62,6 +63,7 @@ public final class ModRenders {
 		registerTESRItemStack(ModBlocks.PHOLARIZER, TilePholarizer.class);
 		registerTESRItemStack(ModBlocks.FISSION_INDUCER, TileFissionInducer.class);
 		registerTESRItemStack(ModBlocks.ELECTRON, TileElectron.class);
+		registerTESRItemStack(ModBlocks.DIFFERENTIATOR, TileDifferentiator.class);
 	}
 
 	private static <T extends TileEntity> void registerTESR(Class<T> tile, TileEntitySpecialRenderer<T> render) {

@@ -7,10 +7,8 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.common.entity.EntityLumen;
+import arekkuusu.solar.api.entanglement.energy.data.ILumen;
 import arekkuusu.solar.common.handler.data.ModCapability;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -29,10 +27,6 @@ public class TileLuminicMechanism extends TileLumenBase implements ITickable {
 
 	public static final int MAX_LUMEN = 16;
 	private int tick;
-
-	public TileLuminicMechanism() {
-		super(MAX_LUMEN);
-	}
 
 	@Override
 	public void update() {
@@ -53,26 +47,7 @@ public class TileLuminicMechanism extends TileLumenBase implements ITickable {
 					}
 				}
 			}
-			if(world.isAirBlock(pos.offset(facing))) spit();
-			else transfer();
-		}
-	}
-
-	private void spit() {
-		if(handler.get() >= 16) {
-			Vector3 pos = new Vector3.WrappedVec3i(getFacingLazy().getDirectionVec()).asImmutable()
-					.multiply(0.5D).add(
-							getPos().getX() + 0.5D,
-							getPos().getY() + 0.5D,
-							getPos().getZ() + 0.5D
-					);
-			EntityLumen lumen = EntityLumen.spawn(world, pos, handler.drain(16));
-			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
-			Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
-			Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
-			lumen.motionX = vec.x();
-			lumen.motionY = vec.y();
-			lumen.motionZ = vec.z();
+			if(!world.isAirBlock(pos.offset(facing))) transfer();
 		}
 	}
 
@@ -85,9 +60,29 @@ public class TileLuminicMechanism extends TileLumenBase implements ITickable {
 				getTile(TileEntity.class, world, pos)
 						.filter(t -> t.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
 						.map(t -> t.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
-						.ifPresent(lumen -> handler.drain(1 - lumen.fill(1)));
+						.ifPresent(lumen -> handler.set(handler.get() - (1 - lumen.fill(1))));
 			}
 		}
+	}
+
+	@Override
+	ILumen createHandler() {
+		return new LumenHandler(this) {
+			@Override
+			public int drain(int amount) {
+				return 0;
+			}
+		};
+	}
+
+	@Override
+	void onLumenChange() {
+		//NO-OP
+	}
+
+	@Override
+	public int getCapacity() {
+		return MAX_LUMEN;
 	}
 
 	public EnumFacing getFacingLazy() {

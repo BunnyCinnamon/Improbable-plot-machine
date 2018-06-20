@@ -44,14 +44,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 	@Override
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
 		Vector3 vec = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
-		Megumin.chant(world, vec, 5F, false)
-				.Oh_blackness_shrouded_in_light()
-				.Frenzied_blaze_clad_in_night()
-				.In_the_name_of_the_crimson_demons()
-				.let_the_collapse_of_thine_origin_manifest()
-				.Summon_before_me_the_root_of_thy_power_hidden_within_the_lands()
-				.of_the_kingdom_of_demise()
-				.EXPLOSION();
+		Megumin.chant(world, vec, 5F, false).explosion();
 	}
 
 	@Override

@@ -53,31 +53,7 @@ public class Megumin {
 		return new Megumin(world, pos, size, damageEntities);
 	}
 
-	public Megumin Oh_blackness_shrouded_in_light() {
-		return this;
-	}
-
-	public Megumin Frenzied_blaze_clad_in_night() {
-		return this;
-	}
-
-	public Megumin In_the_name_of_the_crimson_demons() {
-		return this;
-	}
-
-	public Megumin let_the_collapse_of_thine_origin_manifest() {
-		return this;
-	}
-
-	public Megumin Summon_before_me_the_root_of_thy_power_hidden_within_the_lands() {
-		return this;
-	}
-
-	public Megumin of_the_kingdom_of_demise() {
-		return this;
-	}
-
-	public void EXPLOSION() {
+	public void explosion() {
 		world.playSound(null, pos.x(), pos.y(), pos.z(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
 
 		Set<BlockPos> set = Sets.newHashSet();

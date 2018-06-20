@@ -43,11 +43,6 @@ public abstract class TileBase extends TileEntity {
 		return clazz.isInstance(tile) ? Optional.of((T) tile) : Optional.empty();
 	}
 
-	public void updatePosition(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
-		world.notifyBlockUpdate(pos, state, state, 8);
-	}
-
 	@Override
 	public double getDistanceSq(double x, double y, double z) {
 		return Math.sqrt(super.getDistanceSq(x, y, z));
@@ -56,7 +51,9 @@ public abstract class TileBase extends TileEntity {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.getNbtCompound());
+		NBTTagCompound tag = pkt.getNbtCompound();
+		super.readFromNBT(tag);
+		this.readSync(tag);
 	}
 
 	@Override
@@ -66,7 +63,10 @@ public abstract class TileBase extends TileEntity {
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
+		NBTTagCompound tag = new NBTTagCompound();
+		super.writeToNBT(tag);
+		this.writeSync(tag);
+		return tag;
 	}
 
 	@Override
@@ -82,7 +82,27 @@ public abstract class TileBase extends TileEntity {
 		return tag;
 	}
 
-	abstract void readNBT(NBTTagCompound compound);
+	void readNBT(NBTTagCompound compound) {
+		//ON RENT
+	}
 
-	abstract void writeNBT(NBTTagCompound compound);
+	void writeNBT(NBTTagCompound compound) {
+		//ON RENT
+	}
+
+	public final void sync() {
+		if(!world.isRemote) {
+			IBlockState state = world.getBlockState(pos);
+			world.notifyBlockUpdate(pos, state, state, 2);
+		}
+	}
+
+	void writeSync(NBTTagCompound compound) {
+		writeNBT(compound);
+	}
+
+	@SideOnly(Side.CLIENT)
+	void readSync(NBTTagCompound compound) {
+		readNBT(compound);
+	}
 }

@@ -11,9 +11,11 @@ import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileFissionInducer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
 
@@ -59,25 +61,27 @@ public class FissionInducerRenderer extends SpecialModelRenderer<TileFissionIndu
 			}
 		}
 		//Center
-		BlockBaker.render(BlockBaker.FISSION_INDUCER_CENTER);
+		BlockBaker.FISSION_INDUCER_CENTER.render();
 		//Top & Bottom
 		GlStateManager.pushMatrix();
 		RenderHelper.makeUpDownTranslation(tick, 0.015F, 1.5F, partialTicks);
-		BlockBaker.render(BlockBaker.FISSION_INDUCER_TOP);
+		BlockBaker.FISSION_INDUCER_TOP.render();
 		GlStateManager.popMatrix();
 
 		GlStateManager.pushMatrix();
 		RenderHelper.makeUpDownTranslation(-tick, 0.015F, 1.5F, partialTicks);
-		BlockBaker.render(BlockBaker.FISSION_INDUCER_BOTTOM);
+		BlockBaker.FISSION_INDUCER_BOTTOM.render();
 		GlStateManager.popMatrix();
 		//Inside
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-			b.set(0F);
+			float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
+			brigthness *= 0.1F;
+			b.set(brigthness);
 			b.upload();
 		});
-		BlockBaker.render(BlockBaker.FISSION_INDUCER_INSIDE);
+		BlockBaker.FISSION_INDUCER_INSIDE.render();
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();

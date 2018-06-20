@@ -55,7 +55,7 @@ public class QimranutRenderer extends SpecialModelRenderer<TileQimranut> {
 			}
 		}
 		//Base
-		BlockBaker.render(BlockBaker.QIMRANUT);
+		BlockBaker.QIMRANUT.render();
 		//Piece
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
@@ -63,11 +63,11 @@ public class QimranutRenderer extends SpecialModelRenderer<TileQimranut> {
 			b.set(0F);
 			b.upload();
 		});
-		BlockBaker.render(BlockBaker.QIMRANUT_RING);
+		BlockBaker.QIMRANUT_RING.render();
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, -1F, 0F);
-		BlockBaker.render(BlockBaker.QIMRANUT_);
+		BlockBaker.QIMRANUT_.render();
 		GlStateManager.popMatrix();
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();

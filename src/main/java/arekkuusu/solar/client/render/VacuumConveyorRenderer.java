@@ -42,7 +42,7 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 		}
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-		BlockBaker.render(BlockBaker.VACUUM_TOP);
+		BlockBaker.VACUUM_TOP.render();
 		GlStateManager.popMatrix();
 		//Middle
 		GlStateManager.disableLighting();
@@ -51,13 +51,13 @@ public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConve
 			b.set(0F);
 			b.upload();
 		});
-		BlockBaker.render(BlockBaker.VACUUM_PIECE);
+		BlockBaker.VACUUM_PIECE.render();
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		//Bottom
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, -1F, 0F);
-		BlockBaker.render(BlockBaker.VACUUM_BOTTOM);
+		BlockBaker.VACUUM_BOTTOM.render();
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 	}

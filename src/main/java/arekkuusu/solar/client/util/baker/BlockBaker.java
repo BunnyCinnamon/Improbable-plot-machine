@@ -64,7 +64,12 @@ public enum BlockBaker {
 	FISSION_INDUCER_INSIDE("fission_inducer_inside"),
 	FISSION_INDUCER_BOTTOM("fission_inducer_bottom"),
 	ELECTRON("electron"),
-	LUMINIC_MECHANISM("luminic_mechanism");
+	LUMINIC_MECHANISM("luminic_mechanism"),
+	DIFFERENTIATOR_BASE("differentiator_base"),
+	DIFFERENTIATOR_CORE("differentiator_core"),
+	DIFFERENTIATOR_RING_BOTTOM("differentiator_ring_bottom"),
+	DIFFERENTIATOR_RING_MIDDLE("differentiator_ring_middle"),
+	DIFFERENTIATOR_RING_TOP("differentiator_ring_top");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;
@@ -113,12 +118,12 @@ public enum BlockBaker {
 		return quads;
 	}
 
-	public static void render(BlockBaker model) {
+	public void render() {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
-		for(BakedQuad bakedquad : model.quads) {
+		for(BakedQuad bakedquad : quads) {
 			LightUtil.renderQuadColor(buffer, bakedquad, -1);
 		}
 		tessellator.draw();

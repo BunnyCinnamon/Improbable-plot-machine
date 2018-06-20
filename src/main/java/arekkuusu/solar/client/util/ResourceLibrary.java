@@ -33,6 +33,9 @@ public final class ResourceLibrary {
 		getBlockTexture("neutron_battery/green");
 		getBlockTexture("neutron_battery/pink");
 		getBlockTexture("fission_inducer/center");
+		getBlockTexture("differentiator/base_1");
+		getBlockTexture("differentiator/base_2");
+		getBlockTexture("differentiator/glass");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation Q_SQUARED = getBlockTexture("q_squared");
@@ -47,10 +50,12 @@ public final class ResourceLibrary {
 	public static final ResourceLocation NEUTRON_BATTERY = getBlockTexture("neutron_battery/base");
 	public static final ResourceLocation PHOLARIZER = getBlockTexture("pholarizer");
 	public static final ResourceLocation FISSION_INDUCER = getBlockTexture("fission_inducer/base");
+	public static final ResourceLocation DIFFERENTIATOR_BASE = getBlockTexture("differentiator/base_0");
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getTexture(TextureLocation.Model(), "eye_of_schrodinger");
+	public static final ResourceLocation BEAM = getTexture(TextureLocation.Effect(), "beam");
 	//Shader
 	public static final ResourceLocation BLEND_SHADER = getShader(ShaderLocation.Program(), "blend");
 	public static final ResourceLocation BRIGHT_SHADER = getShader(ShaderLocation.Program(), "bright");

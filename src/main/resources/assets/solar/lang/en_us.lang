@@ -45,6 +45,8 @@ tile.fission_inducer.name=Fission Inducer
 tile.luminic_mechanism.name=Luminic Mechanism
 tile.quartz_consumer.name=Quartz Consumer
 tile.lumen_compressor.name=Lumen Compressor
+tile.photon_container.name=Photon Container
+tile.differentiator.name=Differentiator
 fluid.tile.gold=Gold
 
 //Entity

@@ -120,15 +120,14 @@ public class TileFissionInducer extends TileBase implements ITickable {
 				}
 			}
 			applyGravity();
-		} else {
+		} else if(world.getTotalWorldTime() % 6 == 0) {
 			BlockPos[] positions = POSITIONS.get(getFacingLazy().getAxis());
 			for(BlockPos position : positions) {
 				IBlockState state = world.getBlockState(position.add(getPos()));
 				if(state.getBlock() == Blocks.GOLD_BLOCK || state.getBlock() == ModBlocks.MOLTEN_GOLD) {
-					Vector3 pos = new Vector3.WrappedVec3i(position.add(getPos())).asImmutable().add(Math.random(), 0.75, Math.random());
-					Vector3 speed = Vector3.apply(0, 0.05, 0).multiply(world.rand.nextFloat());
-					int color = world.rand.nextBoolean() ? 0xff5000 : 0xfff200;
-					FXUtil.spawnTunneling(world, pos, speed, 20, 1F, color, GlowTexture.STAR);
+					Vector3 pos = new Vector3.WrappedVec3i(position.add(getPos())).asImmutable().add(Math.random(), 1.1D, Math.random());
+					Vector3 speed = Vector3.apply(0, 0.02, 0).multiply(world.rand.nextFloat());
+					FXUtil.spawnTunneling(world, pos, speed, 40, 3F, 0xff5000, GlowTexture.GLINT);
 				}
 			}
 		}

@@ -48,7 +48,7 @@ public class ElectronRenderer extends SpecialModelRenderer<TileElectron> {
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 1F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 1F, 0F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 0F, 1F);
-		BlockBaker.render(BlockBaker.ELECTRON);
+		BlockBaker.ELECTRON.render();
 		if(active) {
 			GlStateManager.enableLighting();
 			ShaderLibrary.BRIGHT.end();

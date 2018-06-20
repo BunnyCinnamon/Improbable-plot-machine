@@ -8,10 +8,11 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
+import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
-import arekkuusu.solar.common.block.tile.TileFissionInducer;
+import arekkuusu.solar.common.block.tile.TileDifferentiator;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.mirror.client.baked.BakedRender;
@@ -19,9 +20,7 @@ import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -33,11 +32,11 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 /**
- * Created by <Arekkuusu> on 4/4/2018.
+ * Created by <Arekkuusu> on 5/13/2018.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockFissionInducer extends BlockBaseFacing {
+public class BlockDifferentiator extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.125, 0.25, 0.75, 0.875, 0.75))
@@ -48,26 +47,29 @@ public class BlockFissionInducer extends BlockBaseFacing {
 			.put(EnumFacing.WEST, new AxisAlignedBB(0.875, 0.25, 0.25, 0.125, 0.75, 0.75))
 			.build();
 
-	public BlockFissionInducer() {
-		super(LibNames.FISSION_INDUCER, FixedMaterial.DONT_MOVE);
+	public BlockDifferentiator() {
+		super(LibNames.DIFFERENTIATOR, FixedMaterial.DONT_MOVE);
+		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
-		setHardness(5F);
-		setResistance(2000F);
+		setHardness(1F);
 	}
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		Vector3 vec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ());
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		AxisAlignedBB bb = BB_MAP.get(facing);
-		for(int i = 0; i < 3 + rand.nextInt(4); i++) {
-			double speed = 0.005D + 0.005D * rand.nextDouble();
-			Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
-			double x = bb.minX + rand.nextDouble() * bb.maxX;
-			double y = bb.minY + rand.nextDouble() * bb.maxY;
-			double z = bb.minZ + rand.nextDouble() * bb.maxZ;
-			Vector3 posVec = vec.add(x, y, z);
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posVec.x(), posVec.y(), posVec.z(), speedVec.x(), speedVec.y(), speedVec.z());
+		float distance = 0;
+		boolean found = false;
+		while (distance++ < 16) {
+			BlockPos offset = pos.offset(facing, (int) distance);
+			if(world.getBlockState(offset).getBlock() == ModBlocks.PHOTON_CONTAINER) {
+				found = true;
+				break;
+			}
+		}
+		if(found) {
+			Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
+			Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D).offset(offset, -0.19);
+			FXUtil.addBeam(world, from, offset, distance, 36, 0.75F, 0xFF0303);
 		}
 	}
 
@@ -78,11 +80,6 @@ public class BlockFissionInducer extends BlockBaseFacing {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-	}
-
-	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
@@ -90,14 +87,14 @@ public class BlockFissionInducer extends BlockBaseFacing {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileFissionInducer();
+		return new TileDifferentiator();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyBakedRegistry.register(this, () -> new BakedRender()
-				.setParticle(ResourceLibrary.FISSION_INDUCER)
+				.setParticle(ResourceLibrary.DIFFERENTIATOR_BASE)
 		);
 		ModelHandler.registerModel(this, 0);
 	}

@@ -18,6 +18,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -77,6 +78,14 @@ public final class FXUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 			ParticleBase particle = new ParticleBase(world, pos, speed, scale, age, rgb);
 			particle.setSprite(SpriteLibrary.SQUARED_PARTICLE);
 			add(particle);
+		}
+	}
+
+	public static void addBeam(World world, Vector3 from, Vector3 direction, float distance, int amount, float size, int color) {
+		for(float i = 0; i + 1 < distance * amount; ++i) {
+			float offset = (i / amount);
+			Vector3 posVec = from.add(direction.x() * offset, direction.y() * offset, direction.z() * offset);
+			spawnMute(world, posVec, Vector3.Zero(), 60, size * MathHelper.cos((float) ((2 * Math.PI) * (i / (distance * amount)))), color, GlowTexture.MOTE);
 		}
 	}
 

@@ -38,7 +38,7 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		BlockBaker.render(BlockBaker.NEUTRON_BATTERY_BASE);
+		BlockBaker.NEUTRON_BATTERY_BASE.render();
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
@@ -49,13 +49,13 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 		RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 1.5F, 15F);
 		switch(capacity) {
 			case BLUE:
-				BlockBaker.render(BlockBaker.NEUTRON_BATTERY_BLUE);
+				BlockBaker.NEUTRON_BATTERY_BLUE.render();
 				break;
 			case GREEN:
-				BlockBaker.render(BlockBaker.NEUTRON_BATTERY_GREEN);
+				BlockBaker.NEUTRON_BATTERY_GREEN.render();
 				break;
 			case PINK:
-				BlockBaker.render(BlockBaker.NEUTRON_BATTERY_PINK);
+				BlockBaker.NEUTRON_BATTERY_PINK.render();
 				break;
 		}
 		ShaderLibrary.BRIGHT.end();

@@ -65,7 +65,7 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		//Top & Bottom
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-		BlockBaker.render(BlockBaker.TRANSLOCATOR_BASE);
+		BlockBaker.TRANSLOCATOR_BASE.render();
 		GlStateManager.popMatrix();
 		if(active) {
 			GlStateManager.disableLighting();
@@ -78,7 +78,7 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		//Middle
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, -1F, 0F);
-		BlockBaker.render(BlockBaker.TRANSLOCATOR_CENTER);
+		BlockBaker.TRANSLOCATOR_CENTER.render();
 		GlStateManager.popMatrix();
 		//Piece
 		GlStateManager.pushMatrix();
@@ -90,7 +90,7 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 1F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 720F, 1F, 0F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 0F, 1F);
-		BlockBaker.render(BlockBaker.TRANSLOCATOR_PIECE_RING);
+		BlockBaker.TRANSLOCATOR_PIECE_RING.render();
 		GlStateManager.popMatrix();
 
 		GlStateManager.pushMatrix();
@@ -98,7 +98,7 @@ public class MechanicalTranslocatorRenderer extends SpecialModelRenderer<TileMec
 		GlStateManager.rotate(partialTicks + tick % 360F, 0F, -1F, 0F);
 		GlStateManager.rotate(partialTicks + tick % 720F, -1F, 0F, 0F);
 		GlStateManager.rotate(partialTicks + tick % 360F, 0F, 0F, -1F);
-		BlockBaker.render(BlockBaker.TRANSLOCATOR_PIECE_RING);
+		BlockBaker.TRANSLOCATOR_PIECE_RING.render();
 		GlStateManager.popMatrix();
 		/*--- Inwards ---*/
 		GlStateManager.popMatrix();

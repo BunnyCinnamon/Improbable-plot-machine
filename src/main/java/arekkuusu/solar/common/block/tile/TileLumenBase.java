@@ -21,15 +21,18 @@ import javax.annotation.Nullable;
  */
 public abstract class TileLumenBase extends TileBase {
 
-	protected final ILumen handler = new LumenHandler();
-	protected int capacity;
+	protected final ILumen handler;
 
-	public TileLumenBase(int capacity) {
-		this.capacity = capacity;
+	public TileLumenBase() {
+		this.handler = createHandler();
 	}
 
-	void onLumenChange() {
-		//FOR RENT
+	abstract void onLumenChange();
+
+	public abstract int getCapacity();
+
+	ILumen createHandler() {
+		return new LumenHandler(this);
 	}
 
 	@Override
@@ -55,9 +58,14 @@ public abstract class TileLumenBase extends TileBase {
 		compound.setInteger("lumen", handler.get());
 	}
 
-	private class LumenHandler implements ILumen {
+	static class LumenHandler implements ILumen {
 
+		private TileLumenBase tile;
 		private int lumen;
+
+		LumenHandler(TileLumenBase tile)  {
+			this.tile = tile;
+		}
 
 		@Override
 		public int get() {
@@ -67,8 +75,8 @@ public abstract class TileLumenBase extends TileBase {
 		@Override
 		public void set(int neutrons) {
 			this.lumen = neutrons;
-			markDirty();
-			onLumenChange();
+			tile.markDirty();
+			if(tile.world != null && !tile.world.isRemote) tile.onLumenChange();
 		}
 
 		@Override
@@ -102,7 +110,7 @@ public abstract class TileLumenBase extends TileBase {
 
 		@Override
 		public int getMax() {
-			return capacity;
+			return tile.getCapacity();
 		}
 	}
 }

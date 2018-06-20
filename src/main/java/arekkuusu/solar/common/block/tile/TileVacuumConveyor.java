@@ -254,8 +254,8 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 
 	public void setLookup(ItemStack stack) {
 		lookup = stack;
-		updatePosition(world, pos);
 		markDirty();
+		sync();
 	}
 
 	public ItemStack getLookup() {

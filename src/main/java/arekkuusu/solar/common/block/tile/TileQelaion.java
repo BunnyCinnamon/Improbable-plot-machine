@@ -162,8 +162,8 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 		} else facings.add(facing);
 		outputs = getOutputs().size();
 		world.notifyNeighborsOfStateChange(pos, getBlockType(), true);
-		updatePosition(world, pos);
 		markDirty();
+		sync();
 	}
 
 	public List<EnumFacing> getOutputs() {
@@ -222,5 +222,27 @@ public class TileQelaion extends TileRelativeBase implements ITickable {
 			compound.setUniqueId("nodes", nodes);
 		compound.setInteger("facingIndex", facingIndex);
 		compound.setInteger("nodeIndex", nodeIndex);
+	}
+
+	@Override
+	void writeSync(NBTTagCompound compound) {
+		NBTTagList facingsNBT = new NBTTagList();
+		facings.forEach(k -> {
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setString("facing", k.getName());
+			facingsNBT.appendTag(tag);
+		});
+		compound.setTag("facings", facingsNBT);
+	}
+
+	@Override
+	void readSync(NBTTagCompound compound) {
+		facings.clear();
+		NBTTagList facingsNBT = compound.getTagList("facings", 10);
+		for(int i = 0; i < facingsNBT.tagCount(); i++) {
+			NBTTagCompound tag = facingsNBT.getCompoundTagAt(i);
+			EnumFacing facing = EnumFacing.byName(tag.getString("facing"));
+			facings.add(facing);
+		}
 	}
 }

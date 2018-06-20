@@ -48,7 +48,7 @@ public class LuminicMechanismRenderer extends TileEntitySpecialRenderer<TileLumi
 			b.set(0F);
 			b.upload();
 		});
-		BlockBaker.render(BlockBaker.LUMINIC_MECHANISM);
+		BlockBaker.LUMINIC_MECHANISM.render();
 		GlStateManager.enableLighting();
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.popMatrix();
