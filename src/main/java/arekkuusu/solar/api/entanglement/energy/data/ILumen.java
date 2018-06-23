@@ -39,7 +39,7 @@ public interface ILumen {
 	 * @param amount Lumen to drain
 	 * @return Lumen drained
 	 */
-	int drain(int amount);
+	int drain(int amount, boolean drain);
 
 	/**
 	 * Fills a certain amount of lumen
@@ -47,7 +47,7 @@ public interface ILumen {
 	 * @param amount Lumen to fill
 	 * @return Lumen remain
 	 */
-	int fill(int amount);
+	int fill(int amount, boolean fill);
 
 	/**
 	 * Maximum lumen capacity
@@ -72,26 +72,30 @@ class Empty implements ILumen {
 	}
 
 	@Override
-	public int drain(int amount) {
+	public int drain(int amount, boolean drain) {
 		if(amount > 0) {
 			int contained = get();
 			int drained = amount < getMax() ? amount : getMax();
 			int remain = contained;
 			int removed = remain < drained ? contained : drained;
 			remain -= removed;
-			set(remain);
+			if(drain) {
+				set(remain);
+			}
 			return removed;
 		} else return 0;
 	}
 
 	@Override
-	public int fill(int amount) {
+	public int fill(int amount, boolean fill) {
 		if(amount > 0) {
 			int contained = get();
 			if(contained >= getMax()) return amount;
 			int sum = contained + amount;
 			int remain = 0;
-			set(sum);
+			if(fill) {
+				set(sum);
+			}
 			return remain;
 		} else return 0;
 	}

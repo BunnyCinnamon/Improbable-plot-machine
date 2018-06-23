@@ -1,12 +1,12 @@
 {
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
-		"0": "solar:blocks/luminic_mechanism/bottom",
-		"1": "solar:blocks/luminic_mechanism/sides",
-		"2": "solar:blocks/luminic_mechanism/base",
-		"3": "solar:blocks/luminic_mechanism/sides_overlay",
-		"4": "solar:blocks/luminic_mechanism/bottom_border",
-		"particle": "solar:blocks/luminic_mechanism/base"
+		"0": "solar:blocks/lumen_compressor/bottom",
+		"1": "solar:blocks/lumen_compressor/sides",
+		"2": "solar:blocks/lumen_compressor/base",
+		"3": "solar:blocks/lumen_compressor/sides_overlay",
+		"4": "solar:blocks/lumen_compressor/bottom_border",
+		"particle": "solar:blocks/lumen_compressor/base"
 	},
 	"elements": [
 		{

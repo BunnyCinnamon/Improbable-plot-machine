@@ -9,22 +9,18 @@ package arekkuusu.solar.common.block.tile;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 
 /**
- * Created by <Arekkuusu> on 4/9/2018.
+ * Created by <Arekkuusu> on 6/21/2018.
  * It's distributed as part of Solar.
  */
-public class TileLuminicMechanism extends TileBase implements ITickable {
-
-	private int tick;
-
-	@Override
-	public void update() {
-
-	}
-
+public class TileDifferentiatorInterceptor extends TileBase {
 	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
+	}
+
+	@Override
+	public boolean shouldRenderInPass(int pass) {
+		return pass == 0 || pass == 1;
 	}
 }

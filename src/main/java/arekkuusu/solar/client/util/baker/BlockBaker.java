@@ -64,12 +64,16 @@ public enum BlockBaker {
 	FISSION_INDUCER_INSIDE("fission_inducer_inside"),
 	FISSION_INDUCER_BOTTOM("fission_inducer_bottom"),
 	ELECTRON("electron"),
-	LUMINIC_MECHANISM("luminic_mechanism"),
+	LUMEN_COMPRESSOR("lumen_compressor"),
 	DIFFERENTIATOR_BASE("differentiator_base"),
 	DIFFERENTIATOR_CORE("differentiator_core"),
 	DIFFERENTIATOR_RING_BOTTOM("differentiator_ring_bottom"),
 	DIFFERENTIATOR_RING_MIDDLE("differentiator_ring_middle"),
-	DIFFERENTIATOR_RING_TOP("differentiator_ring_top");
+	DIFFERENTIATOR_RING_TOP("differentiator_ring_top"),
+	DIFFERENTIATOR_INTERCEPTOR_BASE("differentiator_interceptor_base"),
+	DIFFERENTIATOR_INTERCEPTOR_RING("differentiator_interceptor_ring"),
+	DIFFERENTIATOR_INTERCEPTOR_GLASS("differentiator_interceptor_glass"),
+	DIFFERENTIATOR_INTERCEPTOR_BEACON("differentiator_interceptor_beacon");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;

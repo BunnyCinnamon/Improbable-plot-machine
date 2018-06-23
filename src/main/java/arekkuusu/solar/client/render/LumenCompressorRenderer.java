@@ -9,6 +9,7 @@ package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
+import arekkuusu.solar.common.block.tile.TileLumenCompressor;
 import arekkuusu.solar.common.block.tile.TileLuminicMechanism;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -18,10 +19,10 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
  * Created by <Arekkuusu> on 4/12/2018.
  * It's distributed as part of Solar.
  */
-public class LuminicMechanismRenderer extends TileEntitySpecialRenderer<TileLuminicMechanism> {
+public class LumenCompressorRenderer extends TileEntitySpecialRenderer<TileLumenCompressor> {
 
 	@Override
-	public void render(TileLuminicMechanism te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public void render(TileLumenCompressor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
@@ -48,7 +49,7 @@ public class LuminicMechanismRenderer extends TileEntitySpecialRenderer<TileLumi
 			b.set(0F);
 			b.upload();
 		});
-		BlockBaker.LUMINIC_MECHANISM.render();
+		BlockBaker.LUMEN_COMPRESSOR.render();
 		GlStateManager.enableLighting();
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.popMatrix();

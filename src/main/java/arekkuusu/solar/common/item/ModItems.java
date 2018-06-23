@@ -68,6 +68,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.LUMEN_COMPRESSOR));
 		registry.register(itemBlock(ModBlocks.PHOTON_CONTAINER));
 		registry.register(itemBlock(ModBlocks.DIFFERENTIATOR));
+		registry.register(itemBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR));
 	}
 
 	@SuppressWarnings("ConstantConditions")

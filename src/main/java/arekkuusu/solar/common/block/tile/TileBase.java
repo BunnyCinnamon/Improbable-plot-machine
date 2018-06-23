@@ -13,12 +13,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
@@ -35,6 +38,14 @@ public abstract class TileBase extends TileEntity {
 	<T extends Comparable<T>> Optional<T> getStateValue(IProperty<T> property, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		return state.getPropertyKeys().contains(property) ? Optional.of(state.getValue(property)) : Optional.empty();
+	}
+
+	<T> Optional<T> getCapability(IBlockAccess world, BlockPos pos, @Nullable EnumFacing facing, Capability<T> capability) {
+		TileEntity tile = world.getTileEntity(pos);
+		if(tile != null && tile.hasCapability(capability, facing)) {
+			return Optional.ofNullable(tile.getCapability(capability, facing));
+		}
+		return Optional.empty();
 	}
 
 	@SuppressWarnings("unchecked")

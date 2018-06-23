@@ -59,10 +59,10 @@ public class TilePholarizer extends TileBase implements ITickable {
 						!e.isDead && e.hasCapability(ModCapability.LUMEN_CAPABILITY, null)
 				).forEach(e -> {
 					ILumen lumen = e.getCapability(ModCapability.LUMEN_CAPABILITY, null);
-					int drained = lumen.drain(1);
-					int remain = wrapper.fill(drained);
-					if(remain > 0) {
-						lumen.set(lumen.get() + remain);
+					int drained = lumen.drain(1, false);
+					int filled = wrapper.fill(drained, false);
+					if(drained > 0 && filled == 0) {
+						wrapper.fill(lumen.drain(1, true), true);
 					}
 					if(lumen.get() <= 0) e.setDead();
 				});
@@ -79,13 +79,16 @@ public class TilePholarizer extends TileBase implements ITickable {
 		if(state.getBlock().hasTileEntity(state) && (tile = world.getTileEntity(pos)).hasCapability(ModCapability.LUMEN_CAPABILITY, facing)) {
 			ILumen wrapper = tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing);
 			if(wrapper.get() >= 16) {
-				EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), wrapper.drain(64));
-				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
-				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
-				Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getOpposite().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
-				lumen.motionX = vec.x();
-				lumen.motionY = vec.y();
-				lumen.motionZ = vec.z();
+				int drain = wrapper.drain(64, true);
+				if(drain > 0) {
+					EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), drain);
+					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
+					Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
+					Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getOpposite().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
+					lumen.motionX = vec.x();
+					lumen.motionY = vec.y();
+					lumen.motionZ = vec.z();
+				}
 			}
 		}
 	}

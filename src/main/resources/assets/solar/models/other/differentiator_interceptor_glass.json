@@ -1,0 +1,63 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"2": "solar:blocks/differentiator_interceptor/glass_"
+	},
+	"elements": [
+		{
+			"from": [1, -5.5, -4],
+			"to": [4, -4.5, 1],
+			"faces": {
+				"up": {"uv": [9, 4, 12, 9], "texture": "#2"},
+				"down": {"uv": [9, 7, 12, 12], "texture": "#2"}
+			}
+		},
+		{
+			"from": [-1, -5.5, 1],
+			"to": [4, -4.5, 4],
+			"faces": {
+				"up": {"uv": [7, 9, 12, 12], "texture": "#2"},
+				"down": {"uv": [7, 4, 12, 7], "texture": "#2"}
+			}
+		},
+		{
+			"from": [-4, -5.5, -1],
+			"to": [-1, -4.5, 4],
+			"faces": {
+				"up": {"uv": [4, 7, 7, 12], "texture": "#2"},
+				"down": {"uv": [4, 4, 7, 9], "texture": "#2"}
+			}
+		},
+		{
+			"from": [-4, -5.5, -4],
+			"to": [1, -4.5, -1],
+			"faces": {
+				"up": {"uv": [4, 4, 9, 7], "texture": "#2"},
+				"down": {"uv": [4, 9, 9, 12], "texture": "#2"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"isOpen": true,
+			"shade": true,
+			"display": {
+				"visibility": true,
+				"autouv": true
+			},
+			"children": [
+				{
+					"name": "group",
+					"isOpen": true,
+					"shade": true,
+					"display": {
+						"visibility": true,
+						"autouv": true
+					},
+					"children": [0, 1, 2, 3]
+				}
+			]
+		}
+	]
+}

@@ -9,10 +9,12 @@
 	}],
     "inventory": [{
 	}],
-	"active": {
-	  "true": {
+	"container": {
+	  "inactive": {
 	  },
-	  "false": {
+	  "lumen_on": {
+	  },
+	  "lumen_off": {
 	  }
 	}
   }

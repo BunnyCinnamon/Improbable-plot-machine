@@ -36,6 +36,8 @@ public final class ResourceLibrary {
 		getBlockTexture("differentiator/base_1");
 		getBlockTexture("differentiator/base_2");
 		getBlockTexture("differentiator/glass");
+		getBlockTexture("differentiator_interceptor/glass");
+		getBlockTexture("differentiator_interceptor/glass_");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation Q_SQUARED = getBlockTexture("q_squared");
@@ -51,6 +53,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation PHOLARIZER = getBlockTexture("pholarizer");
 	public static final ResourceLocation FISSION_INDUCER = getBlockTexture("fission_inducer/base");
 	public static final ResourceLocation DIFFERENTIATOR_BASE = getBlockTexture("differentiator/base_0");
+	public static final ResourceLocation DIFFERENTIATOR_INTERCEPTOR_BASE = getBlockTexture("differentiator_interceptor/base");
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");

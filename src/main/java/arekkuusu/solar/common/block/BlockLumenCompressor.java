@@ -7,24 +7,28 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedMaterial;
+import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.common.block.tile.TileLumenCompressor;
 import arekkuusu.solar.common.lib.LibNames;
+import com.google.common.collect.ImmutableMap;
+import net.katsstuff.mirror.data.Quat;
 import net.katsstuff.mirror.data.Vector3;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by <Arekkuusu> on 5/2/2018.
@@ -32,6 +36,15 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings("deprecation")
 public class BlockLumenCompressor extends BlockBaseFacing {
+
+	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
+			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.05D, 0.5D))
+			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.95D, 0.5D))
+			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.95D))
+			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.05D))
+			.put(EnumFacing.EAST, Vector3.apply(0.05D, 0.5D, 0.5D))
+			.put(EnumFacing.WEST, Vector3.apply(0.95D, 0.5D, 0.5D))
+			.build();
 
 	public BlockLumenCompressor() {
 		super(LibNames.LUMEN_COMPRESSOR, FixedMaterial.DONT_MOVE);
@@ -41,36 +54,42 @@ public class BlockLumenCompressor extends BlockBaseFacing {
 	}
 
 	@Override
-	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
-		/*BlockPos fromPos = pos.offset(state.getValue(BlockDirectional.FACING).getOpposite());
-		IBlockState fromState = world.getBlockState(fromPos);
-		if(fromState.getBlock() == ModBlocks.PHOTON_CONTAINER && fromState.getValue(State.ACTIVE)) {
-			Vector3 vec = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
-			world.createExplosion(null, vec.getX(), vec.getY(), vec.getZ(), 5F, true);
-			if(!world.isRemote) world.setBlockToAir(fromPos);
-		}*/
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite());
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		/*if(block != this && pos.offset(state.getValue(BlockDirectional.FACING).getOpposite()).equals(fromPos)) {
-			getTile(TileLumenCompressor.class, world, pos).filter(TileLumenCompressor::hasLumen).ifPresent(t -> {
-				IBlockState fromState = world.getBlockState(fromPos);
-				if(fromState.getBlock() == ModBlocks.PHOTON_CONTAINER) {
-					world.setBlockState(fromPos, fromState.withProperty(State.ACTIVE, true));
-				}
-			});
-		}*/
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		IBlockState stateFacing = world.getBlockState(pos.offset(facing));
+		if(!stateFacing.getBlock().isFullCube(stateFacing)) {
+			Vector3 back = getOffSet(facing.getOpposite(), pos);
+			for(int i = 0; i < 3 + rand.nextInt(2); i++) {
+				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
+				Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 45);
+				double speed = 0.005D + rand.nextDouble() * 0.015D;
+				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
+						.asImmutable()
+						.multiply(speed)
+						.rotate(x.multiply(z));
+				Vector3 posVec = back.add(Vector3.rotateRandom().multiply(0.2D));
+				FXUtil.spawnLight(world, posVec, speedVec, 45, 1F, 0xFFE077, Light.GLOW);
+			}
+			for(int i = 0; i < 3; i++) {
+				double speed = 0.005D + rand.nextDouble() * 0.015D;
+				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
+				FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
+			}
+		}
+	}
+
+	private Vector3 getOffSet(EnumFacing facing, BlockPos pos) {
+		return FACING_MAP.get(facing).add(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		return state.getValue(BlockDirectional.FACING).getOpposite() == facing ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
-	}
-
-	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.SOLID;
+		return state.getValue(BlockDirectional.FACING).getOpposite() == facing ? BlockFaceShape.BOWL : BlockFaceShape.SOLID;
 	}
 
 	@Override

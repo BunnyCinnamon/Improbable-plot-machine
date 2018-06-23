@@ -57,19 +57,16 @@ public class BlockDifferentiator extends BlockBaseFacing {
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(pos);
 		float distance = 0;
-		boolean found = false;
-		while (distance++ < 16) {
-			BlockPos offset = pos.offset(facing, (int) distance);
-			if(world.getBlockState(offset).getBlock() == ModBlocks.PHOTON_CONTAINER) {
-				found = true;
+		while (distance++ < TileDifferentiator.REACH) {
+			IBlockState found = world.getBlockState(posOffset.move(facing));
+			if(found.getBlock() == ModBlocks.DIFFERENTIATOR_INTERCEPTOR && found.getValue(BlockDirectional.FACING) == facing) {
+				Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
+				Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D).offset(offset, -0.19);
+				FXUtil.addBeam(world, from, offset, distance + 0.45F, 36, 0.75F, 0xFF0303);
 				break;
 			}
-		}
-		if(found) {
-			Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
-			Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D).offset(offset, -0.19);
-			FXUtil.addBeam(world, from, offset, distance, 36, 0.75F, 0xFF0303);
 		}
 	}
 

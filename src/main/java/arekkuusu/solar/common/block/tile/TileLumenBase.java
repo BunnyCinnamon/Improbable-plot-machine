@@ -80,20 +80,22 @@ public abstract class TileLumenBase extends TileBase {
 		}
 
 		@Override
-		public int drain(int amount) {
+		public int drain(int amount, boolean drain) {
 			if(amount > 0) {
 				int contained = get();
 				int drained = amount < getMax() ? amount : getMax();
 				int remain = contained;
 				int removed = remain < drained ? contained : drained;
 				remain -= removed;
-				set(remain);
+				if(drain) {
+					set(remain);
+				}
 				return removed;
 			} else return 0;
 		}
 
 		@Override
-		public int fill(int amount) {
+		public int fill(int amount, boolean fill) {
 			if(amount > 0) {
 				int contained = get();
 				if(contained >= getMax()) return amount;
@@ -103,7 +105,9 @@ public abstract class TileLumenBase extends TileBase {
 					remain = sum - getMax();
 					sum = getMax();
 				}
-				set(sum);
+				if(fill) {
+					set(sum);
+				}
 				return remain;
 			} else return 0;
 		}

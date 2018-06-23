@@ -1,0 +1,75 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"1": "solar:blocks/differentiator_interceptor/base"
+	},
+	"elements": [
+		{
+			"from": [-6, -6, -4],
+			"to": [-4, -4, 6],
+			"faces": {
+				"east": {"uv": [3, 12, 13, 14], "texture": "#1"},
+				"south": {"uv": [2, 7, 4, 9], "texture": "#1"},
+				"west": {"uv": [4, 9, 14, 11], "texture": "#1"},
+				"up": {"uv": [12, 2, 14, 12], "texture": "#1"},
+				"down": {"uv": [12, 4, 14, 14], "texture": "#1"}
+			}
+		},
+		{
+			"from": [-6, -6, -6],
+			"to": [4, -4, -4],
+			"faces": {
+				"north": {"uv": [4, 3, 14, 5], "texture": "#1"},
+				"south": {"uv": [2, 12, 12, 14], "texture": "#1"},
+				"west": {"uv": [2, 9, 4, 11], "texture": "#1"},
+				"up": {"uv": [4, 12, 14, 14], "texture": "#1"},
+				"down": {"uv": [4, 2, 14, 4], "texture": "#1"}
+			}
+		},
+		{
+			"from": [4, -6, -6],
+			"to": [6, -4, 4],
+			"faces": {
+				"north": {"uv": [2, 3, 4, 5], "texture": "#1"},
+				"east": {"uv": [4, 5, 14, 7], "texture": "#1"},
+				"west": {"uv": [2, 12, 12, 14], "texture": "#1"},
+				"up": {"uv": [2, 4, 4, 14], "texture": "#1"},
+				"down": {"uv": [2, 2, 4, 12], "texture": "#1"}
+			}
+		},
+		{
+			"from": [-4, -6, 4],
+			"to": [6, -4, 6],
+			"faces": {
+				"north": {"uv": [3, 2, 13, 4], "texture": "#1"},
+				"east": {"uv": [2, 5, 4, 7], "texture": "#1"},
+				"south": {"uv": [4, 7, 14, 9], "texture": "#1"},
+				"up": {"uv": [2, 2, 12, 4], "texture": "#1"},
+				"down": {"uv": [2, 12, 12, 14], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"isOpen": true,
+			"shade": true,
+			"display": {
+				"visibility": true,
+				"autouv": true
+			},
+			"children": [
+				{
+					"name": "group",
+					"isOpen": true,
+					"shade": true,
+					"display": {
+						"visibility": true,
+						"autouv": true
+					},
+					"children": [0, 1, 2, 3]
+				}
+			]
+		}
+	]
+}
