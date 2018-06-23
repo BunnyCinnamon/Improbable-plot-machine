@@ -54,7 +54,13 @@ public class DifferentiatorInterceptorRenderer extends SpecialModelRenderer<Tile
 				GlStateManager.disableLighting();
 				GlStateManager.enableBlend();
 				GlStateManager.disableCull();
+				ShaderLibrary.BRIGHT.begin();
+				ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+					b.set(-0.2F);
+					b.upload();
+				});
 				BlockBaker.DIFFERENTIATOR_INTERCEPTOR_GLASS.render();
+				ShaderLibrary.BRIGHT.end();
 				GlStateManager.enableCull();
 				GlStateManager.disableBlend();
 				GlStateManager.enableLighting();
@@ -62,6 +68,10 @@ public class DifferentiatorInterceptorRenderer extends SpecialModelRenderer<Tile
 				GlStateManager.pushMatrix();
 				GlStateManager.rotate(partialTicks + tick * 0.15F % 360F, 0F, 1F, 0F);
 				BlockBaker.DIFFERENTIATOR_INTERCEPTOR_RING.render();
+				GlStateManager.popMatrix();
+				GlStateManager.pushMatrix();
+				GlStateManager.rotate(partialTicks + tick * 0.25F % 360F, 0F, 1F, 0F);
+				BlockBaker.DIFFERENTIATOR_INTERCEPTOR_RING_.render();
 				GlStateManager.popMatrix();
 				break;
 			case 1:
@@ -96,6 +106,10 @@ public class DifferentiatorInterceptorRenderer extends SpecialModelRenderer<Tile
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.15F % 360F, 0F, 1F, 0F);
 		BlockBaker.DIFFERENTIATOR_RING_BOTTOM.render();
+		GlStateManager.popMatrix();
+		GlStateManager.pushMatrix();
+		GlStateManager.rotate(partialTicks + tick * 0.25F % 360F, 0F, 1F, 0F);
+		BlockBaker.DIFFERENTIATOR_INTERCEPTOR_RING_.render();
 		GlStateManager.popMatrix();
 		//Inner core
 		GlStateManager.disableLighting();

@@ -72,6 +72,7 @@ public enum BlockBaker {
 	DIFFERENTIATOR_RING_TOP("differentiator_ring_top"),
 	DIFFERENTIATOR_INTERCEPTOR_BASE("differentiator_interceptor_base"),
 	DIFFERENTIATOR_INTERCEPTOR_RING("differentiator_interceptor_ring"),
+	DIFFERENTIATOR_INTERCEPTOR_RING_("differentiator_interceptor_ring_"),
 	DIFFERENTIATOR_INTERCEPTOR_GLASS("differentiator_interceptor_glass"),
 	DIFFERENTIATOR_INTERCEPTOR_BEACON("differentiator_interceptor_beacon");
 

@@ -36,12 +36,12 @@ import javax.annotation.Nullable;
 public class BlockDifferentiatorInterceptor extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.125, 0.53125, 0.125, 0.875, 0.875, 0.875))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.125, 0.125, 0.125, 0.875, 0.46875, 0.875))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0.125, 0.125, 0.875, 0.875, 0.46875))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0.125, 0.875, 0.875, 0.875, 0.53125))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.875, 0.125, 0.125, 0.53125, 0.875, 0.875))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.125, 0.125, 0.125, 0.46875, 0.875, 0.875))
+			.put(EnumFacing.UP, new AxisAlignedBB(0.125, 0.40625, 0.125, 0.875, 0.875, 0.875))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0.125, 0.125, 0.125, 0.875, 0.59375, 0.875))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0.125, 0.125, 0.875, 0.875, 0.59375))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0.125, 0.875, 0.875, 0.875, 0.40625))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.875, 0.125, 0.125, 0.40625, 0.875, 0.875))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0.125, 0.125, 0.125, 0.59375, 0.875, 0.875))
 			.build();
 
 	public BlockDifferentiatorInterceptor() {
