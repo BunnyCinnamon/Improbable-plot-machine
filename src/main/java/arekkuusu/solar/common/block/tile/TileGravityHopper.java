@@ -13,7 +13,6 @@ import com.google.common.collect.ImmutableMap;
 import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -23,8 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
@@ -54,12 +53,14 @@ public class TileGravityHopper extends TileBase implements ITickable {
 				EnumFacing facing = getFacing();
 				traceBlock(facing).ifPresent(out -> {
 					traceBlock(facing.getOpposite()).ifPresent(in -> {
-						Pair<IItemHandler, ISidedInventory> invOut = getInventory(out, facing.getOpposite());
-						Pair<IItemHandler, ISidedInventory> invIn;
-						ItemStack stack = transferOut(invOut, true);
-						if(!stack.isEmpty() && transferIn(invIn = getInventory(in, facing), stack, true)) {
-							if(transferIn(invIn, transferOut(invOut, false), false)) cooldown = 5;
-						}
+						getInventory(out, facing.getOpposite()).ifPresent(invOut -> {
+							getInventory(in, facing).ifPresent(invIn -> {
+								ItemStack stack = transferOut(invOut, true);
+								if(!stack.isEmpty() && transferIn(invIn, stack, true)) {
+									if(transferIn(invIn, transferOut(invOut, false), false)) cooldown = 5;
+								}
+							});
+						});
 					});
 				});
 			} else cooldown--;
@@ -87,46 +88,37 @@ public class TileGravityHopper extends TileBase implements ITickable {
 		return Optional.empty();
 	}
 
-	private Pair<IItemHandler, ISidedInventory> getInventory(BlockPos target, EnumFacing facing) {
+	@Nullable
+	private Optional<IItemHandler> getInventory(BlockPos target, EnumFacing facing) {
 		if(world.isValid(target) && world.isBlockLoaded(target, false)) {
-			TileEntity tile = world.getTileEntity(target);
-			if(tile != null) {
+			return getTile(TileEntity.class, world, target).map(tile -> {
 				IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
 				if(handler == null) handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-				return Pair.of(handler, tile instanceof ISidedInventory ? (ISidedInventory) tile : null);
-			}
+				return handler;
+			});
 		}
-		return Pair.of(null, null);
+		return null;
 	}
 
-	private ItemStack transferOut(Pair<IItemHandler, ISidedInventory> inv, boolean test) {
-		if(inv.getKey() != null) {
-			IItemHandler handler = inv.getKey();
-			ISidedInventory tile = inv.getValue();
-			for(int slot = 0; slot < handler.getSlots(); slot++) {
-				ItemStack in = handler.getStackInSlot(slot);
-				if(!in.isEmpty() && (tile == null || tile.canExtractItem(slot, in, getFacing().getOpposite()))) {
-					return handler.extractItem(slot, Integer.MAX_VALUE, test);
-				}
+	private ItemStack transferOut(IItemHandler inv, boolean test) {
+		for(int slot = 0; slot < inv.getSlots(); slot++) {
+			ItemStack in = inv.getStackInSlot(slot);
+			if(!in.isEmpty()) {
+				return inv.extractItem(slot, Integer.MAX_VALUE, test);
 			}
 		}
 		return ItemStack.EMPTY;
 	}
 
-	private boolean transferIn(Pair<IItemHandler, ISidedInventory> inv, ItemStack inserted, boolean test) {
-		if(inv.getKey() != null) {
-			IItemHandler handler = inv.getKey();
-			ISidedInventory tile = inv.getValue();
-			for(int slot = 0; slot < handler.getSlots(); slot++) {
-				if(tile != null && !tile.canInsertItem(slot, inserted, getFacing())) return false;
-				ItemStack inSlot = handler.getStackInSlot(slot);
+	private boolean transferIn(IItemHandler inv, ItemStack inserted, boolean test) {
+			for(int slot = 0; slot < inv.getSlots(); slot++) {
+				ItemStack inSlot = inv.getStackInSlot(slot);
 				if(inSlot.isEmpty() || (ItemHandlerHelper.canItemStacksStack(inSlot, inserted)
 						&& (inSlot.getCount() + inserted.getCount() < inSlot.getMaxStackSize()
-						&& inSlot.getCount() + inserted.getCount() < handler.getSlotLimit(slot)))) {
-					return handler.insertItem(slot, inserted, test) != inserted;
+						&& inSlot.getCount() + inserted.getCount() < inv.getSlotLimit(slot)))) {
+					return inv.insertItem(slot, inserted, test) != inserted;
 				}
 			}
-		}
 		return false;
 	}
 
