@@ -92,7 +92,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 				return handler;
 			});
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	private ItemStack transferOut(IItemHandler inv, boolean test) {
