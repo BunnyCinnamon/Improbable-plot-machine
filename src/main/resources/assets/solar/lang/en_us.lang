@@ -47,6 +47,7 @@ tile.quartz_consumer.name=Quartz Consumer
 tile.lumen_compressor.name=Lumen Compressor
 tile.photon_container.name=Photon Container
 tile.differentiator.name=Differentiator
+tile.differentiator_interceptor.name=Differentiator Interceptor
 fluid.tile.gold=Gold
 
 //Entity

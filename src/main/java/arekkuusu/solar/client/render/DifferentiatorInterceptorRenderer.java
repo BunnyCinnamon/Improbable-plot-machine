@@ -47,23 +47,9 @@ public class DifferentiatorInterceptorRenderer extends SpecialModelRenderer<Tile
 			case DOWN: break;
 		}
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		RenderHelper.makeUpDownTranslation(tick, 0.01F, 0.5F, 0F);
 		switch(MinecraftForgeClient.getRenderPass()) {
 			case 0:
 				BlockBaker.DIFFERENTIATOR_INTERCEPTOR_BASE.render();
-				GlStateManager.disableLighting();
-				GlStateManager.enableBlend();
-				GlStateManager.disableCull();
-				ShaderLibrary.BRIGHT.begin();
-				ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-					b.set(-0.2F);
-					b.upload();
-				});
-				BlockBaker.DIFFERENTIATOR_INTERCEPTOR_GLASS.render();
-				ShaderLibrary.BRIGHT.end();
-				GlStateManager.enableCull();
-				GlStateManager.disableBlend();
-				GlStateManager.enableLighting();
 				//Ring
 				GlStateManager.pushMatrix();
 				GlStateManager.rotate(partialTicks + tick * 0.15F % 360F, 0F, 1F, 0F);
@@ -100,7 +86,6 @@ public class DifferentiatorInterceptorRenderer extends SpecialModelRenderer<Tile
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		RenderHelper.makeUpDownTranslation(tick, 0.01F, 0.5F, 0F);
 		BlockBaker.DIFFERENTIATOR_INTERCEPTOR_BASE.render();
 		//Ring
 		GlStateManager.pushMatrix();
@@ -114,7 +99,6 @@ public class DifferentiatorInterceptorRenderer extends SpecialModelRenderer<Tile
 		//Inner core
 		GlStateManager.disableLighting();
 		Blending.AdditiveAlpha().apply();
-		BlockBaker.DIFFERENTIATOR_INTERCEPTOR_GLASS.render();
 		GLHelper.disableDepth();
 		GlStateManager.disableCull();
 		ShaderLibrary.BRIGHT.begin();
