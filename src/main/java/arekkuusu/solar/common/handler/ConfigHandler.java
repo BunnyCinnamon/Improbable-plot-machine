@@ -78,6 +78,7 @@ public final class ConfigHandler {
 				@Comment("Chance of 0-100% for loot")
 				@RangeDouble(min = 0, max = 100)
 				public double loot = 15;
+				public boolean holograth = true;
 			}
 
 			public static class ObeliskDecorator {

@@ -22,25 +22,38 @@ import net.minecraft.util.math.BlockPos;
  */
 public class TileLuminicMechanism extends TileBase implements ITickable {
 
-	public static int REACH = 5;
-	private int tick;
+	public static final int REACH = 5;
 
 	@Override
 	public void update() {
-		if (world.isRemote && tick++ %  6 == 0) {
+		if(world.getTotalWorldTime() % 20 == 0) {
 			EnumFacing facing = getFacingLazy().getOpposite();
-			BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(pos);
-			float distance = 0;
-			while (distance++ < TileLuminicMechanism.REACH) {
-				IBlockState found = world.getBlockState(posOffset.move(facing));
-				if(found.getBlock() == ModBlocks.LUMEN_COMPRESSOR && found.getValue(BlockDirectional.FACING) == facing) {
-					Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
-					Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D);
-					FXUtil.addBeam(world, from, offset, distance, 36, 1.5F, 0xFFE077);
-					break;
+			if(world.getBlockState(pos.offset(facing.getOpposite())).getBlock() == ModBlocks.PHOTON_CONTAINER) {
+				BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(pos);
+				float distance = 0;
+				while(distance++ < TileLuminicMechanism.REACH) {
+					IBlockState found = world.getBlockState(posOffset.move(facing));
+					if(found.getBlock() == ModBlocks.LUMEN_COMPRESSOR && found.getValue(BlockDirectional.FACING) == facing) {
+						if(!world.isRemote) {
+							transfer(posOffset.toImmutable());
+						} else {
+							makeParticles(facing);
+						}
+						break;
+					}
 				}
 			}
 		}
+	}
+
+	private void transfer(BlockPos pos) {
+
+	}
+
+	private void makeParticles(EnumFacing facing) {
+		Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.05D);
+		Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D);
+		FXUtil.spawnNeutron(world, from, offset, 120, 1F, 0xFFE077, true);
 	}
 
 	public EnumFacing getFacingLazy() {

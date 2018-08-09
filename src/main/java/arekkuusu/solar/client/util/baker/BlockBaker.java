@@ -74,7 +74,9 @@ public enum BlockBaker {
 	DIFFERENTIATOR_INTERCEPTOR_RING("differentiator_interceptor_ring"),
 	DIFFERENTIATOR_INTERCEPTOR_RING_("differentiator_interceptor_ring_"),
 	DIFFERENTIATOR_INTERCEPTOR_GLASS("differentiator_interceptor_glass"),
-	DIFFERENTIATOR_INTERCEPTOR_BEACON("differentiator_interceptor_beacon");
+	DIFFERENTIATOR_INTERCEPTOR_BEACON("differentiator_interceptor_beacon"),
+	KONDENZATOR_BASE("kondenzator_base"),
+	KONDENZATOR_CENTER("kondenzator_center");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;
@@ -127,7 +129,6 @@ public enum BlockBaker {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
-
 		for(BakedQuad bakedquad : quads) {
 			LightUtil.renderQuadColor(buffer, bakedquad, -1);
 		}

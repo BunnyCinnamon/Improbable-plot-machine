@@ -44,7 +44,7 @@ public class ParticleNeutron extends ParticleBase {
 
 	@Override
 	public void onUpdate() {
-		if((particleAge++ >= particleMaxAge)) {
+		if(particleAge++ >= particleMaxAge) {
 			setExpired();
 		}
 		this.prevPosX = this.posX;
@@ -61,7 +61,6 @@ public class ParticleNeutron extends ParticleBase {
 			IBlockState state = world.getBlockState(pos);
 			//noinspection deprecation
 			AxisAlignedBB bounding = state.getCollisionBoundingBox(world, pos);
-
 			if(bounding != null && !world.getCollisionBoxes(null, this.getBoundingBox().shrink(0.1D)).isEmpty()) {
 				setExpired();
 			}

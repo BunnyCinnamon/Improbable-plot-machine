@@ -10,8 +10,11 @@ package arekkuusu.solar.common.handler.gen;
 import arekkuusu.solar.api.util.RandomCollection;
 import arekkuusu.solar.common.block.BlockLargePot;
 import arekkuusu.solar.common.block.ModBlocks;
+import com.google.common.collect.Lists;
 import net.katsstuff.mirror.data.Vector3;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +23,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
+
+import java.util.List;
 
 import static arekkuusu.solar.common.handler.ConfigHandler.GEN_CONFIG;
 import static arekkuusu.solar.common.handler.gen.ModGen.Structure;
@@ -64,13 +69,18 @@ public class AshenCubeStructure extends BaseGen {
 		integrity.setIntegrity(!loot && random.nextFloat() > 0.45F ? 1F : random.nextFloat());
 		Structure.ASHEN_CUBE_.generate(world, origin, integrity);
 		//Add loot
-		for (int i = 0; i < 6 + random.nextInt(6); i++) {
+		for(int i = 0; i < 6 + random.nextInt(6); i++) {
 			loot = GEN_CONFIG.monolith.structure.loot / 100D > random.nextDouble();
-			if (loot) {
+			if(loot) {
 				BlockPos inside = origin.add(1 + random.nextInt(4), 1, 1 + random.nextInt(4));
 				IBlockState pot = ModBlocks.LARGE_POT.getDefaultState().withProperty(BlockLargePot.POT_VARIANT, random.nextInt(3));
 				world.setBlockState(inside, pot);
 			}
+		}
+		if(GEN_CONFIG.monolith.structure.holograth) {
+			BlockPos inside = origin.add(3 + random.nextInt(1), 1, 3 + random.nextInt(1));
+			EnumFacing facing =  EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)];
+			world.setBlockState(inside, ModBlocks.HOLOGRATH.getDefaultState().withProperty(BlockHorizontal.FACING, facing));
 		}
 		//Gen Cubes
 		AxisAlignedBB cubeBB = new AxisAlignedBB(origin, origin.add(template.getSize()));
@@ -79,7 +89,7 @@ public class AshenCubeStructure extends BaseGen {
 			Rotation rotation = Rotation.values()[random.nextInt(4)];
 			Vector3 vec = rotate(new Vector3.WrappedVec3i(cube.getSize()).asImmutable(), rotation);
 			BlockPos offset = pos.add(randomVector().toBlockPos());
-			if(offset.getY() < 1  || (world.canSeeSky(offset) && GEN_CONFIG.ashen_cube.underground)) continue;
+			if(offset.getY() < 1 || (world.canSeeSky(offset) && GEN_CONFIG.ashen_cube.underground)) continue;
 			AxisAlignedBB nuggetBB = new AxisAlignedBB(offset, vec.add(new Vector3.WrappedVec3i(offset)).toBlockPos());
 			if(!nuggetBB.intersects(cubeBB)) {
 				PlacementSettings settings = new PlacementSettings();

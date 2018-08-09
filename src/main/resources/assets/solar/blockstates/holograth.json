@@ -1,0 +1,26 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"model": "solar:holograth",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}],
+	"facing": {
+	  "north": {
+	  },
+	  "south": {
+		"y": 180
+	  },
+	  "east": {
+		"y": 90
+	  },
+	  "west": {
+		"y": 270
+	  }
+	}
+  }
+}

@@ -33,6 +33,7 @@ public final class ModItems {
 	public static final Item PLASMON = PLACE_HOLDER;
 	public static final Item QELAION = PLACE_HOLDER;
 	public static final Item NEUTRON_BATTERY = PLACE_HOLDER;
+	public static final Item THEOREMA = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -69,6 +70,9 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.PHOTON_CONTAINER));
 		registry.register(itemBlock(ModBlocks.DIFFERENTIATOR));
 		registry.register(itemBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR));
+		registry.register(itemBlock(ModBlocks.HOLOGRATH));
+		registry.register(itemBlock(ModBlocks.KONDENZATOR));
+		registry.register(new ItemTheorema());
 	}
 
 	@SuppressWarnings("ConstantConditions")

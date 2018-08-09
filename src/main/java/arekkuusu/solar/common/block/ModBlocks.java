@@ -60,6 +60,8 @@ public final class ModBlocks {
 	public static final Block PHOTON_CONTAINER = PLACE_HOLDER;
 	public static final Block DIFFERENTIATOR = PLACE_HOLDER;
 	public static final Block DIFFERENTIATOR_INTERCEPTOR = PLACE_HOLDER;
+	public static final Block HOLOGRATH = PLACE_HOLDER;
+	public static final Block KONDENZATOR = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
@@ -94,6 +96,8 @@ public final class ModBlocks {
 		registry.register(new BlockPhotonContainer());
 		registry.register(new BlockDifferentiator());
 		registry.register(new BlockDifferentiatorInterceptor());
+		registry.register(new BlockHolograth());
+		registry.register(new BlockKondenzator());
 		registerTiles();
 	}
 
@@ -120,6 +124,7 @@ public final class ModBlocks {
 		registerTile(TileDifferentiator.class, LibNames.DIFFERENTIATOR);
 		registerTile(TilePhotonContainer.class, LibNames.PHOTON_CONTAINER);
 		registerTile(TileDifferentiatorInterceptor.class, LibNames.DIFFERENTIATOR_INTERCEPTOR);
+		registerTile(TileKondenzator.class, LibNames.KONDENZATOR);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {

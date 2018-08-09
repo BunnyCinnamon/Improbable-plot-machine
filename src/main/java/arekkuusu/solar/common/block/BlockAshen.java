@@ -7,12 +7,10 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.state.Direction;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -52,26 +50,6 @@ public class BlockAshen extends BlockBase {
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
 		entityIn.motionX *= 0.8D;
 		entityIn.motionZ *= 0.8D;
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return 0;
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState();
-	}
-
-	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.withProperty(Direction.DIR_LISTED, Direction.getDirectionForBlock(this, world, pos));
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, Direction.DIR_LISTED);
 	}
 
 	@Override

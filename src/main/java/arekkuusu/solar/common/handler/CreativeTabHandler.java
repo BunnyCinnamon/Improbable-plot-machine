@@ -100,10 +100,13 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.PHOTON_CONTAINER);
 			addBlock(ModBlocks.DIFFERENTIATOR);
 			addBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR);
+			addBlock(ModBlocks.HOLOGRATH);
+			addBlock(ModBlocks.KONDENZATOR);
 			addItem(ModItems.SINGULARITY);
 			addItem(ModItems.CRYSTAL_QUARTZ);
 			addItem(ModItems.PLASMON);
 			addItem(ModItems.ASH);
+			addItem(ModItems.THEOREMA);
 		}
 	}
 }

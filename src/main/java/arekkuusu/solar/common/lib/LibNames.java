@@ -49,5 +49,7 @@ public class LibNames {
 	public static final String PHOTON_CONTAINER = "photon_container";
 	public static final String DIFFERENTIATOR = "differentiator";
 	public static final String DIFFERENTIATOR_INTERCEPTOR = "differentiator_interceptor";
-	/*public static final String THEOREMA = "theorema";*/
+	public static final String HOLOGRATH = "holograth";
+	public static final String THEOREMA = "theorema";
+	public static final String KONDENZATOR = "kondenzator";
 }
