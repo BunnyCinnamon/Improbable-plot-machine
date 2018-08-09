@@ -74,9 +74,11 @@ public abstract class TileLumenBase extends TileBase {
 
 		@Override
 		public void set(int neutrons) {
-			this.lumen = neutrons;
-			tile.markDirty();
-			if(tile.world != null && !tile.world.isRemote) tile.onLumenChange();
+			if(neutrons <= getMax()) {
+				this.lumen = neutrons;
+				tile.markDirty();
+				if(tile.world != null && !tile.world.isRemote) tile.onLumenChange();
+			}
 		}
 
 		@Override

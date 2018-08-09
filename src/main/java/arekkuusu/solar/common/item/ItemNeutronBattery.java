@@ -46,7 +46,7 @@ public class ItemNeutronBattery extends ItemBaseBlock implements IEntangledStack
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new LumenStackProvider<>(new LumenStackWrapper<ItemNeutronBattery>(this, stack, 0) {
+		return LumenStackProvider.create(new LumenStackWrapper<ItemNeutronBattery>(this, stack, 0) {
 			@Override
 			public int getMax() {
 				return NBTHelper.getEnum(Capacity.class, stack, "capacity").orElse(Capacity.BLUE).max;

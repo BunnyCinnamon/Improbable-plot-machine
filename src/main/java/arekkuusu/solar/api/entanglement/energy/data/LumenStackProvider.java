@@ -21,45 +21,49 @@ import javax.annotation.Nullable;
 /**
  * Created by <Arekkuusu> on 21/03/2018.
  * It's distributed as part of Solar.
- *
+ * <p>
  * Provides an {@link ILumen} capability for an {@link ItemStack} inside a {@link LumenStackWrapper} implementation
  */
-public class LumenStackProvider<T extends Item & IEntangledStack> implements ICapabilityProvider {
+public class LumenStackProvider implements ICapabilityProvider {
 
 	@CapabilityInject(ILumen.class)
 	public static Capability<ILumen> NEUTRON_CAPABILITY = null;
-	private final LumenWrapper handler;
+	private final ILumen handler;
 
-	/**
-	 * Constructor for a custom {@link LumenWrapper} implementation
-	 *
-	 * @param handler lumen wrapper provider
-	 */
-	public LumenStackProvider(LumenWrapper handler) {
+	public LumenStackProvider(ILumen handler) {
 		this.handler = handler;
-	}
-
-	/**
-	 * Constructor for a default {@link LumenStackWrapper<T>} implementation
-	 *
-	 * @param holder The {@link Item} class
-	 * @param stack  The {@link ItemStack}
-	 * @param max    Lumen capacity
-	 */
-	public LumenStackProvider(T holder, ItemStack stack, int max) {
-		this.handler = new LumenStackWrapper<>(holder, stack, max);
 	}
 
 	@Override
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return facing == null  && capability == NEUTRON_CAPABILITY;
+		return facing == null && capability == NEUTRON_CAPABILITY;
 	}
 
 	@Nullable
 	@Override
 	public <C> C getCapability(@Nonnull Capability<C> capability, @Nullable EnumFacing facing) {
 		return facing == null && capability == NEUTRON_CAPABILITY
-				?  NEUTRON_CAPABILITY.cast(handler)
+				? NEUTRON_CAPABILITY.cast(handler)
 				: null;
+	}
+
+	/**
+	 * Constructor for a default {@link LumenStackWrapper<A>} implementation
+	 *
+	 * @param holder The {@link Item} class
+	 * @param stack  The {@link ItemStack}
+	 * @param max    Lumen capacity
+	 */
+	public static <A extends Item & IEntangledStack> LumenStackProvider create(A holder, ItemStack stack, int max) {
+		return new LumenStackProvider(new LumenStackWrapper<>(holder, stack, max));
+	}
+
+	/**
+	 * Constructor for a custom {@link ILumen} implementation
+	 *
+	 * @param handler lumen wrapper provider
+	 */
+	public static LumenStackProvider create(ILumen handler) {
+		return new LumenStackProvider(handler);
 	}
 }

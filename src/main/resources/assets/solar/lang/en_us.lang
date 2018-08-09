@@ -10,6 +10,7 @@ item.crystal_quartz.name=Crystal Quartz
 item.ash.name=Ash
 item.singularity.name=Singularity
 item.plasmon.name=Plasmon
+item.theorema.name=Theorema
 
 //Blocks
 tile.primal_stone.name=Primal Stone
@@ -22,7 +23,6 @@ tile.schrodinger_glyph.name=Schrodinger Glyph
 tile.blinker.name=Blinker
 tile.phenomena.name=Phenomena
 tile.q_squared.name=Q²
-tile.theorema.name=Theorema
 tile.gravity_inhibitor.name=Gravity Inhibitor
 tile.hyper_conductor.name=Hyper Conductor
 tile.electron.name=Electron
@@ -48,6 +48,9 @@ tile.lumen_compressor.name=Lumen Compressor
 tile.photon_container.name=Photon Container
 tile.differentiator.name=Differentiator
 tile.differentiator_interceptor.name=Differentiator Interceptor
+tile.kondenzator.name=Kondenzator
+
+//Fluid
 fluid.tile.gold=Gold
 
 //Entity

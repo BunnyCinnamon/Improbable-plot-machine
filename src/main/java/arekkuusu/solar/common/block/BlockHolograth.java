@@ -25,7 +25,7 @@ import static net.minecraft.block.BlockHorizontal.FACING;
 @SuppressWarnings("deprecation")
 public class BlockHolograth extends BlockBaseHorizontal {
 
-	private static final AxisAlignedBB BB = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.0625, 0, 0.0625, 0.9375, 0.8125, 0.9375);
 
 	public BlockHolograth() {
 		super(LibNames.HOLOGRATH, FixedMaterial.DONT_MOVE);

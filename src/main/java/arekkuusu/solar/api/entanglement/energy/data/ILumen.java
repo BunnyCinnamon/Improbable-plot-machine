@@ -14,6 +14,8 @@ import java.util.concurrent.Callable;
  * It's distributed as part of Solar.
  */
 public interface ILumen {
+	String NBT_TAG = "lumen";
+
 	/**
 	 * Default {@link ILumen} provider
 	 */
@@ -39,7 +41,19 @@ public interface ILumen {
 	 * @param amount Lumen to drain
 	 * @return Lumen drained
 	 */
-	int drain(int amount, boolean drain);
+	default int drain(int amount, boolean drain) {
+		if(amount > 0) {
+			int contained = get();
+			int drained = amount < getMax() ? amount : getMax();
+			int remain = contained;
+			int removed = remain < drained ? contained : drained;
+			remain -= removed;
+			if(drain) {
+				set(remain);
+			}
+			return removed;
+		} else return 0;
+	}
 
 	/**
 	 * Fills a certain amount of lumen
@@ -47,7 +61,18 @@ public interface ILumen {
 	 * @param amount Lumen to fill
 	 * @return Lumen remain
 	 */
-	int fill(int amount, boolean fill);
+	default int fill(int amount, boolean fill) {
+		if(amount > 0) {
+			int contained = get();
+			if(contained >= getMax()) return amount;
+			int sum = contained + amount;
+			int remain = 0;
+			if(fill) {
+				set(sum);
+			}
+			return remain;
+		} else return 0;
+	}
 
 	/**
 	 * Maximum lumen capacity
@@ -55,7 +80,15 @@ public interface ILumen {
 	 * @return Lumen capacity
 	 */
 	int getMax();
+
+	/**
+	 * Set maximum lumen capacity
+	 *
+	 * @param max Lumen capacity
+	 */
+	default void setMax(int max) { }
 }
+
 class Empty implements ILumen {
 
 	private int max = Integer.MAX_VALUE;
@@ -72,36 +105,12 @@ class Empty implements ILumen {
 	}
 
 	@Override
-	public int drain(int amount, boolean drain) {
-		if(amount > 0) {
-			int contained = get();
-			int drained = amount < getMax() ? amount : getMax();
-			int remain = contained;
-			int removed = remain < drained ? contained : drained;
-			remain -= removed;
-			if(drain) {
-				set(remain);
-			}
-			return removed;
-		} else return 0;
-	}
-
-	@Override
-	public int fill(int amount, boolean fill) {
-		if(amount > 0) {
-			int contained = get();
-			if(contained >= getMax()) return amount;
-			int sum = contained + amount;
-			int remain = 0;
-			if(fill) {
-				set(sum);
-			}
-			return remain;
-		} else return 0;
-	}
-
-	@Override
 	public int getMax() {
 		return max;
+	}
+
+	@Override
+	public void setMax(int max) {
+		this.max = max;
 	}
 }

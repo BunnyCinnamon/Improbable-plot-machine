@@ -5,8 +5,9 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
  ******************************************************************************/
-package arekkuusu.solar.client.render;
+package arekkuusu.solar.client;
 
+import arekkuusu.solar.client.render.*;
 import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.solar.client.render.entity.LumenRenderer;
 import arekkuusu.solar.common.block.ModBlocks;
@@ -49,7 +50,6 @@ public final class ModRenders {
 		registerTESR(TilePholarizer.class, new PholarizerRenderer());
 		registerTESR(TileFissionInducer.class, new FissionInducerRenderer());
 		registerTESR(TileElectron.class, new ElectronRenderer());
-		registerTESR(TileLumenCompressor.class, new LumenCompressorRenderer());
 		registerTESR(TileQuartzConsumer.class, new QuartzConsumerRenderer());
 		registerTESR(TileDifferentiator.class, new DifferentiatorRenderer());
 		registerTESR(TileDifferentiatorInterceptor.class, new DifferentiatorInterceptorRenderer());

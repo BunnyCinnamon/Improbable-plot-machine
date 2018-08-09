@@ -8,7 +8,7 @@
 package arekkuusu.solar.client.proxy;
 
 import arekkuusu.solar.api.SolarApi;
-import arekkuusu.solar.client.render.ModRenders;
+import arekkuusu.solar.client.ModRenders;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;

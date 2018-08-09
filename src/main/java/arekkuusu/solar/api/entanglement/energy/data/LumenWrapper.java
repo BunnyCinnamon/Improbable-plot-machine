@@ -36,7 +36,9 @@ public abstract class LumenWrapper implements ILumen {
 
 	@Override
 	public void set(int neutrons) {
-		getKey().ifPresent(uuid -> LumenHandler.setNeutrons(uuid, neutrons));
+		if(neutrons <= getMax()) {
+			getKey().ifPresent(uuid -> LumenHandler.setNeutrons(uuid, neutrons));
+		}
 	}
 
 	@Override

@@ -64,7 +64,6 @@ public enum BlockBaker {
 	FISSION_INDUCER_INSIDE("fission_inducer_inside"),
 	FISSION_INDUCER_BOTTOM("fission_inducer_bottom"),
 	ELECTRON("electron"),
-	LUMEN_COMPRESSOR("lumen_compressor"),
 	DIFFERENTIATOR_BASE("differentiator_base"),
 	DIFFERENTIATOR_CORE("differentiator_core"),
 	DIFFERENTIATOR_RING_BOTTOM("differentiator_ring_bottom"),
