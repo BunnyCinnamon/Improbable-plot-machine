@@ -37,14 +37,14 @@ public abstract class TileLumenBase extends TileBase {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.LUMEN_CAPABILITY || super.hasCapability(capability, facing);
+		return capability == ModCapability.NEUTRON_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.LUMEN_CAPABILITY
-				? ModCapability.LUMEN_CAPABILITY.cast(handler)
+		return capability == ModCapability.NEUTRON_CAPABILITY
+				? ModCapability.NEUTRON_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
 	}
 

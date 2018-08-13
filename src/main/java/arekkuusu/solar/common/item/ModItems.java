@@ -73,6 +73,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.HOLOGRATH));
 		registry.register(itemBlock(ModBlocks.KONDENZATOR));
 		registry.register(new ItemTheorema());
+		registry.register(itemBlock(ModBlocks.QUARTZ_GLASS));
 	}
 
 	@SuppressWarnings("ConstantConditions")

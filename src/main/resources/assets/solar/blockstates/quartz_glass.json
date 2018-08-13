@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+	  "all": "solar:blocks/quartz_glass"
+	},
+	"model": "cube_all",
+	"uvlock": false
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}]
+  }
+}

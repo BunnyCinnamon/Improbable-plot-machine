@@ -7,6 +7,7 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.api.entanglement.energy.IPholarized;
 import arekkuusu.solar.api.entanglement.energy.data.ILumen;
 import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.common.block.BlockPhotonContainer;
@@ -21,7 +22,7 @@ import net.minecraft.util.ITickable;
  * Created by <Arekkuusu> on 6/20/2018.
  * It's distributed as part of Solar.
  */
-public class TilePhotonContainer extends TileLumenBase implements ITickable {
+public class TilePhotonContainer extends TileLumenBase implements IPholarized, ITickable {
 
 	public static final int MAX_LUMEN = 64;
 	public boolean nou;
@@ -52,6 +53,16 @@ public class TilePhotonContainer extends TileLumenBase implements ITickable {
 				} else return 0;
 			}
 		};
+	}
+
+	@Override
+	public boolean canDrain() {
+		return false;
+	}
+
+	@Override
+	public boolean canFill() {
+		return false;
 	}
 
 	@Override

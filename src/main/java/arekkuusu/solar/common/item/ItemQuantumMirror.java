@@ -8,10 +8,10 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.entanglement.inventory.IEntangledIItemStack;
+import arekkuusu.solar.api.entanglement.inventory.data.EntangledStackProvider;
 import arekkuusu.solar.api.entanglement.inventory.data.EntangledStackWrapper;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
-import arekkuusu.solar.api.entanglement.inventory.data.EntangledStackProvider;
 import arekkuusu.solar.common.network.PacketHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -43,22 +43,15 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IEntangledIItemS
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new EntangledStackProvider<>(new QuantumStackWrapper(this, stack));
-	}
-
-	public static class QuantumStackWrapper extends EntangledStackWrapper<ItemQuantumMirror> {
-
-		QuantumStackWrapper(ItemQuantumMirror quantum, ItemStack stack) {
-			super(quantum, stack, TileQuantumMirror.SLOTS);
-		}
-
-		@Override
-		protected void onChange(int slot) {
-			getKey().ifPresent(uuid -> {
-				if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-					PacketHelper.sendQuantumChange(uuid, getStackInSlot(slot), slot);
-				}
-			});
-		}
+		return EntangledStackProvider.create(new EntangledStackWrapper<ItemQuantumMirror>(this, stack, TileQuantumMirror.SLOTS) {
+			@Override
+			protected void onChange(int slot) {
+				getKey().ifPresent(uuid -> {
+					if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+						PacketHelper.sendQuantumChange(uuid, getStackInSlot(slot), slot);
+					}
+				});
+			}
+		});
 	}
 }

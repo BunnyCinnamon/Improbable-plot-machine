@@ -90,7 +90,7 @@ public class BlockNeutronBattery extends BlockBase {
 				}
 				entangled.getKey(stack).ifPresent(neutron::setKey);
 				if(placer instanceof EntityPlayer && ((EntityPlayer) placer).capabilities.isCreativeMode) {
-					ILumen lumen = neutron.getCapability(ModCapability.LUMEN_CAPABILITY, EnumFacing.UP);
+					ILumen lumen = neutron.getCapability(ModCapability.NEUTRON_CAPABILITY, EnumFacing.UP);
 					if(lumen != null) {
 						lumen.set(neutron.getCapacityLazy().max); //CHEATER!!
 					}

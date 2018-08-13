@@ -49,6 +49,7 @@ tile.photon_container.name=Photon Container
 tile.differentiator.name=Differentiator
 tile.differentiator_interceptor.name=Differentiator Interceptor
 tile.kondenzator.name=Kondenzator
+tile.quartz_glass.name=Quartz Glass
 
 //Fluid
 fluid.tile.gold=Gold

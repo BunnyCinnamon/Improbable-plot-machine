@@ -24,7 +24,7 @@ import java.util.concurrent.Callable;
 public final class ModCapability {
 
 	@CapabilityInject(ILumen.class)
-	public static Capability<ILumen> LUMEN_CAPABILITY = null;
+	public static Capability<ILumen> NEUTRON_CAPABILITY = null;
 
 	public static void init() {
 		register(ILumen.class, new Capability.IStorage<ILumen>() {

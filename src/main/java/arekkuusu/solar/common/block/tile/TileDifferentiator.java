@@ -70,7 +70,7 @@ public class TileDifferentiator extends TileBase implements ITickable {
 		FluidStack gold = new FluidStack(ModFluids.GOLD, Fluid.BUCKET_VOLUME);
 		FluidStack testDrain = from.drain(gold, false);
 		if(testDrain != null && testDrain.amount == Fluid.BUCKET_VOLUME) {
-			getCapability(world, to.offset(facing), facing.getOpposite(), ModCapability.LUMEN_CAPABILITY).ifPresent(lumen -> {
+			getCapability(world, to.offset(facing), facing.getOpposite(), ModCapability.NEUTRON_CAPABILITY).ifPresent(lumen -> {
 				if(lumen.fill(1, false) == 0) {
 					from.drain(gold, true);
 					lumen.fill(1, true);

@@ -30,7 +30,7 @@ public class LumenStackProvider implements ICapabilityProvider {
 	public static Capability<ILumen> NEUTRON_CAPABILITY = null;
 	private final ILumen handler;
 
-	public LumenStackProvider(ILumen handler) {
+	private LumenStackProvider(ILumen handler) {
 		this.handler = handler;
 	}
 
@@ -48,13 +48,13 @@ public class LumenStackProvider implements ICapabilityProvider {
 	}
 
 	/**
-	 * Constructor for a default {@link LumenStackWrapper<A>} implementation
+	 * Constructor for a default {@link LumenStackWrapper<T>} implementation
 	 *
 	 * @param holder The {@link Item} class
 	 * @param stack  The {@link ItemStack}
 	 * @param max    Lumen capacity
 	 */
-	public static <A extends Item & IEntangledStack> LumenStackProvider create(A holder, ItemStack stack, int max) {
+	public static <T extends Item & IEntangledStack> LumenStackProvider create(T holder, ItemStack stack, int max) {
 		return new LumenStackProvider(new LumenStackWrapper<>(holder, stack, max));
 	}
 

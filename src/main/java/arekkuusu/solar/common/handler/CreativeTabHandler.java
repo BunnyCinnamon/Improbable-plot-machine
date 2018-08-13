@@ -102,6 +102,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR);
 			addBlock(ModBlocks.HOLOGRATH);
 			addBlock(ModBlocks.KONDENZATOR);
+			addBlock(ModBlocks.QUARTZ_GLASS);
 			addItem(ModItems.SINGULARITY);
 			addItem(ModItems.CRYSTAL_QUARTZ);
 			addItem(ModItems.PLASMON);

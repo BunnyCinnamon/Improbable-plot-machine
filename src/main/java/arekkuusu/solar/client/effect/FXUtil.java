@@ -20,7 +20,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -44,7 +43,7 @@ public final class FXUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 	}
 
 	public static void spawnMute(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
-		if (doParticle()) {
+		if(doParticle()) {
 			add(new ParticleMute(world, pos, speed, scale, age, rgb, glow));
 		}
 	}
@@ -95,7 +94,6 @@ public final class FXUtil { //A cLaSs ANnOtAtED wItH @SIdEOnLy cAN oNLy Be uSEd 
 
 	@SideOnly(Side.CLIENT)
 	private static boolean doParticle() {
-		if(FMLCommonHandler.instance().getEffectiveSide().isServer()) return false;
 		int setting = Minecraft.getMinecraft().gameSettings.particleSetting;
 		float chance;
 		switch(setting) {

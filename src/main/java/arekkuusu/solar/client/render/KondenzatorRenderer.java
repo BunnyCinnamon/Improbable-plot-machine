@@ -59,7 +59,7 @@ public class KondenzatorRenderer extends SpecialModelRenderer<TileKondenzator> {
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
 			float brightness = (float) neutrons / (float) TileKondenzator.MAX_LUMEN;
-			b.set(-0.65F + brightness * 0.65F);
+			b.set(-0.55F + brightness * 0.55F);
 			b.upload();
 		});
 		BlockBaker.KONDENZATOR_CENTER.render();

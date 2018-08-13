@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.IEntangledTile;
+import arekkuusu.solar.api.entanglement.energy.IPholarized;
 import arekkuusu.solar.api.entanglement.energy.data.LumenTileWrapper;
 import arekkuusu.solar.common.block.BlockNeutronBattery;
 import arekkuusu.solar.common.handler.data.ModCapability;
@@ -28,7 +29,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
-public class TileNeutronBattery extends TileBase implements IEntangledTile {
+public class TileNeutronBattery extends TileBase implements IEntangledTile, IPholarized {
 
 	private LumenTileWrapper<TileNeutronBattery> handler;
 	private UUID key;
@@ -37,7 +38,7 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 		this.handler = new LumenTileWrapper<>(this, capacity.max);
 	}
 
-	public TileNeutronBattery() {} //Why...
+	public TileNeutronBattery() {}
 
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
@@ -50,14 +51,14 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.LUMEN_CAPABILITY && facing == EnumFacing.UP || super.hasCapability(capability, facing);
+		return capability == ModCapability.NEUTRON_CAPABILITY && facing == EnumFacing.UP || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.LUMEN_CAPABILITY && facing == EnumFacing.UP
-				? ModCapability.LUMEN_CAPABILITY.cast(handler)
+		return capability == ModCapability.NEUTRON_CAPABILITY && facing == EnumFacing.UP
+				? ModCapability.NEUTRON_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
 	}
 

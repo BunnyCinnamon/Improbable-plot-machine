@@ -62,6 +62,12 @@ public class ParticleNeutron extends ParticleBase {
 			//noinspection deprecation
 			AxisAlignedBB bounding = state.getCollisionBoundingBox(world, pos);
 			if(bounding != null && !world.getCollisionBoxes(null, this.getBoundingBox().shrink(0.1D)).isEmpty()) {
+				Vector3 vecPos = new Vector3(prevPosX, prevPosY, prevPosZ);
+				for(int i = 0; i < 4 + rand.nextInt(5); i++) {
+					double speed = world.rand.nextDouble() * 0.015D;
+					Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
+					FXUtil.spawnMute(world, vecPos, speedVec, 75, 1.75F, rgb, GlowTexture.GLINT);
+				}
 				setExpired();
 			}
 		}

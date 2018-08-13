@@ -7,13 +7,19 @@
  ******************************************************************************/
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.common.entity.EntityLumen;
+import arekkuusu.solar.common.handler.data.ModCapability;
 import arekkuusu.solar.common.item.ModItems;
+import net.katsstuff.mirror.data.Quat;
+import net.katsstuff.mirror.data.Vector3;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -22,20 +28,31 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 4/30/2018.
  * It's distributed as part of Solar.
  */
-public class TileQuartzConsumer extends TileBase {
+public class TileQuartzConsumer extends TileBase implements ITickable {
 
-	private final InventoryWrapper handler;
+	private final InventoryWrapper handler = new InventoryWrapper();
 
-	public TileQuartzConsumer() {
-		this.handler = new InventoryWrapper(this);
+	@Override
+	public void update() {
+		if(!world.isRemote && world.rand.nextFloat() < 0.1F && !handler.stack.isEmpty()) {
+			ILumen ilumen = handler.stack.getCapability(ModCapability.NEUTRON_CAPABILITY, null);
+			assert ilumen != null;
+			if(ilumen.get() >= 5 && ilumen.drain(5, true) == 5) {
+				EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), 5);
+				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
+				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
+				Vector3 vec = Vector3.Up().rotate(x.multiply(z)).multiply(0.1D);
+				lumen.setMotion(vec);
+			} else handler.stack = ItemStack.EMPTY;
+		}
 	}
 
 	public boolean consume(ItemStack stack) {
-		if(!stack.isEmpty() && stack.getItem() == ModItems.CRYSTAL_QUARTZ) {
+		if(!stack.isEmpty() && stack.getItem() == ModItems.CRYSTAL_QUARTZ && stack.hasCapability(ModCapability.NEUTRON_CAPABILITY, null)) {
 			if(!world.isRemote) {
 				markDirty();
 				sync();
-				handler.setStackInSlot(0, stack.copy());
+				handler.stack = stack.copy();
 				stack.shrink(1);
 			}
 			return true;
@@ -76,20 +93,9 @@ public class TileQuartzConsumer extends TileBase {
 		}
 	}
 
-	public static class InventoryWrapper implements IItemHandlerModifiable {
+	public static class InventoryWrapper implements IItemHandler {
 
-		private final TileQuartzConsumer tile;
 		private ItemStack stack = ItemStack.EMPTY;
-
-		private InventoryWrapper(TileQuartzConsumer tile) {
-			this.tile = tile;
-		}
-
-		@Override
-		public void setStackInSlot(int slot, ItemStack stack) {
-			this.stack = stack;
-			this.stack.setCount(1);
-		}
 
 		@Override
 		public int getSlots() {
@@ -104,7 +110,10 @@ public class TileQuartzConsumer extends TileBase {
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
 			if(!stack.isEmpty() && stack.getItem() == ModItems.CRYSTAL_QUARTZ) {
-				if(!simulate) setStackInSlot(0, stack.copy());
+				if(!simulate) {
+					this.stack = stack.copy();
+					this.stack.setCount(1);
+				}
 				return ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
 			}
 			return stack;

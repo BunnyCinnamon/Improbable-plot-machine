@@ -40,7 +40,7 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 							makeParticles(facing);
 						}
 						break;
-					}
+					} else if(!found.getBlock().isReplaceable(world, posOffset)) break;
 				}
 			}
 		}

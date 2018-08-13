@@ -26,7 +26,7 @@ public class EntityLumen extends Entity {
 
 	public static EntityLumen spawn(World world, Vector3 pos, int neutrons) {
 		EntityLumen lumen = new EntityLumen(world);
-		Optional.ofNullable(lumen.getCapability(ModCapability.LUMEN_CAPABILITY, null)).ifPresent(l -> l.set(neutrons));
+		Optional.ofNullable(lumen.getCapability(ModCapability.NEUTRON_CAPABILITY, null)).ifPresent(l -> l.set(neutrons));
 		lumen.setPosition(pos.x(), pos.y(), pos.z());
 		world.spawnEntity(lumen);
 		return lumen;
@@ -86,15 +86,21 @@ public class EntityLumen extends Entity {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return ModCapability.LUMEN_CAPABILITY == capability || super.hasCapability(capability, facing);
+		return ModCapability.NEUTRON_CAPABILITY == capability || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return ModCapability.LUMEN_CAPABILITY == capability
-				? ModCapability.LUMEN_CAPABILITY.cast(handler)
+		return ModCapability.NEUTRON_CAPABILITY == capability
+				? ModCapability.NEUTRON_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
+	}
+
+	public void setMotion(Vector3 vec) {
+		this.motionX = vec.x();
+		this.motionY = vec.y();
+		this.motionZ = vec.z();
 	}
 
 	@Override
@@ -129,34 +135,6 @@ public class EntityLumen extends Entity {
 		@Override
 		public int getMax() {
 			return Integer.MAX_VALUE;
-		}
-
-		@Override
-		public int drain(int amount, boolean drain) {
-			if(amount > 0) {
-				int contained = get();
-				int drained = amount < getMax() ? amount : getMax();
-				int remain = contained;
-				int removed = remain < drained ? contained : drained;
-				remain -= removed;
-				if(drain) {
-					set(remain);
-				}
-				return removed;
-			} else return 0;
-		}
-
-		@Override
-		public int fill(int amount, boolean fill) {
-			if(amount > 0) {
-				int contained = get();
-				int sum = contained + amount;
-				int remain = 0;
-				if(fill) {
-					set(sum);
-				}
-				return remain;
-			} else return 0;
 		}
 	}
 }
