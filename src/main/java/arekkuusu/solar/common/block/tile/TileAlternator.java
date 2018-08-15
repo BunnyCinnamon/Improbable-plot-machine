@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 
 import java.util.UUID;
 
-/**
- * Created by <Snack> on 23/01/2018.
+/*
+ * Created by <Arekkuusu> on 23/01/2018.
  * It's distributed as part of Solar.
  */
 public class TileAlternator extends TileRelativeBase {

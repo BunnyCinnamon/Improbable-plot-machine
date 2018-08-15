@@ -61,8 +61,8 @@ entity.quingentilliard_item.name=Entity Item
 entity.quantum_quartz.name=Entity Item
 
 //Tooltip
-tlp.uuid_key.name=Uuid
-tlp.tag_nodes.name=Node link
-tlp.item_filter.name=Item Filter
-tlp.quantum_data.name=Quantum Data
-tlp.monolithic_description.name=Immovable Object
+tlp.uuid_key=Uuid
+tlp.tag_nodes=Node link
+tlp.item_filter=Item Filter
+tlp.quantum_data=Quantum Data
+tlp.monolithic_description=Immovable Object

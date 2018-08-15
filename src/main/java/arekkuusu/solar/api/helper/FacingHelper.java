@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.api.helper;
 
 import net.minecraft.util.EnumFacing;
@@ -13,7 +13,7 @@ import net.minecraft.util.Rotation;
 import static net.minecraft.util.EnumFacing.*;
 
 /**
- * Created by <Snack> on 19/01/2018.
+ * Created by <Arekkuusu> on 19/01/2018.
  * It's distributed as part of Solar.
  */
 public final class FacingHelper {

@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
@@ -13,7 +13,7 @@ import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
-import net.katsstuff.mirror.client.helper.Blending;
+import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,7 +30,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
+/*
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Solar.
  */

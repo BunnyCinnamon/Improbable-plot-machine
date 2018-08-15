@@ -1,15 +1,15 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.common.lib.LibNames;
-import net.katsstuff.mirror.client.helper.Tooltip;
+import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
+/*
  * Created by <Arekkuusu> on 24/06/2017.
  * It's distributed as part of Solar.
  */
@@ -45,7 +45,7 @@ public class BlockMonolithicGlyph extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
-		Tooltip.inline().addI18n("tlp.monolithic_description.name", Tooltip.DarkGrayItalic()).build(tooltip);
+		Tooltip.inline().addI18n("tlp.monolithic_description", Tooltip.DarkGrayItalic()).build(tooltip);
 	}
 
 	@Override

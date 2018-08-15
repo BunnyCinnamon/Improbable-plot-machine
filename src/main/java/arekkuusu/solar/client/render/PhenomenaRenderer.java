@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.api.state.State;
@@ -30,7 +30,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/**
+/*
  * Created by <Arekkuusu> on 09/09/2017.
  * It's distributed as part of Solar.
  */

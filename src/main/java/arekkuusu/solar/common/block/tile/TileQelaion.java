@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
@@ -30,8 +30,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Created by <Snack> on 24/02/2018.
+/*
+ * Created by <Arekkuusu> on 24/02/2018.
  * It's distributed as part of Solar.
  */
 public class TileQelaion extends TileRelativeBase implements ITickable {

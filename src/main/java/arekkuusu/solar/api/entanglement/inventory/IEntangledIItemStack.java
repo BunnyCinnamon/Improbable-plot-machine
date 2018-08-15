@@ -1,15 +1,15 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.api.entanglement.inventory;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
-import net.katsstuff.mirror.client.helper.KeyCondition;
-import net.katsstuff.mirror.client.helper.Tooltip;
+import net.katsstuff.teamnightclipse.mirror.client.helper.KeyCondition$;
+import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
+/*
  * Created by <Arekkuusu> on 09/08/2017.
  * It's distributed as part of Solar.
  */
@@ -34,8 +34,10 @@ public interface IEntangledIItemStack extends IEntangledStack {
 	@SideOnly(Side.CLIENT)
 	default void addTooltipInfo(ItemStack stack, List<String> tooltip) {
 		getKey(stack).ifPresent(uuid -> Tooltip.inline()
-				.condition(KeyCondition.ShiftKeyDown$.MODULE$)
-				.ifTrueJ(builder -> getDetailedInfo(builder, EntangledIItemHandler.getEntanglement(uuid).stacks, uuid)).apply()
+				.condition(KeyCondition$.MODULE$.shiftKeyDown())
+				.ifTrueJ(builder ->
+						getDetailedInfo(builder, EntangledIItemHandler.getEntanglement(uuid).stacks, uuid)
+				).apply()
 				.build(tooltip)
 		);
 	}
@@ -58,7 +60,7 @@ public interface IEntangledIItemStack extends IEntangledStack {
 					.add(" x " + stack.getCount()).newline();
 		}
 		Tooltip sub = builder.newline();
-		return sub.condition(KeyCondition.ControlKeyDown$.MODULE$).ifTrueJ(b -> getInfo(sub, uuid)).apply();
+		return sub.condition(KeyCondition$.MODULE$.controlKeyDown()).ifTrueJ(b -> getInfo(sub, uuid)).apply();
 	}
 
 	@Override

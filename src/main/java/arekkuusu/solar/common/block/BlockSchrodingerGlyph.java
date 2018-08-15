@@ -1,17 +1,17 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.solar.common.entity.Megumin;
 import arekkuusu.solar.common.lib.LibNames;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Optional;
 import java.util.Random;
 
-/**
+/*
  * Created by <Arekkuusu> on 25/08/2017.
  * It's distributed as part of Solar.
  */
@@ -93,7 +93,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 			for(EnumFacing facing : EnumFacing.values()) {
 				Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 				Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.025D);
-				FXUtil.spawnNeutron(world, from, vec, 60, 0.25F, 0xFF0303, false);
+				Solar.PROXY.spawnNeutronBlast(world, from, vec, 60, 0.25F, 0xFF0303, false);
 			}
 		}
 	}

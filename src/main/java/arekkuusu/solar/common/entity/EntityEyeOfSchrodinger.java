@@ -1,22 +1,22 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.entity;
 
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.entity.ai.FlightMoveHelper;
 import arekkuusu.solar.common.entity.ai.FlightPathNavigate;
 import arekkuusu.solar.common.handler.gen.ModGen;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import net.katsstuff.mirror.client.particles.GlowTexture;
-import net.katsstuff.mirror.data.MutableVector3;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
+import net.katsstuff.teamnightclipse.mirror.data.MutableVector3;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -56,7 +56,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 	public EntityEyeOfSchrodinger(World worldIn) {
 		super(worldIn);
 		this.moveHelper = new FlightMoveHelper(this);
-		this.setSize(0.5F,0.5F);
+		this.setSize(0.5F, 0.5F);
 		this.experienceValue = 10;
 		this.isImmuneToFire = true;
 	}
@@ -76,7 +76,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		//Spawn Particles
 		if(world.isRemote) {
 			int rgb = hasTargetedEntity() ? RED : BLUE;
-			FXUtil.spawnTunneling(world
+			Solar.PROXY.spawnDepthTunneling(world
 					, Vector3.apply(posX, posY + 0.25D, posZ)
 					, Vector3.Zero(), 10, 1.5F, rgb, GlowTexture.GLOW);
 			Entity entity = getTargetedEntity();
@@ -88,7 +88,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 				if(speed.x() > 0.15D || speed.x() < -0.15D) speed.setX(0.15);
 				if(speed.y() > 0.15D || speed.y() < -0.15D) speed.setY(0.15);
 				if(speed.z() > 0.15D || speed.z() < -0.15D) speed.setZ(0.15);
-				FXUtil.spawnSquared(world, Vector3.apply(posX, posY + 0.25D, posZ), speed.asImmutable(), 10, 4F, RED);
+				Solar.PROXY.spawnSquared(world, Vector3.apply(posX, posY + 0.25D, posZ), speed.asImmutable(), 10, 4F, RED);
 			}
 		}
 	}
@@ -164,10 +164,12 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 	}
 
 	@Override
-	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
+	protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {
+	}
 
 	@Override
-	public void fall(float distance, float damageMultiplier) {}
+	public void fall(float distance, float damageMultiplier) {
+	}
 
 	@Override
 	public int getMaxFallHeight() {

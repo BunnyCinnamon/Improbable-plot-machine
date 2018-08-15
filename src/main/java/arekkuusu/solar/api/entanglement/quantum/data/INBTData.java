@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.api.entanglement.quantum.data;
 
 import arekkuusu.solar.api.SolarApi;
@@ -18,7 +18,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by <Snack> on 14/03/2018.
+ * Created by <Arekkuusu> on 14/03/2018.
  * It's distributed as part of Solar.
  */
 public interface INBTData<T extends NBTBase> extends INBTSerializable<NBTTagCompound> {

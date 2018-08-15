@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.helper.NBTHelper;
@@ -15,7 +15,7 @@ import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.block.tile.TileVacuumConveyor;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.client.baked.BakedRender;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,8 +39,8 @@ import java.util.Optional;
 
 import static net.minecraft.block.BlockDirectional.FACING;
 
-/**
- * Created by <Snack> on 06/01/2018.
+/*
+ * Created by <Arekkuusu> on 06/01/2018.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")

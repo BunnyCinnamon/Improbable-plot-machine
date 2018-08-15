@@ -1,20 +1,20 @@
-/*******************************************************************************
+/*
  * Arekkuusu / solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.util;
 
 import arekkuusu.solar.client.util.resource.SpriteManager;
 import arekkuusu.solar.client.util.resource.sprite.FrameSpriteResource;
 import arekkuusu.solar.client.util.resource.sprite.SpriteResource;
-import net.katsstuff.mirror.client.helper.TextureLocation;
+import net.katsstuff.teamnightclipse.mirror.client.helper.TextureLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
+/*
  * Created by <Arekkuusu> on 03/07/2017.
  * It's distributed as part of solar.
  */

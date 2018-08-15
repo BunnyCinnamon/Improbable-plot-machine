@@ -1,16 +1,16 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.common.Solar;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -26,7 +26,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import java.util.Map;
 import java.util.Optional;
 
-/**
+/*
  * Created by <Arekkuusu> on 28/07/2017.
  * It's distributed as part of Solar.
  */
@@ -124,7 +124,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
 					.multiply(0.005D);
-			FXUtil.spawnNeutron(world, back, speedVec, 40, 0.25F, 0xFF0303, false);
+			Solar.PROXY.spawnNeutronBlast(world, back, speedVec, 40, 0.25F, 0xFF0303, false);
 		} else if(world.getTotalWorldTime() % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing().getOpposite();
 			Vector3 back = getOffSet(facing);
@@ -132,7 +132,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
 					.multiply(speed);
-			FXUtil.spawnLight(world, back, speedVec, 30, 2F, 0x49FFFF, Light.GLOW);
+			Solar.PROXY.spawnMute(world, back, speedVec, 30, 2F, 0x49FFFF, Light.GLOW);
 		}
 	}
 

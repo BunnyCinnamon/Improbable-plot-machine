@@ -47,10 +47,8 @@ entity.quingentilliard_item.name=Существо предмета
 entity.quantum_quartz.name=Существо предмета
 
 //Tooltip
-tlp.shift_for_info.name=<шифт для инфо>
-tlp.ctrl_for_info.name=<ctrl для дополнительного инфо>
-tlp.quantum_data.name=Квантовые данные
-tlp.uuid_key.name=Uuid
-tlp.tag_nodes.name=Ноды
-tlp.item_filter.name=Фильтр предметов
-tlp.monolithic_description.name=Недвижимый объект
+tlp.uuid_key=Uuid
+tlp.tag_nodes=Ноды
+tlp.item_filter=Фильтр предметов
+tlp.quantum_data=Квантовые данные
+tlp.monolithic_description=Недвижимый объект

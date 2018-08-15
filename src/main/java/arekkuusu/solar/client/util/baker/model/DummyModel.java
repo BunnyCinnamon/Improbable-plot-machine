@@ -1,15 +1,15 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.util.baker.model;
 
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import com.google.common.collect.ImmutableList;
-import net.katsstuff.mirror.client.baked.Baked;
+import net.katsstuff.teamnightclipse.mirror.client.baked.Baked;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Function;
 
-/**
+/*
  * This class was created by <Arekkuusu> on 25/06/2017.
  * It's distributed as part of Solar under
  * the MIT license.

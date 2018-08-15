@@ -1,17 +1,17 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.common.block.tile.TilePhotonContainer;
 import arekkuusu.solar.common.entity.Megumin;
 import arekkuusu.solar.common.lib.LibNames;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Locale;
 
-/**
+/*
  * Created by <Arekkuusu> on 5/3/2018.
  * It's distributed as part of Solar.
  */

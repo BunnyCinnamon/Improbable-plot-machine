@@ -1,22 +1,22 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
-import net.katsstuff.mirror.client.baked.BakedRender;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-/**
+/*
  * Created by <Arekkuusu> on 25/10/2017.
  * It's distributed as part of Solar.
  */
@@ -79,7 +79,7 @@ public class BlockHyperConductor extends BlockBase {
 		Vector3 origin = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 		for(EnumFacing facing : EnumFacing.values()) {
 			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.025D);
-			FXUtil.spawnSquared(world, origin, vec, 40, 4F, 0xFFFFFF);
+			Solar.PROXY.spawnSquared(world, origin, vec, 40, 4F, 0xFFFFFF);
 		}
 	}
 

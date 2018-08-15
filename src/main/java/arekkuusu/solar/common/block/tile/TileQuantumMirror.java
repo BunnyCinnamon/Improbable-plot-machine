@@ -1,17 +1,17 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.inventory.data.EntangledTileWrapper;
-import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.network.PacketHelper;
-import net.katsstuff.mirror.client.particles.GlowTexture;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -40,7 +40,7 @@ public class TileQuantumMirror extends TileEntangledBase<EntangledTileWrapper> i
 	public void update() {
 		if(world.isRemote && world.rand.nextInt(10) == 0) {
 			Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
-			FXUtil.spawnMute(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
+			Solar.PROXY.spawnSpeck(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
 		}
 		if(!world.isRemote && dirty) {
 			getKey().ifPresent(uuid -> {

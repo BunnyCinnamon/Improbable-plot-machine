@@ -1,15 +1,15 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.util.baker;
 
 import arekkuusu.solar.common.lib.LibMod;
-import net.katsstuff.mirror.client.baked.Baked;
-import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
+import net.katsstuff.teamnightclipse.mirror.client.baked.Baked;
+import net.katsstuff.teamnightclipse.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-/**
+/*
  * Created by <Arekkuusu> on 29/07/2017.
  * It's distributed as part of Solar.
  */

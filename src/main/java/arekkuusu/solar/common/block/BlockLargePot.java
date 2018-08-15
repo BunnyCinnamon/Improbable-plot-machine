@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.RandomCollection;
@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-/**
+/*
  * Created by <Arekkuusu> on 02/01/2017.
  * It's distributed as part of Solar.
  */

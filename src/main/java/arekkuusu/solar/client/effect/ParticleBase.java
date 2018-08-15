@@ -1,20 +1,19 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.effect;
 
 import arekkuusu.solar.client.util.resource.sprite.FrameSpriteResource;
 import arekkuusu.solar.client.util.resource.sprite.SpriteResource;
-import net.katsstuff.mirror.client.particles.IMirrorParticle;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.particles.IMirrorParticle;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -29,7 +28,7 @@ import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 
-/**
+/*
  * Created by <Arekkuusu> on 23/07/2017.
  * It's distributed as part of Solar.
  */

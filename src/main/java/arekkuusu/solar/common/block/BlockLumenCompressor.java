@@ -1,20 +1,20 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileLumenCompressor;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
 
-/**
+/*
  * Created by <Arekkuusu> on 5/2/2018.
  * It's distributed as part of Solar.
  */
@@ -73,12 +73,12 @@ public class BlockLumenCompressor extends BlockBaseFacing {
 						.multiply(speed)
 						.rotate(x.multiply(z));
 				Vector3 posVec = back.add(Vector3.rotateRandom().multiply(0.2D));
-				FXUtil.spawnLight(world, posVec, speedVec, 45, 1F, 0xFFE077, Light.GLOW);
+				Solar.PROXY.spawnMute(world, posVec, speedVec, 45, 1F, 0xFFE077, Light.GLOW);
 			}
 			for(int i = 0; i < 3; i++) {
 				double speed = 0.005D + rand.nextDouble() * 0.015D;
 				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
-				FXUtil.spawnLight(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
+				Solar.PROXY.spawnMute(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
 			}
 		}
 	}

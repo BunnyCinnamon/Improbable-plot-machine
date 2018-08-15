@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.util.baker.baked;
 
 import com.google.common.collect.Lists;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-/**
+/*
  * Created by <Arekkuusu> on 19/03/2018.
  * It's distributed as part of Solar.
  */
@@ -42,6 +42,10 @@ public final class QuadCache {
 			this.quads.get(state).put(layer, quads);
 		}
 		return quads.get(state).getOrDefault(layer, Collections.emptyList());
+	}
+
+	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
+		return quads.get(state).getOrDefault(MinecraftForgeClient.getRenderLayer(), Collections.emptyList());
 	}
 
 	private boolean hasRenderLayer(IBlockState state, BlockRenderLayer layer) {

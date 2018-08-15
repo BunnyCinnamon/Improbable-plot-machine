@@ -1,19 +1,19 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileQuartzConsumer;
 import arekkuusu.solar.common.lib.LibNames;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-/**
+/*
  * Created by <Arekkuusu> on 4/30/2018.
  * It's distributed as part of Solar.
  */
@@ -57,7 +57,7 @@ public class BlockQuartzConsumer extends BlockBase {
 							.asImmutable()
 							.rotate(x.multiply(z))
 							.multiply(speed);
-					FXUtil.spawnLight(world, posVec, speedVec, 45, 1.5F, 0x49FFFF, Light.GLOW);
+					Solar.PROXY.spawnMute(world, posVec, speedVec, 45, 1.5F, 0x49FFFF, Light.GLOW);
 				}
 			} else for(int i = 0; i < 3 + rand.nextInt(6); i++) {
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
@@ -67,7 +67,7 @@ public class BlockQuartzConsumer extends BlockBase {
 				Vector3 speedVec = Vector3.rotateRandom()
 						.multiply(speed)
 						.rotate(x.multiply(z));
-				FXUtil.spawnLight(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x49FFFF, Light.GLOW);
+				Solar.PROXY.spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x49FFFF, Light.GLOW);
 			}
 		});
 	}

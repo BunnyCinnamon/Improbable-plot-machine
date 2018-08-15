@@ -1,18 +1,18 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.energy.data.ILumen;
 import arekkuusu.solar.common.entity.EntityLumen;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import arekkuusu.solar.common.item.ModItems;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

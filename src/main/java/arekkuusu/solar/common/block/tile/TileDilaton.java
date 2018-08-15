@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.state.State;
@@ -27,8 +27,8 @@ import org.apache.commons.lang3.tuple.Triple;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by <Snack> on 04/02/2018.
+/*
+ * Created by <Arekkuusu> on 04/02/2018.
  * It's distributed as part of Solar.
  */
 public class TileDilaton extends TileBase {

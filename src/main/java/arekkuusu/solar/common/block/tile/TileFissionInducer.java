@@ -1,18 +1,18 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.fluid.ModFluids;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.client.particles.GlowTexture;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
+/*
  * Created by <Arekkuusu> on 4/5/2018.
  * It's distributed as part of Solar.
  */
@@ -127,7 +127,7 @@ public class TileFissionInducer extends TileBase implements ITickable {
 				if(state.getBlock() == Blocks.GOLD_BLOCK || state.getBlock() == ModBlocks.MOLTEN_GOLD) {
 					Vector3 pos = new Vector3.WrappedVec3i(position.add(getPos())).asImmutable().add(Math.random(), 1.1D, Math.random());
 					Vector3 speed = Vector3.apply(0, 0.02, 0).multiply(world.rand.nextFloat());
-					FXUtil.spawnTunneling(world, pos, speed, 40, 3F, 0xff5000, GlowTexture.GLINT);
+					Solar.PROXY.spawnDepthTunneling(world, pos, speed, 40, 3F, 0xff5000, GlowTexture.GLINT);
 				}
 			}
 		}

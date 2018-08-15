@@ -1,15 +1,15 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.common.block.ModBlocks;
-import net.katsstuff.mirror.client.helper.Tooltip;
+import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -35,7 +35,7 @@ public class ItemVacuumConveyor extends ItemBaseBlock {
 		Tooltip.inline()
 				.condition(() -> NBTHelper.hasTag(stack, "lookup"))
 				.ifTrueJ(sub -> sub
-						.addI18n("tlp.item_filter.name", Tooltip.DarkGrayItalic()).add(": ")
+						.addI18n("tlp.item_filter", Tooltip.DarkGrayItalic()).add(": ")
 						.add(new ItemStack(stack.getOrCreateSubCompound("lookup")).getDisplayName(), Tooltip.GrayItalic())
 						.newline()
 						.newline()

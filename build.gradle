@@ -28,8 +28,15 @@ minecraft {
     replaceIn 'LibMod.java'
 }
 
+repositories {
+    maven {
+        name = "TeamNightclipse Bintray"
+        setUrl("https://dl.bintray.com/team-nightclipse/maven/")
+    }
+}
+
 dependencies {
-    compile project("Mirror")
+    compile("net.katsstuff.teamnightclipse:mirror:1.12.2-0.3.0")
 }
 
 processResources {

@@ -1,28 +1,28 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.energy.data.ILumen;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.baker.baked.BakedNeutronBattery;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery.Capacity;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -48,7 +48,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
-/**
+/*
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
@@ -137,8 +137,8 @@ public class BlockNeutronBattery extends BlockBase {
 			);
 			double speed = 0.005D + 0.005D * rand.nextDouble();
 			Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
-			FXUtil.spawnLight(world, posVec, speedVec, 30, 2F, capacity.color, Light.GLOW);
-			FXUtil.spawnLight(world, vec.add(0.5D), Vector3.Up().multiply(0.02D), 100, 2F, capacity.color, Light.GLOW);
+			Solar.PROXY.spawnMute(world, posVec, speedVec, 30, 2F, capacity.color, Light.GLOW);
+			Solar.PROXY.spawnMute(world, vec.add(0.5D), Vector3.Up().multiply(0.02D), 100, 2F, capacity.color, Light.GLOW);
 		}
 	}
 

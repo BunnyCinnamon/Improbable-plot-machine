@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.ShaderLibrary;
@@ -15,8 +15,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
 
-/**
- * Created by <Snack> on 07/01/2018.
+/*
+ * Created by <Arekkuusu> on 07/01/2018.
  * It's distributed as part of Solar.
  */
 public class VacuumConveyorRenderer extends SpecialModelRenderer<TileVacuumConveyor> {

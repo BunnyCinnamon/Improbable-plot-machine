@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.api.entanglement.quantum.data;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +16,7 @@ import net.minecraftforge.common.DimensionManager;
 import javax.annotation.Nullable;
 
 /**
- * Created by <Snack> on 14/03/2018.
+ * Created by <Arekkuusu> on 14/03/2018.
  * It's distributed as part of Solar.
  */
 @INBTData.NBTHolder(modId = "solar", name = "qimranut_nbt")

@@ -1,21 +1,21 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.energy.data.ILumen;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.BlockKondenzator;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.data.ModCapability;
-import net.katsstuff.mirror.client.particles.GlowTexture;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -63,7 +63,7 @@ public class TileKondenzator extends TileLumenBase implements ITickable {
 							.asImmutable()
 							.rotate(x.multiply(z))
 							.multiply(speed);
-					FXUtil.spawnLight(world, pos, speedVec, 75, 1.75F, 0x49FFFF, Light.GLOW);
+					Solar.PROXY.spawnMute(world, pos, speedVec, 75, 1.75F, 0x49FFFF, Light.GLOW);
 				}
 			}
 			if(isFacingGlass()) {
@@ -71,7 +71,7 @@ public class TileKondenzator extends TileLumenBase implements ITickable {
 				int amount = (int) ((float) progress.getTimer() * (0.15F * (1F - (float) progress.getMultiplier() / 6F)));
 				for(int i = 0; i < amount + world.rand.nextInt(4); i++) {
 					Vector3 posVec = new Vector3.WrappedVec3i(getProgressPos()).asImmutable().add(Math.random(), Math.random(), Math.random());
-					FXUtil.spawnMute(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, world.rand.nextFloat(), 0x49FFFF, GlowTexture.GLOW);
+					Solar.PROXY.spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, world.rand.nextFloat(), 0x49FFFF, GlowTexture.GLOW);
 				}
 			}
 		}

@@ -1,17 +1,17 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.handler.gen;
 
 import arekkuusu.solar.api.util.RandomCollection;
 import arekkuusu.solar.common.block.BlockMonolithicGlyph;
 import arekkuusu.solar.common.block.ModBlocks;
 import com.google.common.collect.Lists;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;

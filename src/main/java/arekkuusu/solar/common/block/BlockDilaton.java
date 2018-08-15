@@ -1,20 +1,20 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.state.State;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileDilaton;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
@@ -36,8 +36,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-/**
- * Created by <Snack> on 04/02/2018.
+/*
+ * Created by <Arekkuusu> on 04/02/2018.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
@@ -136,7 +136,7 @@ public class BlockDilaton extends BlockBaseFacing {
 						.asImmutable()
 						.multiply(speed)
 						.rotate(x.multiply(z));
-				FXUtil.spawnLight(world, posVec, speedVec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
+				Solar.PROXY.spawnMute(world, posVec, speedVec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
 			}
 		}
 	}

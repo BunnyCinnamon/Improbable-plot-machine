@@ -1,16 +1,16 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.util.baker;
 
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.lib.LibMod;
-import net.katsstuff.mirror.client.helper.ModelLocation;
-import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
+import net.katsstuff.teamnightclipse.mirror.client.helper.ModelLocation;
+import net.katsstuff.teamnightclipse.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-/**
+/*
  * Created by <Arekkuusu> on 16/09/2017.
  * It's distributed as part of Solar.
  */

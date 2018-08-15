@@ -1,18 +1,18 @@
-/*******************************************************************************
+/*
  * Arekkuusu / solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.util.resource;
 
 import arekkuusu.solar.client.util.resource.sprite.FrameSpriteResource;
 import arekkuusu.solar.client.util.resource.sprite.SpriteResource;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.lib.LibMod;
-import net.katsstuff.mirror.client.helper.Location;
-import net.katsstuff.mirror.client.helper.ResourceHelperStatic;
+import net.katsstuff.teamnightclipse.mirror.client.helper.Location;
+import net.katsstuff.teamnightclipse.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.ResourceLocation;
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
+/*
  * Created by <Arekkuusu> on 03/07/2017.
  * It's distributed as part of Solar.
  */

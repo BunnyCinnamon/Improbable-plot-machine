@@ -1,17 +1,17 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.effect;
 
 import arekkuusu.solar.client.util.helper.ProfilerHelper;
 import com.google.common.collect.Lists;
-import net.katsstuff.mirror.data.MutableVector3;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.MutableVector3;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -25,12 +25,12 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-/**
+/*
  * Created by <Arekkuusu> on 28/10/2017.
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class ParticleVolt extends ParticleBase {
+public class ParticleArcDischarge extends ParticleBase {
 
 	private List<VoltSegment> segments = Lists.newArrayList();
 	private final int generations;
@@ -38,7 +38,7 @@ public class ParticleVolt extends ParticleBase {
 	private final boolean fade;
 	private float offset;
 
-	ParticleVolt(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
+	ParticleArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
 		super(world, from.add(to).divide(2D), Vector3.Zero(), 0, age, rgb);
 		this.segments.add(new VoltSegment(from, to));
 		this.generations = generations;

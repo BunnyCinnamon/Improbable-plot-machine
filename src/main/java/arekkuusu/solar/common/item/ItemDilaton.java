@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.client.util.helper.ModelHandler;
@@ -13,8 +13,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * Created by <Snack> on 06/02/2018.
+/*
+ * Created by <Arekkuusu> on 06/02/2018.
  * It's distributed as part of Solar.
  */
 public class ItemDilaton extends ItemBaseBlock {

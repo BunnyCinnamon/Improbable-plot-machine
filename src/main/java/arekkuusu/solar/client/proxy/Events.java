@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.proxy;
 
 import arekkuusu.solar.api.helper.RayTraceHelper;
@@ -12,7 +12,7 @@ import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibMod;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
+/*
  * Created by <Arekkuusu> on 21/12/2017.
  * It's distributed as part of Solar.
  */

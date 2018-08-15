@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.ShaderLibrary;
@@ -12,12 +12,12 @@ import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileDifferentiatorInterceptor;
-import net.katsstuff.mirror.client.helper.Blending;
+import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-/**
+/*
  * Created by <Arekkuusu> on 5/13/2018.
  * It's distributed as part of Solar.
  */

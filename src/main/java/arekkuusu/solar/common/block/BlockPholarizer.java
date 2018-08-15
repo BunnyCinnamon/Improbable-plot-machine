@@ -1,17 +1,17 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TilePholarizer;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.client.baked.BakedRender;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -33,7 +33,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")
@@ -80,7 +79,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			FXUtil.spawnLight(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x29FF75, Light.GLOW);
+			Solar.PROXY.spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x29FF75, Light.GLOW);
 		}
 	}
 

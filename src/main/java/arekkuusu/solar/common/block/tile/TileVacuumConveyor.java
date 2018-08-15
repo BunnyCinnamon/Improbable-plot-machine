@@ -1,18 +1,18 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.client.effect.FXUtil;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.entity.EntityTemporalItem;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.client.particles.GlowTexture;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by <Snack> on 06/01/2018.
+ * Created by <Arekkuusu> on 06/01/2018.
  * It's distributed as part of Solar.
  */
 public class TileVacuumConveyor extends TileBase implements ITickable {
@@ -114,7 +114,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 				.asImmutable()
 				.rotate(x.multiply(z))
 				.multiply(speed);
-		FXUtil.spawnMute(world, back, speedVec, 75, 1.75F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
+		Solar.PROXY.spawnSpeck(world, back, speedVec, 75, 1.75F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
 	}
 
 	private void collectItems() {

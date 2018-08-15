@@ -1,27 +1,27 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileQimranut;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.mirror.client.baked.BakedPerspective;
-import net.katsstuff.mirror.client.baked.BakedRender;
-import net.katsstuff.mirror.data.Quat;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
+import net.katsstuff.teamnightclipse.mirror.data.Quat;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -46,7 +46,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
-/**
+/*
  * Created by <Arekkuusu> on 23/12/2017.
  * It's distributed as part of Solar.
  */
@@ -123,7 +123,7 @@ public class BlockQimranut extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			FXUtil.spawnLight(world, back, speedVec, 45, 1F, 0x1BE564, Light.GLOW);
+			Solar.PROXY.spawnMute(world, back, speedVec, 45, 1F, 0x1BE564, Light.GLOW);
 		}
 	}
 

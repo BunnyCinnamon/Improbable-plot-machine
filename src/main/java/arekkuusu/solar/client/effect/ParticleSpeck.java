@@ -7,6 +7,7 @@
  */
 package arekkuusu.solar.client.effect;
 
+import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.world.World;
 
@@ -14,23 +15,23 @@ import net.minecraft.world.World;
  * Created by <Arekkuusu> on 23/07/2017.
  * It's distributed as part of Solar.
  */
-public class ParticleMute extends ParticleBase {
+public class ParticleSpeck extends ParticleBase {
 
-	private Light type;
+	private final int rgb;
 
-	ParticleMute(World world, Vector3 pos, Vector3 speed, float scale, int age, int rgb, Light type) {
+	ParticleSpeck(World world, Vector3 pos, Vector3 speed, float scale, int age, int rgb, GlowTexture glow) {
 		super(world, pos, speed, scale, age, rgb);
-		setParticleTexture(type.location);
-		this.type = type;
+		setParticleTexture(glow.getTexture());
+		this.rgb = rgb;
 	}
 
 	@Override
 	public boolean isAdditive() {
-		return type.additive;
+		return rgb > 0x000000;
 	}
 
 	@Override
 	public int getBrightnessForRender(float p_189214_1_) {
-		return type.additive ? 255 : 0;
+		return isAdditive() ? 255 : 0;
 	}
 }

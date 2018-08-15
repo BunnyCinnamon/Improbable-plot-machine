@@ -1,16 +1,16 @@
-/*******************************************************************************
+/*
  * Arekkuusu / solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.client.util.helper;
 
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.common.Solar;
-import net.katsstuff.mirror.client.helper.Blending;
+import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -28,7 +28,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
 
-/**
+/*
  * Created by <Arekkuusu> on 30/06/2017.
  * It's distributed as part of Solar.
  */

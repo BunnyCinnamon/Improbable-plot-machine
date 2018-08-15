@@ -1,10 +1,10 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
@@ -18,8 +18,8 @@ import arekkuusu.solar.common.block.tile.TileMechanicalTranslocator;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import net.katsstuff.mirror.client.baked.BakedPerspective;
-import net.katsstuff.mirror.client.baked.BakedRender;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockStateContainer;
@@ -50,8 +50,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Created by <Snack> on 16/01/2018.
+/*
+ * Created by <Arekkuusu> on 16/01/2018.
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")

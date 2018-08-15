@@ -1,24 +1,24 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.sound.SolarSounds;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedDamage;
-import arekkuusu.solar.client.effect.FXUtil;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.DummyBakedRegistry;
 import arekkuusu.solar.client.util.helper.ModelHandler;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileElectron;
 import arekkuusu.solar.common.block.tile.TileHyperConductor;
 import arekkuusu.solar.common.lib.LibNames;
-import net.katsstuff.mirror.client.baked.BakedRender;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -38,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-/**
+/*
  * Created by <Arekkuusu> on 26/10/2017.
  * It's distributed as part of Solar.
  */
@@ -89,9 +89,9 @@ public class BlockElectron extends BlockBase {
 			for(int i = 0; i < 1 + world.rand.nextInt(3); i++) {
 				Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 				Vector3 to = Vector3.rotateRandom().add(from);
-				FXUtil.spawnVolt(world, from, to, 4, 0.25F, 15, 0x5194FF, true, true);
+				Solar.PROXY.spawnArcDischarge(world, from, to, 4, 0.25F, 15, 0x5194FF, true, true);
 			}
-			FXUtil.playSound(world, pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F);
+			Solar.PROXY.playSound(world, pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F);
 		}
 	}
 

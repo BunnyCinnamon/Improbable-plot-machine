@@ -1,17 +1,16 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+ */
 package arekkuusu.solar.common.handler.gen;
 
 import arekkuusu.solar.api.util.RandomCollection;
 import arekkuusu.solar.common.block.BlockLargePot;
 import arekkuusu.solar.common.block.ModBlocks;
-import com.google.common.collect.Lists;
-import net.katsstuff.mirror.data.Vector3;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -23,8 +22,6 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
-
-import java.util.List;
 
 import static arekkuusu.solar.common.handler.ConfigHandler.GEN_CONFIG;
 import static arekkuusu.solar.common.handler.gen.ModGen.Structure;
@@ -79,7 +76,7 @@ public class AshenCubeStructure extends BaseGen {
 		}
 		if(GEN_CONFIG.monolith.structure.holograth) {
 			BlockPos inside = origin.add(3 + random.nextInt(1), 1, 3 + random.nextInt(1));
-			EnumFacing facing =  EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)];
+			EnumFacing facing = EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)];
 			world.setBlockState(inside, ModBlocks.HOLOGRATH.getDefaultState().withProperty(BlockHorizontal.FACING, facing));
 		}
 		//Gen Cubes
@@ -101,9 +98,8 @@ public class AshenCubeStructure extends BaseGen {
 		}
 	}
 
-	@Deprecated
-	public Vector3 rotate(Vector3 vec, Rotation rotation) { //TODO: Add this to Vector3
-		switch(rotation) {
+	public Vector3 rotate(Vector3 vec, Rotation rotation) {
+		switch (rotation) {
 			case NONE:
 			default:
 				return vec;

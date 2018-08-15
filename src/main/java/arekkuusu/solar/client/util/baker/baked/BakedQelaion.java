@@ -1,19 +1,19 @@
-/*******************************************************************************
+/*
  * Arekkuusu / Solar 2018
  *
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
- ******************************************************************************/
+*/
 package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.Direction;
 import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.common.block.BlockQelaion;
-import net.katsstuff.mirror.client.baked.Baked;
-import net.katsstuff.mirror.client.baked.BakedBrightness;
-import net.katsstuff.mirror.client.baked.QuadBuilder;
+import net.katsstuff.teamnightclipse.mirror.client.baked.Baked;
+import net.katsstuff.teamnightclipse.mirror.client.baked.BakedBrightness;
+import net.katsstuff.teamnightclipse.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,15 +22,18 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * Created by <Snack> on 24/02/2018.
+/*
+ * Created by <Arekkuusu> on 24/02/2018.
  * It's distributed as part of Solar.
  */
+@SideOnly(Side.CLIENT)
 public class BakedQelaion extends BakedBrightness {
 
 	private final QuadCache cache = new QuadCache();
