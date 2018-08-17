@@ -46,6 +46,7 @@ import java.util.*;
 @SuppressWarnings("deprecation")
 public class BlockKondenzator extends BlockBaseFacing {
 
+	public static final int MAX_LUMEN = 100;
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0.0625, 0.75, 0.0625, 0.9375, 0.9375, 0.9375))
 			.put(EnumFacing.DOWN, new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.25, 0.9375))

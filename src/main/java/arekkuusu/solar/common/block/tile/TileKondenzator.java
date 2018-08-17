@@ -33,8 +33,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class TileKondenzator extends TileLumenBase implements ITickable {
 
-	public static final int MAX_LUMEN = 100;
-
 	@Override
 	public void update() {
 		if(!world.isRemote && handler.get() > 0) {
@@ -87,7 +85,7 @@ public class TileKondenzator extends TileLumenBase implements ITickable {
 			if(!world.isRemote) {
 				ILumen lumen = stack.getCapability(ModCapability.NEUTRON_CAPABILITY, null);
 				assert lumen != null;
-				int missing = MAX_LUMEN - handler.get();
+				int missing = BlockKondenzator.MAX_LUMEN - handler.get();
 				if(missing > 0 && lumen.drain(missing, false) > 0) {
 					handler.fill(lumen.drain(missing, true), true);
 					if(lumen.get() <= 0) stack.shrink(1);
@@ -125,7 +123,7 @@ public class TileKondenzator extends TileLumenBase implements ITickable {
 
 	@Override
 	public int getCapacity() {
-		return MAX_LUMEN;
+		return BlockKondenzator.MAX_LUMEN;
 	}
 
 	@SideOnly(Side.CLIENT)

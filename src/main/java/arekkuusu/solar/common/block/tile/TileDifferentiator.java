@@ -7,6 +7,7 @@
  */
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.common.block.BlockDifferentiator;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.fluid.ModFluids;
 import arekkuusu.solar.common.handler.data.ModCapability;
@@ -29,7 +30,6 @@ import java.util.Optional;
  */
 public class TileDifferentiator extends TileBase implements ITickable {
 
-	public static final int REACH = 16;
 	private int tick;
 
 	@Override
@@ -82,7 +82,7 @@ public class TileDifferentiator extends TileBase implements ITickable {
 	private Optional<Integer> findInterceptor(EnumFacing facing) {
 		BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(getPos());
 		int distance = 0;
-		while(distance++ < REACH) {
+		while(distance++ < BlockDifferentiator.REACH) {
 			IBlockState state = world.getBlockState(posOffset.move(facing));
 			if(state.getBlock() == ModBlocks.DIFFERENTIATOR_INTERCEPTOR && state.getValue(BlockDirectional.FACING) == facing) {
 				return Optional.of(distance);

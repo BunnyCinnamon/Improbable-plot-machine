@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.common.Solar;
+import arekkuusu.solar.common.block.BlockFissionInducer;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.fluid.ModFluids;
 import com.google.common.collect.ImmutableMap;
@@ -71,13 +72,12 @@ public class TileFissionInducer extends TileBase implements ITickable {
 					new BlockPos(-1, 0, 1),
 					new BlockPos(1, 0, -1)
 			}).build();
-	public static final int MAX_CAPACITY = 8000;
 	private int[] ticks = new int[8];
 	private final FluidTank handler;
 	private int tick;
 
 	public TileFissionInducer() {
-		handler = new FluidTank(new FluidStack(ModFluids.GOLD, 0), MAX_CAPACITY);
+		handler = new FluidTank(new FluidStack(ModFluids.GOLD, 0), BlockFissionInducer.MAX_CAPACITY);
 		Arrays.fill(ticks, -1);
 	}
 

@@ -9,6 +9,7 @@ package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.inventory.data.EntangledTileWrapper;
 import arekkuusu.solar.common.Solar;
+import arekkuusu.solar.common.block.BlockQuantumMirror;
 import arekkuusu.solar.common.network.PacketHelper;
 import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
@@ -28,7 +29,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
  */
 public class TileQuantumMirror extends TileEntangledBase<EntangledTileWrapper> implements ITickable {
 
-	public static final int SLOTS = 1;
 	private boolean dirty;
 
 	@Override
@@ -75,7 +75,7 @@ public class TileQuantumMirror extends TileEntangledBase<EntangledTileWrapper> i
 	public static class QuantumWrapper extends EntangledTileWrapper<TileQuantumMirror> {
 
 		QuantumWrapper(TileQuantumMirror mirror) {
-			super(mirror, SLOTS);
+			super(mirror, BlockQuantumMirror.SLOTS);
 		}
 
 		@Override

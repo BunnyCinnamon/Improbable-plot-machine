@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 @SuppressWarnings("deprecation")
 public class BlockLuminicMechanism extends BlockBaseFacing {
 
+	public static final int REACH = 5;
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0, 0.5625, 0, 1, 1, 1))
 			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0, 0, 1, 0.4375, 1))

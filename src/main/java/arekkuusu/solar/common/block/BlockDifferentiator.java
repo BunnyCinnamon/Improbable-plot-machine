@@ -38,6 +38,7 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockDifferentiator extends BlockBaseFacing {
 
+	public static final int REACH = 16;
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
 			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.125, 0.25, 0.75, 0.875, 0.75))
 			.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.125, 0.25, 0.75, 0.875, 0.75))
@@ -59,7 +60,7 @@ public class BlockDifferentiator extends BlockBaseFacing {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(pos);
 		float distance = 0;
-		while (distance++ < TileDifferentiator.REACH) {
+		while (distance++ < BlockDifferentiator.REACH) {
 			IBlockState found = world.getBlockState(posOffset.move(facing));
 			if(found.getBlock() == ModBlocks.DIFFERENTIATOR_INTERCEPTOR && found.getValue(BlockDirectional.FACING) == facing) {
 				Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();

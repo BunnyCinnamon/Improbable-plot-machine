@@ -57,8 +57,16 @@ public class BlockElectron extends BlockBase {
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		if(!world.isRemote) {
-			BlockPos from = pos.add(-8, -8, -8);
-			BlockPos to = pos.add(8, 8, 8);
+			BlockPos from = pos.add(
+					-BlockHyperConductor.ELECTRIC_FIELD_REACH,
+					-BlockHyperConductor.ELECTRIC_FIELD_REACH,
+					-BlockHyperConductor.ELECTRIC_FIELD_REACH
+			);
+			BlockPos to = pos.add(
+					BlockHyperConductor.ELECTRIC_FIELD_REACH,
+					BlockHyperConductor.ELECTRIC_FIELD_REACH,
+					BlockHyperConductor.ELECTRIC_FIELD_REACH
+			);
 			BlockPos.getAllInBoxMutable(from, to).forEach(p ->
 					getTile(TileHyperConductor.class, world, p).ifPresent(conductor -> conductor.addElectron(pos))
 			);

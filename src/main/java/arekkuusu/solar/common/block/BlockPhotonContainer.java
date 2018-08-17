@@ -38,6 +38,7 @@ import java.util.Locale;
 @SuppressWarnings("deprecation")
 public class BlockPhotonContainer extends BlockBase {
 
+	public static final int MAX_LUMEN = 64;
 	public static final PropertyEnum<ContainerState> PROPERTY = PropertyEnum.create("container", ContainerState.class);
 
 	public BlockPhotonContainer() {

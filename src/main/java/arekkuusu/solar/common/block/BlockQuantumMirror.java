@@ -41,6 +41,7 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class BlockQuantumMirror extends BlockBase {
 
+	public static final int SLOTS = 1;
 	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
 
 	public BlockQuantumMirror() {

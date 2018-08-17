@@ -24,7 +24,6 @@ import net.minecraft.util.ITickable;
  */
 public class TilePhotonContainer extends TileLumenBase implements IPholarized, ITickable {
 
-	public static final int MAX_LUMEN = 64;
 	public boolean nou;
 
 	@Override
@@ -84,7 +83,7 @@ public class TilePhotonContainer extends TileLumenBase implements IPholarized, I
 
 	@Override
 	public int getCapacity() {
-		return MAX_LUMEN;
+		return BlockPhotonContainer.MAX_LUMEN;
 	}
 
 	public boolean isActiveLazy() {

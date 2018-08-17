@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.common.Solar;
+import arekkuusu.solar.common.block.BlockLuminicMechanism;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
@@ -22,8 +23,6 @@ import net.minecraft.util.math.BlockPos;
  */
 public class TileLuminicMechanism extends TileBase implements ITickable {
 
-	public static final int REACH = 5;
-
 	@Override
 	public void update() {
 		if(world.getTotalWorldTime() % 20 == 0) {
@@ -31,7 +30,7 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 			if(world.getBlockState(pos.offset(facing.getOpposite())).getBlock() == ModBlocks.PHOTON_CONTAINER) {
 				BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(pos);
 				float distance = 0;
-				while(distance++ < TileLuminicMechanism.REACH) {
+				while(distance++ < BlockLuminicMechanism.REACH) {
 					IBlockState found = world.getBlockState(posOffset.move(facing));
 					if(found.getBlock() == ModBlocks.LUMEN_COMPRESSOR && found.getValue(BlockDirectional.FACING) == facing) {
 						if(!world.isRemote) {

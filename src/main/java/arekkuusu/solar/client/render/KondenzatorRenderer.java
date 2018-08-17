@@ -9,6 +9,7 @@ package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
+import arekkuusu.solar.common.block.BlockKondenzator;
 import arekkuusu.solar.common.block.tile.TileKondenzator;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -27,7 +28,7 @@ public class KondenzatorRenderer extends SpecialModelRenderer<TileKondenzator> {
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		renderModel(TileKondenzator.MAX_LUMEN, null, x, y, z);
+		renderModel(BlockKondenzator.MAX_LUMEN, null, x, y, z);
 	}
 
 	private void renderModel(int neutrons, EnumFacing facing, double x, double y, double z) {
@@ -57,7 +58,7 @@ public class KondenzatorRenderer extends SpecialModelRenderer<TileKondenzator> {
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-			float brightness = (float) neutrons / (float) TileKondenzator.MAX_LUMEN;
+			float brightness = (float) neutrons / (float) BlockKondenzator.MAX_LUMEN;
 			b.set(-0.55F + brightness * 0.55F);
 			b.upload();
 		});

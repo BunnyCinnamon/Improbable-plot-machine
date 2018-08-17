@@ -37,6 +37,7 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockLumenCompressor extends BlockBaseFacing {
 
+	public static final int MAX_LUMEN = 64;
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
 			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.05D, 0.5D))
 			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.95D, 0.5D))

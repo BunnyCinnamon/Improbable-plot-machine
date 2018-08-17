@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.common.block.BlockLumenCompressor;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.util.EnumFacing;
 
@@ -16,8 +17,6 @@ import net.minecraft.util.EnumFacing;
  * It's distributed as part of Solar.
  */
 public class TileLumenCompressor extends TileLumenBase {
-
-	public static final int MAX_LUMEN = 64;
 
 	@Override
 	void onLumenChange() {
@@ -36,7 +35,7 @@ public class TileLumenCompressor extends TileLumenBase {
 
 	@Override
 	public int getCapacity() {
-		return MAX_LUMEN;
+		return BlockLumenCompressor.MAX_LUMEN;
 	}
 
 	public EnumFacing getFacingLazy() {
