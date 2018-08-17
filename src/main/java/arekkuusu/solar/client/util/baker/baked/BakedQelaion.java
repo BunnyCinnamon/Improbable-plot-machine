@@ -4,7 +4,7 @@
  * This project is licensed under the MIT.
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Solar#solar
-*/
+ */
 package arekkuusu.solar.client.util.baker.baked;
 
 import arekkuusu.solar.api.state.Direction;
@@ -12,7 +12,6 @@ import arekkuusu.solar.client.util.ResourceLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.common.block.BlockQelaion;
 import net.katsstuff.teamnightclipse.mirror.client.baked.Baked;
-import net.katsstuff.teamnightclipse.mirror.client.baked.BakedBrightness;
 import net.katsstuff.teamnightclipse.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -34,9 +33,8 @@ import java.util.function.Function;
  * It's distributed as part of Solar.
  */
 @SideOnly(Side.CLIENT)
-public class BakedQelaion extends BakedBrightness {
+public class BakedQelaion extends BakedBrightBase {
 
-	private final QuadCache cache = new QuadCache();
 	private TextureAtlasSprite base;
 	private TextureAtlasSprite off;
 	private TextureAtlasSprite on;
