@@ -1,0 +1,24 @@
+﻿{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "#G#",
+    "GDG",
+    "#G#"
+  ],
+  "key": {
+    "#": {
+      "item": "solar:monolithic"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "blockGlass"
+    },
+    "D": {
+      "item": "solar:crystal_quartz"
+    }
+  },
+  "result": {
+    "item": "solar:kondenzator"
+  },
+  "group": "plot_machine"
+}

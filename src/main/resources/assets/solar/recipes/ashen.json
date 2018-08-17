@@ -1,16 +1,17 @@
 {
-  "result": {
-    "item": "solar:ashen"
-  },
+  "type": "forge:ore_shaped",
   "pattern": [
     "AAA",
     "AAA",
     "AAA"
   ],
-  "type": "forge:ore_shaped",
   "key": {
     "A": {
       "item": "solar:ash"
     }
-  }
+  },
+  "result": {
+    "item": "solar:ashen"
+  },
+  "group": "plot_machine"
 }
