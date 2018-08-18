@@ -16,7 +16,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
-public interface IEntangledIItem extends IItemHandlerModifiable {
+public interface IEntangledIItemHandler extends IItemHandlerModifiable {
 
 	/**
 	 * Gets the {@link UUID} of the quantum inventory if it exists

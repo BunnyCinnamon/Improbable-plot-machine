@@ -11,11 +11,12 @@ import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.client.util.helper.RenderHelper;
+import arekkuusu.solar.common.block.BlockNeutronBattery.BatteryCapacitor;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery;
-import arekkuusu.solar.common.block.tile.TileNeutronBattery.Capacity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 /*
  * Created by <Arekkuusu> on 21/03/2018.
@@ -25,40 +26,60 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 
 	@Override
 	void renderTile(TileNeutronBattery te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		renderModel(te.getCapacityLazy(), x, y, z, partialTicks);
+		renderModel(te.getCapacitor(), te.getFacingLazy(), x, y, z, partialTicks);
 	}
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
 		ItemStack stack = SpecialModelRenderer.getTempItemRenderer();
-		renderModel(NBTHelper.getEnum(Capacity.class, stack, "neutron_nbt").orElse(Capacity.BLUE), x, y, z, partialTicks);
+		BatteryCapacitor capacitor = new BatteryCapacitor();
+		NBTHelper.getNBTTag(stack, "neutron_nbt").ifPresent(capacitor::deserializeNBT);
+		renderModel(capacitor, null, x, y, z, partialTicks);
 	}
 
-	private void renderModel(Capacity capacity, double x, double y, double z, float partialTicks) {
+	private void renderModel(BatteryCapacitor capacity, EnumFacing facing, double x, double y, double z, float partialTicks) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
+		if(facing != null && facing != EnumFacing.UP) {
+			GlStateManager.translate(0.5, 0.5, 0.5);
+			switch (facing) {
+				case DOWN:
+					GlStateManager.rotate(180F, 1F, 0F, 0F);
+					break;
+				case NORTH:
+					GlStateManager.rotate(90F, -1F, 0F, 0F);
+					break;
+				case SOUTH:
+					GlStateManager.rotate(90F, 1F, 0F, 0F);
+					break;
+				case WEST:
+					GlStateManager.rotate(90F, 0F, 0F, 1F);
+					break;
+				case EAST:
+					GlStateManager.rotate(90F, 0F, 0F, -1F);
+					break;
+			}
+			GlStateManager.translate(-0.5, -0.5, -0.5);
+		}
 		BlockBaker.NEUTRON_BATTERY_BASE.render();
 		GlStateManager.pushMatrix();
 		GlStateManager.disableLighting();
-		ShaderLibrary.BRIGHT.begin();
-		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-			b.set(0F);
-			b.upload();
+		ShaderLibrary.RECOLOR.begin();
+		ShaderLibrary.RECOLOR.getUniformJ("greybase").ifPresent(greybase -> {
+			greybase.set(175F / 256F);
+			greybase.upload();
+		});
+		ShaderLibrary.RECOLOR.getUniformJ("rgba").ifPresent(rgba -> {
+			float r = (capacity.getColor() >>> 16 & 0xFF) / 256F;
+			float g = (capacity.getColor() >>> 8 & 0xFF) / 256F;
+			float b = (capacity.getColor() & 0xFF) / 256F;
+			rgba.set(r, g, b);
+			rgba.upload();
 		});
 		RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 1.5F, 15F);
-		switch(capacity) {
-			case BLUE:
-				BlockBaker.NEUTRON_BATTERY_BLUE.render();
-				break;
-			case GREEN:
-				BlockBaker.NEUTRON_BATTERY_GREEN.render();
-				break;
-			case PINK:
-				BlockBaker.NEUTRON_BATTERY_PINK.render();
-				break;
-		}
-		ShaderLibrary.BRIGHT.end();
+		BlockBaker.NEUTRON_BATTERY.render();
+		ShaderLibrary.RECOLOR.end();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();

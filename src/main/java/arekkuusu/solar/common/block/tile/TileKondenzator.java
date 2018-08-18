@@ -39,7 +39,7 @@ public class TileKondenzator extends TileLumenBase implements ITickable {
 			if(world.getTotalWorldTime() % 20 == 0 && isFacingGlass()) {
 				BlockPos pos = getProgressPos();
 				if(BlockKondenzator.setProgress(this, BlockKondenzator.getProgress(pos).getTimer() + 1).getTimer() >= 100) {
-					world.setBlockState(pos, ModBlocks.QUARTZ_GLASS.getDefaultState());
+					world.setBlockState(pos, ModBlocks.IMBUED_QUARTZ.getDefaultState());
 					BlockKondenzator.setProgress(this, 0);
 				}
 				handler.set(handler.get() - 1);
@@ -77,7 +77,7 @@ public class TileKondenzator extends TileLumenBase implements ITickable {
 
 	private boolean isFacingGlass() {
 		IBlockState state = world.getBlockState(pos.offset(getFacingLazy()));
-		return state.getMaterial() == Material.GLASS && state.getBlock() != ModBlocks.QUARTZ_GLASS;
+		return state.getMaterial() == Material.GLASS && state.getBlock() != ModBlocks.IMBUED_QUARTZ;
 	}
 
 	public boolean add(ItemStack stack) {

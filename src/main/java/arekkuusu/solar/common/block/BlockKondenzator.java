@@ -129,7 +129,7 @@ public class BlockKondenzator extends BlockBaseFacing {
 			Progress progress = entry.getValue();
 			BlockPos pos = entry.getKey();
 			IBlockState state = progress.world.getBlockState(pos);
-			if(state.getMaterial() == Material.GLASS && state.getBlock() != ModBlocks.QUARTZ_GLASS) {
+			if(state.getMaterial() == Material.GLASS && state.getBlock() != ModBlocks.IMBUED_QUARTZ) {
 				if(progress.timer > 0 && progress.lastUpdated++ >= 240) {
 					progress.timer -= 20;
 					if(progress.timer < 0) progress.timer = 0;

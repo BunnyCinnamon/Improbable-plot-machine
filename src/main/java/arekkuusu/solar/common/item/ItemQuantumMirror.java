@@ -29,7 +29,7 @@ import java.util.List;
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Solar.
  */
-public class ItemQuantumMirror extends ItemBaseBlock implements IEntangledIItemStack {
+public class ItemQuantumMirror extends ItemBaseBlock implements IEntangledIItemStack, IHandlerEntangledDescription<ItemQuantumMirror> {
 
 	public ItemQuantumMirror() {
 		super(ModBlocks.QUANTUM_MIRROR);
@@ -38,7 +38,7 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IEntangledIItemS
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
-		addTooltipInfo(stack, tooltip);
+		addTooltipInfo(this, stack, tooltip);
 	}
 
 	@Override

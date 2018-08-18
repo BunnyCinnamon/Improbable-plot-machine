@@ -36,11 +36,22 @@ public final class ShaderLibrary {
 			ImmutableList.of(ShaderType.fragment(), ShaderType.vertex()),
 			ImmutableMap.of("brightness", UniformType.unFloat())
 	);
+	public static final MirrorShaderProgram RECOLOR = loadProgram(
+			ResourceLibrary.RECOLOR_SHADER,
+			ImmutableList.of(ShaderType.fragment(), ShaderType.vertex()),
+			ImmutableMap.of("rgba", UniformType.vec3(), "greybase", UniformType.unFloat())
+	);
 
 	private static MirrorShaderProgram loadProgram(ResourceLocation location, List<ShaderType> shaders, Map<String, UniformType> types) {
 		Map<String, UniformBase<? extends UniformType>> uniforms = Maps.newHashMap();
 		types.forEach((k, v) -> uniforms.put(k, new UniformBase<>(v, 1)));
-		return ShaderManager.createProgram(location, shaders, uniforms, true);
+		return ShaderManager.createProgram(location, shaders, uniforms, false);
+	}
+
+	private static MirrorShaderProgram loadComplexProgram(Map<ShaderType, ResourceLocation> locations, Map<String, UniformType> types) {
+		Map<String, UniformBase<? extends UniformType>> uniforms = Maps.newHashMap();
+		types.forEach((k, v) -> uniforms.put(k, new UniformBase<>(v, 1)));
+		return ShaderManager.createComplexProgram(locations, uniforms, false);
 	}
 
 	public static void init() {

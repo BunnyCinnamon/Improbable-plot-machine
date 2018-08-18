@@ -61,7 +61,9 @@ public final class ModItems {
 		registry.register(new ItemDilaton());
 		registry.register(itemBlock(ModBlocks.DILATON_EXTENSION));
 		registry.register(new ItemQelaion());
-		registry.register(new ItemNeutronBattery());
+		registry.register(new ItemNeutronBattery(ModBlocks.NEUTRON_BATTERY_BLUE));
+		registry.register(new ItemNeutronBattery(ModBlocks.NEUTRON_BATTERY_GREEN));
+		registry.register(new ItemNeutronBattery(ModBlocks.NEUTRON_BATTERY_PINK));
 		registry.register(itemBlock(ModBlocks.PHOLARIZER));
 		registry.register(itemBlock(ModBlocks.FISSION_INDUCER));
 		registry.register(itemBlock(ModBlocks.LUMINIC_MECHANISM));
@@ -73,7 +75,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.HOLOGRATH));
 		registry.register(itemBlock(ModBlocks.KONDENZATOR));
 		registry.register(new ItemTheorema());
-		registry.register(itemBlock(ModBlocks.QUARTZ_GLASS));
+		registry.register(itemBlock(ModBlocks.IMBUED_QUARTZ));
 	}
 
 	@SuppressWarnings("ConstantConditions")

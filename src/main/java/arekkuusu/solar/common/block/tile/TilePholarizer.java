@@ -1,6 +1,7 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.entanglement.energy.IPholarized;
+import arekkuusu.solar.api.entanglement.energy.LumenHelper;
 import arekkuusu.solar.api.entanglement.energy.data.ILumen;
 import arekkuusu.solar.common.block.BlockPholarizer;
 import arekkuusu.solar.common.block.BlockPholarizer.Polarization;
@@ -61,11 +62,7 @@ public class TilePholarizer extends TileBase implements ITickable {
 						!e.isDead && e.hasCapability(ModCapability.NEUTRON_CAPABILITY, null)
 				).forEach(e -> {
 					ILumen lumen = e.getCapability(ModCapability.NEUTRON_CAPABILITY, null);
-					int drained = lumen.drain(1, false);
-					int filled = wrapper.fill(drained, false);
-					if(drained > 0 && filled == 0) {
-						wrapper.fill(lumen.drain(1, true), true);
-					}
+					LumenHelper.transfer(lumen, wrapper, 1, true);
 					if(lumen.get() <= 0) e.setDead();
 				});
 			}
@@ -85,8 +82,8 @@ public class TilePholarizer extends TileBase implements ITickable {
 				int drain = wrapper.drain(64, true);
 				if(drain > 0) {
 					EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), drain);
-					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
-					Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
+					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 45F);
+					Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 45F);
 					Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getOpposite().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
 					lumen.setMotion(vec);
 				}

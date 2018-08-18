@@ -22,13 +22,13 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 11/08/2017.
  * It's distributed as part of Solar.
  * <p>
- * Provides an {@link IItemHandler} capability for an {@link ItemStack} inside a {@link IEntangledIItem} implementation
+ * Provides an {@link IItemHandler} capability for an {@link ItemStack} inside a {@link IEntangledIItemHandler} implementation
  */
 public class EntangledStackProvider implements ICapabilityProvider {
 
-	private final IEntangledIItem handler;
+	private final IEntangledIItemHandler handler;
 
-	private EntangledStackProvider(IEntangledIItem handler) {
+	private EntangledStackProvider(IEntangledIItemHandler handler) {
 		this.handler = handler;
 	}
 
@@ -57,11 +57,11 @@ public class EntangledStackProvider implements ICapabilityProvider {
 	}
 
 	/**
-	 * Constructor for a custom {@link IEntangledIItem} implementation
+	 * Constructor for a custom {@link IEntangledIItemHandler} implementation
 	 *
 	 * @param handler lumen wrapper provider
 	 */
-	public static EntangledStackProvider create(IEntangledIItem handler) {
+	public static EntangledStackProvider create(IEntangledIItemHandler handler) {
 		return new EntangledStackProvider(handler);
 	}
 }

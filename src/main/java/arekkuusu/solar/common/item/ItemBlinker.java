@@ -9,8 +9,6 @@ package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.common.block.ModBlocks;
-import net.katsstuff.teamnightclipse.mirror.client.helper.KeyCondition$;
-import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -24,7 +22,7 @@ import java.util.List;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
+public class ItemBlinker extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemBlinker> {
 
 	ItemBlinker() {
 		super(ModBlocks.BLINKER);
@@ -33,9 +31,6 @@ public class ItemBlinker extends ItemBaseBlock implements IEntangledStack {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		getKey(stack).ifPresent(uuid -> Tooltip.inline()
-				.condition(KeyCondition$.MODULE$.shiftKeyDown())
-				.ifTrueJ(builder -> getInfo(builder, uuid)).apply()
-				.build(tooltip));
+		addTooltipInfo(this, stack, tooltip);
 	}
 }

@@ -7,6 +7,7 @@
  */
 package arekkuusu.solar.common.handler;
 
+import arekkuusu.solar.common.block.BlockNeutronBattery;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibMod;
@@ -91,7 +92,9 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.QUANTUM_MIRROR);
 			addBlock(ModBlocks.HYPER_CONDUCTOR);
 			addBlock(ModBlocks.ELECTRON);
-			addBlock(ModBlocks.NEUTRON_BATTERY);
+			addBlock(ModBlocks.NEUTRON_BATTERY_BLUE);
+			addBlock(ModBlocks.NEUTRON_BATTERY_GREEN);
+			addBlock(ModBlocks.NEUTRON_BATTERY_PINK);
 			addBlock(ModBlocks.LUMINIC_MECHANISM);
 			addBlock(ModBlocks.LUMEN_COMPRESSOR);
 			addBlock(ModBlocks.FISSION_INDUCER);
@@ -102,7 +105,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR);
 			addBlock(ModBlocks.HOLOGRATH);
 			addBlock(ModBlocks.KONDENZATOR);
-			addBlock(ModBlocks.QUARTZ_GLASS);
+			addBlock(ModBlocks.IMBUED_QUARTZ);
 			addItem(ModItems.SINGULARITY);
 			addItem(ModItems.CRYSTAL_QUARTZ);
 			addItem(ModItems.PLASMON);

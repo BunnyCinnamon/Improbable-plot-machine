@@ -39,21 +39,25 @@ public class TileQuartzConsumer extends TileBase implements ITickable {
 			assert ilumen != null;
 			if(ilumen.get() >= 5 && ilumen.drain(5, true) == 5) {
 				EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), 5);
-				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
-				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
+				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 75F);
+				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 75F);
 				Vector3 vec = Vector3.Up().rotate(x.multiply(z)).multiply(0.1D);
 				lumen.setMotion(vec);
-			} else handler.stack = ItemStack.EMPTY;
+			} else {
+				handler.stack = ItemStack.EMPTY;
+				markDirty();
+				sync();
+			}
 		}
 	}
 
 	public boolean consume(ItemStack stack) {
 		if(!stack.isEmpty() && stack.getItem() == ModItems.CRYSTAL_QUARTZ && stack.hasCapability(ModCapability.NEUTRON_CAPABILITY, null)) {
 			if(!world.isRemote) {
-				markDirty();
-				sync();
 				handler.stack = stack.copy();
 				stack.shrink(1);
+				markDirty();
+				sync();
 			}
 			return true;
 		}

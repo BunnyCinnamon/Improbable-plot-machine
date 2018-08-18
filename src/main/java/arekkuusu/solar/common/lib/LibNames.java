@@ -52,5 +52,5 @@ public class LibNames {
 	public static final String HOLOGRATH = "holograth";
 	public static final String THEOREMA = "theorema";
 	public static final String KONDENZATOR = "kondenzator";
-	public static final String QUARTZ_GLASS = "quartz_glass";
+	public static final String IMBUED_QUARTZ = "imbued_quartz";
 }

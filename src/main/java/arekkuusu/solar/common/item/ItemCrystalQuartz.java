@@ -95,7 +95,7 @@ public class ItemCrystalQuartz extends ItemBase {
 	public boolean onEntityItemUpdate(EntityItem entity) {
 		if(!entity.world.isRemote) {
 			entity = makeQuantum(entity);
-			if(itemRand.nextFloat() < 0.1F) {
+			if(itemRand.nextFloat() < 0.01F) {
 				Vector3 from = new Vector3.WrappedVec3d(entity.getPositionVector()).asImmutable();
 				Vector3 to = Vector3.rotateRandom().multiply(2).add(from);
 				if(isValidSpawn(entity.world, to)) {
@@ -103,10 +103,6 @@ public class ItemCrystalQuartz extends ItemBase {
 					entity.playSound(SoundEvents.ENTITY_SHULKER_TELEPORT, 0.25F, 0.5F);
 				}
 			}
-		} else {
-			Vector3 pos = new Vector3(entity).add(0D, entity.height * 1.75D, 0D);
-			Vector3 speedVec = Vector3.rotateRandom().multiply(0.02D);
-			Solar.PROXY.spawnMute(entity.world, pos, speedVec, 45, 1F, 0x1BE564, Light.GLOW);
 		}
 		return false;
 	}

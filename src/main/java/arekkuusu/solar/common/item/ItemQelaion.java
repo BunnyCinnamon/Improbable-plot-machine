@@ -25,7 +25,7 @@ import java.util.List;
  * Created by <Arekkuusu> on 24/02/2018.
  * It's distributed as part of Solar.
  */
-public class ItemQelaion extends ItemBaseBlock implements IEntangledStack {
+public class ItemQelaion extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemQelaion> {
 
 	public ItemQelaion() {
 		super(ModBlocks.QELAION);
@@ -40,7 +40,7 @@ public class ItemQelaion extends ItemBaseBlock implements IEntangledStack {
 						.condition(() -> NBTHelper.hasUniqueID(stack, "nodes"))
 						.ifTrueJ(sub -> { String key = NBTHelper.getUniqueID(stack, "nodes").toString();
 							return sub.newline()
-									.addI18n("tlp.tag_nodes.name", Tooltip.DarkGrayItalic())
+									.addI18n("tlp.tag_nodes", Tooltip.DarkGrayItalic())
 									.add(": ").newline()
 									.add(" > ").add(key.substring(0, 18)).newline()
 									.add(" > ").add(key.substring(18)).newline();

@@ -11,10 +11,8 @@ import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.api.entanglement.energy.data.LumenStackProvider;
 import arekkuusu.solar.api.entanglement.energy.data.LumenStackWrapper;
 import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.common.block.ModBlocks;
-import arekkuusu.solar.common.block.tile.TileNeutronBattery.Capacity;
-import net.katsstuff.teamnightclipse.mirror.client.helper.KeyCondition$;
-import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
+import arekkuusu.solar.common.block.BlockNeutronBattery.BatteryCapacitor;
+import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,19 +28,16 @@ import java.util.List;
  * Created by <Arekkuusu> on 21/03/2018.
  * It's distributed as part of Solar.
  */
-public class ItemNeutronBattery extends ItemBaseBlock implements IEntangledStack {
+public class ItemNeutronBattery extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemNeutronBattery> {
 
-	public ItemNeutronBattery() {
-		super(ModBlocks.NEUTRON_BATTERY);
+	public ItemNeutronBattery(Block block) {
+		super(block);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		getKey(stack).ifPresent(uuid -> Tooltip.inline()
-				.condition(KeyCondition$.MODULE$.shiftKeyDown())
-				.ifTrueJ(builder -> getInfo(builder, uuid)).apply()
-				.build(tooltip));
+		addTooltipInfo(this, stack, tooltip);
 	}
 
 	@Nullable
@@ -51,7 +46,9 @@ public class ItemNeutronBattery extends ItemBaseBlock implements IEntangledStack
 		return LumenStackProvider.create(new LumenStackWrapper<ItemNeutronBattery>(this, stack, 0) {
 			@Override
 			public int getMax() {
-				return NBTHelper.getEnum(Capacity.class, stack, "capacity").orElse(Capacity.BLUE).max;
+				BatteryCapacitor capacitor = new BatteryCapacitor();
+				NBTHelper.getNBTTag(stack, "neutron_nbt").ifPresent(capacitor::deserializeNBT);
+				return capacitor.getCapacity();
 			}
 		});
 	}

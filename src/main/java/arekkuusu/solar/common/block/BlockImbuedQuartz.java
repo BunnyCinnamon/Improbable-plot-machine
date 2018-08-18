@@ -27,10 +27,10 @@ import java.util.Random;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockQuartzGlass extends BlockBase {
+public class BlockImbuedQuartz extends BlockBase {
 
-	public BlockQuartzGlass() {
-		super(LibNames.QUARTZ_GLASS, Material.GLASS);
+	public BlockImbuedQuartz() {
+		super(LibNames.IMBUED_QUARTZ, Material.GLASS);
 		setSound(SoundType.GLASS);
 		setHardness(0.3F);
 	}
@@ -46,14 +46,14 @@ public class BlockQuartzGlass extends BlockBase {
 	@Override
 	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-		if(iblockstate.getBlock() == ModBlocks.QUARTZ_GLASS) return false;
+		if(iblockstate.getBlock() == ModBlocks.IMBUED_QUARTZ) return false;
 		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
 	@Override
 	public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
 		IBlockState iblockstate = world.getBlockState(pos.offset(face));
-		if(iblockstate.getBlock() == ModBlocks.QUARTZ_GLASS) return false;
+		if(iblockstate.getBlock() == ModBlocks.IMBUED_QUARTZ) return false;
 		return super.doesSideBlockRendering(state, world, pos, face);
 	}
 

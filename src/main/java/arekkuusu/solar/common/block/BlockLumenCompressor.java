@@ -10,7 +10,6 @@ package arekkuusu.solar.common.block;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.common.Solar;
-import arekkuusu.solar.common.block.tile.TileLumenCompressor;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;
@@ -19,14 +18,13 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
 
@@ -37,7 +35,6 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockLumenCompressor extends BlockBaseFacing {
 
-	public static final int MAX_LUMEN = 64;
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
 			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.05D, 0.5D))
 			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.95D, 0.5D))
@@ -45,6 +42,14 @@ public class BlockLumenCompressor extends BlockBaseFacing {
 			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.05D))
 			.put(EnumFacing.EAST, Vector3.apply(0.05D, 0.5D, 0.5D))
 			.put(EnumFacing.WEST, Vector3.apply(0.95D, 0.5D, 0.5D))
+			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
+			.put(EnumFacing.UP, new AxisAlignedBB(0, 0.5, 0, 1, 1, 1))
+			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0, 0, 1, 0.5, 1))
+			.put(EnumFacing.NORTH, new AxisAlignedBB(0, 0, 0, 1, 1, 0.5))
+			.put(EnumFacing.SOUTH, new AxisAlignedBB(0, 0, 0.5, 1, 1, 1))
+			.put(EnumFacing.EAST, new AxisAlignedBB(0.5, 0, 0, 1, 1, 1))
+			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0, 0, 0.5, 1, 1))
 			.build();
 
 	public BlockLumenCompressor() {
@@ -94,13 +99,8 @@ public class BlockLumenCompressor extends BlockBaseFacing {
 	}
 
 	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
-
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileLumenCompressor();
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 }

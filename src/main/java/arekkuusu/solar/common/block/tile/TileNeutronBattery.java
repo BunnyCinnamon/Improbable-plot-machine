@@ -10,18 +10,14 @@ package arekkuusu.solar.common.block.tile;
 import arekkuusu.solar.api.entanglement.IEntangledTile;
 import arekkuusu.solar.api.entanglement.energy.IPholarized;
 import arekkuusu.solar.api.entanglement.energy.data.LumenTileWrapper;
-import arekkuusu.solar.common.block.BlockNeutronBattery;
+import arekkuusu.solar.common.block.BlockNeutronBattery.BatteryCapacitor;
 import arekkuusu.solar.common.handler.data.ModCapability;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,34 +28,36 @@ import java.util.UUID;
 public class TileNeutronBattery extends TileBase implements IEntangledTile, IPholarized {
 
 	private LumenTileWrapper<TileNeutronBattery> handler;
+	private BatteryCapacitor capacitor;
 	private UUID key;
 
-	public TileNeutronBattery(Capacity capacity) {
-		this.handler = new LumenTileWrapper<>(this, capacity.max);
+	public TileNeutronBattery(BatteryCapacitor capacitor) {
+		this.handler = new LumenTileWrapper<>(this, capacitor.getCapacity());
+		this.capacitor = capacitor;
 	}
 
-	public TileNeutronBattery() {}
-
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-		return oldState != newState;
+	public TileNeutronBattery() {
 	}
 
-	public Capacity getCapacityLazy() {
-		return getStateValue(BlockNeutronBattery.CAPACITY, pos).orElse(Capacity.BLUE);
+	public BatteryCapacitor getCapacitor() {
+		return capacitor;
 	}
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.NEUTRON_CAPABILITY && facing == EnumFacing.UP || super.hasCapability(capability, facing);
+		return capability == ModCapability.NEUTRON_CAPABILITY && facing == getFacingLazy() || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.NEUTRON_CAPABILITY && facing == EnumFacing.UP
+		return capability == ModCapability.NEUTRON_CAPABILITY && facing == getFacingLazy()
 				? ModCapability.NEUTRON_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
+	}
+
+	public EnumFacing getFacingLazy() {
+		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.DOWN);
 	}
 
 	@Override
@@ -78,7 +76,9 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile, IPho
 		if(compound.hasUniqueId("key")) {
 			this.key = compound.getUniqueId("key");
 		}
-		handler = new LumenTileWrapper<>(this, compound.getInteger("capacity"));
+		capacitor = new BatteryCapacitor();
+		capacitor.deserializeNBT(compound.getCompoundTag("capacitor"));
+		handler = new LumenTileWrapper<>(this, capacitor.getCapacity());
 	}
 
 	@Override
@@ -86,25 +86,6 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile, IPho
 		if(key != null) {
 			compound.setUniqueId("key", key);
 		}
-		compound.setInteger("capacity", getCapacityLazy().max);
-	}
-
-	public enum Capacity implements IStringSerializable {
-		BLUE(64, 0x2FFEEB),
-		GREEN(512, 0x29FF75),
-		PINK(4096, 0xFF39BA);
-
-		public final int max;
-		public final int color;
-
-		Capacity(int max, int color) {
-			this.max = max;
-			this.color = color;
-		}
-
-		@Override
-		public String getName() {
-			return name().toLowerCase(Locale.ROOT);
-		}
+		compound.setTag("capacitor", capacitor.serializeNBT());
 	}
 }

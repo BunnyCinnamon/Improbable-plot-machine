@@ -55,10 +55,6 @@ public class DifferentiatorInterceptorRenderer extends SpecialModelRenderer<Tile
 				GlStateManager.rotate(partialTicks + tick * 0.15F % 360F, 0F, 1F, 0F);
 				BlockBaker.DIFFERENTIATOR_INTERCEPTOR_RING.render();
 				GlStateManager.popMatrix();
-				GlStateManager.pushMatrix();
-				GlStateManager.rotate(partialTicks + tick * 0.25F % 360F, 0F, 1F, 0F);
-				BlockBaker.DIFFERENTIATOR_INTERCEPTOR_RING_.render();
-				GlStateManager.popMatrix();
 				break;
 			case 1:
 				//Inner core
@@ -91,10 +87,6 @@ public class DifferentiatorInterceptorRenderer extends SpecialModelRenderer<Tile
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.15F % 360F, 0F, 1F, 0F);
 		BlockBaker.DIFFERENTIATOR_RING_BOTTOM.render();
-		GlStateManager.popMatrix();
-		GlStateManager.pushMatrix();
-		GlStateManager.rotate(partialTicks + tick * 0.25F % 360F, 0F, 1F, 0F);
-		BlockBaker.DIFFERENTIATOR_INTERCEPTOR_RING_.render();
 		GlStateManager.popMatrix();
 		//Inner core
 		GlStateManager.disableLighting();

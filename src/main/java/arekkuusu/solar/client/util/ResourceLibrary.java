@@ -29,9 +29,7 @@ public final class ResourceLibrary {
 		ATLAS_SET = Sets.newHashSet();
 		getBlockTexture("qimranut/overlay");
 		getBlockTexture("qelaion/inside");
-		getBlockTexture("neutron_battery/blue");
-		getBlockTexture("neutron_battery/green");
-		getBlockTexture("neutron_battery/pink");
+		getBlockTexture("neutron_battery/white");
 		getBlockTexture("fission_inducer/center");
 		getBlockTexture("differentiator/base_1");
 		getBlockTexture("differentiator/base_2");
@@ -63,6 +61,7 @@ public final class ResourceLibrary {
 	//Shader
 	public static final ResourceLocation BLEND_SHADER = getShader(ShaderLocation.Program(), "blend");
 	public static final ResourceLocation BRIGHT_SHADER = getShader(ShaderLocation.Program(), "bright");
+	public static final ResourceLocation RECOLOR_SHADER = getShader(ShaderLocation.Program(), "recolor");
 
 	private static ResourceLocation getBlockTexture(String name) {
 		ResourceLocation location = ResourceHelperStatic.getAtlas(LibMod.MOD_ID, TextureLocation.Blocks(), name);

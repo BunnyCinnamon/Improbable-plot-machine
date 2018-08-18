@@ -50,7 +50,9 @@ public final class ModBlocks {
 	public static final Block DILATON = PLACE_HOLDER;
 	public static final Block DILATON_EXTENSION = PLACE_HOLDER;
 	public static final Block QELAION = PLACE_HOLDER;
-	public static final Block NEUTRON_BATTERY = PLACE_HOLDER;
+	public static final Block NEUTRON_BATTERY_BLUE = PLACE_HOLDER;
+	public static final Block NEUTRON_BATTERY_GREEN = PLACE_HOLDER;
+	public static final Block NEUTRON_BATTERY_PINK = PLACE_HOLDER;
 	public static final Block PHOLARIZER = PLACE_HOLDER;
 	public static final Block FISSION_INDUCER = PLACE_HOLDER;
 	public static final Block MOLTEN_GOLD = PLACE_HOLDER;
@@ -62,7 +64,7 @@ public final class ModBlocks {
 	public static final Block DIFFERENTIATOR_INTERCEPTOR = PLACE_HOLDER;
 	public static final Block HOLOGRATH = PLACE_HOLDER;
 	public static final Block KONDENZATOR = PLACE_HOLDER;
-	public static final Block QUARTZ_GLASS = PLACE_HOLDER;
+	public static final Block IMBUED_QUARTZ = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
@@ -87,7 +89,9 @@ public final class ModBlocks {
 		registry.register(new BlockDilaton());
 		registry.register(new BlockDilaton.BlockDilatonExtension());
 		registry.register(new BlockQelaion());
-		registry.register(new BlockNeutronBattery());
+		registry.register(new BlockNeutronBattery(BlockNeutronBattery.BLUE));
+		registry.register(new BlockNeutronBattery(BlockNeutronBattery.GREEN));
+		registry.register(new BlockNeutronBattery(BlockNeutronBattery.PINK));
 		registry.register(new BlockPholarizer());
 		registry.register(new BlockFissionInducer());
 		registry.register(new BlockMoltenGold());
@@ -99,7 +103,7 @@ public final class ModBlocks {
 		registry.register(new BlockDifferentiatorInterceptor());
 		registry.register(new BlockHolograth());
 		registry.register(new BlockKondenzator());
-		registry.register(new BlockQuartzGlass());
+		registry.register(new BlockImbuedQuartz());
 		registerTiles();
 	}
 
@@ -122,7 +126,6 @@ public final class ModBlocks {
 		registerTile(TileLuminicMechanism.class, LibNames.LUMINIC_MECHANISM);
 		registerTile(TileElectron.class, LibNames.ELECTRON);
 		registerTile(TileQuartzConsumer.class, LibNames.QUARTZ_CONSUMER);
-		registerTile(TileLumenCompressor.class, LibNames.LUMEN_COMPRESSOR);
 		registerTile(TileDifferentiator.class, LibNames.DIFFERENTIATOR);
 		registerTile(TilePhotonContainer.class, LibNames.PHOTON_CONTAINER);
 		registerTile(TileDifferentiatorInterceptor.class, LibNames.DIFFERENTIATOR_INTERCEPTOR);

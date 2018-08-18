@@ -12,8 +12,6 @@ import arekkuusu.solar.api.entanglement.quantum.QuantumDataHandler;
 import arekkuusu.solar.api.entanglement.quantum.data.QimranutData;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.lib.LibMod;
-import net.katsstuff.teamnightclipse.mirror.client.helper.KeyCondition$;
-import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -34,9 +32,9 @@ import java.util.UUID;
  * It's distributed as part of Solar.
  */
 @EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.SERVER)
-public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
+public class ItemQimranut extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemQimranut> {
 
-	public ItemQimranut(){
+	public ItemQimranut() {
 		super(ModBlocks.QIMRANUT);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -44,10 +42,7 @@ public class ItemQimranut extends ItemBaseBlock implements IEntangledStack {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		getKey(stack).ifPresent(uuid -> Tooltip.inline()
-				.condition(KeyCondition$.MODULE$.shiftKeyDown())
-				.ifTrueJ(builder -> getInfo(builder, uuid)).apply()
-				.build(tooltip));
+		addTooltipInfo(this, stack, tooltip);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)

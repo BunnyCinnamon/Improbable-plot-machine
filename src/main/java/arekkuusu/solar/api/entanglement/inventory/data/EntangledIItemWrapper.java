@@ -18,7 +18,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
  *
  * Default implementation for quantum entangled inventories
  */
-public abstract class EntangledIItemWrapper implements IEntangledIItem {
+public abstract class EntangledIItemWrapper implements IEntangledIItemHandler {
 
 	private final int slots;
 
