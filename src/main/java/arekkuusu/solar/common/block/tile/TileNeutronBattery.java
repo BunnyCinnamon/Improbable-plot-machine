@@ -7,9 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.IEntangledTile;
-import arekkuusu.solar.api.entanglement.energy.IPholarized;
-import arekkuusu.solar.api.entanglement.energy.data.LumenTileWrapper;
+import arekkuusu.solar.api.capability.energy.data.ComplexLumenTileWrapper;
+import arekkuusu.solar.api.capability.quantum.IQuantum;
 import arekkuusu.solar.common.block.BlockNeutronBattery.BatteryCapacitor;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import net.minecraft.block.BlockDirectional;
@@ -25,14 +24,14 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
-public class TileNeutronBattery extends TileBase implements IEntangledTile, IPholarized {
+public class TileNeutronBattery extends TileBase implements IQuantum {
 
-	private LumenTileWrapper<TileNeutronBattery> handler;
+	private ComplexLumenTileWrapper<TileNeutronBattery> handler;
 	private BatteryCapacitor capacitor;
 	private UUID key;
 
 	public TileNeutronBattery(BatteryCapacitor capacitor) {
-		this.handler = new LumenTileWrapper<>(this, capacitor.getCapacity());
+		this.handler = new ComplexLumenTileWrapper<>(this, capacitor.getCapacity());
 		this.capacitor = capacitor;
 	}
 
@@ -78,7 +77,7 @@ public class TileNeutronBattery extends TileBase implements IEntangledTile, IPho
 		}
 		capacitor = new BatteryCapacitor();
 		capacitor.deserializeNBT(compound.getCompoundTag("capacitor"));
-		handler = new LumenTileWrapper<>(this, capacitor.getCapacity());
+		handler = new ComplexLumenTileWrapper<>(this, capacitor.getCapacity());
 	}
 
 	@Override

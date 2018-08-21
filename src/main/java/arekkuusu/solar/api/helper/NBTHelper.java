@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -26,11 +27,12 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public final class NBTHelper {
 
-	private NBTHelper() {}
+	private NBTHelper() {
+	}
 
 	public static NBTTagCompound fixNBT(ItemStack stack) {
 		NBTTagCompound tagCompound = stack.getTagCompound();
-		if (tagCompound == null) {
+		if(tagCompound == null) {
 			tagCompound = new NBTTagCompound();
 			stack.setTagCompound(tagCompound);
 		}
@@ -81,8 +83,10 @@ public final class NBTHelper {
 		return fixNBT(stack).getString(tag);
 	}
 
+	@Nullable
 	public static UUID getUniqueID(ItemStack stack, String tag) {
-		return fixNBT(stack).getUniqueId(tag);
+		NBTTagCompound compound = fixNBT(stack);
+		return compound.hasUniqueId(tag) ? compound.getUniqueId(tag) : null;
 	}
 
 	public static <T extends Enum<T> & IStringSerializable> void setEnum(ItemStack stack, T t, String tag) {
@@ -109,8 +113,8 @@ public final class NBTHelper {
 	}
 
 	public static <T extends Entity> Optional<T> getEntityByUUID(Class<T> clazz, UUID uuid, World world) {
-		for (Entity entity : world.loadedEntityList) {
-			if (clazz.isInstance(entity) && entity.getUniqueID().equals(uuid)) return Optional.of(clazz.cast(entity));
+		for(Entity entity : world.loadedEntityList) {
+			if(clazz.isInstance(entity) && entity.getUniqueID().equals(uuid)) return Optional.of(clazz.cast(entity));
 		}
 		return Optional.empty();
 	}
@@ -132,7 +136,7 @@ public final class NBTHelper {
 
 	public static void removeTag(ItemStack stack, String tag) {
 		NBTTagCompound tagCompound = stack.getTagCompound();
-		if (tagCompound != null && tagCompound.hasKey(tag)) {
+		if(tagCompound != null && tagCompound.hasKey(tag)) {
 			tagCompound.removeTag(tag);
 		}
 	}

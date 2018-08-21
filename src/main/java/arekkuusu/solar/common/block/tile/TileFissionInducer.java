@@ -158,16 +158,16 @@ public class TileFissionInducer extends TileBase implements ITickable {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		EnumFacing f = getFacingLazy();
-		return (f == facing || f.getOpposite() == facing) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+		EnumFacing.Axis axis = getFacingLazy().getAxis();
+		return facing != null && axis == facing.getAxis() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
 				|| super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		EnumFacing f = getFacingLazy();
-		return (f == facing || f.getOpposite() == facing) && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
+		EnumFacing.Axis axis = getFacingLazy().getAxis();
+		return facing != null && axis == facing.getAxis() && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
 				? CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
 	}

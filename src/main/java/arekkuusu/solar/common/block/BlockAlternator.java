@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.common.block.tile.TileAlternator;
@@ -73,11 +73,9 @@ public class BlockAlternator extends BlockBase {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
-				IEntangledStack entangled = (IEntangledStack) stack.getItem();
-				if(!entangled.getKey(stack).isPresent()) {
-					entangled.setKey(stack, UUID.randomUUID());
-				}
-				entangled.getKey(stack).ifPresent(alternator::setKey);
+				if(!RelativityHelper.getRelativeKey(stack).isPresent())
+					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
+				RelativityHelper.getRelativeKey(stack).ifPresent(alternator::setKey);
 			});
 		}
 	}
@@ -89,7 +87,7 @@ public class BlockAlternator extends BlockBase {
 			TileAlternator alternator = optional.get();
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
 			alternator.getKey().ifPresent(uuid -> {
-				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
+				RelativityHelper.setRelativeKey(stack, uuid);
 			});
 			return stack;
 		}

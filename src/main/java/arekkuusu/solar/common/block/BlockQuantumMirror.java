@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.capability.inventory.EntangledIItemHelper;
 import arekkuusu.solar.api.helper.InventoryHelper;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.util.ResourceLibrary;
@@ -42,7 +42,7 @@ import java.util.UUID;
 public class BlockQuantumMirror extends BlockBase {
 
 	public static final int SLOTS = 1;
-	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D, 0.25D, 0.25D, 0.75D, 0.75D, 0.75D);
 
 	public BlockQuantumMirror() {
 		super(LibNames.QUANTUM_MIRROR, FixedMaterial.BREAK);
@@ -73,11 +73,10 @@ public class BlockQuantumMirror extends BlockBase {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
-				IEntangledStack entangled = (IEntangledStack) stack.getItem();
-				if(!entangled.getKey(stack).isPresent()) {
-					entangled.setKey(stack, UUID.randomUUID());
-				}
-				entangled.getKey(stack).ifPresent(mirror::setKey);
+				EntangledIItemHelper.getCapability(stack).ifPresent(entangled -> {
+					if(!entangled.getKey().isPresent()) entangled.setKey(UUID.randomUUID());
+					entangled.getKey().ifPresent(mirror::setKey);
+				});
 			});
 		}
 	}
@@ -94,7 +93,7 @@ public class BlockQuantumMirror extends BlockBase {
 			TileQuantumMirror mirror = optional.get();
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
 			mirror.getKey().ifPresent(uuid -> {
-				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
+				EntangledIItemHelper.getCapability(stack).ifPresent(entangled -> entangled.setKey(uuid));
 			});
 			return stack;
 		}

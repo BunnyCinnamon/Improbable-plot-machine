@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.QuantumStackData;
+import arekkuusu.solar.api.capability.inventory.EntangledIItemHandler;
+import arekkuusu.solar.api.capability.quantum.data.QuantumStackData;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -48,7 +48,7 @@ public final class PacketHelper {
 		NBTTagList tags = new NBTTagList();
 		EntangledIItemHandler.getEntanglements().forEach((uuid, data) -> {
 			NBTTagCompound tag = new NBTTagCompound();
-			tag.setTag("list", data.write());
+			tag.setTag("list", data.serialize());
 			tag.setUniqueId("uuid", uuid);
 			tags.appendTag(tag);
 		});

@@ -17,7 +17,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 public final class ModRecipes {
 
 	public static void register(IForgeRegistry<IRecipe> registry) {
-		registry.register(new EntangledCloningRecipe());
-		registry.register(new EntangledClearRecipe());
+//		registry.register(new EntangledCloningRecipe());
+//		registry.register(new EntangledClearRecipe());
 	}
 }

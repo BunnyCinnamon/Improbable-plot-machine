@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.Light;
@@ -102,11 +102,9 @@ public class BlockBlinker extends BlockBaseFacing {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				IEntangledStack entangled = (IEntangledStack) stack.getItem();
-				if(!entangled.getKey(stack).isPresent()) {
-					entangled.setKey(stack, UUID.randomUUID());
-				}
-				entangled.getKey(stack).ifPresent(blinker::setKey);
+				if(!RelativityHelper.getRelativeKey(stack).isPresent())
+					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
+				RelativityHelper.getRelativeKey(stack).ifPresent(blinker::setKey);
 			});
 		}
 	}
@@ -123,7 +121,7 @@ public class BlockBlinker extends BlockBaseFacing {
 			TileBlinker blinker = optional.get();
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
 			blinker.getKey().ifPresent(uuid -> {
-				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
+				RelativityHelper.setRelativeKey(stack, uuid);
 			});
 			return stack;
 		}

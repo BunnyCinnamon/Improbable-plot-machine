@@ -32,13 +32,11 @@ public class ItemVacuumConveyor extends ItemBaseBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		Tooltip.inline()
-				.condition(() -> NBTHelper.hasTag(stack, "lookup"))
-				.ifTrueJ(sub -> sub
-						.addI18n("tlp.item_filter", Tooltip.DarkGrayItalic()).add(": ")
-						.add(new ItemStack(stack.getOrCreateSubCompound("lookup")).getDisplayName(), Tooltip.GrayItalic())
-						.newline()
-						.newline()
-				).apply().build(tooltip);
+		Tooltip.inline().condition(() -> NBTHelper.hasTag(stack, "lookup")).ifTrueJ(sub -> sub
+				.addI18n("tlp.item_filter", Tooltip.DarkGrayItalic()).add(": ")
+				.add(new ItemStack(stack.getOrCreateSubCompound("lookup")).getDisplayName(), Tooltip.GrayItalic())
+				.newline()
+				.newline()
+		).apply().build(tooltip);
 	}
 }

@@ -7,8 +7,7 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
@@ -82,12 +81,9 @@ public class BlockQimranut extends BlockBaseFacing {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileQimranut.class, world, pos).ifPresent(qimranut -> {
-				IEntangledStack entangled = (IEntangledStack) stack.getItem();
-				Optional<UUID> optional = entangled.getKey(stack);
-				if(!optional.isPresent() || RelativityHandler.getRelatives(optional.get()).size() >= 2) {
-					entangled.setKey(stack, UUID.randomUUID());
-				}
-				entangled.getKey(stack).ifPresent(qimranut::setKey);
+				Optional<UUID> optional = RelativityHelper.getRelativeKey(stack);
+				if(!optional.isPresent()) RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
+				RelativityHelper.getRelativeKey(stack).ifPresent(qimranut::setKey);
 			});
 		}
 	}
@@ -104,7 +100,7 @@ public class BlockQimranut extends BlockBaseFacing {
 			TileQimranut qimranut = optional.get();
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
 			qimranut.getKey().ifPresent(uuid -> {
-				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
+				RelativityHelper.setRelativeKey(stack, uuid);
 			});
 			return stack;
 		}

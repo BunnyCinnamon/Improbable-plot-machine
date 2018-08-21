@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by <Arekkuusu> on 17/01/2018.
  * It's distributed as part of Solar.
  */
-public class ItemMechanicalTranslocator extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemMechanicalTranslocator> {
+public class ItemMechanicalTranslocator extends ItemBaseBlock implements IUUIDDescription {
 
 	public ItemMechanicalTranslocator() {
 		super(ModBlocks.MECHANICAL_TRANSLOCATOR);
@@ -31,6 +31,6 @@ public class ItemMechanicalTranslocator extends ItemBaseBlock implements IEntang
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		addTooltipInfo(this, stack, tooltip);
+		RelativityHelper.getRelativeKey(stack).ifPresent(uuid -> addInformation(uuid, tooltip));
 	}
 }

@@ -7,9 +7,9 @@
  */
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.entanglement.energy.data.LumenStackProvider;
-import arekkuusu.solar.api.entanglement.energy.data.LumenStackWrapper;
+import arekkuusu.solar.api.capability.energy.LumenHelper;
+import arekkuusu.solar.api.capability.energy.LumenStackProvider;
+import arekkuusu.solar.api.capability.energy.data.ComplexLumenStackWrapper;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.common.block.BlockNeutronBattery.BatteryCapacitor;
 import net.minecraft.block.Block;
@@ -28,7 +28,7 @@ import java.util.List;
  * Created by <Arekkuusu> on 21/03/2018.
  * It's distributed as part of Solar.
  */
-public class ItemNeutronBattery extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemNeutronBattery> {
+public class ItemNeutronBattery extends ItemBaseBlock implements IUUIDDescription {
 
 	public ItemNeutronBattery(Block block) {
 		super(block);
@@ -37,13 +37,15 @@ public class ItemNeutronBattery extends ItemBaseBlock implements IEntangledStack
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		addTooltipInfo(this, stack, tooltip);
+		LumenHelper.getCapability(ComplexLumenStackWrapper.class, stack).ifPresent(complex -> {
+			complex.getKey().ifPresent(uuid -> addInformation(uuid, tooltip));
+		});
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return LumenStackProvider.create(new LumenStackWrapper<ItemNeutronBattery>(this, stack, 0) {
+		return LumenStackProvider.create(new ComplexLumenStackWrapper(stack, 0) {
 			@Override
 			public int getMax() {
 				BatteryCapacitor capacitor = new BatteryCapacitor();

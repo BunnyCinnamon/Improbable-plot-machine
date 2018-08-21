@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.inventory.data.EntangledTileWrapper;
+import arekkuusu.solar.api.capability.inventory.data.EntangledTileWrapper;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.BlockQuantumMirror;
 import arekkuusu.solar.common.network.PacketHelper;
@@ -27,13 +27,18 @@ import net.minecraftforge.items.ItemHandlerHelper;
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Solar.
  */
-public class TileQuantumMirror extends TileEntangledBase<EntangledTileWrapper> implements ITickable {
+public class TileQuantumMirror extends TileQuantumBase implements ITickable {
 
 	private boolean dirty;
 
 	@Override
 	public EntangledTileWrapper createHandler() {
-		return new QuantumWrapper(this);
+		return new EntangledTileWrapper<TileQuantumMirror>(this, getCapacity()) {
+			@Override
+			protected void onChange(int slot) {
+				tile.dirty = true;
+			}
+		};
 	}
 
 	@Override
@@ -68,19 +73,12 @@ public class TileQuantumMirror extends TileEntangledBase<EntangledTileWrapper> i
 	}
 
 	@Override
-	public boolean shouldRenderInPass(int pass) {
-		return pass == 0 || pass == 1;
+	public int getCapacity() {
+		return BlockQuantumMirror.SLOTS;
 	}
 
-	public static class QuantumWrapper extends EntangledTileWrapper<TileQuantumMirror> {
-
-		QuantumWrapper(TileQuantumMirror mirror) {
-			super(mirror, BlockQuantumMirror.SLOTS);
-		}
-
-		@Override
-		protected void onChange(int slot) {
-			tile.dirty = true;
-		}
+	@Override
+	public boolean shouldRenderInPass(int pass) {
+		return pass == 0 || pass == 1;
 	}
 }

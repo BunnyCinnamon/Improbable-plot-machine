@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.linked.ISimpleLinkedTile;
-import arekkuusu.solar.api.entanglement.linked.SimpleLinkHandler;
+import arekkuusu.solar.api.capability.binary.BinaryHandler;
+import arekkuusu.solar.api.capability.binary.ISimpleBinaryTile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,13 +21,13 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 20/01/2018.
  * It's distributed as part of Solar.
  */
-public abstract class TileSimpleLinkBase extends TileBase implements ISimpleLinkedTile {
+public abstract class TileSimpleLinkBase extends TileBase implements ISimpleBinaryTile {
 
 	private UUID key;
 
 	@Override
-	public Optional<ISimpleLinkedTile> getInverse() {
-		return isLoaded() ? Optional.ofNullable(SimpleLinkHandler.getInverseLink(this)) : Optional.empty();
+	public Optional<ISimpleBinaryTile> getInverse() {
+		return isLoaded() ? Optional.ofNullable(BinaryHandler.getInverse(this)) : Optional.empty();
 	}
 
 	@Override
@@ -46,21 +46,21 @@ public abstract class TileSimpleLinkBase extends TileBase implements ISimpleLink
 	@Override
 	public void onChunkUnload() {
 		if(!world.isRemote) {
-			SimpleLinkHandler.removeLink(this);
+			BinaryHandler.remove(this);
 		}
 	}
 
 	@Override
 	public void add() {
 		if(!world.isRemote) {
-			SimpleLinkHandler.addLink(this);
+			BinaryHandler.add(this);
 		}
 	}
 
 	@Override
 	public void remove() {
 		if(!world.isRemote) {
-			SimpleLinkHandler.removeLink(this);
+			BinaryHandler.remove(this);
 		}
 	}
 

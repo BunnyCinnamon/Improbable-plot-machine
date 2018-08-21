@@ -7,10 +7,9 @@
  */
 package arekkuusu.solar.common.handler.data;
 
-import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
-import arekkuusu.solar.api.entanglement.quantum.WorldData;
-import arekkuusu.solar.api.entanglement.quantum.data.INBTData;
-import arekkuusu.solar.api.entanglement.quantum.data.INBTData.NBTHolder;
+import arekkuusu.solar.api.capability.quantum.WorldData;
+import arekkuusu.solar.api.capability.quantum.data.INBTData;
+import arekkuusu.solar.api.capability.quantum.data.INBTData.NBTHolder;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.lib.LibMod;
 import com.google.common.base.Stopwatch;
@@ -59,7 +58,7 @@ public class WorldQuantumData extends WorldData {
 				} else {
 					Solar.LOG.error("[WorldQuantumData] - Class {} is annotated with @NBTHolder but is not an INBTData", data.getName());
 				}
-			} catch(ClassNotFoundException e) {
+			} catch (ClassNotFoundException e) {
 				Solar.LOG.error("[WorldQuantumData] - Failed to find class {}", loader.getClassName());
 				e.printStackTrace();
 			}
@@ -80,7 +79,7 @@ public class WorldQuantumData extends WorldData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagList list = (NBTTagList) compound.getTag(EntangledIItemHandler.NBT_TAG);
+		NBTTagList list = (NBTTagList) compound.getTag(WorldData.NBT_TAG);
 		list.forEach(base -> {
 			NBTTagCompound tag = (NBTTagCompound) base;
 			String modId = tag.getString("modId");
@@ -91,7 +90,7 @@ public class WorldQuantumData extends WorldData {
 				INBTData<?> data = DATA_MAP.get(location).newInstance();
 				data.deserializeNBT(tag);
 				saved.put(key, data);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				Solar.LOG.fatal("[WorldQuantumData] - Unable to instantiate data holder \"{}\"", location);
 				e.printStackTrace();
 			}
@@ -103,17 +102,17 @@ public class WorldQuantumData extends WorldData {
 		NBTTagList list = new NBTTagList();
 		saved.forEach((k, v) -> {
 			//noinspection SuspiciousMethodCalls
-			if(v.save() && DATA_MAP.containsValue(v.getClass())) {
+			if(v.canDeserialize() && DATA_MAP.containsValue(v.getClass())) {
 				NBTHolder nbtData = v.getClass().getAnnotation(NBTHolder.class);
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setString("modId", nbtData.modId());
 				tag.setString("name", nbtData.name());
 				tag.setUniqueId("key", k);
-				tag.setTag("data", v.write());
+				tag.setTag("data", v.serialize());
 				list.appendTag(tag);
 			}
 		});
-		compound.setTag(EntangledIItemHandler.NBT_TAG, list);
+		compound.setTag(WorldData.NBT_TAG, list);
 		return compound;
 	}
 }

@@ -7,7 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.data.SimpleLumenTileWrapper;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -32,7 +33,13 @@ public abstract class TileLumenBase extends TileBase {
 	public abstract int getCapacity();
 
 	ILumen createHandler() {
-		return new LumenHandler(this);
+		return new SimpleLumenTileWrapper<TileLumenBase>(this, getCapacity()) {
+			@Override
+			public void set(int neutrons) {
+				super.set(neutrons);
+				onLumenChange();
+			}
+		};
 	}
 
 	@Override
@@ -50,73 +57,11 @@ public abstract class TileLumenBase extends TileBase {
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		handler.set(compound.getInteger("lumen"));
+		handler.set(compound.getInteger(ILumen.NBT_TAG));
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setInteger("lumen", handler.get());
-	}
-
-	static class LumenHandler implements ILumen {
-
-		private TileLumenBase tile;
-		private int lumen;
-
-		LumenHandler(TileLumenBase tile)  {
-			this.tile = tile;
-		}
-
-		@Override
-		public int get() {
-			return lumen;
-		}
-
-		@Override
-		public void set(int neutrons) {
-			if(neutrons <= getMax()) {
-				this.lumen = neutrons;
-				tile.markDirty();
-				if(tile.world != null && !tile.world.isRemote) tile.onLumenChange();
-			}
-		}
-
-		@Override
-		public int drain(int amount, boolean drain) {
-			if(amount > 0) {
-				int contained = get();
-				int drained = amount < getMax() ? amount : getMax();
-				int remain = contained;
-				int removed = remain < drained ? contained : drained;
-				remain -= removed;
-				if(drain) {
-					set(remain);
-				}
-				return removed;
-			} else return 0;
-		}
-
-		@Override
-		public int fill(int amount, boolean fill) {
-			if(amount > 0) {
-				int contained = get();
-				if(contained >= getMax()) return amount;
-				int sum = contained + amount;
-				int remain = 0;
-				if(sum > getMax()) {
-					remain = sum - getMax();
-					sum = getMax();
-				}
-				if(fill) {
-					set(sum);
-				}
-				return remain;
-			} else return 0;
-		}
-
-		@Override
-		public int getMax() {
-			return tile.getCapacity();
-		}
+		compound.setInteger(ILumen.NBT_TAG, handler.get());
 	}
 }

@@ -7,9 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.energy.IPholarized;
-import arekkuusu.solar.api.entanglement.energy.LumenHelper;
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.LumenHelper;
+import arekkuusu.solar.api.capability.energy.data.ILumen;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.BlockLuminicMechanism;
 import arekkuusu.solar.common.block.ModBlocks;
@@ -57,7 +56,6 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 	private Optional<ILumen> getDrained() {
 		EnumFacing facing = getFacingLazy();
 		return getTile(TileEntity.class, world, pos.offset(facing))
-				.filter(tile -> tile instanceof IPholarized && ((IPholarized) tile).canDrain())
 				.filter(tile -> tile.hasCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
 				.map(tile -> tile.getCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
 				.filter(lumen -> lumen.get() > 0);
@@ -66,7 +64,6 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 	private Optional<ILumen> getFilled(BlockPos pos) {
 		EnumFacing facing = getFacingLazy().getOpposite();
 		return getTile(TileEntity.class, world, pos.offset(facing))
-				.filter(tile -> tile instanceof IPholarized && ((IPholarized) tile).canFill())
 				.filter(tile -> tile.hasCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
 				.map(tile -> tile.getCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
 				.filter(lumen -> lumen.get() < lumen.getMax());

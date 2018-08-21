@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.data.ILumen;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.BlockKondenzator;

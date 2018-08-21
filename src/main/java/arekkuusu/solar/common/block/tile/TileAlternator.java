@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.IRelativeState;
+import arekkuusu.solar.api.capability.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.handler.data.WorldAlternatorData;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +27,7 @@ public class TileAlternator extends TileRelativeBase {
 	public boolean areAllActive() {
 		return getKey().map(key -> {
 			int size = 0;
-			for(IRelativeTile tile : RelativityHandler.getRelatives(key)) {
+			for(IRelativeState tile : RelativityHandler.getRelatives(key)) {
 				if(tile.isLoaded()) ++size;
 			}
 			int loaded = TileAlternator.getData(world).getSize(key);

@@ -7,28 +7,21 @@
  */
 package arekkuusu.solar.common.handler.recipe;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
-import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.common.lib.LibMod;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
  * Created by <Arekkuusu> on 17/08/2017.
  * It's distributed as part of Solar.
  */
-public class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public abstract class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
 	EntangledClearRecipe() {
 		setRegistryName(LibMod.MOD_ID, "entangled_clear");
 	}
 
-	@Override
+	/*@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
 		ItemStack toClear = ItemStack.EMPTY;
 		for(int j = 0; j < inv.getSizeInventory(); j++) {
@@ -36,7 +29,7 @@ public class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 			if(toClear.isEmpty() && !inSlot.isEmpty()) toClear = inSlot;
 			else if(!inSlot.isEmpty()) return false;
 		}
-		return !toClear.isEmpty() && toClear.getItem() instanceof IEntangledStack;
+		return !toClear.isEmpty() && toClear.getItem() instanceof IQuantumStack;
 	}
 
 	@Override
@@ -66,5 +59,5 @@ public class EntangledClearRecipe extends IForgeRegistryEntry.Impl<IRecipe> impl
 	@Override
 	public ItemStack getRecipeOutput() {
 		return ItemStack.EMPTY;
-	}
+	}*/
 }

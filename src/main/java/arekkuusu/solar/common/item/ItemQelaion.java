@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.katsstuff.teamnightclipse.mirror.client.helper.KeyCondition$;
@@ -25,7 +25,7 @@ import java.util.List;
  * Created by <Arekkuusu> on 24/02/2018.
  * It's distributed as part of Solar.
  */
-public class ItemQelaion extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemQelaion> {
+public class ItemQelaion extends ItemBaseBlock implements IUUIDDescription {
 
 	public ItemQelaion() {
 		super(ModBlocks.QELAION);
@@ -34,11 +34,12 @@ public class ItemQelaion extends ItemBaseBlock implements IEntangledStack, IEnta
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		getKey(stack).ifPresent(uuid -> Tooltip.inline()
+		RelativityHelper.getRelativeKey(stack).ifPresent(uuid -> Tooltip.inline()
 				.condition(KeyCondition$.MODULE$.shiftKeyDown())
 				.ifTrueJ(builder -> getInfo(builder, uuid)
 						.condition(() -> NBTHelper.hasUniqueID(stack, "nodes"))
-						.ifTrueJ(sub -> { String key = NBTHelper.getUniqueID(stack, "nodes").toString();
+						.ifTrueJ(sub -> {
+							String key = NBTHelper.getUniqueID(stack, "nodes").toString();
 							return sub.newline()
 									.addI18n("tlp.tag_nodes", Tooltip.DarkGrayItalic())
 									.add(": ").newline()

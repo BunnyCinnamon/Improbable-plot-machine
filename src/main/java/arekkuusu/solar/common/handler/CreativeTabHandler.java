@@ -7,7 +7,6 @@
  */
 package arekkuusu.solar.common.handler;
 
-import arekkuusu.solar.common.block.BlockNeutronBattery;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibMod;

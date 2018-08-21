@@ -7,29 +7,21 @@
  */
 package arekkuusu.solar.common.handler.recipe;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
 import arekkuusu.solar.common.lib.LibMod;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 16/08/2017.
  * It's distributed as part of Solar.
  */
-public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public abstract class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
 	EntangledCloningRecipe() {
 		setRegistryName(LibMod.MOD_ID, "entangled_cloning");
 	}
 
-	@Override
+	/*@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
 		ItemStack from = ItemStack.EMPTY;
 		ItemStack to = ItemStack.EMPTY;
@@ -78,7 +70,7 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 	}
 
 	private boolean isEntangled(ItemStack stack) {
-		return !stack.isEmpty() && stack.getItem() instanceof IEntangledStack;
+		return !stack.isEmpty() && stack.getItem() instanceof IQuantumStack;
 	}
 
 	private boolean hasNoTag(ItemStack stack) {
@@ -90,11 +82,11 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 	}
 
 	private Optional<UUID> getKey(ItemStack stack) {
-		return ((IEntangledStack) stack.getItem()).getKey(stack);
+		return ((IQuantumStack) stack.getItem()).getKey(stack);
 	}
 
 	private void setKey(ItemStack stack, UUID uuid) {
-		((IEntangledStack) stack.getItem()).setKey(stack, uuid);
+		((IQuantumStack) stack.getItem()).setKey(stack, uuid);
 	}
 
 	@Override
@@ -105,5 +97,5 @@ public class EntangledCloningRecipe extends IForgeRegistryEntry.Impl<IRecipe> im
 	@Override
 	public ItemStack getRecipeOutput() {
 		return ItemStack.EMPTY;
-	}
+	}*/
 }

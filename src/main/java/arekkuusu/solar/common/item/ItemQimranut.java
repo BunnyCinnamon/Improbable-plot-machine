@@ -7,9 +7,9 @@
  */
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.entanglement.quantum.QuantumDataHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.QimranutData;
+import arekkuusu.solar.api.capability.quantum.QuantumDataHandler;
+import arekkuusu.solar.api.capability.quantum.data.QimranutData;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.client.util.ITooltipFlag;
@@ -32,7 +32,7 @@ import java.util.UUID;
  * It's distributed as part of Solar.
  */
 @EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.SERVER)
-public class ItemQimranut extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemQimranut> {
+public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 
 	public ItemQimranut() {
 		super(ModBlocks.QIMRANUT);
@@ -42,7 +42,7 @@ public class ItemQimranut extends ItemBaseBlock implements IEntangledStack, IEnt
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		addTooltipInfo(this, stack, tooltip);
+		RelativityHelper.getRelativeKey(stack).ifPresent(uuid -> addInformation(uuid, tooltip));
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -50,10 +50,9 @@ public class ItemQimranut extends ItemBaseBlock implements IEntangledStack, IEnt
 		ItemStack stack = event.getItemStack();
 		if(stack.getItem() == this) {
 			if(!event.getWorld().isRemote) {
-				if(!getKey(stack).isPresent()) {
-					setKey(stack, UUID.randomUUID());
-				}
-				getKey(stack).ifPresent(uuid -> {
+				if(!RelativityHelper.getRelativeKey(stack).isPresent())
+					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
+				RelativityHelper.getRelativeKey(stack).ifPresent(uuid -> {
 					QimranutData data = QuantumDataHandler.getOrCreate(uuid, QimranutData::new);
 					data.setFacing(event.getFace());
 					data.setPos(event.getPos());

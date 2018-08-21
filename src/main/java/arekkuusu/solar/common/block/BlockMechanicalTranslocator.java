@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.api.helper.RayTraceHelper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedMaterial;
@@ -84,12 +84,10 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
-			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> {
-				IEntangledStack entangled = (IEntangledStack) stack.getItem();
-				if(!entangled.getKey(stack).isPresent()) {
-					entangled.setKey(stack, UUID.randomUUID());
-				}
-				entangled.getKey(stack).ifPresent(tile::setKey);
+			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(translocator -> {
+				if(!RelativityHelper.getRelativeKey(stack).isPresent())
+					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
+				RelativityHelper.getRelativeKey(stack).ifPresent(translocator::setKey);
 			});
 		}
 	}
@@ -106,7 +104,7 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 			TileMechanicalTranslocator tile = optional.get();
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
 			tile.getKey().ifPresent(uuid -> {
-				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
+				RelativityHelper.setRelativeKey(stack, uuid);
 			});
 			return stack;
 		}

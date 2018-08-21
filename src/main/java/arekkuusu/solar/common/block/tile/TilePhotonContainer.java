@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.energy.IPholarized;
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.data.SimpleLumenTileWrapper;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.BlockPhotonContainer;
 import arekkuusu.solar.common.block.BlockPhotonContainer.ContainerState;
@@ -22,7 +22,7 @@ import net.minecraft.util.ITickable;
  * Created by <Arekkuusu> on 6/20/2018.
  * It's distributed as part of Solar.
  */
-public class TilePhotonContainer extends TileLumenBase implements IPholarized, ITickable {
+public class TilePhotonContainer extends TileLumenBase implements ITickable {
 
 	public boolean nou;
 
@@ -37,31 +37,17 @@ public class TilePhotonContainer extends TileLumenBase implements IPholarized, I
 
 	@Override
 	ILumen createHandler() {
-		return new LumenHandler(this) {
+		return new SimpleLumenTileWrapper<TilePhotonContainer>(this, getCapacity()) {
 			@Override
-			public int fill(int amount, boolean fill) {
-				if(isActiveLazy()) {
-					return super.fill(amount, fill);
-				} else return amount;
+			public boolean canDrain() {
+				return isActiveLazy();
 			}
 
 			@Override
-			public int drain(int amount, boolean drain) {
-				if(isActiveLazy()) {
-					return super.drain(amount, drain);
-				} else return 0;
+			public boolean canFill() {
+				return isActiveLazy();
 			}
 		};
-	}
-
-	@Override
-	public boolean canDrain() {
-		return false;
-	}
-
-	@Override
-	public boolean canFill() {
-		return false;
 	}
 
 	@Override

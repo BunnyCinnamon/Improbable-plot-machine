@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
+import arekkuusu.solar.api.capability.inventory.EntangledIItemHandler;
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;

@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.network;
 
-import arekkuusu.solar.api.entanglement.inventory.EntangledIItemHandler;
+import arekkuusu.solar.api.capability.inventory.EntangledIItemHandler;
 import arekkuusu.solar.common.block.tile.TilePhenomena;
 import arekkuusu.solar.common.lib.LibMod;
 import com.google.common.collect.Lists;

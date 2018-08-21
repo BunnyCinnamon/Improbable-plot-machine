@@ -1,6 +1,6 @@
 package arekkuusu.solar.common.entity;
 
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.data.ILumen;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
@@ -62,11 +62,12 @@ public class EntityLumen extends Entity {
 				Solar.PROXY.spawnLuminescence(world, pos, vec, 30 + world.rand.nextInt(40), scale, GlowTexture.GLINT);
 			}
 		} else {
-			double rest = 0.128D;//(0.25D - (double) handler.get() / 500D);
-			motionX = MathHelper.clamp(motionX, -rest, rest);
-			motionY = MathHelper.clamp(motionY, -rest, rest);
-			motionZ = MathHelper.clamp(motionZ, -rest, rest);
-			if(tick++ % 80 == 0 && tick > 1) {
+			double drag = 0.128D;
+			motionX = MathHelper.clamp(motionX, -drag, drag);
+			motionY = MathHelper.clamp(motionY, -drag, drag);
+			motionZ = MathHelper.clamp(motionZ, -drag, drag);
+			double weightDiff = 10 * Math.log10(handler.get()) / 10 * Math.log10(handler.getMax());
+			if(tick++ % (int)(40 * (1 - weightDiff)) == 0 && tick > 1) {
 				handler.set((int) ((float) handler.get() * 0.75F));
 			}
 			if(handler.get() <= 0) setDead();

@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.LumenHelper;
+import arekkuusu.solar.api.capability.energy.data.ComplexLumenStackWrapper;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.Light;
@@ -18,7 +18,6 @@ import arekkuusu.solar.client.util.baker.baked.BakedNeutronBattery;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery;
-import arekkuusu.solar.common.handler.data.ModCapability;
 import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.Lists;
@@ -28,7 +27,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -70,10 +68,11 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		ItemStack stack = player.getHeldItem(hand);
 		if(!stack.isEmpty() && stack.getItem() == ModItems.NEUTRON_BATTERY) {
 			if(!world.isRemote) getTile(TileNeutronBattery.class, world, pos).ifPresent(neutron -> {
-				IEntangledStack entangled = ((IEntangledStack) stack.getItem());
-				if(!entangled.getKey(stack).isPresent()) {
-					neutron.getKey().ifPresent(uuid -> entangled.setKey(stack, uuid));
-				}
+				LumenHelper.getCapability(ComplexLumenStackWrapper.class, stack).ifPresent(i -> {
+					if(!i.getKey().isPresent()) {
+						neutron.getKey().ifPresent(i::setKey);
+					}
+				});
 			});
 			return true;
 		}
@@ -83,18 +82,11 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
-			getTile(TileNeutronBattery.class, world, pos).ifPresent(neutron -> {
-				IEntangledStack entangled = (IEntangledStack) stack.getItem();
-				if(!entangled.getKey(stack).isPresent()) {
-					entangled.setKey(stack, UUID.randomUUID());
-				}
-				entangled.getKey(stack).ifPresent(neutron::setKey);
-				if(placer instanceof EntityPlayer && ((EntityPlayer) placer).capabilities.isCreativeMode) {
-					ILumen lumen = neutron.getCapability(ModCapability.NEUTRON_CAPABILITY, state.getValue(BlockDirectional.FACING));
-					if(lumen != null) {
-						lumen.set(capacitor.capacity); //CHEATER!!
-					}
-				}
+			getTile(TileNeutronBattery.class, world, pos).ifPresent(battery -> {
+				LumenHelper.getCapability(ComplexLumenStackWrapper.class, stack).ifPresent(i -> {
+					if(!i.getKey().isPresent()) i.setKey(UUID.randomUUID());
+					i.getKey().ifPresent(battery::setKey);
+				});
 			});
 		}
 	}
@@ -109,9 +101,10 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		Optional<TileNeutronBattery> optional = getTile(TileNeutronBattery.class, world, pos);
 		if(optional.isPresent()) {
 			TileNeutronBattery neutron = optional.get();
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			neutron.getKey().ifPresent(uuid -> {
-				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
+			ItemStack stack = new ItemStack(this);
+			NBTHelper.setNBT(stack, "neutron_nbt", capacitor.serializeNBT());
+			LumenHelper.getCapability(ComplexLumenStackWrapper.class, stack).ifPresent(i -> {
+				neutron.getKey().ifPresent(i::setKey);
 			});
 			return stack;
 		}

@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.data.ILumen;
 import arekkuusu.solar.common.entity.EntityLumen;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import arekkuusu.solar.common.item.ModItems;
@@ -37,8 +37,9 @@ public class TileQuartzConsumer extends TileBase implements ITickable {
 		if(!world.isRemote && world.rand.nextFloat() < 0.1F && !handler.stack.isEmpty()) {
 			ILumen ilumen = handler.stack.getCapability(ModCapability.NEUTRON_CAPABILITY, null);
 			assert ilumen != null;
-			if(ilumen.get() >= 5 && ilumen.drain(5, true) == 5) {
-				EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), 5);
+			int drain = world.rand.nextInt(15);
+			if(drain > 0 && ilumen.get() >= drain && ilumen.drain(drain, true) == drain) {
+				EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), drain);
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 75F);
 				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 75F);
 				Vector3 vec = Vector3.Up().rotate(x.multiply(z)).multiply(0.1D);

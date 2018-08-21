@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.relativity.IRelativePower;
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.IRelativeRedstone;
+import arekkuusu.solar.api.capability.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.util.EnumFacing;
@@ -17,7 +17,7 @@ import net.minecraft.util.EnumFacing;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class TileBlinker extends TileRelativeBase implements IRelativePower {
+public class TileBlinker extends TileRelativeBase implements IRelativeRedstone {
 
 	@Override
 	public void onPowerUpdate() {

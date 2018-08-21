@@ -7,11 +7,10 @@
  */
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.entanglement.energy.data.ILumen;
-import arekkuusu.solar.api.entanglement.energy.data.LumenStackProvider;
-import arekkuusu.solar.api.helper.NBTHelper;
-import arekkuusu.solar.client.effect.Light;
-import arekkuusu.solar.common.Solar;
+import arekkuusu.solar.api.capability.energy.LumenHelper;
+import arekkuusu.solar.api.capability.energy.LumenStackProvider;
+import arekkuusu.solar.api.capability.energy.data.ILumen;
+import arekkuusu.solar.api.capability.energy.data.SimpleLumenStackWrapper;
 import arekkuusu.solar.common.entity.EntityStaticItem;
 import arekkuusu.solar.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
@@ -46,7 +45,7 @@ public class ItemCrystalQuartz extends ItemBase {
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1D - (double) getLumen(stack) / (double) MAX_LUMEN;
+		return 1D - (double) LumenHelper.getCapability(stack).map(ILumen::get).orElse(0) / (double) MAX_LUMEN;
 	}
 
 	@Override
@@ -57,38 +56,9 @@ public class ItemCrystalQuartz extends ItemBase {
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(final ItemStack stackIn, @Nullable NBTTagCompound nbt) {
-		return LumenStackProvider.create(new ILumen() {
-			{
-				setLumen(stackIn, MAX_LUMEN);
-			}
-
-			private final ItemStack stack = stackIn;
-
-			@Override
-			public int get() {
-				return getLumen(stack);
-			}
-
-			@Override
-			public void set(int neutrons) {
-				if(neutrons <= MAX_LUMEN) {
-					setLumen(stack, neutrons);
-				}
-			}
-
-			@Override
-			public int getMax() {
-				return MAX_LUMEN;
-			}
-		});
-	}
-
-	private int getLumen(ItemStack stack) {
-		return NBTHelper.getInteger(stack, ILumen.NBT_TAG);
-	}
-
-	private void setLumen(ItemStack stack, int neutrons) {
-		NBTHelper.setInteger(stack, ILumen.NBT_TAG, neutrons);
+		SimpleLumenStackWrapper wrapper = new SimpleLumenStackWrapper(stackIn, MAX_LUMEN);
+		wrapper.set(MAX_LUMEN);
+		return LumenStackProvider.create(wrapper);
 	}
 
 	@Override

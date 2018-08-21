@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.state.Direction;
 import arekkuusu.solar.api.util.FixedMaterial;
@@ -54,7 +54,7 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class BlockQelaion extends BlockBase {
 
-	public static final AxisAlignedBB BB = new AxisAlignedBB(0.0625, 0.0625, 0.0625,0.9375, 0.9375, 0.9375);
+	public static final AxisAlignedBB BB = new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.9375, 0.9375);
 	public static final PropertyBool HAS_NODE = PropertyBool.create("has_node");
 
 	public BlockQelaion() {
@@ -74,7 +74,7 @@ public class BlockQelaion extends BlockBase {
 			Optional<TileQelaion> optional = getTile(TileQelaion.class, world, pos);
 			if(optional.isPresent()) {
 				TileQelaion qelaion = optional.get();
-				Optional<UUID> nodes = ((IEntangledStack) stack.getItem()).getKey(stack);
+				Optional<UUID> nodes = RelativityHelper.getRelativeKey(stack);
 				Optional<UUID> parent = qelaion.getKey();
 				if(nodes.isPresent() && parent.isPresent()) {
 					qelaion.setNodes(nodes.get());
@@ -96,11 +96,9 @@ public class BlockQelaion extends BlockBase {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
-				IEntangledStack entangled = (IEntangledStack) stack.getItem();
-				if(!entangled.getKey(stack).isPresent()) {
-					entangled.setKey(stack, UUID.randomUUID());
-				}
-				entangled.getKey(stack).ifPresent(qelaion::setKey);
+				if(!RelativityHelper.getRelativeKey(stack).isPresent())
+					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
+				RelativityHelper.getRelativeKey(stack).ifPresent(qelaion::setKey);
 				if(NBTHelper.hasUniqueID(stack, "nodes")) {
 					qelaion.setNodes(NBTHelper.getUniqueID(stack, "nodes"));
 				}
@@ -120,7 +118,7 @@ public class BlockQelaion extends BlockBase {
 			TileQelaion qelaion = optional.get();
 			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
 			qelaion.getKey().ifPresent(uuid -> {
-				((IEntangledStack) stack.getItem()).setKey(stack, uuid);
+				RelativityHelper.setRelativeKey(stack, uuid);
 			});
 			if(qelaion.getNodes() != null) {
 				NBTHelper.setUniqueID(stack, "nodes", qelaion.getNodes());
@@ -176,7 +174,7 @@ public class BlockQelaion extends BlockBase {
 		Optional<TileQelaion> optional = getTile(TileQelaion.class, world, pos);
 		if(optional.isPresent()) {
 			List<EnumFacing> closed = optional.get().getInputs();
-			Direction direction = Direction.getDirectionFromFacings(closed.toArray(new EnumFacing[closed.size()]));
+			Direction direction = Direction.getDirectionFromFacings(closed.toArray(new EnumFacing[0]));
 			return ((IExtendedBlockState) state).withProperty(Direction.DIR_UNLISTED, direction);
 		}
 		return super.getExtendedState(state, world, pos);

@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.relativity.IRelativeTile;
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.IRelativeState;
+import arekkuusu.solar.api.capability.relativity.RelativityHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,7 +21,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 28/09/2017.
  * It's distributed as part of Solar.
  */
-public abstract class TileRelativeBase extends TileBase implements IRelativeTile {
+public abstract class TileRelativeBase extends TileBase implements IRelativeState {
 
 	private UUID key;
 

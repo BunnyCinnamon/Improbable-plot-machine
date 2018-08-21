@@ -7,11 +7,10 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.IEntangledTile;
-import arekkuusu.solar.api.entanglement.quantum.QuantumDataHandler;
-import arekkuusu.solar.api.entanglement.quantum.data.QimranutData;
+import arekkuusu.solar.api.capability.quantum.IQuantum;
+import arekkuusu.solar.api.capability.quantum.QuantumDataHandler;
+import arekkuusu.solar.api.capability.quantum.data.QimranutData;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -27,39 +26,27 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 23/12/2017.
  * It's distributed as part of Solar.
  */
-public class TileQimranut extends TileBase implements IEntangledTile {
+public class TileQimranut extends TileBase implements IQuantum {
 
 	private UUID key = null;
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return getFacingLazy() == facing ? getSource().map(data -> {
-			World world = data.getWorld();
-			if(world != null) {
-				IBlockState state = world.getBlockState(data.getPos());
-				if(state.getBlock().hasTileEntity(state)) {
-					TileEntity tile = world.getTileEntity(data.getPos());
-					return (tile != null && !(tile instanceof TileQimranut)) && tile.hasCapability(capability, data.getFacing());
-				}
-			}
-			return false;
-		}).orElse(false) : false;
+		return getFacingLazy() == facing ? getSource().map(data -> getTargetTile()
+				.filter(tile -> !(tile instanceof TileQimranut))
+				.map(tile -> tile.hasCapability(capability, data.getFacing()))
+				.orElse(null)
+		).orElse(false) : false;
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return getFacingLazy() == facing ? getSource().map(data -> {
-			World world = data.getWorld();
-			if(world != null) {
-				IBlockState state = world.getBlockState(data.getPos());
-				if(state.getBlock().hasTileEntity(state)) {
-					TileEntity tile = world.getTileEntity(data.getPos());
-					return tile != null && !(tile instanceof TileQimranut) ? tile.getCapability(capability, data.getFacing()) : null;
-				}
-			}
-			return null;
-		}).orElse(null) : null;
+		return getFacingLazy() == facing ? getSource().map(data -> getTargetTile()
+				.filter(tile -> !(tile instanceof TileQimranut))
+				.map(tile -> tile.getCapability(capability, data.getFacing()))
+				.orElse(null)
+		).orElse(null) : null;
 	}
 
 	public EnumFacing getFacingLazy() {
@@ -77,6 +64,11 @@ public class TileQimranut extends TileBase implements IEntangledTile {
 
 	public Optional<QimranutData> getSource() {
 		return getKey().map(uuid -> QuantumDataHandler.<QimranutData>get(uuid).orElse(null));
+	}
+
+	public Optional<TileEntity> getTargetTile() {
+		return getSource().filter(source -> source.getWorld() != null)
+				.flatMap(source -> getTile(TileEntity.class, source.getWorld(), source.getPos()));
 	}
 
 	@Override

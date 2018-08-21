@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.entanglement.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.RelativityHandler;
 import arekkuusu.solar.api.helper.FacingHelper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.helper.ProfilerHelper;

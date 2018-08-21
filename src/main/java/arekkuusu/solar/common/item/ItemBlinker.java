@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.entanglement.IEntangledStack;
+import arekkuusu.solar.api.capability.relativity.RelativityHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class ItemBlinker extends ItemBaseBlock implements IEntangledStack, IEntangledDescription<ItemBlinker> {
+public class ItemBlinker extends ItemBaseBlock implements IUUIDDescription {
 
 	ItemBlinker() {
 		super(ModBlocks.BLINKER);
@@ -31,6 +31,6 @@ public class ItemBlinker extends ItemBaseBlock implements IEntangledStack, IEnta
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		addTooltipInfo(this, stack, tooltip);
+		RelativityHelper.getRelativeKey(stack).ifPresent(uuid -> addInformation(uuid, tooltip));
 	}
 }

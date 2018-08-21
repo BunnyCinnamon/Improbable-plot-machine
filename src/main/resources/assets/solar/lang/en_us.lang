@@ -1,18 +1,14 @@
 itemGroup.solar.misc_tab=Solar
 
-//Sound subtitles
-solar.sound.spark=spark!
-//Deaths
+solar.sound.spark=bzzt!
 solar.death.electricity.player=%1$s was sentenced to the electric chair
 
-//Items
 item.crystal_quartz.name=Crystal Quartz
 item.ash.name=Ash
 item.singularity.name=Singularity
 item.plasmon.name=Plasmon
 item.theorema.name=Theorema
 
-//Blocks
 tile.primal_stone.name=Primal Stone
 tile.black_hole.name=Black Hole
 tile.quantum_mirror.name=Quantum Mirror
@@ -51,18 +47,15 @@ tile.differentiator_interceptor.name=Differentiator Interceptor
 tile.kondenzator.name=Kondenzator
 tile.imbued_quartz.name=Imbued Quartz
 
-//Fluid
-fluid.tile.gold=Gold
+fluid.tile.gold=Molten Gold
 
-//Entity
 entity.eye_of_schrodinger.name=Eye of Schrodinger
 entity.fast_item.name=Entity Item
 entity.quingentilliard_item.name=Entity Item
 entity.quantum_quartz.name=Entity Item
 
-//Tooltip
-tlp.uuid_key=Uuid
+tlp.uuid_key=Group
 tlp.tag_nodes=Node link
 tlp.item_filter=Item Filter
-tlp.quantum_data=Quantum Data
+tlp.quantum_data=Holds
 tlp.monolithic_description=Immovable Object
