@@ -47,6 +47,10 @@ public final class RenderHelper {
 		return (Minecraft.getSystemTime() + partialTicks) / 20F;
 	}
 
+	public static float getRenderPlayerTime() {
+		return Minecraft.getMinecraft().player.ticksExisted;
+	}
+
 	public static void renderBeams(float age, int number, int startRBG, int endRGB, float size) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -114,7 +118,6 @@ public final class RenderHelper {
 			double x = Minecraft.getMinecraft().getRenderManager().viewerPosX;
 			double y = Minecraft.getMinecraft().getRenderManager().viewerPosY;
 			double z = Minecraft.getMinecraft().getRenderManager().viewerPosZ;
-
 			GlStateManager.pushMatrix();
 			GlStateManager.enableBlend();
 			ShaderLibrary.ALPHA.begin();
@@ -124,12 +127,10 @@ public final class RenderHelper {
 			});
 			Blending.Normal().apply();
 			Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-
 			GlStateManager.translate(-x, -y, -z);
 			GlStateManager.translate(pos.getX(), pos.getY(), pos.getZ() + 1);
 			BlockRendererDispatcher renderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
 			renderer.renderBlockBrightness(state, 1F);
-
 			ShaderLibrary.ALPHA.end();
 			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();
@@ -140,7 +141,6 @@ public final class RenderHelper {
 		float toDegrees = (float) Math.PI / 180F;
 		angle += speed * tick;
 		if (angle > 360) angle -= 360;
-
 		GlStateManager.translate(0, max * Math.sin(angle * toDegrees), 0);
 	}
 }

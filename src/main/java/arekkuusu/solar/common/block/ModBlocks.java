@@ -65,6 +65,7 @@ public final class ModBlocks {
 	public static final Block HOLOGRATH = PLACE_HOLDER;
 	public static final Block KONDENZATOR = PLACE_HOLDER;
 	public static final Block IMBUED_QUARTZ = PLACE_HOLDER;
+	public static final Block CRYSTALLIC_SYNTHESIZER = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
@@ -104,6 +105,7 @@ public final class ModBlocks {
 		registry.register(new BlockHolograth());
 		registry.register(new BlockKondenzator());
 		registry.register(new BlockImbuedQuartz());
+		registry.register(new BlockCrystallicSynthesizer());
 		registerTiles();
 	}
 
@@ -130,6 +132,7 @@ public final class ModBlocks {
 		registerTile(TilePhotonContainer.class, LibNames.PHOTON_CONTAINER);
 		registerTile(TileDifferentiatorInterceptor.class, LibNames.DIFFERENTIATOR_INTERCEPTOR);
 		registerTile(TileKondenzator.class, LibNames.KONDENZATOR);
+		registerTile(TileCrystallicSynthesizer.class, LibNames.CRYSTALLIC_SYNTHESIZER);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {

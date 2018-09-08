@@ -10,6 +10,7 @@ package arekkuusu.solar.client.util;
 import arekkuusu.solar.client.util.resource.SpriteManager;
 import arekkuusu.solar.client.util.resource.sprite.FrameSpriteResource;
 import arekkuusu.solar.client.util.resource.sprite.SpriteResource;
+import arekkuusu.solar.common.Solar;
 import net.katsstuff.teamnightclipse.mirror.client.helper.TextureLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,5 +35,7 @@ public final class SpriteLibrary {
 			TextureLocation.Model(), "eye_of_schrodinger_layer"
 	);
 
-	public static void init() {}
+	public static void init() {
+		Solar.LOG.info("[MAKING PIE!]");
+	}
 }

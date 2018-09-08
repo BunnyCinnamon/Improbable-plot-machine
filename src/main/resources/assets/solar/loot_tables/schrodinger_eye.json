@@ -1,13 +1,13 @@
 {
   "pools": [
 	{
-	  "name": "solar:schrodinger_eye",
+	  "name": "#0",
 	  "rolls": 1,
 	  "entries": [
 		{
 		  "type": "item",
-		  "name": "solar:crystal_quartz",
-		  "weight": 1,
+		  "name": "solar:crystal_quartz_shard",
+		  "weight": 10,
 		  "functions": [
 			{
 			  "function": "set_count",
@@ -20,21 +20,84 @@
 			  "function": "looting_enchant",
 			  "count": {
 				"min": 1,
-				"max": 1
+				"max": 3
 			  }
 			}
+		  ]
+		},
+		{
+		  "type": "item",
+		  "name": "solar:crystal_quartz",
+		  "weight": 1,
+		  "functions": [
+		    {
+              "function": "minecraft:set_nbt",
+              "tag": "{lumen:25}"
+            }
 		  ]
 		},
         {
           "type": "empty",
           "weight": 100
         }
+	  ]
+	},
+	{
+	  "name": "#1",
+	  "rolls": 1,
+	  "entries": [
+		{
+		  "type": "item",
+		  "name": "solar:crystal_quartz",
+		  "weight": 1,
+		  "quality": 10,
+		  "functions": [
+		    {
+              "function": "minecraft:set_nbt",
+              "tag": "{lumen:100}"
+            }
+		  ]
+		},
+		{
+		  "type": "empty",
+		  "weight": 15
+		}
 	  ],
 	  "conditions": [
+        {
+            "condition": "killed_by_player"
+        },
+        {
+            "condition": "random_chance_with_looting",
+            "chance": 0.025,
+            "looting_multiplier": 0.01
+        }
+      ]
+	},
+	{
+	  "name": "#2",
+	  "rolls": 1,
+	  "entries": [
 		{
-		  "condition": "killed_by_player"
+		  "type": "item",
+		  "name": "solar:intrinsic_cell",
+		  "weight": 1
+		},
+		{
+		  "type": "empty",
+		  "weight": 15
 		}
-	  ]
+	  ],
+	  "conditions": [
+        {
+            "condition": "killed_by_player"
+        },
+        {
+            "condition": "random_chance_with_looting",
+            "chance": 0.015,
+            "looting_multiplier": 0.005
+        }
+      ]
 	}
   ]
 }

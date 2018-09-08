@@ -86,7 +86,7 @@ public class TileQuartzConsumer extends TileBase implements ITickable {
 	void readNBT(NBTTagCompound compound) {
 		if(compound.hasKey("stack")) {
 			handler.stack = new ItemStack(compound.getCompoundTag("stack"));
-		}
+		} else handler.stack = ItemStack.EMPTY;
 	}
 
 	@Override

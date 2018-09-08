@@ -60,6 +60,7 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
+		setLightLevel(0.2F);
 		this.capacitor = capacitor;
 	}
 

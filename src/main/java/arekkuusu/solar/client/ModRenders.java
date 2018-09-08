@@ -10,6 +10,7 @@ package arekkuusu.solar.client;
 import arekkuusu.solar.client.render.*;
 import arekkuusu.solar.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.solar.client.render.entity.LumenRenderer;
+import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.block.tile.*;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
@@ -36,6 +37,7 @@ public final class ModRenders {
 	public static void preInit() {
 		registerEntity(EntityEyeOfSchrodinger.class, EyeOfSchrodingerRenderer::new);
 		registerEntity(EntityLumen.class, LumenRenderer::new);
+		Solar.LOG.info("[YOU WAN SUM PIE!]");
 	}
 
 	public static void init() {
@@ -54,6 +56,7 @@ public final class ModRenders {
 		registerTESR(TileDifferentiator.class, new DifferentiatorRenderer());
 		registerTESR(TileDifferentiatorInterceptor.class, new DifferentiatorInterceptorRenderer());
 		registerTESR(TileKondenzator.class, new KondenzatorRenderer());
+		registerTESR(TileCrystallicSynthesizer.class, new CrystallicSynthesizerRenderer());
 
 		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
 		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
@@ -70,6 +73,8 @@ public final class ModRenders {
 		registerTESRItemStack(ModBlocks.DIFFERENTIATOR, TileDifferentiator.class);
 		registerTESRItemStack(ModBlocks.DIFFERENTIATOR_INTERCEPTOR, TileDifferentiatorInterceptor.class);
 		registerTESRItemStack(ModBlocks.KONDENZATOR, TileKondenzator.class);
+		registerTESRItemStack(ModBlocks.CRYSTALLIC_SYNTHESIZER, TileCrystallicSynthesizer.class);
+		Solar.LOG.info("[NOM PIE!]");
 	}
 
 	private static <T extends TileEntity> void registerTESR(Class<T> tile, TileEntitySpecialRenderer<T> render) {

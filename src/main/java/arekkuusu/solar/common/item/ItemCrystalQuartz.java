@@ -14,10 +14,12 @@ import arekkuusu.solar.api.capability.energy.data.SimpleLumenStackWrapper;
 import arekkuusu.solar.common.entity.EntityStaticItem;
 import arekkuusu.solar.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -56,9 +58,7 @@ public class ItemCrystalQuartz extends ItemBase {
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(final ItemStack stackIn, @Nullable NBTTagCompound nbt) {
-		SimpleLumenStackWrapper wrapper = new SimpleLumenStackWrapper(stackIn, MAX_LUMEN);
-		wrapper.set(MAX_LUMEN);
-		return LumenStackProvider.create(wrapper);
+		return LumenStackProvider.create(new SimpleLumenStackWrapper(stackIn, MAX_LUMEN));
 	}
 
 	@Override
@@ -92,5 +92,17 @@ public class ItemCrystalQuartz extends ItemBase {
 	private boolean isValidSpawn(World world, Vector3 to) {
 		BlockPos pos = to.toBlockPos();
 		return world.isValid(pos) && world.isBlockLoaded(pos) && world.isAirBlock(pos);
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if(this.isInCreativeTab(tab)) {
+			ItemStack fullStack = new ItemStack(this);
+			for(int i = MAX_LUMEN; i >= 0; i -= MAX_LUMEN / 4) {
+				final int lumen = i;
+				LumenHelper.getCapability(ILumen.class, fullStack).ifPresent(l -> l.set(lumen));
+				items.add(fullStack.copy());
+			}
+		}
 	}
 }

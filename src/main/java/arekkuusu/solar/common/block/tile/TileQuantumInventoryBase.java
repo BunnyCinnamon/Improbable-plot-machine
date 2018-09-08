@@ -24,12 +24,12 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 14/09/2017.
  * It's distributed as part of Solar.
  */
-public abstract class TileQuantumBase extends TileBase implements IQuantum {
+public abstract class TileQuantumInventoryBase extends TileBase implements IQuantum {
 
 	private final IEntangledIItemHandler handler;
 	private UUID key = null;
 
-	public TileQuantumBase() {
+	public TileQuantumInventoryBase() {
 		this.handler = createHandler();
 	}
 

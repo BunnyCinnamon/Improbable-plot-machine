@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Created by <Arekkuusu> on 8/9/2018.
  * It's distributed as part of Solar.
  */
-public class TileKondenzator extends TileLumenBase implements ITickable {
+public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 
 	@Override
 	public void update() {
@@ -88,7 +88,6 @@ public class TileKondenzator extends TileLumenBase implements ITickable {
 				int missing = BlockKondenzator.MAX_LUMEN - handler.get();
 				if(missing > 0 && lumen.drain(missing, false) > 0) {
 					handler.fill(lumen.drain(missing, true), true);
-					if(lumen.get() <= 0) stack.shrink(1);
 				}
 			}
 			return true;
@@ -117,8 +116,8 @@ public class TileKondenzator extends TileLumenBase implements ITickable {
 
 	@Override
 	void onLumenChange() {
-		if(!world.isRemote) sync();
-		if(handler.get() <= 0) BlockKondenzator.setProgress(this, 0);
+		if(world != null && !world.isRemote) sync();
+		if(handler.get() < 0) BlockKondenzator.setProgress(this, 0);
 	}
 
 	@Override

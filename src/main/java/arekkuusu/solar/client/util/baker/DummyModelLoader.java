@@ -45,8 +45,6 @@ public class DummyModelLoader implements ICustomModelLoader {
 
 	@Override
 	public void onResourceManagerReload(IResourceManager manager) {
-		for(BlockBaker baker : BlockBaker.values()) {
-			baker.bake();
-		}
+		BlockBaker.bakeAll();
 	}
 }

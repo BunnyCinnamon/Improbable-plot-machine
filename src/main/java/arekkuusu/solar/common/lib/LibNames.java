@@ -53,4 +53,8 @@ public class LibNames {
 	public static final String THEOREMA = "theorema";
 	public static final String KONDENZATOR = "kondenzator";
 	public static final String IMBUED_QUARTZ = "imbued_quartz";
+	public static final String INTRINSIC_CELL = "intrinsic_cell";
+	public static final String CRYSTAL_QUARTZ_SHARD = "crystal_quartz_shard";
+	public static final String CRYSTALLIC_SYNTHESIZER = "crystallic_synthesizer";
+	public static final String QUARTZ = "quartz";
 }

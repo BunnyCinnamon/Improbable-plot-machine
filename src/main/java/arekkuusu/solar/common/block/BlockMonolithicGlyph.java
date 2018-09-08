@@ -8,6 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
+import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.block.properties.PropertyInteger;
@@ -16,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
@@ -27,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 /*
  * Created by <Arekkuusu> on 24/06/2017.
@@ -46,6 +49,21 @@ public class BlockMonolithicGlyph extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
 		Tooltip.inline().addI18n("tlp.monolithic_description", Tooltip.DarkGrayItalic()).build(tooltip);
+	}
+
+	@Override
+	protected ItemStack getSilkTouchDrop(IBlockState state) {
+		return new ItemStack(this);
+	}
+
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return ModItems.CRYSTAL_QUARTZ_SHARD;
+	}
+
+	@Override
+	public int quantityDropped(Random random) {
+		return random.nextInt(1);
 	}
 
 	@Override

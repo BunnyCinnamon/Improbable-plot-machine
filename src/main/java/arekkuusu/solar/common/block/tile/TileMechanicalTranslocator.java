@@ -33,7 +33,7 @@ import static net.minecraft.util.EnumFacing.*;
  * Created by <Arekkuusu> on 17/01/2018.
  * It's distributed as part of Solar.
  */
-public class TileMechanicalTranslocator extends TileRelativeBase implements Comparable<TileMechanicalTranslocator> {
+public class TileMechanicalTranslocator extends TileRelativityBase implements Comparable<TileMechanicalTranslocator> {
 
 	private boolean powered;
 	private int index = -1;

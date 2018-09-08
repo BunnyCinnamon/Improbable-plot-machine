@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * Created by <Arekkuusu> on 24/02/2018.
  * It's distributed as part of Solar.
  */
-public class TileQelaion extends TileRelativeBase implements ITickable {
+public class TileQelaion extends TileRelativityBase implements ITickable {
 
 	private Set<EnumFacing> facings = Sets.newLinkedHashSet(Arrays.asList(EnumFacing.values()));
 	private int facingIndex;

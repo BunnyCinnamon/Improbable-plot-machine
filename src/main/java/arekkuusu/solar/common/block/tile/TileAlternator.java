@@ -20,7 +20,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 23/01/2018.
  * It's distributed as part of Solar.
  */
-public class TileAlternator extends TileRelativeBase {
+public class TileAlternator extends TileRelativityBase {
 
 	private UUID loadKey;
 

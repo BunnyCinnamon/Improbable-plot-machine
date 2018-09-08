@@ -34,6 +34,9 @@ public final class ModItems {
 	public static final Item QELAION = PLACE_HOLDER;
 	public static final Item NEUTRON_BATTERY = PLACE_HOLDER;
 	public static final Item THEOREMA = PLACE_HOLDER;
+	public static final Item INTRINSIC_CELL = PLACE_HOLDER;
+	public static final Item CRYSTAL_QUARTZ_SHARD = PLACE_HOLDER;
+	public static final Item QUARTZ = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -76,6 +79,10 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.KONDENZATOR));
 		registry.register(new ItemTheorema());
 		registry.register(itemBlock(ModBlocks.IMBUED_QUARTZ));
+		registry.register(new ItemBase(LibNames.INTRINSIC_CELL));
+		registry.register(new ItemBase(LibNames.CRYSTAL_QUARTZ_SHARD));
+		registry.register(itemBlock(ModBlocks.CRYSTALLIC_SYNTHESIZER));
+		registry.register(new ItemQuartz());
 	}
 
 	@SuppressWarnings("ConstantConditions")

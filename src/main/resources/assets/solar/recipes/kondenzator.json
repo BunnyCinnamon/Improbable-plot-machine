@@ -14,7 +14,7 @@
       "ore": "blockGlass"
     },
     "D": {
-      "item": "solar:crystal_quartz"
+      "item": "solar:intrinsic_cell"
     }
   },
   "result": {

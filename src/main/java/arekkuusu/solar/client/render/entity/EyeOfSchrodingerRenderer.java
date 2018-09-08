@@ -8,8 +8,8 @@
 package arekkuusu.solar.client.render.entity;
 
 import arekkuusu.solar.client.util.ResourceLibrary;
+import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
-import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.common.entity.EntityEyeOfSchrodinger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -45,15 +45,12 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 	protected void applyRotations(EntityEyeOfSchrodinger schrodinger, float p_77043_2_, float rotationYaw, float partialTicks) {
 		GlStateManager.rotate(180F - rotationYaw, 0F, 1F, 0F);
 		GlStateManager.rotate(-schrodinger.rotationPitch, 1F, 0F, 0.0F);
-
 		if(schrodinger.deathTime > 0) {
 			float f = ((float) schrodinger.deathTime + partialTicks - 1.0F) / 20.0F * 1.6F;
 			f = MathHelper.sqrt(f);
-
 			if(f > 1.0F) {
 				f = 1.0F;
 			}
-
 			GlStateManager.rotate(f * this.getDeathMaxRotation(schrodinger), 0.0F, 0.0F, 1.0F);
 		}
 	}
@@ -78,43 +75,41 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 
 		@Override
 		public void doRenderLayer(EntityEyeOfSchrodinger schrodinger, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+			ShaderLibrary.BRIGHT.begin();
 			GlStateManager.disableLighting();
 			GlStateManager.enableBlend();
 			GlStateManager.disableAlpha();
 			SpriteLibrary.EYE_OF_SCHRODINGER_LAYER.bindManager();
-
 			if(schrodinger.isInvisible()) {
 				GlStateManager.depthMask(false);
 			} else {
 				GlStateManager.depthMask(true);
 			}
-
 			boolean hasTarget = schrodinger.hasTargetedEntity();
 			int rgb = hasTarget ? EntityEyeOfSchrodinger.RED : EntityEyeOfSchrodinger.BLUE;
-
 			float r = (rgb >>> 16 & 0xFF) / 256.0F;
 			float g = (rgb >>> 8 & 0xFF) / 256.0F;
 			float b = (rgb & 0xFF) / 256.0F;
 			GlStateManager.color(r, g, b, 1F);
-
-			if(!hasTarget) {
-				float brigthness = MathHelper.cos(schrodinger.ticksExisted * 0.05F);
-				if(brigthness < 0) brigthness *= -1;
-				brigthness *= 255F;
-				GLHelper.lightMap(brigthness, brigthness);
-			} else {
-				GLHelper.lightMap(255F, 255F);
-			}
-
+			ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(br -> {
+				float brigth;
+				if(!hasTarget) {
+					brigth = MathHelper.sin(schrodinger.ticksExisted * 0.05F);
+					if(brigth < 0) brigth *= -1;
+				} else {
+					brigth = 1;
+				}
+				br.set(-1 + brigth);
+				br.upload();
+			});
 			Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
-
 			render.mainModel.render(schrodinger, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-
 			Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
 			render.setLightmap(schrodinger);
-			GlStateManager.enableLighting();
-			GlStateManager.disableBlend();
 			GlStateManager.enableAlpha();
+			GlStateManager.disableBlend();
+			GlStateManager.enableLighting();
+			ShaderLibrary.BRIGHT.end();
 		}
 
 		@Override

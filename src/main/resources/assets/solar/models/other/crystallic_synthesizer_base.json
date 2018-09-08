@@ -1,0 +1,80 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "solar:blocks/crystallic_synthesizer/base",
+		"particle": "solar:blocks/crystallic_synthesizer/base"
+	},
+	"elements": [
+		{
+			"from": [7, 8, 9],
+			"to": [12, 10, 12],
+			"faces": {
+				"north": {"uv": [1, 13, 6, 15], "texture": "#0"},
+				"east": {"uv": [0, 0, 3, 2], "texture": "#0"},
+				"south": {"uv": [3, 0, 8, 2], "texture": "#0"},
+				"west": {"uv": [1, 13, 4, 15], "texture": "#0"},
+				"up": {"uv": [3, 13, 8, 16], "texture": "#0"},
+				"down": {"uv": [3, 8, 8, 11], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9, 8, 4],
+			"to": [12, 10, 9],
+			"faces": {
+				"north": {"uv": [0, 0, 3, 2], "texture": "#0"},
+				"east": {"uv": [3, 0, 8, 2], "texture": "#0"},
+				"south": {"uv": [1, 13, 4, 15], "texture": "#0"},
+				"west": {"uv": [1, 13, 6, 15], "texture": "#0"},
+				"up": {"uv": [5, 8, 8, 13], "texture": "#0"},
+				"down": {"uv": [5, 11, 8, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 8, 4],
+			"to": [9, 10, 7],
+			"faces": {
+				"north": {"uv": [3, 0, 8, 2], "texture": "#0"},
+				"east": {"uv": [1, 13, 4, 15], "texture": "#0"},
+				"south": {"uv": [1, 13, 6, 15], "texture": "#0"},
+				"west": {"uv": [0, 0, 3, 2], "texture": "#0"},
+				"up": {"uv": [0, 8, 5, 11], "texture": "#0"},
+				"down": {"uv": [0, 13, 5, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 8, 7],
+			"to": [7, 10, 12],
+			"faces": {
+				"north": {"uv": [1, 13, 4, 15], "texture": "#0"},
+				"east": {"uv": [1, 13, 6, 15], "texture": "#0"},
+				"south": {"uv": [0, 0, 3, 2], "texture": "#0"},
+				"west": {"uv": [3, 0, 8, 2], "texture": "#0"},
+				"up": {"uv": [0, 11, 3, 16], "texture": "#0"},
+				"down": {"uv": [0, 8, 3, 13], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "model",
+			"isOpen": true,
+			"shade": true,
+			"display": {
+				"visibility": true,
+				"autouv": true
+			},
+			"children": [
+				{
+					"name": "top",
+					"isOpen": true,
+					"shade": true,
+					"display": {
+						"visibility": true,
+						"autouv": true
+					},
+					"children": [0, 1, 2, 3]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,12 @@
+﻿{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "solar:imbued_quartz"},
+    {"item": "solar:crystal_quartz_shard"}
+  ],
+  "result": {
+    "item": "solar:quartz",
+	"nbt": {"quartz_kind": "blue_small"}
+  },
+  "group": "plot_machine"
+}

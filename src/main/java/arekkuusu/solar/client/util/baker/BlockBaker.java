@@ -71,7 +71,13 @@ public enum BlockBaker {
 	DIFFERENTIATOR_INTERCEPTOR_RING("differentiator_interceptor_ring"),
 	DIFFERENTIATOR_INTERCEPTOR_BEACON("differentiator_interceptor_beacon"),
 	KONDENZATOR_BASE("kondenzator_base"),
-	KONDENZATOR_CENTER("kondenzator_center");
+	KONDENZATOR_CENTER("kondenzator_center"),
+	CRYSTALLIC_SYNTHESIZER_BASE("crystallic_synthesizer_base"),
+	CRYSTALLIC_SYNTHESIZER_CRYSTAL("crystallic_synthesizer_crystal"),
+	CRYSTALLIC_SYNTHESIZER_NODE("crystallic_synthesizer_node"),
+	CRYSTALLIC_SYNTHESIZER_NODE_GLOW("crystallic_synthesizer_node_glow"),
+	CRYSTALLIC_SYNTHESIZER_RING("crystallic_synthesizer_ring"),
+	CRYSTALLIC_SYNTHESIZER_RING_GLOW("crystallic_synthesizer_ring_glow");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;
@@ -86,10 +92,8 @@ public enum BlockBaker {
 	public static void bakeAll() {
 		for(BlockBaker bake : BlockBaker.values()) {
 			try {
-				if(bake.model == null) {
-					bake.model = ModelLoaderRegistry.getModel(bake.location);
-					bake.bake();
-				}
+				bake.model = ModelLoaderRegistry.getModel(bake.location);
+				bake.bake();
 			} catch(Exception e) {
 				Solar.LOG.fatal("[Model Bakery] Failed to bake json model: " + bake.getLocation().toString());
 				e.printStackTrace();

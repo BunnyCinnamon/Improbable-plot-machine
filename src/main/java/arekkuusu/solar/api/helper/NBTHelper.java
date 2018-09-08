@@ -89,9 +89,9 @@ public final class NBTHelper {
 		return compound.hasUniqueId(tag) ? compound.getUniqueId(tag) : null;
 	}
 
-	public static <T extends Enum<T> & IStringSerializable> void setEnum(ItemStack stack, T t, String tag) {
-		String value = t.getName();
-		fixNBT(stack).setString(tag, value);
+	public static <T extends Enum<T> & IStringSerializable> ItemStack setEnum(ItemStack stack, T t, String tag) {
+		fixNBT(stack).setString(tag, t.getName());
+		return stack;
 	}
 
 	public static <T extends Enum<T> & IStringSerializable> Optional<T> getEnum(Class<T> clazz, ItemStack stack, String tag) {

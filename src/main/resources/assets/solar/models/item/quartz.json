@@ -1,0 +1,117 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "solar:items/quartz/white_small"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "solar:size": 0.0,
+        "solar:color": 0.0
+      },
+	  "model": "solar:item/quartz/white_small"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.1,
+        "solar:color": 0.0
+      },
+	  "model": "solar:item/quartz/white_medium"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.2,
+        "solar:color": 0.0
+      },
+	  "model": "solar:item/quartz/white_large"
+    },
+	
+    {
+      "predicate": {
+        "solar:size": 0.0,
+        "solar:color": 0.1
+      },
+	  "model": "solar:item/quartz/blue_small"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.1,
+        "solar:color": 0.1
+      },
+	  "model": "solar:item/quartz/blue_medium"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.2,
+        "solar:color": 0.1
+      },
+	  "model": "solar:item/quartz/blue_large"
+    },
+	
+    {
+      "predicate": {
+        "solar:size": 0.0,
+        "solar:color": 0.2
+      },
+	  "model": "solar:item/quartz/green_small"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.1,
+        "solar:color": 0.2
+      },
+	  "model": "solar:item/quartz/green_medium"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.2,
+        "solar:color": 0.2
+      },
+	  "model": "solar:item/quartz/green_large"
+    },
+	
+	{
+      "predicate": {
+        "solar:size": 0.0,
+        "solar:color": 0.3
+      },
+	  "model": "solar:item/quartz/yellow_small"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.1,
+        "solar:color": 0.3
+      },
+	  "model": "solar:item/quartz/yellow_medium"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.2,
+        "solar:color": 0.3
+      },
+	  "model": "solar:item/quartz/yellow_large"
+    },
+	
+	{
+      "predicate": {
+        "solar:size": 0.0,
+        "solar:color": 0.4
+      },
+	  "model": "solar:item/quartz/pink_small"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.1,
+        "solar:color": 0.4
+      },
+	  "model": "solar:item/quartz/pink_medium"
+    },
+	{
+      "predicate": {
+        "solar:size": 0.2,
+        "solar:color": 0.4
+      },
+	  "model": "solar:item/quartz/pink_large"
+    }
+  ]
+}

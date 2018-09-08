@@ -17,7 +17,7 @@ import net.minecraft.util.EnumFacing;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class TileBlinker extends TileRelativeBase implements IRelativeRedstone {
+public class TileBlinker extends TileRelativityBase implements IRelativeRedstone {
 
 	@Override
 	public void onPowerUpdate() {

@@ -27,7 +27,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Solar.
  */
-public class TileQuantumMirror extends TileQuantumBase implements ITickable {
+public class TileQuantumMirror extends TileQuantumInventoryBase implements ITickable {
 
 	private boolean dirty;
 

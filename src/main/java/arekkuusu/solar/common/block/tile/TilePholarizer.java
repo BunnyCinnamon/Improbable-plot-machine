@@ -15,7 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 
-@SuppressWarnings("ConstantConditions") //Shut up
+@SuppressWarnings("ConstantConditions")
 public class TilePholarizer extends TileBase implements ITickable {
 
 	private int cooldown;
@@ -69,15 +69,13 @@ public class TilePholarizer extends TileBase implements ITickable {
 				.filter(tile -> tile.hasCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
 				.map(tile -> tile.getCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
 				.ifPresent(wrapper -> {
-					if(wrapper.get() >= 32 && wrapper.canDrain()) {
-						int drain = wrapper.drain(32, true);
-						if(drain > 0) {
-							EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), drain);
-							Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 45F);
-							Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 45F);
-							Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getOpposite().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
-							lumen.setMotion(vec);
-						}
+					int drain = wrapper.drain(16, true);
+					if(drain > 0) {
+						EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), drain);
+						Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 75F);
+						Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 75F);
+						Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getOpposite().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
+						lumen.setMotion(vec);
 					}
 				});
 	}

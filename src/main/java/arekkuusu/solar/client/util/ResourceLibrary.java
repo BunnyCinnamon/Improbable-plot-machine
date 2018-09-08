@@ -37,6 +37,8 @@ public final class ResourceLibrary {
 		getBlockTexture("differentiator_interceptor/glass");
 		getBlockTexture("differentiator_interceptor/glass_");
 		getBlockTexture("kondenzator/center");
+		getBlockTexture("crystallic_synthesizer/base_overlay");
+		getBlockTexture("crystallic_synthesizer/crystal");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation Q_SQUARED = getBlockTexture("q_squared");
@@ -54,6 +56,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation DIFFERENTIATOR_BASE = getBlockTexture("differentiator/base_0");
 	public static final ResourceLocation DIFFERENTIATOR_INTERCEPTOR_BASE = getBlockTexture("differentiator_interceptor/base");
 	public static final ResourceLocation KONDENZATOR = getBlockTexture("kondenzator/base");
+	public static final ResourceLocation CRYSTALLIC = getBlockTexture("crystallic_synthesizer/base");
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");

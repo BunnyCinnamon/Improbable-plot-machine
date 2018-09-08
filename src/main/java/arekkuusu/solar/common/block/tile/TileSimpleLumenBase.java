@@ -20,11 +20,11 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 5/3/2018.
  * It's distributed as part of Solar.
  */
-public abstract class TileLumenBase extends TileBase {
+public abstract class TileSimpleLumenBase extends TileBase {
 
 	protected final ILumen handler;
 
-	public TileLumenBase() {
+	public TileSimpleLumenBase() {
 		this.handler = createHandler();
 	}
 
@@ -33,7 +33,7 @@ public abstract class TileLumenBase extends TileBase {
 	public abstract int getCapacity();
 
 	ILumen createHandler() {
-		return new SimpleLumenTileWrapper<TileLumenBase>(this, getCapacity()) {
+		return new SimpleLumenTileWrapper<TileSimpleLumenBase>(this, getCapacity()) {
 			@Override
 			public void set(int neutrons) {
 				super.set(neutrons);

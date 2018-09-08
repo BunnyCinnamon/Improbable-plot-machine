@@ -14,7 +14,6 @@ import arekkuusu.solar.client.util.helper.GLHelper;
 import arekkuusu.solar.client.util.helper.RenderHelper;
 import arekkuusu.solar.common.block.tile.TileQuantumMirror;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -46,7 +45,9 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 				if(optional.isPresent()) {
 					ItemStack stack = EntangledIItemHandler.getEntanglementStack(optional.get(), 0);
 					if(!stack.isEmpty()) {
+						GlStateManager.enableBlend();
 						renderItem(stack, tick, x, y, z, partialTicks);
+						GlStateManager.disableBlend();
 					}
 				}
 				break;
@@ -67,13 +68,13 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-			float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
-			if(brigthness > 0) brigthness *= -1;
-			b.set(brigthness);
+			float brigthness = MathHelper.cos(RenderHelper.getRenderPlayerTime() * 0.05F);
+			if(brigthness > 0) brigthness *= -0.8;
+			b.set(0.1F + brigthness);
 			b.upload();
 		});
-		//
 		GlStateManager.pushMatrix();
+		Blending.AdditiveAlpha().apply();
 		GlStateManager.disableCull();
 		GlStateManager.translate(x, y, z + 0.5F);
 		SpriteLibrary.QUANTUM_MIRROR.bindManager();
@@ -82,7 +83,6 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		renderMirror(tick, -0.3F, 1F, partialTicks);
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
-		//
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		GLHelper.enableDepth();
@@ -100,12 +100,11 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-			float brigthness = MathHelper.cos(Minecraft.getMinecraft().player.ticksExisted * 0.05F);
-			if(brigthness > 0) brigthness *= -1;
-			b.set(brigthness);
+			float brigthness = MathHelper.cos(RenderHelper.getRenderPlayerTime() * 0.05F);
+			if(brigthness > 0) brigthness *= -0.8;
+			b.set(0.1F + brigthness);
 			b.upload();
 		});
-		//
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 		GlStateManager.enableBlend();
@@ -118,7 +117,6 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		GlStateManager.disableBlend();
 		GlStateManager.enableCull();
 		GlStateManager.popMatrix();
-		//
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 	}

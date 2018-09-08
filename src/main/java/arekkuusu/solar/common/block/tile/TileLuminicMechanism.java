@@ -41,7 +41,7 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 					if(found.getBlock() == ModBlocks.LUMEN_COMPRESSOR && found.getValue(BlockDirectional.FACING) == facing) {
 						getFilled(posOffset).ifPresent(filled -> {
 							if(!world.isRemote) {
-								LumenHelper.transfer(drained, filled, 10, false);
+								LumenHelper.transfer(drained, filled, 16, false);
 							} else {
 								makeParticles(facing);
 							}

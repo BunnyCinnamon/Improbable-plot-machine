@@ -22,7 +22,7 @@ import net.minecraft.util.ITickable;
  * Created by <Arekkuusu> on 6/20/2018.
  * It's distributed as part of Solar.
  */
-public class TilePhotonContainer extends TileLumenBase implements ITickable {
+public class TilePhotonContainer extends TileSimpleLumenBase implements ITickable {
 
 	public boolean nou;
 

@@ -105,11 +105,15 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.HOLOGRATH);
 			addBlock(ModBlocks.KONDENZATOR);
 			addBlock(ModBlocks.IMBUED_QUARTZ);
+			addBlock(ModBlocks.CRYSTALLIC_SYNTHESIZER);
+			addItem(ModItems.INTRINSIC_CELL);
 			addItem(ModItems.SINGULARITY);
 			addItem(ModItems.CRYSTAL_QUARTZ);
+			addItem(ModItems.CRYSTAL_QUARTZ_SHARD);
 			addItem(ModItems.PLASMON);
 			addItem(ModItems.ASH);
 			addItem(ModItems.THEOREMA);
+			addItem(ModItems.QUARTZ);
 		}
 	}
 }

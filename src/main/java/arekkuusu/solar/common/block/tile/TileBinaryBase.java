@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.relativity.IRelativeState;
-import arekkuusu.solar.api.capability.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.binary.BinaryHandler;
+import arekkuusu.solar.api.capability.binary.ISimpleBinaryTile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,18 +17,24 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-/*
- * Created by <Arekkuusu> on 28/09/2017.
+/**
+ * Created by <Arekkuusu> on 20/01/2018.
  * It's distributed as part of Solar.
  */
-public abstract class TileRelativeBase extends TileBase implements IRelativeState {
+public abstract class TileBinaryBase extends TileBase implements ISimpleBinaryTile {
 
 	private UUID key;
 
 	@Override
-	public void validate() {
-		super.validate();
-		add();
+	public Optional<ISimpleBinaryTile> getInverse() {
+		return isLoaded() ? Optional.ofNullable(BinaryHandler.getInverse(this)) : Optional.empty();
+	}
+
+	@Override
+	public void onLoad() {
+		if(!world.isRemote) {
+			add();
+		}
 	}
 
 	@Override
@@ -40,21 +46,21 @@ public abstract class TileRelativeBase extends TileBase implements IRelativeStat
 	@Override
 	public void onChunkUnload() {
 		if(!world.isRemote) {
-			RelativityHandler.removeRelative(this, null);
+			BinaryHandler.remove(this);
 		}
 	}
 
 	@Override
 	public void add() {
 		if(!world.isRemote) {
-			RelativityHandler.addRelative(this, null);
+			BinaryHandler.add(this);
 		}
 	}
 
 	@Override
 	public void remove() {
 		if(!world.isRemote) {
-			RelativityHandler.removeRelative(this, null);
+			BinaryHandler.remove(this);
 		}
 	}
 
