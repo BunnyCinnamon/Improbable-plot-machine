@@ -1,0 +1,68 @@
+itemGroup.solar.misc_tab=Sunny Shiny
+
+solar.sound.spark=bzzt! owo
+solar.death.electricity.player=OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! %1$s got zappy wappied.
+solar.death.electricity=OOPSIE WOOPSIE!! Uwu We made a fucky wucky!! A wittle fucko boingo! %1$s got zappy wappied.
+
+item.crystal_quartz.name=Krystl Shiny
+item.ash.name=Fwuffy Wuffy
+item.singularity.name=Singleurty
+item.plasmon.name=Ploosmun
+item.theorema.name=Thinkma
+item.intrinsic_cell.name=Important Blob
+item.crystal_quartz_shard.name=Krystl Shiny Piece
+item.quartz.name=Shiny
+
+tile.primal_stone.name=Magik Rockz
+tile.black_hole.name=Darknezz Hole
+tile.quantum_mirror.name=Kwantum Miwwor
+tile.light_particle.name=Sparkly Shiny
+tile.gravity_hopper.name=Gwavity Huperr
+tile.atomic_void.name=Smol Blank Space
+tile.schrodinger_glyph.name=Science Man Mark
+tile.blinker.name=Blinky
+tile.phenomena.name=Phenomnom
+tile.q_squared.name=Q²
+tile.gravity_inhibitor.name=Gwavity Inhibitty
+tile.hyper_conductor.name=Hypie Conducty
+tile.electron.name=Zappytron
+tile.ashen.name=Bwig Fwuffy Wuffy
+tile.monolithic.name=Monowific
+tile.monolithic_glyph.name=Monowific Mark
+tile.angstrom.name=Ångström
+tile.qimranut.name=Qimranut
+tile.celestial_resonator.name=Starry Wesonator
+tile.large_pot.name=Old Bowl
+tile.vacuum_conveyor.name=Sucky Wucky
+tile.mechanical_translocator.name=Twansfer Robit
+tile.alternator.name=Switchy
+tile.dilaton.name=Diwwaton
+tile.dilaton_extension.name=Long Diwwaton
+tile.qelaion.name=Qwelaion
+tile.neutron_battery_blue.name=Neutwon Zap Tube
+tile.neutron_battery_green.name=Neutwon Zap Tube
+tile.neutron_battery_pink.name=Neutwon Zap Tube
+tile.pholarizer.name=Phowwawizer
+tile.fission_inducer.name=Splitty Maker
+tile.luminic_mechanism.name=Luminny Part
+tile.quartz_consumer.name=Shiny Nomnomer
+tile.lumen_compressor.name=Bwight Smoosher
+tile.photon_container.name=Shiny Energy Box
+tile.differentiator.name=Diffewentiator
+tile.differentiator_interceptor.name=Diffewentiator Stoppy
+tile.kondenzator.name=Kwondenzatur
+tile.imbued_quartz.name=Imbued Shiny
+tile.crystallic_synthesizer.name=Krystaluc Synthy Scissor
+
+fluid.tile.gold=Golden Lava
+
+entity.eye_of_schrodinger.name=Science Man's Eye
+entity.fast_item.name=Emmity Itwem
+entity.quingentilliard_item.name=Emmity Itwem
+entity.quantum_quartz.name=Emmity Itwem
+
+tlp.uuid_key=Groupity Group
+tlp.tag_nodes=Nodey linky
+tlp.item_filter=Itwem Filter
+tlp.quantum_data=Hwolds
+tlp.monolithic_description=No Move Thingy
