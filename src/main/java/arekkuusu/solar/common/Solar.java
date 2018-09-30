@@ -45,7 +45,7 @@ public class Solar {
 	public static IProxy PROXY;
 	@Instance
 	public static Solar INSTANCE;
-	public static Logger LOG = LogManager.getLogger(LibMod.MOD_NAME);
+	public static final Logger LOG = LogManager.getLogger(LibMod.MOD_NAME);
 
 	static {
 		FluidRegistry.enableUniversalBucket();
