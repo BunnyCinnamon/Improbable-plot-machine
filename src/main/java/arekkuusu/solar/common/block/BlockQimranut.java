@@ -119,7 +119,7 @@ public class BlockQimranut extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			Solar.PROXY.spawnMute(world, back, speedVec, 45, 1F, 0x1BE564, Light.GLOW);
+			Solar.getProxy().spawnMute(world, back, speedVec, 45, 1F, 0x1BE564, Light.GLOW);
 		}
 	}
 

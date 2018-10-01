@@ -142,7 +142,7 @@ public class BlockBlinker extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			Solar.PROXY.spawnMute(world, back, speedVec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
+			Solar.getProxy().spawnMute(world, back, speedVec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
 		}
 	}
 

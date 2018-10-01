@@ -91,8 +91,8 @@ public class TilePhotonContainer extends TileSimpleLumenBase implements ITickabl
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 12F);
 			Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 12F);
 			Vector3 speedVec = Vector3.rotateRandom().multiply(particleSpeed * world.rand.nextDouble()).rotate(x.multiply(z));
-			Solar.PROXY.spawnLuminescence(world, posVec, speedVec, 160, particleScale, GlowTexture.GLOW);
+			Solar.getProxy().spawnLuminescence(world, posVec, speedVec, 160, particleScale, GlowTexture.GLOW);
 		}
-		Solar.PROXY.spawnLuminescence(world, posVec, Vector3.Zero(), 160, particleScale, GlowTexture.GLOW);
+		Solar.getProxy().spawnLuminescence(world, posVec, Vector3.Zero(), 160, particleScale, GlowTexture.GLOW);
 	}
 }

@@ -80,7 +80,7 @@ public class BlockHyperConductor extends BlockBase {
 		Vector3 origin = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 		for(EnumFacing facing : EnumFacing.values()) {
 			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.025D);
-			Solar.PROXY.spawnSquared(world, origin, vec, 40, 4F, 0xFFFFFF);
+			Solar.getProxy().spawnSquared(world, origin, vec, 40, 4F, 0xFFFFFF);
 		}
 	}
 

@@ -124,7 +124,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
 					.multiply(0.005D);
-			Solar.PROXY.spawnNeutronBlast(world, back, speedVec, 40, 0.25F, 0xFF0303, false);
+			Solar.getProxy().spawnNeutronBlast(world, back, speedVec, 40, 0.25F, 0xFF0303, false);
 		} else if(world.getTotalWorldTime() % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing().getOpposite();
 			Vector3 back = getOffSet(facing);
@@ -132,7 +132,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
 					.multiply(speed);
-			Solar.PROXY.spawnMute(world, back, speedVec, 30, 2F, 0x49FFFF, Light.GLOW);
+			Solar.getProxy().spawnMute(world, back, speedVec, 30, 2F, 0x49FFFF, Light.GLOW);
 		}
 	}
 

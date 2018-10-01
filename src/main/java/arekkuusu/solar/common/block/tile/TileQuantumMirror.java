@@ -45,7 +45,7 @@ public class TileQuantumMirror extends TileQuantumInventoryBase implements ITick
 	public void update() {
 		if(world.isRemote && world.rand.nextInt(10) == 0) {
 			Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
-			Solar.PROXY.spawnSpeck(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
+			Solar.getProxy().spawnSpeck(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
 		}
 		if(!world.isRemote && dirty) {
 			getKey().ifPresent(uuid -> {

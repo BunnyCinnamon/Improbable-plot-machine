@@ -143,7 +143,7 @@ public class BlockQelaion extends BlockBase {
 							.asImmutable()
 							.multiply(speed)
 							.rotate(x.multiply(z));
-					Solar.PROXY.spawnMute(world, posVec, speedVec, 60, 2F, on ? 0x49FFFF : 0xFF0303, Light.GLOW);
+					Solar.getProxy().spawnMute(world, posVec, speedVec, 60, 2F, on ? 0x49FFFF : 0xFF0303, Light.GLOW);
 				}
 			}
 		});

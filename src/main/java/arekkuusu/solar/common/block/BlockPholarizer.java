@@ -79,7 +79,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			Solar.PROXY.spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x29FF75, Light.GLOW);
+			Solar.getProxy().spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x29FF75, Light.GLOW);
 		}
 	}
 
