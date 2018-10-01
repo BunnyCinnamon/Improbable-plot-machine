@@ -127,7 +127,7 @@ public class TileFissionInducer extends TileBase implements ITickable {
 				if(state.getBlock() == Blocks.GOLD_BLOCK || state.getBlock() == ModBlocks.MOLTEN_GOLD) {
 					Vector3 pos = new Vector3.WrappedVec3i(position.add(getPos())).asImmutable().add(Math.random(), 1.1D, Math.random());
 					Vector3 speed = Vector3.apply(0, 0.02, 0).multiply(world.rand.nextFloat());
-					Solar.PROXY.spawnDepthTunneling(world, pos, speed, 40, 3F, 0xff5000, GlowTexture.GLINT);
+					Solar.getProxy().spawnDepthTunneling(world, pos, speed, 40, 3F, 0xff5000, GlowTexture.GLINT);
 				}
 			}
 		}

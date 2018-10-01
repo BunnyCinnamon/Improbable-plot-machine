@@ -61,7 +61,7 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 							.asImmutable()
 							.rotate(x.multiply(z))
 							.multiply(speed);
-					Solar.PROXY.spawnMute(world, pos, speedVec, 75, 1.75F, 0x49FFFF, Light.GLOW);
+					Solar.getProxy().spawnMute(world, pos, speedVec, 75, 1.75F, 0x49FFFF, Light.GLOW);
 				}
 			}
 			if(isFacingGlass()) {
@@ -69,7 +69,7 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 				int amount = (int) ((float) progress.getTimer() * (0.15F * (1F - (float) progress.getMultiplier() / 6F)));
 				for(int i = 0; i < amount + world.rand.nextInt(4); i++) {
 					Vector3 posVec = new Vector3.WrappedVec3i(getProgressPos()).asImmutable().add(Math.random(), Math.random(), Math.random());
-					Solar.PROXY.spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, world.rand.nextFloat(), 0x49FFFF, GlowTexture.GLOW);
+					Solar.getProxy().spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, world.rand.nextFloat(), 0x49FFFF, GlowTexture.GLOW);
 				}
 			}
 		}

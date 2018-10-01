@@ -29,11 +29,11 @@ public final class ModEntities {
 	}
 
 	private static <T extends Entity> void register(Class<T> clazz, String name) {
-		EntityRegistry.registerModEntity(getLocation(name), clazz, name, id++, Solar.INSTANCE, 64, 1, true);
+		EntityRegistry.registerModEntity(getLocation(name), clazz, name, id++, Solar.getInstance(), 64, 1, true);
 	}
 
 	private static <T extends Entity> void register(Class<T> clazz, String name, int color) {
-		EntityRegistry.registerModEntity(getLocation(name), clazz, name, id++, Solar.INSTANCE, 64, 1, true, color, color);
+		EntityRegistry.registerModEntity(getLocation(name), clazz, name, id++, Solar.getInstance(), 64, 1, true, color, color);
 	}
 
 	private static ResourceLocation getLocation(String name) {

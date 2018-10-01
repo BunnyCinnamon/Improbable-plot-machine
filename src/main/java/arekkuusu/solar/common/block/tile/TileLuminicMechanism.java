@@ -72,7 +72,7 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 	private void makeParticles(EnumFacing facing) {
 		Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.05D);
 		Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D);
-		Solar.PROXY.spawnNeutronBlast(world, from, offset, 120, 1F, 0xFFE077, true);
+		Solar.getProxy().spawnNeutronBlast(world, from, offset, 120, 1F, 0xFFE077, true);
 	}
 
 	public EnumFacing getFacingLazy() {

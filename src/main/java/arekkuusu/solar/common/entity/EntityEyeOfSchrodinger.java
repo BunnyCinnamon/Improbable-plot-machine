@@ -76,7 +76,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		//Spawn Particles
 		if(world.isRemote) {
 			int rgb = hasTargetedEntity() ? RED : BLUE;
-			Solar.PROXY.spawnDepthTunneling(world
+			Solar.getProxy().spawnDepthTunneling(world
 					, Vector3.apply(posX, posY + 0.25D, posZ)
 					, Vector3.Zero(), 10, 1.5F, rgb, GlowTexture.GLOW);
 			Entity entity = getTargetedEntity();
@@ -88,7 +88,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 				if(speed.x() > 0.15D || speed.x() < -0.15D) speed.setX(0.15);
 				if(speed.y() > 0.15D || speed.y() < -0.15D) speed.setY(0.15);
 				if(speed.z() > 0.15D || speed.z() < -0.15D) speed.setZ(0.15);
-				Solar.PROXY.spawnSquared(world, Vector3.apply(posX, posY + 0.25D, posZ), speed.asImmutable(), 10, 4F, RED);
+				Solar.getProxy().spawnSquared(world, Vector3.apply(posX, posY + 0.25D, posZ), speed.asImmutable(), 10, 4F, RED);
 			}
 		}
 	}

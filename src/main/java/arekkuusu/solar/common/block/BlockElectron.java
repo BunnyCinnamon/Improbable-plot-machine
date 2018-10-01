@@ -97,9 +97,9 @@ public class BlockElectron extends BlockBase {
 			for(int i = 0; i < 1 + world.rand.nextInt(3); i++) {
 				Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 				Vector3 to = Vector3.rotateRandom().add(from);
-				Solar.PROXY.spawnArcDischarge(world, from, to, 4, 0.25F, 15, 0x5194FF, true, true);
+				Solar.getProxy().spawnArcDischarge(world, from, to, 4, 0.25F, 15, 0x5194FF, true, true);
 			}
-			Solar.PROXY.playSound(world, pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F);
+			Solar.getProxy().playSound(world, pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F);
 		}
 	}
 

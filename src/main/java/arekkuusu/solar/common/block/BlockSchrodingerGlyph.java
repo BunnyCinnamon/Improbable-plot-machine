@@ -93,7 +93,7 @@ public class BlockSchrodingerGlyph extends BlockBase {
 			for(EnumFacing facing : EnumFacing.values()) {
 				Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 				Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.025D);
-				Solar.PROXY.spawnNeutronBlast(world, from, vec, 60, 0.25F, 0xFF0303, false);
+				Solar.getProxy().spawnNeutronBlast(world, from, vec, 60, 0.25F, 0xFF0303, false);
 			}
 		}
 	}
