@@ -8,7 +8,7 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.util.FixedMaterial;
-import arekkuusu.solar.common.block.tile.TileLuminicMechanism;
+import arekkuusu.solar.common.block.tile.TileLuminicDecompressor;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.BlockDirectional;
@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
  * It's distributed as part of Solar.
  */
 @SuppressWarnings("deprecation")
-public class BlockLuminicMechanism extends BlockBaseFacing {
+public class BlockLuminicDecompressor extends BlockBaseFacing {
 
 	public static final int REACH = 5;
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
@@ -42,8 +42,8 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0, 0, 0.4375, 1, 1))
 			.build();
 
-	public BlockLuminicMechanism() {
-		super(LibNames.LUMINIC_MECHANISM, FixedMaterial.DONT_MOVE);
+	public BlockLuminicDecompressor() {
+		super(LibNames.LUMINIC_DECOMPRESSOR, FixedMaterial.DONT_MOVE);
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
 		setLightLevel(0.2F);
@@ -73,6 +73,6 @@ public class BlockLuminicMechanism extends BlockBaseFacing {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileLuminicMechanism();
+		return new TileLuminicDecompressor();
 	}
 }

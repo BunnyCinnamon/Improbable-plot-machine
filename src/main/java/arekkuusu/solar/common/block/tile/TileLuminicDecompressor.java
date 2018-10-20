@@ -10,7 +10,7 @@ package arekkuusu.solar.common.block.tile;
 import arekkuusu.solar.api.capability.energy.LumenHelper;
 import arekkuusu.solar.api.capability.energy.data.ILumen;
 import arekkuusu.solar.common.Solar;
-import arekkuusu.solar.common.block.BlockLuminicMechanism;
+import arekkuusu.solar.common.block.BlockLuminicDecompressor;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
@@ -27,7 +27,7 @@ import java.util.Optional;
  * Created by <Arekkuusu> on 4/9/2018.
  * It's distributed as part of Solar.
  */
-public class TileLuminicMechanism extends TileBase implements ITickable {
+public class TileLuminicDecompressor extends TileBase implements ITickable {
 
 	@Override
 	public void update() {
@@ -36,7 +36,7 @@ public class TileLuminicMechanism extends TileBase implements ITickable {
 				BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(pos);
 				EnumFacing facing = getFacingLazy().getOpposite();
 				float distance = 0;
-				while(distance++ < BlockLuminicMechanism.REACH) {
+				while(distance++ < BlockLuminicDecompressor.REACH) {
 					IBlockState found = world.getBlockState(posOffset.move(facing));
 					if(found.getBlock() == ModBlocks.LUMEN_COMPRESSOR && found.getValue(BlockDirectional.FACING) == facing) {
 						getFilled(posOffset).ifPresent(filled -> {

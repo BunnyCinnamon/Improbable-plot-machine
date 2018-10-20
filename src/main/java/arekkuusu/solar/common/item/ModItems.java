@@ -37,6 +37,9 @@ public final class ModItems {
 	public static final Item INTRINSIC_CELL = PLACE_HOLDER;
 	public static final Item CRYSTAL_QUARTZ_SHARD = PLACE_HOLDER;
 	public static final Item QUARTZ = PLACE_HOLDER;
+	public static final Item MAGNETIC_BOLT = PLACE_HOLDER;
+	public static final Item MAGNETIC_GEAR = PLACE_HOLDER;
+	public static final Item MAGNETIC_SPRING = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -69,7 +72,7 @@ public final class ModItems {
 		registry.register(new ItemNeutronBattery(ModBlocks.NEUTRON_BATTERY_PINK));
 		registry.register(itemBlock(ModBlocks.PHOLARIZER));
 		registry.register(itemBlock(ModBlocks.FISSION_INDUCER));
-		registry.register(itemBlock(ModBlocks.LUMINIC_MECHANISM));
+		registry.register(itemBlock(ModBlocks.LUMINIC_DECOMPRESSOR));
 		registry.register(itemBlock(ModBlocks.QUARTZ_CONSUMER));
 		registry.register(itemBlock(ModBlocks.LUMEN_COMPRESSOR));
 		registry.register(itemBlock(ModBlocks.PHOTON_CONTAINER));
@@ -83,6 +86,9 @@ public final class ModItems {
 		registry.register(new ItemBase(LibNames.CRYSTAL_QUARTZ_SHARD));
 		registry.register(itemBlock(ModBlocks.CRYSTALLIC_SYNTHESIZER));
 		registry.register(new ItemQuartz());
+		registry.register(new ItemBase(LibNames.MAGNETIC_BOLT));
+		registry.register(new ItemBase(LibNames.MAGNETIC_GEAR));
+		registry.register(new ItemBase(LibNames.MAGNETIC_SPRING));
 	}
 
 	@SuppressWarnings("ConstantConditions")

@@ -1,25 +1,37 @@
 {
   "forge_marker": 1,
   "defaults": {
-	"model": "solar:holograth",
+	"model": "solar:luminic_decompressor",
 	"uvlock": false
   },
   "variants": {
 	"normal": [{
 	}],
     "inventory": [{
+	  "model": "solar:item/luminic_decompressor",
+	  "uvlock": false
 	}],
 	"facing": {
+	  "up": {
+		"x": 180
+	  },
+	  "down": {
+	  },
 	  "north": {
+		"x": -90,
+		"y": 0
 	  },
 	  "south": {
-		"y": 180
+		"x": 90,
+		"y": 0
 	  },
 	  "east": {
+		"x": -90,
 		"y": 90
 	  },
 	  "west": {
-		"y": 270
+		"x": 90,
+		"y": 90
 	  }
 	}
   }

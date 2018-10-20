@@ -7,6 +7,7 @@
  */
 package arekkuusu.solar.common.block.tile;
 
+import arekkuusu.solar.api.capability.energy.LumenHelper;
 import arekkuusu.solar.api.capability.energy.data.ILumen;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.common.Solar;
@@ -83,12 +84,9 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 	public boolean add(ItemStack stack) {
 		if(!stack.isEmpty() && stack.hasCapability(ModCapability.NEUTRON_CAPABILITY, null)) {
 			if(!world.isRemote) {
-				ILumen lumen = stack.getCapability(ModCapability.NEUTRON_CAPABILITY, null);
-				assert lumen != null;
-				int missing = BlockKondenzator.MAX_LUMEN - handler.get();
-				if(missing > 0 && lumen.drain(missing, false) > 0) {
-					handler.fill(lumen.drain(missing, true), true);
-				}
+				LumenHelper.getCapability(stack).ifPresent(lumen ->
+						LumenHelper.transfer(lumen, handler, getCapacity(), false)
+				);
 			}
 			return true;
 		} else return false;

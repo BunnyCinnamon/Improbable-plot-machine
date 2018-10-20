@@ -71,13 +71,7 @@ public enum BlockBaker {
 	DIFFERENTIATOR_INTERCEPTOR_RING("differentiator_interceptor_ring"),
 	DIFFERENTIATOR_INTERCEPTOR_BEACON("differentiator_interceptor_beacon"),
 	KONDENZATOR_BASE("kondenzator_base"),
-	KONDENZATOR_CENTER("kondenzator_center"),
-	CRYSTALLIC_SYNTHESIZER_BASE("crystallic_synthesizer_base"),
-	CRYSTALLIC_SYNTHESIZER_CRYSTAL("crystallic_synthesizer_crystal"),
-	CRYSTALLIC_SYNTHESIZER_NODE("crystallic_synthesizer_node"),
-	CRYSTALLIC_SYNTHESIZER_NODE_GLOW("crystallic_synthesizer_node_glow"),
-	CRYSTALLIC_SYNTHESIZER_RING("crystallic_synthesizer_ring"),
-	CRYSTALLIC_SYNTHESIZER_RING_GLOW("crystallic_synthesizer_ring_glow");
+	KONDENZATOR_CENTER("kondenzator_center");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;

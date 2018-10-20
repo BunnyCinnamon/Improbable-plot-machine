@@ -35,7 +35,7 @@ public final class ResourceLibrary {
 		getBlockTexture("differentiator/base_2");
 		getBlockTexture("differentiator/glass");
 		getBlockTexture("differentiator_interceptor/glass");
-		getBlockTexture("differentiator_interceptor/glass_");
+		getBlockTexture("differentiator_interceptor/overlay");
 		getBlockTexture("kondenzator/center");
 		getBlockTexture("crystallic_synthesizer/base_overlay");
 		getBlockTexture("crystallic_synthesizer/crystal");

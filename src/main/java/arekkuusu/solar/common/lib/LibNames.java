@@ -43,7 +43,7 @@ public class LibNames {
 	public static final String FISSION_INDUCER = "fission_inducer";
 	public static final String GOLD_FLUID = "gold";
 	public static final String MOLTEN_GOLD = "molten_gold";
-	public static final String LUMINIC_MECHANISM = "luminic_mechanism";
+	public static final String LUMINIC_DECOMPRESSOR = "luminic_decompressor";
 	public static final String QUARTZ_CONSUMER = "quartz_consumer";
 	public static final String LUMEN_COMPRESSOR = "lumen_compressor";
 	public static final String PHOTON_CONTAINER = "photon_container";
@@ -57,4 +57,7 @@ public class LibNames {
 	public static final String CRYSTAL_QUARTZ_SHARD = "crystal_quartz_shard";
 	public static final String CRYSTALLIC_SYNTHESIZER = "crystallic_synthesizer";
 	public static final String QUARTZ = "quartz";
+	public static final String MAGNETIC_BOLT = "magnetic_bolt";
+	public static final String MAGNETIC_GEAR = "magnetic_gear";
+	public static final String MAGNETIC_SPRING = "magnetic_spring";
 }

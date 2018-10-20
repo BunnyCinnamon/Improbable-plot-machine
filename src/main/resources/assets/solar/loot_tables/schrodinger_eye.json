@@ -84,6 +84,21 @@
 		  "weight": 1
 		},
 		{
+		  "type": "item",
+		  "name": "solar:magnetic_gear",
+		  "weight": 5
+		},
+		{
+		  "type": "item",
+		  "name": "solar:magnetic_bolt",
+		  "weight": 5
+		},
+		{
+		  "type": "item",
+		  "name": "solar:magnetic_spring",
+		  "weight": 5
+		},
+		{
 		  "type": "empty",
 		  "weight": 15
 		}

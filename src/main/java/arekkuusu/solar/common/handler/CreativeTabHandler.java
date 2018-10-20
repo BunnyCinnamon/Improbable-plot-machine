@@ -94,26 +94,27 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.NEUTRON_BATTERY_BLUE);
 			addBlock(ModBlocks.NEUTRON_BATTERY_GREEN);
 			addBlock(ModBlocks.NEUTRON_BATTERY_PINK);
-			addBlock(ModBlocks.LUMINIC_MECHANISM);
+			addBlock(ModBlocks.LUMINIC_DECOMPRESSOR);
 			addBlock(ModBlocks.LUMEN_COMPRESSOR);
 			addBlock(ModBlocks.FISSION_INDUCER);
 			addBlock(ModBlocks.QUARTZ_CONSUMER);
 			addBlock(ModBlocks.PHOLARIZER);
-			addBlock(ModBlocks.PHOTON_CONTAINER);
 			addBlock(ModBlocks.DIFFERENTIATOR);
 			addBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR);
-			addBlock(ModBlocks.HOLOGRATH);
 			addBlock(ModBlocks.KONDENZATOR);
-			addBlock(ModBlocks.IMBUED_QUARTZ);
 			addBlock(ModBlocks.CRYSTALLIC_SYNTHESIZER);
+			addBlock(ModBlocks.IMBUED_QUARTZ);
 			addItem(ModItems.INTRINSIC_CELL);
-			addItem(ModItems.SINGULARITY);
+			addItem(ModItems.MAGNETIC_BOLT);
+			addItem(ModItems.MAGNETIC_GEAR);
+			addItem(ModItems.MAGNETIC_SPRING);
 			addItem(ModItems.CRYSTAL_QUARTZ);
 			addItem(ModItems.CRYSTAL_QUARTZ_SHARD);
+			addItem(ModItems.QUARTZ);
+			addItem(ModItems.SINGULARITY);
 			addItem(ModItems.PLASMON);
 			addItem(ModItems.ASH);
 			addItem(ModItems.THEOREMA);
-			addItem(ModItems.QUARTZ);
 		}
 	}
 }
