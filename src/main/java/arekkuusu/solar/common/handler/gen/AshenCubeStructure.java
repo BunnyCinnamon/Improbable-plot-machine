@@ -74,11 +74,6 @@ public class AshenCubeStructure extends BaseGen {
 				world.setBlockState(inside, pot);
 			}
 		}
-		if(GEN_CONFIG.monolith.structure.holograth) {
-			BlockPos inside = origin.add(3 + random.nextInt(1), 1, 3 + random.nextInt(1));
-			EnumFacing facing = EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)];
-			world.setBlockState(inside, ModBlocks.HOLOGRATH.getDefaultState().withProperty(BlockHorizontal.FACING, facing));
-		}
 		//Gen Cubes
 		AxisAlignedBB cubeBB = new AxisAlignedBB(origin, origin.add(template.getSize()));
 		for(int i = 0; i < GEN_CONFIG.ashen_cube.size; i++) {

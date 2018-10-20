@@ -75,10 +75,8 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.LUMINIC_DECOMPRESSOR));
 		registry.register(itemBlock(ModBlocks.QUARTZ_CONSUMER));
 		registry.register(itemBlock(ModBlocks.LUMEN_COMPRESSOR));
-		registry.register(itemBlock(ModBlocks.PHOTON_CONTAINER));
 		registry.register(itemBlock(ModBlocks.DIFFERENTIATOR));
 		registry.register(itemBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR));
-		registry.register(itemBlock(ModBlocks.HOLOGRATH));
 		registry.register(itemBlock(ModBlocks.KONDENZATOR));
 		registry.register(new ItemTheorema());
 		registry.register(itemBlock(ModBlocks.IMBUED_QUARTZ));
