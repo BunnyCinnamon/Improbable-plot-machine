@@ -18,15 +18,14 @@ import arekkuusu.solar.common.proxy.IProxy;
 import arekkuusu.solar.common.theorem.ModTheorems;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.InstanceFactory;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static net.minecraftforge.fml.common.Mod.EventHandler;
-import static net.minecraftforge.fml.common.Mod.Instance;
 
 /**
  * Created by <Arekkuusu> on 21/06/2017.
@@ -39,21 +38,31 @@ import static net.minecraftforge.fml.common.Mod.Instance;
 	dependencies = "required-after:mirror;",
 	acceptedMinecraftVersions = "[1.12.2]"
 )
-public class Solar {
+public final class Solar {
 
 	@SidedProxy(clientSide = LibMod.CLIENT_PROXY, serverSide = LibMod.SERVER_PROXY)
-	public static IProxy PROXY;
-	@Instance
-	public static Solar INSTANCE;
-	public static Logger LOG = LogManager.getLogger(LibMod.MOD_NAME);
+	private static IProxy proxy;
+	private static final Solar INSTANCE = new Solar();
+	public static final Logger LOG = LogManager.getLogger(LibMod.MOD_NAME);
 
 	static {
 		FluidRegistry.enableUniversalBucket();
 	}
 
+	private Solar() {}
+
+	public static IProxy getProxy() {
+		return proxy;
+	}
+
+	@InstanceFactory
+	public static Solar getInstance() {
+		return INSTANCE;
+	}
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		PROXY.preInit(event);
+		proxy.preInit(event);
 		WorldQuantumData.init(event.getAsmData());
 		PacketHandler.init();
 		ModCapability.init();
@@ -64,7 +73,7 @@ public class Solar {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		PROXY.init(event);
+		proxy.init(event);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 	}
 }

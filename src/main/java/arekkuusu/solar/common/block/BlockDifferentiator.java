@@ -65,7 +65,7 @@ public class BlockDifferentiator extends BlockBaseFacing {
 			if(found.getBlock() == ModBlocks.DIFFERENTIATOR_INTERCEPTOR && found.getValue(BlockDirectional.FACING) == facing) {
 				Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
 				Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D).offset(offset, -0.19);
-				Solar.PROXY.spawnBeam(world, from, offset, distance + 0.7F, 36, 0.75F, 0xFF0303);
+				Solar.getProxy().spawnBeam(world, from, offset, distance + 0.7F, 36, 0.75F, 0xFF0303);
 				break;
 			}
 		}

@@ -124,8 +124,8 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 			);
 			double speed = 0.005D + 0.005D * rand.nextDouble();
 			Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
-			Solar.PROXY.spawnMute(world, posVec, speedVec, 30, 2F, capacitor.color, Light.GLOW);
-			Solar.PROXY.spawnMute(world, vec.add(0.5D), facingVec.multiply(0.02D), 100, 2F, capacitor.color, Light.GLOW);
+			Solar.getProxy().spawnMute(world, posVec, speedVec, 30, 2F, capacitor.color, Light.GLOW);
+			Solar.getProxy().spawnMute(world, vec.add(0.5D), facingVec.multiply(0.02D), 100, 2F, capacitor.color, Light.GLOW);
 		}
 	}
 

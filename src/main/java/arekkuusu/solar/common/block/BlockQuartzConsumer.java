@@ -57,7 +57,7 @@ public class BlockQuartzConsumer extends BlockBase {
 							.asImmutable()
 							.rotate(x.multiply(z))
 							.multiply(speed);
-					Solar.PROXY.spawnMute(world, posVec, speedVec, 45, 1.5F, 0x49FFFF, Light.GLOW);
+					Solar.getProxy().spawnMute(world, posVec, speedVec, 45, 1.5F, 0x49FFFF, Light.GLOW);
 				}
 			} else for(int i = 0; i < 3 + rand.nextInt(6); i++) {
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
@@ -67,7 +67,7 @@ public class BlockQuartzConsumer extends BlockBase {
 				Vector3 speedVec = Vector3.rotateRandom()
 						.multiply(speed)
 						.rotate(x.multiply(z));
-				Solar.PROXY.spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x49FFFF, Light.GLOW);
+				Solar.getProxy().spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x49FFFF, Light.GLOW);
 			}
 		});
 	}

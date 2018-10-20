@@ -114,7 +114,7 @@ public class TileVacuumConveyor extends TileBase implements ITickable {
 				.asImmutable()
 				.rotate(x.multiply(z))
 				.multiply(speed);
-		Solar.PROXY.spawnSpeck(world, back, speedVec, 75, 1.75F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
+		Solar.getProxy().spawnSpeck(world, back, speedVec, 75, 1.75F, inverse ? 0xFFFFFF : 0x000000, GlowTexture.GLINT);
 	}
 
 	private void collectItems() {

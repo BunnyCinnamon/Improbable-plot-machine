@@ -39,7 +39,7 @@ public class BlockImbuedQuartz extends BlockBase {
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		for(int i = 0; i < 1 + rand.nextInt(4); i++) {
 			Vector3 posVec = new Vector3.WrappedVec3i(pos).asImmutable().add(Math.random(), Math.random(), Math.random());
-			Solar.PROXY.spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, rand.nextFloat(), (int) (Math.random() * 0x1000000), GlowTexture.GLOW);
+			Solar.getProxy().spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, rand.nextFloat(), (int) (Math.random() * 0x1000000), GlowTexture.GLOW);
 		}
 	}
 

@@ -79,12 +79,12 @@ public class BlockLumenCompressor extends BlockBaseFacing {
 						.multiply(speed)
 						.rotate(x.multiply(z));
 				Vector3 posVec = back.add(Vector3.rotateRandom().multiply(0.2D));
-				Solar.PROXY.spawnMute(world, posVec, speedVec, 45, 1F, 0xFFE077, Light.GLOW);
+				Solar.getProxy().spawnMute(world, posVec, speedVec, 45, 1F, 0xFFE077, Light.GLOW);
 			}
 			for(int i = 0; i < 3; i++) {
 				double speed = 0.005D + rand.nextDouble() * 0.015D;
 				Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(speed);
-				Solar.PROXY.spawnMute(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
+				Solar.getProxy().spawnMute(world, back, speedVec, 45, 2F, 0xFFE077, Light.GLOW);
 			}
 		}
 	}

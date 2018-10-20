@@ -136,7 +136,7 @@ public class BlockDilaton extends BlockBaseFacing {
 						.asImmutable()
 						.multiply(speed)
 						.rotate(x.multiply(z));
-				Solar.PROXY.spawnMute(world, posVec, speedVec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
+				Solar.getProxy().spawnMute(world, posVec, speedVec, 60, 2F, powered ? 0x49FFFF : 0xFF0303, Light.GLOW);
 			}
 		}
 	}
