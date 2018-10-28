@@ -108,6 +108,8 @@ public final class CreativeTabHandler {
 			addItem(ModItems.MAGNETIC_BOLT);
 			addItem(ModItems.MAGNETIC_GEAR);
 			addItem(ModItems.MAGNETIC_SPRING);
+			addItem(ModItems.CLOCKWORK);
+			addItem(ModItems.BOUND_PHOTON);
 			addItem(ModItems.CRYSTAL_QUARTZ);
 			addItem(ModItems.CRYSTAL_QUARTZ_SHARD);
 			addItem(ModItems.QUARTZ);

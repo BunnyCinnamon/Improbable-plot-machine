@@ -60,4 +60,6 @@ public class LibNames {
 	public static final String MAGNETIC_BOLT = "magnetic_bolt";
 	public static final String MAGNETIC_GEAR = "magnetic_gear";
 	public static final String MAGNETIC_SPRING = "magnetic_spring";
+	public static final String CLOCKWORK = "clockwork";
+	public static final String BOUND_PHOTON = "bound_photon";
 }

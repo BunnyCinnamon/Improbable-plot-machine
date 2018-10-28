@@ -39,9 +39,7 @@ public abstract class TileRelativityBase extends TileBase implements IRelativeSt
 
 	@Override
 	public void onChunkUnload() {
-		if(!world.isRemote) {
-			RelativityHandler.removeRelative(this, null);
-		}
+		remove();
 	}
 
 	@Override

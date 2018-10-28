@@ -103,7 +103,7 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		if(optional.isPresent()) {
 			TileNeutronBattery neutron = optional.get();
 			ItemStack stack = new ItemStack(this);
-			NBTHelper.setNBT(stack, "neutron_nbt", capacitor.serializeNBT());
+			NBTHelper.setNBT(stack, "neutron_capacitor", capacitor.serializeNBT());
 			LumenHelper.getCapability(ComplexLumenStackWrapper.class, stack).ifPresent(i -> {
 				neutron.getKey().ifPresent(i::setKey);
 			});
@@ -153,7 +153,7 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 		ItemStack stack = new ItemStack(this);
-		NBTHelper.setNBT(stack, "neutron_nbt", capacitor.serializeNBT());
+		NBTHelper.setNBT(stack, "neutron_capacitor", capacitor.serializeNBT());
 		items.add(stack);
 	}
 

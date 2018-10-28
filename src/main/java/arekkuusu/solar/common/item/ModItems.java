@@ -40,6 +40,8 @@ public final class ModItems {
 	public static final Item MAGNETIC_BOLT = PLACE_HOLDER;
 	public static final Item MAGNETIC_GEAR = PLACE_HOLDER;
 	public static final Item MAGNETIC_SPRING = PLACE_HOLDER;
+	public static final Item CLOCKWORK = PLACE_HOLDER;
+	public static final Item BOUND_PHOTON = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
@@ -87,6 +89,8 @@ public final class ModItems {
 		registry.register(new ItemBase(LibNames.MAGNETIC_BOLT));
 		registry.register(new ItemBase(LibNames.MAGNETIC_GEAR));
 		registry.register(new ItemBase(LibNames.MAGNETIC_SPRING));
+		registry.register(new ItemClockwork());
+		registry.register(new ItemBoundPhoton());
 	}
 
 	@SuppressWarnings("ConstantConditions")

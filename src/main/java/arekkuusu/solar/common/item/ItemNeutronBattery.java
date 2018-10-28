@@ -45,11 +45,11 @@ public class ItemNeutronBattery extends ItemBaseBlock implements IUUIDDescriptio
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return LumenStackProvider.create(new ComplexLumenStackWrapper(stack, 0) {
+		return LumenStackProvider.create(new ComplexLumenStackWrapper(stack, -1) {
 			@Override
 			public int getMax() {
 				BatteryCapacitor capacitor = new BatteryCapacitor();
-				NBTHelper.getNBTTag(stack, "neutron_nbt").ifPresent(capacitor::deserializeNBT);
+				NBTHelper.getNBTTag(stack, "neutron_capacitor").ifPresent(capacitor::deserializeNBT);
 				return capacitor.getCapacity();
 			}
 		});
