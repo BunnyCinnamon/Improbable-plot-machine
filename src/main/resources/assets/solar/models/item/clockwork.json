@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "solar:items/clockwork/sealed"
+  },
+  "overrides": [
+	{
+      "predicate": {
+        "solar:state": 0
+      },
+	  "model": "solar:item/clockwork/sealed"
+    },
+	{
+      "predicate": {
+        "solar:state": 1
+      },
+	  "model": "solar:item/clockwork/unsealed"
+    }
+  ]
+}
