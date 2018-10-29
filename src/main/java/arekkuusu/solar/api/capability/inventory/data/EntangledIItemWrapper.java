@@ -8,8 +8,9 @@
 package arekkuusu.solar.api.capability.inventory.data;
 
 import arekkuusu.solar.api.capability.inventory.EntangledIItemHandler;
-import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.api.capability.quantum.IQuantum;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 /**
@@ -40,7 +41,7 @@ public abstract class EntangledIItemWrapper implements IEntangledIItemHandler {
 	 * @return If it can insert
 	 */
 	public boolean canInsert(ItemStack stack) {
-		return !NBTHelper.hasUniqueID(stack, IEntangledIItemHandler.NBT_TAG);
+		return !(stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) instanceof IQuantum);
 	}
 
 	@Override

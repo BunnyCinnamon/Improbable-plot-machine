@@ -19,8 +19,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 /**
@@ -48,7 +46,7 @@ public class TileQuantumMirror extends TileQuantumInventoryBase implements ITick
 			Solar.getProxy().spawnSpeck(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
 		}
 		if(!world.isRemote && dirty) {
-			getKey().ifPresent(uuid -> {
+			handler.getKey().ifPresent(uuid -> {
 				if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
 					PacketHelper.sendQuantumChanges(uuid);
 				}
@@ -59,16 +57,11 @@ public class TileQuantumMirror extends TileQuantumInventoryBase implements ITick
 
 	public void takeItem(EntityPlayer player) {
 		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
-		if(hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler handler = getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			if(handler == null) return;
-
-			ItemStack contained = handler.extractItem(0, Integer.MAX_VALUE, false);
-			if(stack.isEmpty()) {
-				player.setHeldItem(EnumHand.MAIN_HAND, contained);
-			} else {
-				ItemHandlerHelper.giveItemToPlayer(player, contained);
-			}
+		ItemStack contained = handler.extractItem(0, Integer.MAX_VALUE, false);
+		if(stack.isEmpty()) {
+			player.setHeldItem(EnumHand.MAIN_HAND, contained);
+		} else {
+			ItemHandlerHelper.giveItemToPlayer(player, contained);
 		}
 	}
 

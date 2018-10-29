@@ -82,7 +82,7 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 	}
 
 	public boolean add(ItemStack stack) {
-		if(!stack.isEmpty() && stack.hasCapability(ModCapability.NEUTRON_CAPABILITY, null)) {
+		if(!stack.isEmpty() && stack.hasCapability(ModCapability.LUMEN_CAPABILITY, null)) {
 			if(!world.isRemote) {
 				LumenHelper.getCapability(stack).ifPresent(lumen ->
 						LumenHelper.transfer(lumen, handler, getCapacity(), false)

@@ -8,6 +8,8 @@
 package arekkuusu.solar.client.render;
 
 import arekkuusu.solar.api.capability.inventory.EntangledIItemHandler;
+import arekkuusu.solar.api.capability.inventory.EntangledIItemHelper;
+import arekkuusu.solar.api.capability.quantum.IQuantum;
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.SpriteLibrary;
 import arekkuusu.solar.client.util.helper.GLHelper;
@@ -41,15 +43,14 @@ public class QuantumMirrorRenderer extends SpecialModelRenderer<TileQuantumMirro
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		switch(MinecraftForgeClient.getRenderPass()) {
 			case 0:
-				Optional<UUID> optional = mirror.getKey();
-				if(optional.isPresent()) {
-					ItemStack stack = EntangledIItemHandler.getEntanglementStack(optional.get(), 0);
+				EntangledIItemHelper.getCapability(mirror).flatMap(IQuantum::getKey).ifPresent(key -> {
+					ItemStack stack = EntangledIItemHandler.getEntanglementStack(key, 0);
 					if(!stack.isEmpty()) {
 						GlStateManager.enableBlend();
 						renderItem(stack, tick, x, y, z, partialTicks);
 						GlStateManager.disableBlend();
 					}
-				}
+				});
 				break;
 			case 1:
 				renderModel(tick, x, y, z, partialTicks);

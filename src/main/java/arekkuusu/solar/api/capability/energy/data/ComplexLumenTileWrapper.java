@@ -7,9 +7,9 @@
  */
 package arekkuusu.solar.api.capability.energy.data;
 
-import arekkuusu.solar.api.capability.quantum.IQuantum;
 import net.minecraft.tileentity.TileEntity;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,9 +19,10 @@ import java.util.UUID;
  * <p>
  * Default implementation for {@link TileEntity} with a quantum entangled lumen storage
  */
-public class ComplexLumenTileWrapper<T extends TileEntity & IQuantum> extends ComplexLumenWrapper {
+public class ComplexLumenTileWrapper<T extends TileEntity> extends ComplexLumenWrapper {
 
-	private T tile;
+	private final T tile;
+	private UUID key;
 
 	/**
 	 * @param tile A {@link TileEntity} instance implementing {@link T}
@@ -32,17 +33,14 @@ public class ComplexLumenTileWrapper<T extends TileEntity & IQuantum> extends Co
 		this.tile = tile;
 	}
 
-	public T getTile() {
-		return tile;
-	}
-
 	@Override
 	public Optional<UUID> getKey() {
-		return tile.getKey();
+		return Optional.ofNullable(key);
 	}
 
 	@Override
-	public void setKey(UUID key) {
-		tile.setKey(key);
+	public void setKey(@Nullable UUID key) {
+		this.key = key;
+		this.tile.markDirty();
 	}
 }

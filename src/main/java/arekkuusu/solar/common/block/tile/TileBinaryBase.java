@@ -7,100 +7,83 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.binary.BinaryHandler;
-import arekkuusu.solar.api.capability.binary.ISimpleBinaryTile;
+import arekkuusu.solar.api.capability.binary.data.BinaryTileWrapper;
+import arekkuusu.solar.api.capability.binary.data.IBinary;
+import arekkuusu.solar.api.capability.quantum.WorldData;
+import arekkuusu.solar.common.handler.data.ModCapability;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 20/01/2018.
  * It's distributed as part of Solar.
  */
-public abstract class TileBinaryBase extends TileBase implements ISimpleBinaryTile {
+public abstract class TileBinaryBase extends TileBase {
 
-	private UUID key;
+	protected final BinaryTileWrapper<TileBinaryBase> handler;
 
-	@Override
-	public Optional<ISimpleBinaryTile> getInverse() {
-		return isLoaded() ? Optional.ofNullable(BinaryHandler.getInverse(this)) : Optional.empty();
+	protected TileBinaryBase() {
+		this.handler = createHandler();
+	}
+
+	public BinaryTileWrapper<TileBinaryBase> createHandler() {
+		return new BinaryTileWrapper<>(this);
 	}
 
 	@Override
 	public void onLoad() {
-		if(!world.isRemote) {
-			add();
-		}
+		handler.add();
 	}
 
 	@Override
 	public void invalidate() {
 		super.invalidate();
-		remove();
+		handler.remove();
 	}
 
 	@Override
 	public void onChunkUnload() {
-		if(!world.isRemote) {
-			BinaryHandler.remove(this);
-		}
+		handler.remove();
 	}
 
 	@Override
-	public void add() {
-		if(!world.isRemote) {
-			BinaryHandler.add(this);
-		}
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+
+		return capability == ModCapability.BINARY_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
+	@Nullable
 	@Override
-	public void remove() {
-		if(!world.isRemote) {
-			BinaryHandler.remove(this);
-		}
-	}
-
-	@Override
-	public World getRelativeWorld() {
-		return world;
-	}
-
-	@Override
-	public BlockPos getRelativePos() {
-		return pos;
-	}
-
-	@Override
-	public Optional<UUID> getKey() {
-		return Optional.ofNullable(key);
-	}
-
-	@Override
-	public void setKey(@Nullable UUID key) {
-		remove();
-		this.key = key;
-		add();
-		markDirty();
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		return capability == ModCapability.BINARY_CAPABILITY
+				? ModCapability.BINARY_CAPABILITY.cast(handler)
+				: super.getCapability(capability, facing);
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		if(compound.hasUniqueId("key")) {
-			UUID key = compound.getUniqueId("key");
-			if(world != null) {
-				remove();
-				this.key = key;
-				add();
-			} else this.key = key;
-		}
+		if(compound.hasKey(WorldData.NBT_TAG)) {
+			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
+			if(data.hasKey(IBinary.NBT_TAG)) {
+				NBTTagCompound tag = data.getCompoundTag(IBinary.NBT_TAG);
+				if(tag.hasUniqueId("key")) {
+					handler.setKey(tag.getUniqueId("key"));
+				} else handler.setKey(null);
+			} else handler.setKey(null);
+		} else handler.setKey(null);
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		getKey().ifPresent(key -> compound.setUniqueId("key", key));
+		handler.getKey().ifPresent(key -> {
+			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
+			NBTTagCompound tag = data.getCompoundTag(IBinary.NBT_TAG);
+			tag.setUniqueId("key", key);
+			data.setTag(IBinary.NBT_TAG, tag);
+			compound.setTag(WorldData.NBT_TAG, data);
+		});
 	}
 }

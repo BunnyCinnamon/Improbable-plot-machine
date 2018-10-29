@@ -33,7 +33,7 @@ public final class RelativityHandler {
 	 * @param <T> An impl of {@param t}
 	 * @return If the {@param t} is relative to others
 	 */
-	public static <T extends IRelativeState> boolean isRelative(T t) {
+	public static <T extends IRelative> boolean isRelative(T t) {
 		return t.getKey().map(uuid -> SolarApi.getRelativityMap().containsKey(uuid)).orElse(false);
 	}
 
@@ -44,7 +44,7 @@ public final class RelativityHandler {
 	 * @param runnable If the {@param t} is added, run {@param <T>}
 	 * @param <T>      An impl of {@param t}
 	 */
-	public static <T extends IRelativeState> void addRelative(T t, @Nullable Runnable runnable) {
+	public static <T extends IRelative> void addRelative(T t, @Nullable Runnable runnable) {
 		t.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			list = list == null ? new ArrayList<>() : list;
 			if(list.contains(t)) return list;
@@ -63,7 +63,7 @@ public final class RelativityHandler {
 	 * @param runnable If the {@param t} is removed, run {@param <T>}
 	 * @param <T>      An impl of {@param t}
 	 */
-	public static <T extends IRelativeState> void removeRelative(T t, @Nullable Runnable runnable) {
+	public static <T extends IRelative> void removeRelative(T t, @Nullable Runnable runnable) {
 		t.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			if(list != null) {
 				list.remove(t);
@@ -82,7 +82,7 @@ public final class RelativityHandler {
 	 * @param <T> An impl of {@param t}
 	 * @return The list
 	 */
-	public static <T extends IRelativeState> List<IRelativeState> getRelatives(T t) {
+	public static <T extends IRelative> List<IRelative> getRelatives(T t) {
 		if(isRelative(t)) {
 			return Lists.newArrayList(SolarApi.getRelativityMap().get(t.getKey().orElseThrow(NullPointerException::new))); //bamboozled
 		}
@@ -95,7 +95,7 @@ public final class RelativityHandler {
 	 * @param uuid The key
 	 * @return The list
 	 */
-	public static List<IRelativeState> getRelatives(UUID uuid) {
+	public static List<IRelative> getRelatives(UUID uuid) {
 		if(SolarApi.getRelativityMap().containsKey(uuid)) {
 			return Lists.newArrayList(SolarApi.getRelativityMap().get(uuid)); //bamboozled
 		}

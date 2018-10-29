@@ -46,11 +46,11 @@ public class BoundPhotonCopyRecipe extends IForgeRegistryEntry.Impl<IRecipe> imp
 
 	@Override
 	public boolean canFit(int width, int height) {
-		return false;
+		return true;
 	}
 
 	@Override
 	public ItemStack getRecipeOutput() {
-		return null;
+		return new ItemStack(ModItems.BOUND_PHOTON);
 	}
 }

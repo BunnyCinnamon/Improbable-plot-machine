@@ -35,7 +35,7 @@ public class TileQuartzConsumer extends TileBase implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote && world.rand.nextFloat() < 0.1F && !handler.stack.isEmpty()) {
-			ILumen ilumen = handler.stack.getCapability(ModCapability.NEUTRON_CAPABILITY, null);
+			ILumen ilumen = handler.stack.getCapability(ModCapability.LUMEN_CAPABILITY, null);
 			assert ilumen != null;
 			int drain = world.rand.nextInt(15);
 			if(drain > 0 && ilumen.get() >= drain && ilumen.drain(drain, true) == drain) {
@@ -53,7 +53,7 @@ public class TileQuartzConsumer extends TileBase implements ITickable {
 	}
 
 	public boolean consume(ItemStack stack) {
-		if(!stack.isEmpty() && stack.getItem() == ModItems.CRYSTAL_QUARTZ && stack.hasCapability(ModCapability.NEUTRON_CAPABILITY, null)) {
+		if(!stack.isEmpty() && stack.getItem() == ModItems.CRYSTAL_QUARTZ && stack.hasCapability(ModCapability.LUMEN_CAPABILITY, null)) {
 			if(!world.isRemote) {
 				handler.stack = stack.copy();
 				stack.shrink(1);

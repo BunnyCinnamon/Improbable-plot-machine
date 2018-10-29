@@ -56,16 +56,16 @@ public class TileLuminicDecompressor extends TileBase implements ITickable {
 	private Optional<ILumen> getDrained() {
 		EnumFacing facing = getFacingLazy();
 		return getTile(TileEntity.class, world, pos.offset(facing))
-				.filter(tile -> tile.hasCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
-				.map(tile -> tile.getCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
+				.filter(tile -> tile.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
+				.map(tile -> tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
 				.filter(lumen -> lumen.get() > 0);
 	}
 
 	private Optional<ILumen> getFilled(BlockPos pos) {
 		EnumFacing facing = getFacingLazy().getOpposite();
 		return getTile(TileEntity.class, world, pos.offset(facing))
-				.filter(tile -> tile.hasCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
-				.map(tile -> tile.getCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
+				.filter(tile -> tile.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
+				.map(tile -> tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
 				.filter(lumen -> lumen.get() < lumen.getMax());
 	}
 

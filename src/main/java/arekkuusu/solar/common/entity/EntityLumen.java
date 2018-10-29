@@ -26,7 +26,7 @@ public class EntityLumen extends Entity {
 
 	public static EntityLumen spawn(World world, Vector3 pos, int neutrons) {
 		EntityLumen lumen = new EntityLumen(world);
-		Optional.ofNullable(lumen.getCapability(ModCapability.NEUTRON_CAPABILITY, null)).ifPresent(l -> l.set(neutrons));
+		Optional.ofNullable(lumen.getCapability(ModCapability.LUMEN_CAPABILITY, null)).ifPresent(l -> l.set(neutrons));
 		lumen.setPosition(pos.x(), pos.y(), pos.z());
 		world.spawnEntity(lumen);
 		return lumen;
@@ -87,14 +87,14 @@ public class EntityLumen extends Entity {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return ModCapability.NEUTRON_CAPABILITY == capability || super.hasCapability(capability, facing);
+		return ModCapability.LUMEN_CAPABILITY == capability || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return ModCapability.NEUTRON_CAPABILITY == capability
-				? ModCapability.NEUTRON_CAPABILITY.cast(handler)
+		return ModCapability.LUMEN_CAPABILITY == capability
+				? ModCapability.LUMEN_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
 	}
 

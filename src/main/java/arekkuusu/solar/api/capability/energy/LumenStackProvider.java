@@ -8,8 +8,10 @@
 package arekkuusu.solar.api.capability.energy;
 
 import arekkuusu.solar.api.capability.energy.data.ComplexLumenStackWrapper;
+import arekkuusu.solar.api.capability.energy.data.IComplexLumen;
 import arekkuusu.solar.api.capability.energy.data.ILumen;
 import arekkuusu.solar.api.capability.energy.data.SimpleLumenStackWrapper;
+import arekkuusu.solar.api.capability.quantum.IQuantum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -28,7 +30,9 @@ import javax.annotation.Nullable;
 public class LumenStackProvider implements ICapabilityProvider {
 
 	@CapabilityInject(ILumen.class)
-	public static Capability<ILumen> NEUTRON_CAPABILITY = null;
+	public static Capability<ILumen> LUMEN_CAPABILITY = null;
+	@CapabilityInject(IComplexLumen.class)
+	public static Capability<IComplexLumen> COMPLEX_LUMEN_CAPABILITY = null;
 	private final ILumen handler;
 
 	private LumenStackProvider(ILumen handler) {
@@ -37,14 +41,16 @@ public class LumenStackProvider implements ICapabilityProvider {
 
 	@Override
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return facing == null && capability == NEUTRON_CAPABILITY;
+		return facing == null && (capability == LUMEN_CAPABILITY || (handler instanceof IComplexLumen && capability == COMPLEX_LUMEN_CAPABILITY));
 	}
 
 	@Nullable
 	@Override
 	public <C> C getCapability(@Nonnull Capability<C> capability, @Nullable EnumFacing facing) {
-		return facing == null && capability == NEUTRON_CAPABILITY
-				? NEUTRON_CAPABILITY.cast(handler)
+		return facing == null
+				? capability == LUMEN_CAPABILITY
+				? LUMEN_CAPABILITY.cast(handler) : handler instanceof IComplexLumen && capability == COMPLEX_LUMEN_CAPABILITY
+				? COMPLEX_LUMEN_CAPABILITY.cast((IComplexLumen) handler) : null
 				: null;
 	}
 

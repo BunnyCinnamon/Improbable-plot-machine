@@ -7,8 +7,11 @@
  */
 package arekkuusu.solar.common.handler.data;
 
+import arekkuusu.solar.api.capability.binary.data.IBinary;
+import arekkuusu.solar.api.capability.energy.data.IComplexLumen;
 import arekkuusu.solar.api.capability.energy.data.ILumen;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -24,7 +27,11 @@ import java.util.concurrent.Callable;
 public final class ModCapability {
 
 	@CapabilityInject(ILumen.class)
-	public static Capability<ILumen> NEUTRON_CAPABILITY = null;
+	public static Capability<ILumen> LUMEN_CAPABILITY = null;
+	@CapabilityInject(IComplexLumen.class)
+	public static Capability<IComplexLumen> COMPLEX_LUMEN_CAPABILITY = null;
+	@CapabilityInject(IBinary.class)
+	public static Capability<IBinary> BINARY_CAPABILITY = null;
 
 	public static void init() {
 		register(ILumen.class, new Capability.IStorage<ILumen>() {
@@ -40,6 +47,36 @@ public final class ModCapability {
 				}
 			}
 		}, ILumen.DEFAULT);
+		register(IComplexLumen.class, new Capability.IStorage<IComplexLumen>() {
+			@Override
+			public NBTBase writeNBT(Capability<IComplexLumen> capability, IComplexLumen instance, EnumFacing side) {
+				NBTTagCompound tag = new NBTTagCompound();
+				instance.getKey().ifPresent(key -> tag.setUniqueId("key", key));
+				return tag;
+			}
+
+			@Override
+			public void readNBT(Capability<IComplexLumen> capability, IComplexLumen instance, EnumFacing side, NBTBase nbt) {
+				if(nbt instanceof NBTTagCompound) {
+					instance.setKey(((NBTTagCompound) nbt).getUniqueId("key"));
+				}
+			}
+		}, IComplexLumen.DEFAULT);
+		register(IBinary.class, new Capability.IStorage<IBinary>() {
+			@Override
+			public NBTBase writeNBT(Capability<IBinary> capability, IBinary instance, EnumFacing side) {
+				NBTTagCompound tag = new NBTTagCompound();
+				instance.getKey().ifPresent(key -> tag.setUniqueId("key", key));
+				return tag;
+			}
+
+			@Override
+			public void readNBT(Capability<IBinary> capability, IBinary instance, EnumFacing side, NBTBase nbt) {
+				if(nbt instanceof NBTTagCompound) {
+					instance.setKey(((NBTTagCompound) nbt).getUniqueId("key"));
+				}
+			}
+		}, IBinary.DEFAULT);
 	}
 
 	private static <T> void register(Class<T> type, Capability.IStorage<T> storage, Callable<? extends T> factory) {

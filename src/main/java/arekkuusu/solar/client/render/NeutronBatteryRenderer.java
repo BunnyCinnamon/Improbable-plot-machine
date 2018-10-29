@@ -7,7 +7,6 @@
  */
 package arekkuusu.solar.client.render;
 
-import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.client.util.ShaderLibrary;
 import arekkuusu.solar.client.util.baker.BlockBaker;
 import arekkuusu.solar.client.util.helper.RenderHelper;
@@ -16,6 +15,7 @@ import arekkuusu.solar.common.block.tile.TileNeutronBattery;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
 /*
@@ -33,7 +33,8 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 	void renderStack(double x, double y, double z, float partialTicks) {
 		ItemStack stack = SpecialModelRenderer.getTempItemRenderer();
 		BatteryCapacitor capacitor = new BatteryCapacitor();
-		NBTHelper.getNBTTag(stack, "neutron_nbt").ifPresent(capacitor::deserializeNBT);
+		NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+		capacitor.deserializeNBT(root.getCompoundTag(BatteryCapacitor.NBT_TAG));
 		renderModel(capacitor, null, x, y, z, partialTicks);
 	}
 

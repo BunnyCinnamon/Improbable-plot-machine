@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.relativity.IRelativeState;
+import arekkuusu.solar.api.capability.relativity.IRelative;
 import arekkuusu.solar.api.capability.relativity.RelativityHandler;
 import arekkuusu.solar.common.block.BlockQelaion;
 import com.google.common.collect.ImmutableList;
@@ -138,7 +138,7 @@ public class TileQelaion extends TileRelativityBase implements ITickable {
 	public ImmutableList<TileQelaion> getNodeList() {
 		return nodes != null ? ImmutableList.copyOf(
 				RelativityHandler.getRelatives(nodes).stream()
-						.filter(IRelativeState::isLoaded)
+						.filter(IRelative::isLoaded)
 						.map(n -> (TileQelaion) n)
 						.collect(Collectors.toList())
 		) : ImmutableList.of();

@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.relativity.IRelativeState;
+import arekkuusu.solar.api.capability.relativity.IRelative;
 import arekkuusu.solar.api.capability.relativity.RelativityHandler;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.handler.data.WorldAlternatorData;
@@ -27,7 +27,7 @@ public class TileAlternator extends TileRelativityBase {
 	public boolean areAllActive() {
 		return getKey().map(key -> {
 			int size = 0;
-			for(IRelativeState tile : RelativityHandler.getRelatives(key)) {
+			for(IRelative tile : RelativityHandler.getRelatives(key)) {
 				if(tile.isLoaded()) ++size;
 			}
 			int loaded = TileAlternator.getData(world).getSize(key);

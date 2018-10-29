@@ -7,35 +7,38 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.energy.data.ComplexLumenTileWrapper;
-import arekkuusu.solar.api.capability.quantum.IQuantum;
+import arekkuusu.solar.api.capability.energy.data.IComplexLumen;
+import arekkuusu.solar.api.capability.quantum.WorldData;
 import arekkuusu.solar.common.block.BlockNeutronBattery.BatteryCapacitor;
-import arekkuusu.solar.common.handler.data.ModCapability;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  */
-public class TileNeutronBattery extends TileBase implements IQuantum {
+public class TileNeutronBattery extends TileComplexLumenBase {
 
-	private ComplexLumenTileWrapper<TileNeutronBattery> handler;
 	private BatteryCapacitor capacitor;
-	private UUID key;
 
 	public TileNeutronBattery(BatteryCapacitor capacitor) {
-		this.handler = new ComplexLumenTileWrapper<>(this, capacitor.getCapacity());
 		this.capacitor = capacitor;
+		this.handler = createHandler();
 	}
 
 	public TileNeutronBattery() {
+		this.capacitor = new BatteryCapacitor();
+		this.handler = createHandler();
+	}
+
+	@Override
+	public int getCapacity() {
+		return capacitor.getCapacity();
 	}
 
 	public BatteryCapacitor getCapacitor() {
@@ -43,16 +46,14 @@ public class TileNeutronBattery extends TileBase implements IQuantum {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.NEUTRON_CAPABILITY && facing == getFacingLazy() || super.hasCapability(capability, facing);
+	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+		return facing == getFacingLazy() && super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.NEUTRON_CAPABILITY && facing == getFacingLazy()
-				? ModCapability.NEUTRON_CAPABILITY.cast(handler)
-				: super.getCapability(capability, facing);
+	public <C> C getCapability(@Nonnull Capability<C> capability, @Nullable EnumFacing facing) {
+		return facing == getFacingLazy() ? super.getCapability(capability, facing) : null;
 	}
 
 	public EnumFacing getFacingLazy() {
@@ -60,31 +61,29 @@ public class TileNeutronBattery extends TileBase implements IQuantum {
 	}
 
 	@Override
-	public Optional<UUID> getKey() {
-		return Optional.ofNullable(key);
-	}
-
-	@Override
-	public void setKey(@Nullable UUID key) {
-		this.key = key;
-		markDirty();
-	}
-
-	@Override
 	void readNBT(NBTTagCompound compound) {
-		if(compound.hasUniqueId("key")) {
-			this.key = compound.getUniqueId("key");
-		}
-		capacitor = new BatteryCapacitor();
-		capacitor.deserializeNBT(compound.getCompoundTag("capacitor"));
-		handler = new ComplexLumenTileWrapper<>(this, capacitor.getCapacity());
+		capacitor.deserializeNBT(compound.getCompoundTag(BatteryCapacitor.NBT_TAG));
+		handler.setMax(capacitor.getCapacity());
+		if(compound.hasKey(WorldData.NBT_TAG)) {
+			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
+			if(data.hasKey(IComplexLumen.NBT_TAG)) {
+				NBTTagCompound tag = data.getCompoundTag(IComplexLumen.NBT_TAG);
+				if(tag.hasUniqueId("key")) {
+					handler.setKey(tag.getUniqueId("key"));
+				} else handler.setKey(null);
+			} else handler.setKey(null);
+		} else handler.setKey(null);
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		if(key != null) {
-			compound.setUniqueId("key", key);
-		}
-		compound.setTag("capacitor", capacitor.serializeNBT());
+		compound.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
+		handler.getKey().ifPresent(key -> {
+			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
+			NBTTagCompound tag = data.getCompoundTag(IComplexLumen.NBT_TAG);
+			tag.setUniqueId("key", key);
+			data.setTag(IComplexLumen.NBT_TAG, tag);
+			compound.setTag(WorldData.NBT_TAG, data);
+		});
 	}
 }

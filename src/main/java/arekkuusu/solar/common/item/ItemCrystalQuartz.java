@@ -100,7 +100,7 @@ public class ItemCrystalQuartz extends ItemBase {
 			ItemStack fullStack = new ItemStack(this);
 			for(int i = MAX_LUMEN; i >= 0; i -= MAX_LUMEN / 4) {
 				final int lumen = i;
-				LumenHelper.getCapability(ILumen.class, fullStack).ifPresent(l -> l.set(lumen));
+				LumenHelper.getCapability(fullStack).ifPresent(l -> l.set(lumen));
 				items.add(fullStack.copy());
 			}
 		}

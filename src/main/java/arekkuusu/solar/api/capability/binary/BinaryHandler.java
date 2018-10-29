@@ -8,10 +8,11 @@
 package arekkuusu.solar.api.capability.binary;
 
 import arekkuusu.solar.api.SolarApi;
+import arekkuusu.solar.api.capability.binary.data.IBinary;
 import arekkuusu.solar.api.util.Pair;
-import net.minecraft.tileentity.TileEntity;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -21,63 +22,63 @@ import java.util.UUID;
 public final class BinaryHandler {
 
 	/**
-	 * If the given {@link @tile} of type {@link ISimpleBinaryTile}
+	 * If the given {@link @binary} of type {@link IBinary}
 	 * is linked to another tile in some other place
 	 *
-	 * @param tile The {@link ISimpleBinaryTile} to be tested
-	 * @param <T>  An impl of {@param tile}
+	 * @param binary The {@link T} to be tested
+	 * @param <T>    An impl of {@param binary}
 	 * @return If the {@param tile} is linked to another tile
 	 */
-	public static <T extends TileEntity & ISimpleBinaryTile> boolean hasBinary(T tile) {
-		return tile.getKey().map(uuid -> SolarApi.getBinaryMap().containsKey(uuid)).orElse(false);
+	public static <T extends IBinary> boolean hasBinary(T binary) {
+		return binary.getKey().map(uuid -> SolarApi.getBinaryMap().containsKey(uuid)).orElse(false);
 	}
 
 	/**
 	 * Add the given {@param tile} to a holder with its link
 	 *
-	 * @param tile The {@link ISimpleBinaryTile} to be added
-	 * @param <T>  An impl of {@param tile}
+	 * @param binary The {@link IBinary} to be added
+	 * @param <T>    An impl of {@param binary}
 	 */
-	public static <T extends TileEntity & ISimpleBinaryTile> void add(T tile) {
-		tile.getKey().ifPresent(uuid -> SolarApi.getBinaryMap().compute(uuid, (key, pair) -> {
+	public static <T extends IBinary> void add(T binary) {
+		binary.getKey().ifPresent(uuid -> SolarApi.getBinaryMap().compute(uuid, (key, pair) -> {
 			if(pair == null) pair = new Pair<>();
 			if(pair.l == null || pair.r == null) {
-				pair.offer(tile);
+				pair.offer(binary);
 			}
 			return pair;
 		}));
 	}
 
 	/**
-	 * Remove the given {@param tile} to a holder with its link
+	 * Remove the given {@param binary} to a holder with its link
 	 *
-	 * @param tile The {@link ISimpleBinaryTile} to be removed
-	 * @param <T>  An impl of {@param tile}
+	 * @param binary The {@link IBinary} to be removed
+	 * @param <T>    An impl of {@param binary}
 	 */
-	public static <T extends TileEntity & ISimpleBinaryTile> void remove(T tile) {
-		tile.getKey().ifPresent(uuid -> SolarApi.getBinaryMap().compute(uuid, (key, pair) -> {
+	public static <T extends IBinary> void remove(T binary) {
+		binary.getKey().ifPresent(uuid -> SolarApi.getBinaryMap().compute(uuid, (key, pair) -> {
 			boolean present = false;
 			if(pair != null) {
-				present = pair.getInverse(tile) != null;
-				pair.remove(tile);
+				present = pair.getInverse(binary) != null;
+				pair.remove(binary);
 			}
 			return present ? pair : null;
 		}));
 	}
 
 	/**
-	 * Returns the inverse link of the given {@param tile}
+	 * Returns the inverse link of the given {@param binary}
 	 *
-	 * @param tile The {@link ISimpleBinaryTile}
-	 * @param <T>  An impl of {@param tile}
+	 * @param binary The {@link IBinary}
+	 * @param <T>    An impl of {@param binary}
 	 * @return The inverse
 	 */
 	@Nullable
-	public static <T extends TileEntity & ISimpleBinaryTile> ISimpleBinaryTile getInverse(T tile) {
-		if(hasBinary(tile)) {
-			return SolarApi.getBinaryMap().get(tile.getKey().orElseThrow(NullPointerException::new)).getInverse(tile); //bamboozled
+	public static <T extends IBinary> Optional<IBinary> getInverse(T binary) {
+		if(hasBinary(binary)) {
+			return binary.getKey().map(key -> SolarApi.getBinaryMap().get(key)).map(pair -> pair.getInverse(binary));
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	/**
@@ -86,7 +87,7 @@ public final class BinaryHandler {
 	 * @param uuid The key
 	 * @return The pair
 	 */
-	public static Pair<ISimpleBinaryTile> getBinary(UUID uuid) {
+	public static Pair<IBinary> getBinaryPair(UUID uuid) {
 		if(SolarApi.getBinaryMap().containsKey(uuid)) {
 			return SolarApi.getBinaryMap().get(uuid);
 		}

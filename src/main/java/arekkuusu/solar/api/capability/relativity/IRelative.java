@@ -15,7 +15,7 @@ import net.minecraft.world.World;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public interface IRelativeState extends IQuantum {
+public interface IRelative extends IQuantum {
 
 	/**
 	 * Add this tile entity to the relative group

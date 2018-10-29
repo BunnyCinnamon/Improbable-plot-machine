@@ -7,9 +7,9 @@
  */
 package arekkuusu.solar.api.capability.inventory.data;
 
-import arekkuusu.solar.api.capability.quantum.IQuantum;
 import net.minecraft.tileentity.TileEntity;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,12 +19,13 @@ import java.util.UUID;
  * <p>
  * Default implementation for {@link TileEntity} with a quantum entangled inventory
  */
-public class EntangledTileWrapper<T extends TileEntity & IQuantum> extends EntangledIItemWrapper {
+public class EntangledTileWrapper<T extends TileEntity> extends EntangledIItemWrapper {
 
 	protected final T tile;
+	private UUID key;
 
 	/**
-	 * @param tile  A {@link TileEntity} instance implementing {@link T}
+	 * @param tile  A {@link TileEntity} instance
 	 * @param slots Slot amount
 	 */
 	public EntangledTileWrapper(T tile, int slots) {
@@ -34,11 +35,12 @@ public class EntangledTileWrapper<T extends TileEntity & IQuantum> extends Entan
 
 	@Override
 	public Optional<UUID> getKey() {
-		return tile.getKey();
+		return Optional.ofNullable(key);
 	}
 
 	@Override
-	public void setKey(UUID key) {
-		tile.setKey(key);
+	public void setKey(@Nullable UUID key) {
+		this.key = key;
+		this.tile.markDirty();
 	}
 }

@@ -11,7 +11,7 @@ package arekkuusu.solar.api.capability.energy.data;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Solar.
  *
- * Default quantum entangled {@link ILumen} implementation
+ * Default {@link ILumen} implementation
  */
 public abstract class SimpleLumenWrapper implements ILumen {
 

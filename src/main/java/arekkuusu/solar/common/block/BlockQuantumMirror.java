@@ -20,7 +20,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -31,7 +30,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /*
@@ -73,9 +71,13 @@ public class BlockQuantumMirror extends BlockBase {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
-				EntangledIItemHelper.getCapability(stack).ifPresent(entangled -> {
-					if(!entangled.getKey().isPresent()) entangled.setKey(UUID.randomUUID());
-					entangled.getKey().ifPresent(mirror::setKey);
+				EntangledIItemHelper.getCapability(mirror).ifPresent(handler -> {
+					if(!handler.getKey().isPresent()) {
+						EntangledIItemHelper.getCapability(stack).ifPresent(subHandler -> {
+							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
+							subHandler.getKey().ifPresent(handler::setKey);
+						});
+					}
 				});
 			});
 		}
@@ -88,16 +90,15 @@ public class BlockQuantumMirror extends BlockBase {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileQuantumMirror> optional = getTile(TileQuantumMirror.class, world, pos);
-		if(optional.isPresent()) {
-			TileQuantumMirror mirror = optional.get();
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			mirror.getKey().ifPresent(uuid -> {
-				EntangledIItemHelper.getCapability(stack).ifPresent(entangled -> entangled.setKey(uuid));
+		ItemStack stack = super.getItem(world, pos, state);
+		getTile(TileQuantumMirror.class, world, pos).ifPresent(mirror -> {
+			EntangledIItemHelper.getCapability(mirror).ifPresent(handler -> {
+				handler.getKey().ifPresent(key -> {
+					EntangledIItemHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
+				});
 			});
-			return stack;
-		}
-		return super.getItem(world, pos, state);
+		});
+		return stack;
 	}
 
 	@Override

@@ -34,12 +34,12 @@ public class TilePholarizer extends TileBase implements ITickable {
 	private void succ() {
 		final EnumFacing facing = getFacingLazy();
 		getTile(TileEntity.class, world, pos.offset(facing))
-				.filter(tile -> tile.hasCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
-				.map(tile -> tile.getCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
+				.filter(tile -> tile.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
+				.map(tile -> tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
 				.ifPresent(wrapper -> {
 					if(wrapper.get() < wrapper.getMax() && wrapper.canFill()) {
 						world.getEntitiesWithinAABB(EntityLumen.class, new AxisAlignedBB(pos.up()).grow(10D)).stream().filter(e ->
-								!e.isDead && e.hasCapability(ModCapability.NEUTRON_CAPABILITY, null)
+								!e.isDead && e.hasCapability(ModCapability.LUMEN_CAPABILITY, null)
 						).forEach(e -> {
 							double x = getPos().getX() + 0.5D - e.posX;
 							double y = getPos().getY() + 0.5D - e.posY;
@@ -53,9 +53,9 @@ public class TilePholarizer extends TileBase implements ITickable {
 							e.motionZ += (z / sqrt) * strength * power;
 						});
 						world.getEntitiesWithinAABB(EntityLumen.class, new AxisAlignedBB(pos.up()).grow(1D)).stream().filter(e ->
-								!e.isDead && e.hasCapability(ModCapability.NEUTRON_CAPABILITY, null)
+								!e.isDead && e.hasCapability(ModCapability.LUMEN_CAPABILITY, null)
 						).forEach(e -> {
-							ILumen lumen = e.getCapability(ModCapability.NEUTRON_CAPABILITY, null);
+							ILumen lumen = e.getCapability(ModCapability.LUMEN_CAPABILITY, null);
 							LumenHelper.transfer(lumen, wrapper, 1, true);
 							if(lumen.get() <= 0) e.setDead();
 						});
@@ -66,8 +66,8 @@ public class TilePholarizer extends TileBase implements ITickable {
 	private void unsucc() {
 		final EnumFacing facing = getFacingLazy();
 		getTile(TileEntity.class, world, pos.offset(facing))
-				.filter(tile -> tile.hasCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
-				.map(tile -> tile.getCapability(ModCapability.NEUTRON_CAPABILITY, facing.getOpposite()))
+				.filter(tile -> tile.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
+				.map(tile -> tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
 				.ifPresent(wrapper -> {
 					int drain = wrapper.drain(16, true);
 					if(drain > 0) {

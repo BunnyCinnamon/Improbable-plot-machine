@@ -73,7 +73,7 @@ public interface ILumen {
 				set(sum);
 			}
 			return remain;
-		} else return 0;
+		} else return amount;
 	}
 
 	/**

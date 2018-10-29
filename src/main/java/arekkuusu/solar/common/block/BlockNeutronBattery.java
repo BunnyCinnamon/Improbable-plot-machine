@@ -8,8 +8,6 @@
 package arekkuusu.solar.common.block;
 
 import arekkuusu.solar.api.capability.energy.LumenHelper;
-import arekkuusu.solar.api.capability.energy.data.ComplexLumenStackWrapper;
-import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
@@ -18,7 +16,6 @@ import arekkuusu.solar.client.util.baker.baked.BakedNeutronBattery;
 import arekkuusu.solar.client.util.helper.ModelHandler;
 import arekkuusu.solar.common.Solar;
 import arekkuusu.solar.common.block.tile.TileNeutronBattery;
-import arekkuusu.solar.common.item.ModItems;
 import arekkuusu.solar.common.lib.LibNames;
 import com.google.common.collect.Lists;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
@@ -26,11 +23,13 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -41,7 +40,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -65,28 +63,16 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = player.getHeldItem(hand);
-		if(!stack.isEmpty() && stack.getItem() == ModItems.NEUTRON_BATTERY) {
-			if(!world.isRemote) getTile(TileNeutronBattery.class, world, pos).ifPresent(neutron -> {
-				LumenHelper.getCapability(ComplexLumenStackWrapper.class, stack).ifPresent(i -> {
-					if(!i.getKey().isPresent()) {
-						neutron.getKey().ifPresent(i::setKey);
-					}
-				});
-			});
-			return true;
-		}
-		return false;
-	}
-
-	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileNeutronBattery.class, world, pos).ifPresent(battery -> {
-				LumenHelper.getCapability(ComplexLumenStackWrapper.class, stack).ifPresent(i -> {
-					if(!i.getKey().isPresent()) i.setKey(UUID.randomUUID());
-					i.getKey().ifPresent(battery::setKey);
+				LumenHelper.getComplexCapability(battery, battery.getFacingLazy()).ifPresent(handler -> {
+					if(!handler.getKey().isPresent()) {
+						LumenHelper.getComplexCapability(stack).ifPresent(subHandler -> {
+							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
+							subHandler.getKey().ifPresent(key -> handler.setKey(key));
+						});
+					}
 				});
 			});
 		}
@@ -99,17 +85,17 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileNeutronBattery> optional = getTile(TileNeutronBattery.class, world, pos);
-		if(optional.isPresent()) {
-			TileNeutronBattery neutron = optional.get();
-			ItemStack stack = new ItemStack(this);
-			NBTHelper.setNBT(stack, "neutron_capacitor", capacitor.serializeNBT());
-			LumenHelper.getCapability(ComplexLumenStackWrapper.class, stack).ifPresent(i -> {
-				neutron.getKey().ifPresent(i::setKey);
+		ItemStack stack = super.getItem(world, pos, state);
+		getTile(TileNeutronBattery.class, world, pos).ifPresent(battery -> {
+			LumenHelper.getComplexCapability(battery, battery.getFacingLazy()).ifPresent(handler -> {
+				handler.getKey().ifPresent(key -> {
+					LumenHelper.getComplexCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
+				});
 			});
-			return stack;
-		}
-		return super.getItem(world, pos, state);
+		});
+		NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+		root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
+		return stack;
 	}
 
 	@Override
@@ -147,13 +133,14 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileNeutronBattery(capacitor);
+		return new TileNeutronBattery(capacitor.copy());
 	}
 
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 		ItemStack stack = new ItemStack(this);
-		NBTHelper.setNBT(stack, "neutron_capacitor", capacitor.serializeNBT());
+		NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+		root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
 		items.add(stack);
 	}
 
@@ -167,6 +154,7 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	}
 
 	public static class BatteryCapacitor implements INBTSerializable<NBTTagCompound>, IStringSerializable {
+		public static String NBT_TAG = "neutron_capacitor";
 
 		String name;
 		int capacity;
@@ -207,6 +195,10 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 			name = nbt.getString("name");
 			capacity = nbt.getInteger("capacity");
 			color = nbt.getInteger("color");
+		}
+
+		public BatteryCapacitor copy() {
+			return new BatteryCapacitor(name, capacity, color);
 		}
 	}
 

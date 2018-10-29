@@ -47,7 +47,7 @@ public class TileMechanicalTranslocator extends TileRelativityBase implements Co
 			List<TileMechanicalTranslocator> list = RelativityHandler.getRelatives(this).stream()
 					.filter(tile -> tile.isLoaded() && tile instanceof TileMechanicalTranslocator)
 					.map(tile -> (TileMechanicalTranslocator) tile).sorted().collect(Collectors.toList());
-			int index = list.indexOf(this);
+			int index = getIndex();
 			int size = list.size();
 			int i = index + 1 >= size ? 0 : index + 1;
 			Triple<IBlockState, EnumFacing, NBTTagCompound> triplet = getRelativeState();

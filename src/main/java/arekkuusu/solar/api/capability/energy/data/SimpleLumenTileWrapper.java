@@ -17,7 +17,7 @@ import net.minecraft.tileentity.TileEntity;
  */
 public class SimpleLumenTileWrapper<T extends TileEntity> extends SimpleLumenWrapper {
 
-	private T tile;
+	private final T tile;
 
 	/**
 	 * @param tile A {@link TileEntity} instance
@@ -28,7 +28,9 @@ public class SimpleLumenTileWrapper<T extends TileEntity> extends SimpleLumenWra
 		this.tile = tile;
 	}
 
-	public T getTile() {
-		return tile;
+	@Override
+	public void set(int neutrons) {
+		super.set(neutrons);
+		this.tile.markDirty();
 	}
 }

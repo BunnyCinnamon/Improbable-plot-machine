@@ -7,9 +7,11 @@
  */
 package arekkuusu.solar.api.capability.energy.data;
 
-import arekkuusu.solar.api.helper.NBTHelper;
+import arekkuusu.solar.api.capability.quantum.WorldData;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,26 +26,36 @@ public class ComplexLumenStackWrapper extends ComplexLumenWrapper {
 	private final ItemStack stack;
 
 	/**
-	 * @param stack  The {@link ItemStack}
-	 * @param max    Lumen capacity
+	 * @param stack The {@link ItemStack}
+	 * @param max   Lumen capacity
 	 */
 	public ComplexLumenStackWrapper(ItemStack stack, int max) {
 		super(max);
 		this.stack = stack;
 	}
 
-	public ItemStack getStack() {
-		return stack;
-	}
-
 	@Override
 	public Optional<UUID> getKey() {
-		return NBTHelper.getNBTTag(stack, ILumen.NBT_TAG)
-				.map(nbtTagCompound -> nbtTagCompound.getUniqueId(ComplexLumenWrapper.NBT_ENTANGLED_TAG));
+		NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+		NBTTagCompound tag = root.getCompoundTag(WorldData.NBT_TAG);
+		if(tag.hasKey(IComplexLumen.NBT_TAG)) {
+			NBTTagCompound nbt = tag.getCompoundTag(IComplexLumen.NBT_TAG);
+			return nbt.hasUniqueId("key") ? Optional.ofNullable(nbt.getUniqueId("key")) : Optional.empty();
+		}
+		return Optional.empty();
 	}
 
 	@Override
-	public void setKey(UUID key) {
-		stack.getOrCreateSubCompound(ILumen.NBT_TAG).setUniqueId(ComplexLumenWrapper.NBT_ENTANGLED_TAG, key);
+	public void setKey(@Nullable UUID key) {
+		NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+		NBTTagCompound tag = root.getCompoundTag(WorldData.NBT_TAG);
+		NBTTagCompound nbt = tag.getCompoundTag(IComplexLumen.NBT_TAG);
+		if(key != null) {
+			nbt.setUniqueId("key", key);
+		} else {
+			nbt.removeTag("key");
+		}
+		tag.setTag(IComplexLumen.NBT_TAG, nbt);
+		root.setTag(WorldData.NBT_TAG, tag);
 	}
 }
