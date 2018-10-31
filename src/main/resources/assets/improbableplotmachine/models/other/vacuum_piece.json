@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "improbableplotmachine:blocks/vacuum_conveyor",
+		"particle": "improbableplotmachine:blocks/vacuum_conveyor"
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"from": [-3, -0.5, -3],
+			"to": [3, 0.5, 3],
+			"faces": {
+				"north": {"uv": [10, 5, 16, 6], "texture": "#0"},
+				"east": {"uv": [10, 5, 16, 6], "texture": "#0"},
+				"south": {"uv": [10, 5, 16, 6], "texture": "#0"},
+				"west": {"uv": [10, 5, 16, 6], "texture": "#0"},
+				"up": {"uv": [10, 0, 16, 6], "texture": "#0"},
+				"down": {"uv": [10, 0, 16, 6], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [0]
+}

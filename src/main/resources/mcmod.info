@@ -1,11 +1,11 @@
 [
 {
-  "modid": "solar",
-  "name": "Solar",
-  "description": "Improbable plot machine",
+  "modid": "improbableplotmachine",
+  "name": "Improbable Plot Machine",
+  "description": "Eons ago, a highly advanced civilization once ruled this land, their deep understanding of everything led them to create technology so unthinkable, even today it would be considered magic. So much time has passed, and the remainings of their creations are long gone, but their knowledge, written in stone, will last for ever...",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://minecraft.curseforge.com/projects/solar",
+  "url": "https://minecraft.curseforge.com/projects/improbable-plot-machine",
   "updateUrl": "",
   "authorList": ["Arekkuusu"],
   "credits": "you",

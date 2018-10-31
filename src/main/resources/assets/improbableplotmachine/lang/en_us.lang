@@ -1,0 +1,72 @@
+itemGroup.improbableplotmachine.misc_tab=Implobable Plot Machine
+
+improbableplotmachine.sound.spark=bzzt!
+improbableplotmachine.death.electricity.player=%1$s was sentenced to the electric chair
+improbableplotmachine.death.electricity=%1$s stabbed an outlet with a fork
+
+item.crystal_quartz.name=Crystal Quartz
+item.ash.name=Ash
+item.singularity.name=Singularity
+item.plasmon.name=Plasmon
+item.theorema.name=Theorema
+item.intrinsic_cell.name=Intrinsic Cell
+item.crystal_quartz_shard.name=Crystal Quartz Shard
+item.quartz.name=Quartz
+item.magnetic_gear.name=Gear
+item.magnetic_bolt.name=Bolt
+item.magnetic_spring.name=Spring
+item.bound_photon.name=Bound Photon
+
+tile.primal_stone.name=Primal Stone
+tile.black_hole.name=Black Hole
+tile.quantum_mirror.name=Quantum Mirror
+tile.light_particle.name=Light Particle
+tile.gravity_hopper.name=Gravity Hopper
+tile.atomic_void.name=Atomic Void
+tile.schrodinger_glyph.name=Schrodinger Glyph
+tile.blinker.name=Blinker
+tile.phenomena.name=Phenomena
+tile.q_squared.name=Q²
+tile.gravity_inhibitor.name=Gravity Inhibitor
+tile.hyper_conductor.name=Hyper Conductor
+tile.electron.name=Electron
+tile.ashen.name=Ashen
+tile.monolithic.name=Monolithic
+tile.monolithic_glyph.name=Monolithic Glyph
+tile.angstrom.name=Ångström
+tile.qimranut.name=Qimranut
+tile.celestial_resonator.name=Celestial Resonator
+tile.large_pot.name=Ancient Pot
+tile.vacuum_conveyor.name=Vacuum Conveyor
+tile.mechanical_translocator.name=Mechanical Translocator
+tile.alternator.name=Alternator
+tile.dilaton.name=Dilaton
+tile.dilaton_extension.name=Dilaton Extension
+tile.qelaion.name=Qelaion
+tile.neutron_battery_blue.name=Neutron Battery
+tile.neutron_battery_green.name=Neutron Battery
+tile.neutron_battery_pink.name=Neutron Battery
+tile.pholarizer.name=Pholarizer
+tile.fission_inducer.name=Fission Inducer
+tile.luminic_decompressor.name=Luminic Decompressor
+tile.quartz_consumer.name=Quartz Consumer
+tile.lumen_compressor.name=Lumen Compressor
+tile.differentiator.name=Differentiator
+tile.differentiator_interceptor.name=Differentiator Interceptor
+tile.kondenzator.name=Kondenzator
+tile.imbued_quartz.name=Imbued Quartz
+tile.crystallic_synthesizer.name=Crystalic Synthesizer
+
+fluid.tile.gold=Molten Gold
+
+entity.eye_of_schrodinger.name=Eye of Schrodinger
+entity.fast_item.name=Entity Item
+entity.quingentilliard_item.name=Entity Item
+entity.quantum_quartz.name=Entity Item
+
+tlp.uuid_key=Group
+tlp.uuid_key_empty=No groups
+tlp.tag_nodes=Node link
+tlp.item_filter=Item Filter
+tlp.quantum_data=Holds
+tlp.monolithic_description=Immovable Object

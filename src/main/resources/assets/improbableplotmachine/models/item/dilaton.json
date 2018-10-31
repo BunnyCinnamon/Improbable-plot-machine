@@ -1,0 +1,17 @@
+{
+  "parent": "improbableplotmachine:block/dilaton/full",
+  "overrides": [
+    {
+      "predicate": {
+        "active": 0.0
+      },
+      "model": "improbableplotmachine:block/dilaton/full"
+    },
+    {
+      "predicate": {
+        "active": 1.0
+      },
+      "model": "improbableplotmachine:block/dilaton/base"
+    }
+  ]
+}

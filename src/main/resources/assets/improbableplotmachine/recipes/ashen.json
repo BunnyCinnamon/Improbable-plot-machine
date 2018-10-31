@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "AAA",
+    "AAA",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "improbableplotmachine:ash"
+    }
+  },
+  "result": {
+    "item": "improbableplotmachine:ashen"
+  },
+  "group": "plot_machine"
+}

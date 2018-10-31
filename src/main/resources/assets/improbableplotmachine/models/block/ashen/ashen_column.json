@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "improbableplotmachine:blocks/ashen/ashen_solid",
+        "down": "improbableplotmachine:blocks/ashen/ashen_blank",
+        "up": "improbableplotmachine:blocks/ashen/ashen_blank",
+        "north": "improbableplotmachine:blocks/ashen/ashen_column",
+        "east": "improbableplotmachine:blocks/ashen/ashen_column",
+        "south": "improbableplotmachine:blocks/ashen/ashen_column",
+        "west": "improbableplotmachine:blocks/ashen/ashen_column"
+    }
+}

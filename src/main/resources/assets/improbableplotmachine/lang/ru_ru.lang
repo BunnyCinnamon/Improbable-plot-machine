@@ -1,0 +1,72 @@
+itemGroup.improbableplotmachine.misc_tab=Solar
+
+improbableplotmachine.sound.spark=искра!
+improbableplotmachine.death.electricity.player=%1$s был приговорен к электрическому стулу
+improbableplotmachine.death.electricity=%1$s stabbed an outlet with a fork
+
+item.crystal_quartz.name=Кристалл кварца
+item.ash.name=Пепел
+item.singularity.name=Сингулярность
+item.plasmon.name=Плазмоид
+item.theorema.name=Theorema
+item.intrinsic_cell.name=Intrinsic Cell
+item.crystal_quartz_shard.name=Crystal Quartz Shard
+item.quartz.name=Quartz
+item.magnetic_gear.name=Gear
+item.magnetic_bolt.name=Bolt
+item.magnetic_spring.name=Spring
+item.bound_photon.name=Bound Photon
+
+tile.primal_stone.name=Древний камень
+tile.black_hole.name=Черная дыра
+tile.quantum_mirror.name=Квантовое зеркало
+tile.light_particle.name=Частица света
+tile.gravity_hopper.name=Гравитационная воронка
+tile.atomic_void.name=Атомная пустота
+tile.schrodinger_glyph.name=Квантовый глиф
+tile.blinker.name=Блинкер
+tile.phenomena.name=Феномен
+tile.q_squared.name=Q²
+tile.gravity_inhibitor.name=Замемедлитель гравитации
+tile.hyper_conductor.name=Гипер-проводник
+tile.electron.name=Электрон
+tile.ashen.name=Пепельник
+tile.monolithic.name=Монолит
+tile.monolithic_glyph.name=Монолитный глиф
+tile.angstrom.name=Ангстрем
+tile.qimranut.name=Квимранат
+tile.celestial_resonator.name=Небесный резонатор
+tile.large_pot.name=Древний горшок
+tile.vacuum_conveyor.name=Вакуумный конвейер
+tile.mechanical_translocator.name=Механический проводник
+tile.alternator.name=Альтернатор
+tile.dilaton.name=Дилатон
+tile.dilaton_extension.name=Расширение дилатона
+tile.qelaion.name=Квелион
+tile.neutron_battery_blue.name=Neutron Battery
+tile.neutron_battery_green.name=Neutron Battery
+tile.neutron_battery_pink.name=Neutron Battery
+tile.pholarizer.name=Pholarizer
+tile.fission_inducer.name=Fission Inducer
+tile.luminic_decompressor.name=Luminic Decompressor
+tile.quartz_consumer.name=Quartz Consumer
+tile.lumen_compressor.name=Lumen Compressor
+tile.differentiator.name=Differentiator
+tile.differentiator_interceptor.name=Differentiator Interceptor
+tile.kondenzator.name=Kondenzator
+tile.imbued_quartz.name=Imbued Quartz
+tile.crystallic_synthesizer.name=Crystalic Synthesizer
+
+fluid.tile.gold=Molten Gold
+
+entity.eye_of_schrodinger.name=Квантовый глаз
+entity.fast_item.name=Существо предмета
+entity.quingentilliard_item.name=Существо предмета
+entity.quantum_quartz.name=Существо предмета
+
+tlp.uuid_key=Group
+tlp.uuid_key_empty=No groups
+tlp.tag_nodes=Ноды
+tlp.item_filter=Фильтр предметов
+tlp.quantum_data=Квантовые данные
+tlp.monolithic_description=Недвижимый объект

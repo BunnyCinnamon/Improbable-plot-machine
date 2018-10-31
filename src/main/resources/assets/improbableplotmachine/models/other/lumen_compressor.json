@@ -1,0 +1,155 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "improbableplotmachine:blocks/lumen_compressor/bottom",
+		"1": "improbableplotmachine:blocks/lumen_compressor/sides_overlay",
+		"particle": "improbableplotmachine:blocks/lumen_compressor/bottom"
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"from": [-5, -6, -5],
+			"to": [5, -6, 5],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 10, 0],
+					"texture": "#missing"
+				},
+				"east": {
+					"uv": [0, 0, 10, 0],
+					"texture": "#missing"
+				},
+				"south": {
+					"uv": [0, 0, 10, 0],
+					"texture": "#missing"
+				},
+				"west": {
+					"uv": [0, 0, 10, 0],
+					"texture": "#missing"
+				},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-6, -8, 6],
+			"to": [6, -7, 7],
+			"faces": {
+				"north": {"uv": [3, 14, 15, 15], "texture": "#0"},
+				"down": {"uv": [2, 1, 14, 2], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-7, -8, 5],
+			"to": [7, -7, 6],
+			"faces": {
+				"north": {"uv": [1, 14, 15, 15], "texture": "#0"},
+				"down": {"uv": [1, 2, 15, 3], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-5, -7, 5],
+			"to": [5, -6, 8],
+			"faces": {
+				"north": {"uv": [3, 13, 13, 14], "texture": "#0"},
+				"south": {"uv": [3, 14, 13, 15], "texture": "#1"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [5, -7, -5],
+			"to": [8, -6, 5],
+			"faces": {
+				"east": {"uv": [3, 14, 13, 15], "texture": "#1"},
+				"west": {"uv": [3, 13, 13, 14], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [5, -8, -5],
+			"to": [7, -7, 5],
+			"faces": {
+				"west": {"uv": [3, 14, 13, 15], "texture": "#0"},
+				"down": {"uv": [13, 3, 15, 13], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-5, -7, -8],
+			"to": [5, -6, -5],
+			"faces": {
+				"north": {"uv": [3, 14, 13, 15], "texture": "#1"},
+				"south": {"uv": [3, 13, 13, 14], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-6, -8, -7],
+			"to": [6, -7, -6],
+			"faces": {
+				"south": {"uv": [3, 14, 15, 15], "texture": "#0"},
+				"down": {"uv": [2, 14, 14, 15], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-7, -8, -6],
+			"to": [7, -7, -5],
+			"faces": {
+				"south": {"uv": [1, 14, 15, 15], "texture": "#0"},
+				"down": {"uv": [1, 13, 15, 14], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-8, -7, -5],
+			"to": [-5, -6, 5],
+			"faces": {
+				"east": {"uv": [3, 13, 13, 14], "texture": "#0"},
+				"west": {"uv": [3, 14, 13, 15], "texture": "#1"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-7, -8, -5],
+			"to": [-5, -7, 5],
+			"faces": {
+				"east": {"uv": [3, 14, 13, 15], "texture": "#0"},
+				"down": {"uv": [1, 3, 3, 13], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [-1.5, 6, -1.5],
+			"to": [1.5, 7, 1.5],
+			"faces": {
+				"north": {"uv": [5, 3, 8, 4], "texture": "#0"},
+				"east": {"uv": [8, 11, 11, 12], "texture": "#0"},
+				"south": {"uv": [7, 4, 10, 5], "texture": "#0"},
+				"west": {"uv": [10, 6, 13, 7], "texture": "#0"},
+				"up": {"uv": [5, 12, 6, 13], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"isOpen": true,
+			"shade": true,
+			"display": {"visibility": true, "autouv": true},
+			"children": [
+				0,
+				{
+					"name": "group",
+					"isOpen": true,
+					"shade": true,
+					"display": {"visibility": true, "autouv": true},
+					"children": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+				}
+			]
+		},
+		11
+	]
+}

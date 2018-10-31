@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "active=true,facing=down": { "model": "improbableplotmachine:blinker/on", "uvlock": false },
+        "active=true,facing=up": { "model": "improbableplotmachine:blinker/on", "x": 180, "uvlock": false },
+        "active=true,facing=west": { "model": "improbableplotmachine:blinker/on", "x": 90,"y": 90, "uvlock": false },
+        "active=true,facing=east": { "model": "improbableplotmachine:blinker/on", "x": -90,"y": 90, "uvlock": false },
+        "active=true,facing=south": { "model": "improbableplotmachine:blinker/on", "x": 90,"y": 0, "uvlock": false },
+        "active=true,facing=north": { "model": "improbableplotmachine:blinker/on", "x": -90,"y": 0, "uvlock": false },
+		
+        "active=false,facing=down": { "model": "improbableplotmachine:blinker/off", "uvlock": false },
+        "active=false,facing=up": { "model": "improbableplotmachine:blinker/off", "x": 180, "uvlock": false },
+        "active=false,facing=west": { "model": "improbableplotmachine:blinker/off", "x": 90,"y": 90, "uvlock": false },
+        "active=false,facing=east": { "model": "improbableplotmachine:blinker/off", "x": -90,"y": 90, "uvlock": false },
+        "active=false,facing=south": { "model": "improbableplotmachine:blinker/off", "x": 90,"y": 0, "uvlock": false },
+        "active=false,facing=north": { "model": "improbableplotmachine:blinker/off", "x": -90,"y": 0, "uvlock": false }
+    }
+}

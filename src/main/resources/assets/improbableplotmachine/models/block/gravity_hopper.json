@@ -1,0 +1,71 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "improbableplotmachine:blocks/gravity_hopper/side",
+		"1": "improbableplotmachine:blocks/gravity_hopper/glyph_0",
+		"2": "improbableplotmachine:blocks/gravity_hopper/glyph_1",
+		"3": "improbableplotmachine:blocks/gravity_hopper/glyph_2",
+		"particle": "improbableplotmachine:blocks/gravity_hopper/side"
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"from": [5, 5, 5],
+			"to": [11, 11, 11],
+			"faces": {
+				"north": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"east": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"south": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"west": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#0"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube",
+			"from": [5, 5, 5],
+			"to": [11, 11, 11],
+			"faces": {
+				"north": {"uv": [5, 5, 11, 11], "texture": "#3"},
+				"east": {"uv": [5, 5, 11, 11], "texture": "#3"},
+				"south": {"uv": [5, 5, 11, 11], "texture": "#3"},
+				"west": {"uv": [5, 5, 11, 11], "texture": "#3"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#2"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"scale": [0.375, 0.375, 0.375],
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0]
+		},
+		"thirdperson_lefthand": {
+			"scale": [0.375, 0.375, 0.375],
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0]
+		},
+		"firstperson_righthand": {
+			"scale": [0.4, 0.4, 0.4],
+			"rotation": [0, 45, 0],
+			"translation": [0, 0, 0]
+		},
+		"firstperson_lefthand": {
+			"scale": [0.4, 0.4, 0.4],
+			"rotation": [0, 225, 0],
+			"translation": [0, 0, 0]
+		},
+		"head": {"translation": [0, 9.5, 0]},
+		"ground": {
+			"scale": [0.5, 0.5, 0.5],
+			"rotation": [0, 0, 0],
+			"translation": [0, 3, 0]
+		},
+		"gui": {
+			"scale": [0.625, 0.625, 0.625],
+			"rotation": [30, 225, 0],
+			"translation": [0, 0, 0]
+		}
+	}
+}

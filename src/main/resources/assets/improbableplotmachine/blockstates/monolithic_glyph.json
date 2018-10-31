@@ -1,0 +1,100 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+	"textures": {
+	  "all": "improbableplotmachine:blocks/monolithic/base",
+	  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_0",
+	  "particle": "improbableplotmachine:blocks/monolithic/base"
+	},
+	"model": "improbableplotmachine:block_overlay",
+	"uvlock": true
+  },
+  "variants": {
+	"normal": [{
+	}],
+    "inventory": [{
+	}],
+	"glyph": {
+	  "0" : {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_0"
+		}
+	  },
+	  "1": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_1"
+		}
+	  },
+	  "2": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_2"
+		}
+	  },
+	  "3": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_3"
+		}
+	  },
+	  "4": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_4"
+		}
+	  },
+	  "5": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_5"
+		}
+	  },
+	  "6": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_6"
+		}
+	  },
+	  "7": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_7"
+		}
+	  },
+	  "8": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_8"
+		}
+	  },
+	  "9": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_9"
+		}
+	  },
+	  "10": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_10"
+		}
+	  },
+	  "11": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_11"
+		}
+	  },
+	  "12": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_12"
+		}
+	  },
+	  "13": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_13"
+		}
+	  },
+	  "14": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_14"
+		}
+	  },
+	  "15": {
+		"textures": {
+		  "overlay": "improbableplotmachine:blocks/monolithic/glyph_overlay_15"
+		}
+	  }
+	}
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "spark": {
+    "category": "neutral",
+    "sounds": [
+      "improbableplotmachine:spark"
+    ],
+    "subtitle": "improbableplotmachine.sound.spark"
+  }
+}

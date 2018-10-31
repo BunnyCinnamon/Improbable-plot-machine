@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "active=false,facing=up": { "model": "improbableplotmachine:dilaton/full", "uvlock": false },
+        "active=false,facing=down": { "model": "improbableplotmachine:dilaton/full", "x": 180, "uvlock": false },
+        "active=false,facing=east": { "model": "improbableplotmachine:dilaton/full", "x": 90,"y": 90, "uvlock": false },
+        "active=false,facing=west": { "model": "improbableplotmachine:dilaton/full", "x": -90,"y": 90, "uvlock": false },
+        "active=false,facing=north": { "model": "improbableplotmachine:dilaton/full", "x": 90,"y": 0, "uvlock": false },
+        "active=false,facing=south": { "model": "improbableplotmachine:dilaton/full", "x": -90,"y": 0, "uvlock": false },
+		
+        "active=true,facing=up": { "model": "improbableplotmachine:dilaton/base", "uvlock": false },
+        "active=true,facing=down": { "model": "improbableplotmachine:dilaton/base", "x": 180, "uvlock": false },
+        "active=true,facing=east": { "model": "improbableplotmachine:dilaton/base", "x": 90,"y": 90, "uvlock": false },
+        "active=true,facing=west": { "model": "improbableplotmachine:dilaton/base", "x": -90,"y": 90, "uvlock": false },
+        "active=true,facing=north": { "model": "improbableplotmachine:dilaton/base", "x": 90,"y": 0, "uvlock": false },
+        "active=true,facing=south": { "model": "improbableplotmachine:dilaton/base", "x": -90,"y": 0, "uvlock": false }
+    }
+}

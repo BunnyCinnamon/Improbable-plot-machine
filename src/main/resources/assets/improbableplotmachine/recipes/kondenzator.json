@@ -1,0 +1,24 @@
+﻿{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "#G#",
+    "GDG",
+    "#G#"
+  ],
+  "key": {
+    "#": {
+      "item": "improbableplotmachine:monolithic"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "blockGlass"
+    },
+    "D": {
+      "item": "improbableplotmachine:intrinsic_cell"
+    }
+  },
+  "result": {
+    "item": "improbableplotmachine:kondenzator"
+  },
+  "group": "plot_machine"
+}

@@ -10,8 +10,8 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "${mc_version}-${mayor}.${noapi}.${minor}.${patch}${extra}"
-group = "arekkuusu.solar"
-archivesBaseName = "Solar"
+group = "arekkuusu.implom"
+archivesBaseName = "ImprobablePlotMachine"
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
