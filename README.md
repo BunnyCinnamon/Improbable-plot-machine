@@ -1,6 +1,8 @@
-[logo]: https://media.forgecdn.net/avatars/thumbnails/144/817/62/62/636558110564159207.png "Solar"
-[downloads]: http://cf.way2muchnoise.eu/full_289528_downloads.svg "All Files"
+[logo]: https://media.forgecdn.net/avatars/152/243/636610008995461281.png "Improbable Plot Machine"
+[downloads]: http://cf.way2muchnoise.eu/versions/289528.svg "All versions"
 [version]: http://cf.way2muchnoise.eu/versions/289528_latest.svg "Latest version"
+
+[![Build Status](https://travis-ci.org/ArekkuusuJerii/Improbable-plot-machine.svg?branch=master)](https://travis-ci.org/ArekkuusuJerii/Improbable-plot-machine)
 
 [![][logo]](https://minecraft.curseforge.com/projects/improbable-plot-machine) [![][downloads]](https://minecraft.curseforge.com/projects/improbable-plot-machine/files) [![][version]](https://minecraft.curseforge.com/projects/improbable-plot-machine)
 ##### Improbable plot machine <hr/>
