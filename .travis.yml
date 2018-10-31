@@ -11,6 +11,7 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 before_install:
+- chmod +x gradlew
 install:
  - ./gradlew setupCIWorkspace
 script:
