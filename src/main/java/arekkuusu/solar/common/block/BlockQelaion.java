@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block;
 
+import arekkuusu.solar.api.capability.quantum.IQuantum;
 import arekkuusu.solar.api.capability.relativity.RelativityHelper;
-import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.api.state.Direction;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.Light;
@@ -26,8 +26,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -74,8 +74,8 @@ public class BlockQelaion extends BlockBase {
 			Optional<TileQelaion> optional = getTile(TileQelaion.class, world, pos);
 			if(optional.isPresent()) {
 				TileQelaion qelaion = optional.get();
-				Optional<UUID> nodes = RelativityHelper.getRelativeKey(stack);
-				Optional<UUID> parent = qelaion.getKey();
+				Optional<UUID> nodes = RelativityHelper.getCapability(stack).flatMap(IQuantum::getKey);
+				Optional<UUID> parent = RelativityHelper.getCapability(qelaion).flatMap(IQuantum::getKey);
 				if(nodes.isPresent() && parent.isPresent()) {
 					qelaion.setNodes(nodes.get());
 					return true;
@@ -96,12 +96,14 @@ public class BlockQelaion extends BlockBase {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
-				if(!RelativityHelper.getRelativeKey(stack).isPresent())
-					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
-				RelativityHelper.getRelativeKey(stack).ifPresent(qelaion::setKey);
-				if(NBTHelper.hasUniqueID(stack, "nodes")) {
-					qelaion.setNodes(NBTHelper.getUniqueID(stack, "nodes"));
-				}
+				RelativityHelper.getCapability(qelaion).ifPresent(handler -> {
+					if(!handler.getKey().isPresent()) {
+						RelativityHelper.getCapability(stack).ifPresent(subHandler -> {
+							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
+							subHandler.getKey().ifPresent(handler::setKey);
+						});
+					}
+				});
 			});
 		}
 	}
@@ -113,19 +115,19 @@ public class BlockQelaion extends BlockBase {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileQelaion> optional = getTile(TileQelaion.class, world, pos);
-		if(optional.isPresent()) {
-			TileQelaion qelaion = optional.get();
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			qelaion.getKey().ifPresent(uuid -> {
-				RelativityHelper.setRelativeKey(stack, uuid);
+		ItemStack stack = super.getItem(world, pos, state);
+		getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
+			RelativityHelper.getCapability(qelaion).ifPresent(handler -> {
+				handler.getKey().ifPresent(key -> {
+					RelativityHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
+				});
 			});
-			if(qelaion.getNodes() != null) {
-				NBTHelper.setUniqueID(stack, "nodes", qelaion.getNodes());
-			}
-			return stack;
-		}
-		return super.getItem(world, pos, state);
+			qelaion.getNodes().ifPresent(nodes -> {
+				NBTTagCompound tag = stack.getOrCreateSubCompound("BlockEntityTag");
+				tag.setUniqueId("nodes", nodes);
+			});
+		});
+		return stack;
 	}
 
 	@Override

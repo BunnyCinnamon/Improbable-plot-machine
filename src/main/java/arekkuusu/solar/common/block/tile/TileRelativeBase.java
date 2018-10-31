@@ -7,9 +7,9 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.binary.data.BinaryTileWrapper;
-import arekkuusu.solar.api.capability.binary.data.IBinary;
 import arekkuusu.solar.api.capability.quantum.WorldData;
+import arekkuusu.solar.api.capability.relativity.data.IRelative;
+import arekkuusu.solar.api.capability.relativity.data.RelativeTileWrapper;
 import arekkuusu.solar.common.handler.data.ModCapability;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -17,24 +17,30 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
 
-/**
- * Created by <Arekkuusu> on 20/01/2018.
+/*
+ * Created by <Arekkuusu> on 28/09/2017.
  * It's distributed as part of Solar.
  */
-public abstract class TileBinaryBase extends TileBase {
+public abstract class TileRelativeBase extends TileBase {
 
-	protected final BinaryTileWrapper<TileBinaryBase> handler;
+	protected final IRelative handler;
 
-	protected TileBinaryBase() {
+	public TileRelativeBase() {
 		this.handler = createHandler();
 	}
 
-	public BinaryTileWrapper<TileBinaryBase> createHandler() {
-		return new BinaryTileWrapper<>(this);
+	public IRelative createHandler() {
+		return new RelativeTileWrapper<>(this);
 	}
 
 	@Override
 	public void onLoad() {
+		handler.add();
+	}
+
+	@Override
+	public void validate() {
+		super.validate();
 		handler.add();
 	}
 
@@ -51,14 +57,14 @@ public abstract class TileBinaryBase extends TileBase {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.BINARY_CAPABILITY || super.hasCapability(capability, facing);
+		return capability == ModCapability.RELATIVE_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == ModCapability.BINARY_CAPABILITY
-				? ModCapability.BINARY_CAPABILITY.cast(handler)
+		return capability == ModCapability.RELATIVE_CAPABILITY
+				? ModCapability.RELATIVE_CAPABILITY.cast(handler)
 				: super.getCapability(capability, facing);
 	}
 
@@ -66,8 +72,8 @@ public abstract class TileBinaryBase extends TileBase {
 	void readNBT(NBTTagCompound compound) {
 		if(compound.hasKey(WorldData.NBT_TAG)) {
 			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
-			if(data.hasKey(IBinary.NBT_TAG)) {
-				NBTTagCompound tag = data.getCompoundTag(IBinary.NBT_TAG);
+			if(data.hasKey(IRelative.NBT_TAG)) {
+				NBTTagCompound tag = data.getCompoundTag(IRelative.NBT_TAG);
 				if(tag.hasUniqueId("key")) {
 					handler.setKey(tag.getUniqueId("key"));
 				} else handler.setKey(null);
@@ -79,9 +85,9 @@ public abstract class TileBinaryBase extends TileBase {
 	void writeNBT(NBTTagCompound compound) {
 		handler.getKey().ifPresent(key -> {
 			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
-			NBTTagCompound tag = data.getCompoundTag(IBinary.NBT_TAG);
+			NBTTagCompound tag = data.getCompoundTag(IRelative.NBT_TAG);
 			tag.setUniqueId("key", key);
-			data.setTag(IBinary.NBT_TAG, tag);
+			data.setTag(IRelative.NBT_TAG, tag);
 			compound.setTag(WorldData.NBT_TAG, data);
 		});
 	}

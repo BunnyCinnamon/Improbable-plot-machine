@@ -28,7 +28,6 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -47,7 +46,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /*
@@ -85,9 +83,14 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(translocator -> {
-				if(!RelativityHelper.getRelativeKey(stack).isPresent())
-					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
-				RelativityHelper.getRelativeKey(stack).ifPresent(translocator::setKey);
+				RelativityHelper.getCapability(translocator).ifPresent(handler -> {
+					if(!handler.getKey().isPresent()) {
+						RelativityHelper.getCapability(stack).ifPresent(subHandler -> {
+							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
+							subHandler.getKey().ifPresent(handler::setKey);
+						});
+					}
+				});
 			});
 		}
 	}
@@ -99,16 +102,15 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileMechanicalTranslocator> optional = getTile(TileMechanicalTranslocator.class, world, pos);
-		if(optional.isPresent()) {
-			TileMechanicalTranslocator tile = optional.get();
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			tile.getKey().ifPresent(uuid -> {
-				RelativityHelper.setRelativeKey(stack, uuid);
+		ItemStack stack = super.getItem(world, pos, state);
+		getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(translocator -> {
+			RelativityHelper.getRedstoneCapability(translocator).ifPresent(handler -> {
+				handler.getKey().ifPresent(key -> {
+					RelativityHelper.getRedstoneCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
+				});
 			});
-			return stack;
-		}
-		return super.getItem(world, pos, state);
+		});
+		return stack;
 	}
 
 	@Override

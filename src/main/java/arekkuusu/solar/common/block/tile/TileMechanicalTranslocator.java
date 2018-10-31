@@ -8,6 +8,8 @@
 package arekkuusu.solar.common.block.tile;
 
 import arekkuusu.solar.api.capability.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.data.IRelative;
+import arekkuusu.solar.api.capability.relativity.data.RelativeTileWrapper;
 import arekkuusu.solar.api.helper.FacingHelper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.client.util.helper.ProfilerHelper;
@@ -33,7 +35,7 @@ import static net.minecraft.util.EnumFacing.*;
  * Created by <Arekkuusu> on 17/01/2018.
  * It's distributed as part of Solar.
  */
-public class TileMechanicalTranslocator extends TileRelativityBase implements Comparable<TileMechanicalTranslocator> {
+public class TileMechanicalTranslocator extends TileRelativeBase implements Comparable<TileMechanicalTranslocator> {
 
 	private boolean powered;
 	private int index = -1;
@@ -41,12 +43,31 @@ public class TileMechanicalTranslocator extends TileRelativityBase implements Co
 	@SideOnly(Side.CLIENT)
 	public float temp = -1;
 
+	@Override
+	public IRelative createHandler() {
+		return new RelativeTileWrapper<TileMechanicalTranslocator>(this) {
+			@Override
+			public void add() {
+				if(!getWorld().isRemote) {
+					if(RelativityHandler.addRelative(this) && index == -1) {
+						index = RelativityHandler.getRelatives(this).indexOf(this);
+						//getTile().markDirty();
+					}
+				}
+			}
+		};
+	}
+
 	public void activate() {
 		if(!world.isRemote && canSend()) {
 			ProfilerHelper.begin("[Mechanical Translocator] Relocating block");
-			List<TileMechanicalTranslocator> list = RelativityHandler.getRelatives(this).stream()
-					.filter(tile -> tile.isLoaded() && tile instanceof TileMechanicalTranslocator)
-					.map(tile -> (TileMechanicalTranslocator) tile).sorted().collect(Collectors.toList());
+			List<TileMechanicalTranslocator> list = handler.getAll().stream()
+					.filter(handler -> handler instanceof RelativeTileWrapper)
+					.map(handler -> (RelativeTileWrapper) handler)
+					.filter(handler -> handler.isLoaded() && handler.getTile() instanceof TileMechanicalTranslocator)
+					.map(handler -> (TileMechanicalTranslocator) handler.getTile())
+					.sorted()
+					.collect(Collectors.toList());
 			int index = getIndex();
 			int size = list.size();
 			int i = index + 1 >= size ? 0 : index + 1;
@@ -180,17 +201,6 @@ public class TileMechanicalTranslocator extends TileRelativityBase implements Co
 
 	public void setIndex(int index) {
 		this.index = index;
-	}
-
-	@Override
-	public void add() {
-		if(!world.isRemote) {
-			RelativityHandler.addRelative(this, null);
-			if(index == -1) {
-				this.index = RelativityHandler.getRelatives(this).indexOf(this);
-				this.markDirty();
-			}
-		}
 	}
 
 	@Override

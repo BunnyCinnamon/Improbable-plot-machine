@@ -7,15 +7,17 @@
  */
 package arekkuusu.solar.common.item;
 
-import arekkuusu.solar.api.capability.quantum.QuantumDataHandler;
-import arekkuusu.solar.api.capability.quantum.data.QimranutData;
-import arekkuusu.solar.api.capability.relativity.RelativityHelper;
+import arekkuusu.solar.api.capability.worldaccess.WorldAccessHelper;
+import arekkuusu.solar.api.capability.worldaccess.WorldAccessStackProvider;
+import arekkuusu.solar.api.capability.worldaccess.data.IWorldAccess;
 import arekkuusu.solar.common.block.ModBlocks;
 import arekkuusu.solar.common.lib.LibMod;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -42,7 +44,15 @@ public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		RelativityHelper.getRelativeKey(stack).ifPresent(uuid -> addInformation(uuid, tooltip));
+		WorldAccessHelper.getCapability(stack).flatMap(IWorldAccess::getKey).ifPresent(uuid -> {
+			addInformation(uuid, tooltip);
+		});
+	}
+
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		return WorldAccessStackProvider.create(stack);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -50,13 +60,11 @@ public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 		ItemStack stack = event.getItemStack();
 		if(stack.getItem() == this) {
 			if(!event.getWorld().isRemote) {
-				if(!RelativityHelper.getRelativeKey(stack).isPresent())
-					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
-				RelativityHelper.getRelativeKey(stack).ifPresent(uuid -> {
-					QimranutData data = QuantumDataHandler.getOrCreate(uuid, QimranutData::new);
-					data.setFacing(event.getFace());
-					data.setPos(event.getPos());
-					data.setWorld(event.getWorld());
+				WorldAccessHelper.getCapability(stack).ifPresent(handler -> {
+					if(!handler.getKey().isPresent()) handler.setKey(UUID.randomUUID());
+					handler.setFacing(event.getFace());
+					handler.setPos(event.getPos());
+					handler.setWorld(event.getWorld());
 				});
 			}
 			event.setCanceled(true);

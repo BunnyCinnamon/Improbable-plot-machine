@@ -8,13 +8,17 @@
 package arekkuusu.solar.common.item;
 
 import arekkuusu.solar.api.capability.relativity.RelativityHelper;
+import arekkuusu.solar.api.capability.relativity.RelativityStackProvider;
+import arekkuusu.solar.api.capability.relativity.data.IRelative;
 import arekkuusu.solar.api.helper.NBTHelper;
 import arekkuusu.solar.common.block.ModBlocks;
 import net.katsstuff.teamnightclipse.mirror.client.helper.KeyCondition$;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -34,7 +38,7 @@ public class ItemQelaion extends ItemBaseBlock implements IUUIDDescription {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		RelativityHelper.getRelativeKey(stack).ifPresent(uuid -> Tooltip.inline()
+		RelativityHelper.getCapability(stack).flatMap(IRelative::getKey).ifPresent(uuid -> Tooltip.inline()
 				.condition(KeyCondition$.MODULE$.shiftKeyDown())
 				.ifTrueJ(builder -> getInfo(builder, uuid)
 						.condition(() -> NBTHelper.hasUniqueID(stack, "nodes"))
@@ -48,5 +52,11 @@ public class ItemQelaion extends ItemBaseBlock implements IUUIDDescription {
 						}).apply()
 				).apply().build(tooltip)
 		);
+	}
+
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		return RelativityStackProvider.createRelative(stack);
 	}
 }

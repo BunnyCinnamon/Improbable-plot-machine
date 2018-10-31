@@ -16,6 +16,14 @@ public interface IBinary extends IQuantum {
 	 */
 	Callable<IBinary> DEFAULT = Empty::new;
 
+	default void add() {
+		BinaryHandler.add(this);
+	}
+
+	default void remove() {
+		BinaryHandler.remove(this);
+	}
+
 	default Optional<IBinary> getInverse() {
 		return BinaryHandler.getInverse(this);
 	}

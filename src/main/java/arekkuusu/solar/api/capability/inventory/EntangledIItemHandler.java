@@ -28,7 +28,7 @@ public final class EntangledIItemHandler {
 	 * @return If the key is entangled.
 	 */
 	public static boolean isEntangled(UUID uuid) {
-		return QuantumDataHandler.get(uuid).isPresent();
+		return QuantumDataHandler.get(QuantumStackData.class, uuid).isPresent();
 	}
 
 	/**
@@ -107,17 +107,17 @@ public final class EntangledIItemHandler {
 	}
 
 	/**
-	 * Gets the item group from the given {@param uuid}
+	 * Gets the {@link QuantumStackData} from the given {@param uuid}
 	 *
 	 * @param uuid Key to the group of entangled items.
 	 * @return {@link ArrayList}.
 	 */
 	public static QuantumStackData getEntanglement(UUID uuid) {
-		return QuantumDataHandler.getOrCreate(uuid, QuantumStackData::new);
+		return QuantumDataHandler.getOrCreate(QuantumStackData.class, uuid);
 	}
 
 	/**
-	 * Map containing all Items linked to an uuid.
+	 * Map containing all {@link QuantumStackData} linked to an uuid.
 	 *
 	 * @return {@link HashMap}
 	 */

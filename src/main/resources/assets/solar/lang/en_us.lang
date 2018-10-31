@@ -14,6 +14,7 @@ item.quartz.name=Quartz
 item.magnetic_gear.name=Gear
 item.magnetic_bolt.name=Bolt
 item.magnetic_spring.name=Spring
+item.bound_photon.name=Bound Photon
 
 tile.primal_stone.name=Primal Stone
 tile.black_hole.name=Black Hole
@@ -63,6 +64,7 @@ entity.quingentilliard_item.name=Entity Item
 entity.quantum_quartz.name=Entity Item
 
 tlp.uuid_key=Group
+tlp.uuid_key_empty=No groups
 tlp.tag_nodes=Node link
 tlp.item_filter=Item Filter
 tlp.quantum_data=Holds

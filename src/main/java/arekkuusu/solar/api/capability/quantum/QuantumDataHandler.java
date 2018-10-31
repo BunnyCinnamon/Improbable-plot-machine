@@ -9,10 +9,10 @@ package arekkuusu.solar.api.capability.quantum;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.capability.quantum.data.INBTData;
+import arekkuusu.solar.common.Solar;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 /**
  * Created by <Arekkuusu> on 14/03/2018.
@@ -47,16 +47,22 @@ public final class QuantumDataHandler {
 	/**
 	 * Gets the {@param t} NBT of a {@param key} if it exists or creates one from the {@param supplier}
 	 *
-	 * @param key      An {@link UUID}
-	 * @param supplier A {@link Supplier<S>} for an {@param S} NBT
-	 * @param <S>
-	 * @return
+	 * @param key An {@link UUID}
+	 * @param cl  The {@param S} NBT class
+	 * @param <S> The {@link INBTData} type
+	 * @return the {@link INBTData} instance
 	 */
 	@SuppressWarnings("unchecked")
-	public static <S extends INBTData<?>> S getOrCreate(UUID key, Supplier<S> supplier) {
-		return (S) get(key).orElseGet(() -> {
-			S data = supplier.get();
-			add(key, data);
+	public static <S extends INBTData<?>> S getOrCreate(Class<S> cl, UUID key) {
+		return QuantumDataHandler.get(cl, key).orElseGet(() -> {
+			S data = null;
+			try {
+				data = cl.newInstance();
+				add(key, data);
+			} catch (InstantiationException | IllegalAccessException e) {
+				Solar.LOG.error("[QuantumDataHandler] - Class {} has no empty constructor", cl.getName());
+				e.printStackTrace();
+			}
 			return data;
 		});
 	}
@@ -65,11 +71,12 @@ public final class QuantumDataHandler {
 	 * Gets the {@param t} NBT of a {@param key} if it exists
 	 *
 	 * @param key An {@link UUID}
+	 * @param cl  The {@param S} NBT class
 	 * @param <S> The {@link INBTData} type
-	 * @return
+	 * @return the {@link Optional<INBTData>} object
 	 */
 	@SuppressWarnings("unchecked")
-	public static <S extends INBTData<?>> Optional<S> get(UUID key) {
-		return Optional.ofNullable((S) SolarApi.getWorldData().saved.get(key));
+	public static <S extends INBTData<?>> Optional<S> get(Class<S> cl, UUID key) {
+		return Optional.ofNullable(SolarApi.getWorldData().saved.get(key)).filter(cl::isInstance).map(cl::cast);
 	}
 }

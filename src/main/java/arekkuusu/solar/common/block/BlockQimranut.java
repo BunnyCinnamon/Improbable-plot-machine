@@ -7,7 +7,7 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.capability.relativity.RelativityHelper;
+import arekkuusu.solar.api.capability.worldaccess.WorldAccessHelper;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.Light;
 import arekkuusu.solar.client.util.ResourceLibrary;
@@ -25,7 +25,6 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -41,7 +40,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -81,9 +79,14 @@ public class BlockQimranut extends BlockBaseFacing {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileQimranut.class, world, pos).ifPresent(qimranut -> {
-				Optional<UUID> optional = RelativityHelper.getRelativeKey(stack);
-				if(!optional.isPresent()) RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
-				RelativityHelper.getRelativeKey(stack).ifPresent(qimranut::setKey);
+				WorldAccessHelper.getCapability(qimranut).ifPresent(handler -> {
+					if(!handler.getKey().isPresent()) {
+						WorldAccessHelper.getCapability(stack).ifPresent(subHandler -> {
+							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
+							subHandler.getKey().ifPresent(handler::setKey);
+						});
+					}
+				});
 			});
 		}
 	}
@@ -95,16 +98,15 @@ public class BlockQimranut extends BlockBaseFacing {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileQimranut> optional = getTile(TileQimranut.class, world, pos);
-		if(optional.isPresent()) {
-			TileQimranut qimranut = optional.get();
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			qimranut.getKey().ifPresent(uuid -> {
-				RelativityHelper.setRelativeKey(stack, uuid);
+		ItemStack stack = super.getItem(world, pos, state);
+		getTile(TileQimranut.class, world, pos).ifPresent(qimranut -> {
+			WorldAccessHelper.getCapability(qimranut).ifPresent(handler -> {
+				handler.getKey().ifPresent(key -> {
+					WorldAccessHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
+				});
 			});
-			return stack;
-		}
-		return super.getItem(world, pos, state);
+		});
+		return stack;
 	}
 
 	@Override

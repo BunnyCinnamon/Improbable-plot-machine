@@ -13,25 +13,25 @@ import net.minecraft.nbt.NBTTagInt;
  * Created by <Arekkuusu> on 14/03/2018.
  * It's distributed as part of Solar.
  */
-@INBTData.NBTHolder(modId = "solar", name = "power_nbt")
-public class PowerData implements INBTData<NBTTagInt> {
+@INBTData.NBTHolder(modId = "solar", name = "redstone_nbt")
+public class RedstoneData implements INBTData<NBTTagInt> {
 
 	private int i;
 
-	public void setI(int i) {
+	public void set(int i) {
 		if(i > 15) i = 15;
 		if(i < 0) i = 0;
 		this.i = i;
 		dirty();
 	}
 
-	public int getI() {
+	public int get() {
 		return i;
 	}
 
 	@Override
 	public boolean canDeserialize() {
-		return i != 0;
+		return i > 0;
 	}
 
 	@Override

@@ -11,8 +11,12 @@ import java.util.Optional;
 public final class LumenHelper {
 
 	public static Optional<ILumen> getCapability(ItemStack stack) {
-		return stack.hasCapability(LumenStackProvider.LUMEN_CAPABILITY, null)
-				? Optional.ofNullable(stack.getCapability(LumenStackProvider.LUMEN_CAPABILITY, null))
+		return getCapability(stack, null);
+	}
+
+	public static Optional<ILumen> getCapability(ItemStack stack, EnumFacing facing) {
+		return stack.hasCapability(LumenStackProvider.LUMEN_CAPABILITY, facing)
+				? Optional.ofNullable(stack.getCapability(LumenStackProvider.LUMEN_CAPABILITY, facing))
 				: Optional.empty();
 	}
 
@@ -27,8 +31,12 @@ public final class LumenHelper {
 	}
 
 	public static <T extends ILumen & IQuantum> Optional<T> getComplexCapability(ItemStack stack) {
+		return getComplexCapability(stack, null);
+	}
+
+	public static <T extends ILumen & IQuantum> Optional<T> getComplexCapability(ItemStack stack, EnumFacing facing) {
 		//noinspection unchecked
-		return getCapability(stack).filter(handler -> handler instanceof IQuantum).map(handler -> (T) handler);
+		return getCapability(stack, facing).filter(handler -> handler instanceof IQuantum).map(handler -> (T) handler);
 	}
 
 	public static <T extends ILumen & IQuantum> Optional<T> getComplexCapability(TileEntity tile) {

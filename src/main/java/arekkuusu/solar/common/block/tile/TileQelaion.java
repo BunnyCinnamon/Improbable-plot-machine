@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.relativity.IRelative;
 import arekkuusu.solar.api.capability.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.data.RelativeTileWrapper;
 import arekkuusu.solar.common.block.BlockQelaion;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
@@ -24,17 +24,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
  * Created by <Arekkuusu> on 24/02/2018.
  * It's distributed as part of Solar.
  */
-public class TileQelaion extends TileRelativityBase implements ITickable {
+public class TileQelaion extends TileRelativeBase implements ITickable {
 
 	private Set<EnumFacing> facings = Sets.newLinkedHashSet(Arrays.asList(EnumFacing.values()));
 	private int facingIndex;
@@ -57,7 +54,7 @@ public class TileQelaion extends TileRelativityBase implements ITickable {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		if(facing == null) return false;
+		if(facing == null) return super.hasCapability(capability, null);
 		markDirty();
 		this.fake = true; //Validates the fake access
 		return hasAccess(capability, facing);
@@ -83,9 +80,7 @@ public class TileQelaion extends TileRelativityBase implements ITickable {
 
 	private boolean hasFacing(Capability<?> capability, int index) {
 		if(fromFacing(capability, index) == null) {
-			if(++facingIndex > outputs) {
-				facingIndex = 0;
-			}
+			if(++facingIndex > outputs) facingIndex = 0;
 			return false;
 		} else {
 			return true;
@@ -95,7 +90,7 @@ public class TileQelaion extends TileRelativityBase implements ITickable {
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		if(facing == null) return null;
+		if(facing == null) return super.getCapability(capability, null);
 		markDirty();
 		if(this.fake) { //Invalidates the fake access and resets the iteration
 			this.fake = false;
@@ -136,23 +131,25 @@ public class TileQelaion extends TileRelativityBase implements ITickable {
 	}
 
 	public ImmutableList<TileQelaion> getNodeList() {
-		return nodes != null ? ImmutableList.copyOf(
-				RelativityHandler.getRelatives(nodes).stream()
-						.filter(IRelative::isLoaded)
-						.map(n -> (TileQelaion) n)
+		return ImmutableList.copyOf(
+				RelativityHandler.getRelatives(nodes != null ? nodes : handler.getKey().orElse(null)).stream()
+						.filter(handler -> (nodes == null || handler != this.handler) && handler instanceof RelativeTileWrapper)
+						.map(handler -> (RelativeTileWrapper) handler)
+						.filter(handler -> handler.isLoaded() && handler.getTile() instanceof TileQelaion)
+						.map(handler -> (TileQelaion) handler.getTile())
 						.collect(Collectors.toList())
-		) : ImmutableList.of();
+		);
 	}
 
-	@Nullable
-	public UUID getNodes() {
-		return nodes;
+	public Optional<UUID> getNodes() {
+		return Optional.ofNullable(nodes);
 	}
 
 	public void setNodes(@Nullable UUID nodes) {
 		IBlockState state = world.getBlockState(getPos());
 		world.setBlockState(getPos(), state.withProperty(BlockQelaion.HAS_NODE, nodes != null));
 		this.nodes = nodes;
+		this.nodeIndex = 0;
 		markDirty();
 	}
 

@@ -9,11 +9,11 @@ package arekkuusu.solar.api.capability.relativity;
 
 import arekkuusu.solar.api.SolarApi;
 import arekkuusu.solar.api.capability.quantum.QuantumDataHandler;
-import arekkuusu.solar.api.capability.quantum.data.PowerData;
+import arekkuusu.solar.api.capability.quantum.data.RedstoneData;
+import arekkuusu.solar.api.capability.relativity.data.IRelative;
+import arekkuusu.solar.api.capability.relativity.data.IRelativeRedstone;
 import com.google.common.collect.Lists;
-import net.minecraft.tileentity.TileEntity;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,62 +29,63 @@ public final class RelativityHandler {
 	/**
 	 * Checks if a {@param t} is a relative list
 	 *
-	 * @param t   The {@param t} to be tested
-	 * @param <T> An impl of {@param t}
+	 * @param relative The {@param relative} to be tested
+	 * @param <R>      An impl of {@link R}
 	 * @return If the {@param t} is relative to others
 	 */
-	public static <T extends IRelative> boolean isRelative(T t) {
-		return t.getKey().map(uuid -> SolarApi.getRelativityMap().containsKey(uuid)).orElse(false);
+	public static <R extends IRelative> boolean isRelative(R relative) {
+		return relative.getKey()
+				.map(uuid -> SolarApi.getRelativityMap().containsKey(uuid))
+				.orElse(false);
 	}
 
 	/**
-	 * Add the given {@param t} to the relative list
+	 * Add the given {@param relative} to the relative list
 	 *
-	 * @param t        The {@link TileEntity} to be added
-	 * @param runnable If the {@param t} is added, run {@param <T>}
-	 * @param <T>      An impl of {@param t}
+	 * @param relative The {@link R} to be added
+	 * @param <R>      An impl of {@param relative}
 	 */
-	public static <T extends IRelative> void addRelative(T t, @Nullable Runnable runnable) {
-		t.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
+	public static <R extends IRelative> boolean addRelative(R relative) {
+		boolean[] updated = {false};
+		relative.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			list = list == null ? new ArrayList<>() : list;
-			if(list.contains(t)) return list;
-			list.add(t);
-			if(runnable != null) {
-				runnable.run();
-			}
+			if(list.contains(relative)) return list;
+			list.add(relative);
+			updated[0] = true;
 			return list;
 		}));
+		return updated[0];
 	}
 
 	/**
-	 * Remove the given {@param t} from the relative list
+	 * Remove the given {@param relative} from the relative list
 	 *
-	 * @param t        The {@link T} to be removed
-	 * @param runnable If the {@param t} is removed, run {@param <T>}
-	 * @param <T>      An impl of {@param t}
+	 * @param relative The {@link R} to be removed
+	 * @param <R>      An impl of {@param t}
 	 */
-	public static <T extends IRelative> void removeRelative(T t, @Nullable Runnable runnable) {
-		t.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
+	public static <R extends IRelative> boolean removeRelative(R relative) {
+		boolean[] updated = {false};
+		relative.getKey().ifPresent(uuid -> SolarApi.getRelativityMap().compute(uuid, (key, list) -> {
 			if(list != null) {
-				list.remove(t);
-				if(runnable != null) {
-					runnable.run();
-				}
+				list.remove(relative);
+				updated[0] = true;
 			}
 			return list != null && !list.isEmpty() ? list : null;
 		}));
+		return updated[0];
 	}
 
 	/**
-	 * Gets a list of relative tiles of the same {@param t}
+	 * Gets a list of relative tiles of the same {@param relative}
 	 *
-	 * @param t   The {@link T} relative
-	 * @param <T> An impl of {@param t}
+	 * @param relative The {@link IRelative} relative
 	 * @return The list
 	 */
-	public static <T extends IRelative> List<IRelative> getRelatives(T t) {
-		if(isRelative(t)) {
-			return Lists.newArrayList(SolarApi.getRelativityMap().get(t.getKey().orElseThrow(NullPointerException::new))); //bamboozled
+	public static List<IRelative> getRelatives(IRelative relative) {
+		if(isRelative(relative)) {
+			return relative.getKey()
+					.map(key -> Lists.newArrayList(SolarApi.getRelativityMap().get(key)))
+					.orElse(Lists.newArrayList());
 		}
 		return Collections.emptyList();
 	}
@@ -103,27 +104,27 @@ public final class RelativityHandler {
 	}
 
 	/**
-	 * If the relative {@param t} is powered by Redstone
+	 * If the relative {@param relative} is powered by Redstone
 	 *
-	 * @param t   The relative t {@link T}
-	 * @param <T> An impl of {@param t}
+	 * @param relative The relative relative {@link R}
+	 * @param <R>      An impl of {@param relative}
 	 * @return If the redstone level is higher than 0
 	 */
-	public static <T extends IRelativeRedstone> boolean isPowered(T t) {
-		return getPower(t) > 0;
+	public static <R extends IRelativeRedstone> boolean isPowered(R relative) {
+		return getPower(relative) > 0;
 	}
 
 	/**
-	 * Get the Redstone power from the relative {@param t}
+	 * Get the Redstone power from the relative {@param relative}
 	 *
-	 * @param t   The relative t {@link IRelativeRedstone}
-	 * @param <T> An impl of {@param t}
+	 * @param relative The relative relative {@link R}
+	 * @param <R>      An impl of {@param relative}
 	 * @return The Redstone power from 0 to 15
 	 */
-	public static <T extends IRelativeRedstone> int getPower(T t) {
-		return t.getKey().map(uuid -> QuantumDataHandler.<PowerData>get(uuid)
-				.map(PowerData::getI).orElse(0)
-		).orElse(0);
+	public static <R extends IRelativeRedstone> int getPower(R relative) {
+		return relative.getKey()
+				.map(uuid -> QuantumDataHandler.get(RedstoneData.class, uuid).map(RedstoneData::get).orElse(0))
+				.orElse(0);
 	}
 
 	/**
@@ -131,25 +132,23 @@ public final class RelativityHandler {
 	 * this will update all other relative tiles, as long as
 	 * they are loaded in the world
 	 *
-	 * @param t        The relative t {@link IRelativeRedstone}
-	 * @param newPower The new redstone power
-	 * @param <T>      An impl of {@param t}
+	 * @param relative The relative relative {@link R}
+	 * @param power    The new redstone power
+	 * @param <R>      An impl of {@param relative}
 	 */
-	public static <T extends IRelativeRedstone> void setPower(T t, int newPower, boolean update) {
-		t.getKey().ifPresent(uuid -> QuantumDataHandler.getOrCreate(uuid, PowerData::new).setI(newPower));
-		if(update) {
-			updatePower(IRelativeRedstone.class, t);
-		}
-	}
-
-	public static <T extends IRelativeRedstone> void updatePower(Class<T> type, T t) {
-		t.getKey().ifPresent(uuid -> {
-			SolarApi.getRelativityMap().computeIfPresent(uuid, (k, list) -> { list.stream()
-					.filter(l -> l.isLoaded() && l instanceof IRelativeRedstone && type.isInstance(l))
-					.map(l -> (IRelativeRedstone) l)
-					.forEach(IRelativeRedstone::onPowerUpdate);
-				return list;
-			});
+	public static <R extends IRelativeRedstone> void setPower(R relative, int power, boolean update) {
+		relative.getKey().ifPresent(uuid -> {
+			RedstoneData data = QuantumDataHandler.getOrCreate(RedstoneData.class, uuid);
+			data.set(power);
+			if(update) {
+				SolarApi.getRelativityMap().computeIfPresent(uuid, (k, list) -> {
+					list.stream()
+							.filter(l -> l instanceof IRelativeRedstone)
+							.map(l -> (IRelativeRedstone) l)
+							.forEach(IRelativeRedstone::onPowerUpdate);
+					return list;
+				});
+			}
 		});
 	}
 }

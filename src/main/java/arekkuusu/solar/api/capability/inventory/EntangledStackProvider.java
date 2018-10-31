@@ -35,13 +35,13 @@ public class EntangledStackProvider implements ICapabilityProvider {
 
 	@Override
 	public boolean hasCapability(@Nonnull Capability<?> capability, EnumFacing facing) {
-		return facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 	}
 
 	@Nullable
 	@Override
 	public <C> C getCapability(@Nonnull Capability<C> capability, EnumFacing facing) {
-		return facing == null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 				? CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(handler)
 				: null;
 	}

@@ -9,7 +9,7 @@ package arekkuusu.solar.api;
 
 import arekkuusu.solar.api.capability.binary.data.IBinary;
 import arekkuusu.solar.api.capability.quantum.WorldData;
-import arekkuusu.solar.api.capability.relativity.IRelative;
+import arekkuusu.solar.api.capability.relativity.data.IRelative;
 import arekkuusu.solar.api.util.Pair;
 import com.google.common.collect.Maps;
 

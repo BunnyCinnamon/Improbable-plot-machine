@@ -32,9 +32,8 @@ public interface IUUIDDescription {
 	 */
 	@SideOnly(Side.CLIENT)
 	default Tooltip getInfo(Tooltip builder, UUID uuid) {
-		String key = uuid.toString();
+		String key = String.valueOf(uuid.hashCode());
 		return builder.addI18n("tlp.uuid_key", Tooltip.DarkGrayItalic()).add(": ").newline()
-				.add(" > ").add(key.substring(0, 18)).newline()
-				.add(" > ").add(key.substring(18)).newline();
+				.add(" > ").add(key).newline();
 	}
 }

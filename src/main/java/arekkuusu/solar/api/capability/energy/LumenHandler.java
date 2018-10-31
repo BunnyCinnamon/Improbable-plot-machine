@@ -31,7 +31,7 @@ public final class LumenHandler {
 	/**
 	 * Sets the current amount of lumen in a quantum storage
 	 *
-	 * @param uuid the {@link UUID} of the lumen storage
+	 * @param uuid     the {@link UUID} of the lumen storage
 	 * @param neutrons lumen
 	 */
 	public static void setNeutrons(UUID uuid, int neutrons) {
@@ -45,6 +45,6 @@ public final class LumenHandler {
 	 * @return the quantum entangled lumen storage
 	 */
 	public static LumenData getNeutronData(UUID uuid) {
-		return QuantumDataHandler.getOrCreate(uuid, LumenData::new);
+		return QuantumDataHandler.getOrCreate(LumenData.class, uuid);
 	}
 }

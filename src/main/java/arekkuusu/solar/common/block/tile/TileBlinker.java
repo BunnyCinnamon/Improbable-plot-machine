@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.relativity.IRelativeRedstone;
-import arekkuusu.solar.api.capability.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.data.IRelativeRedstone;
+import arekkuusu.solar.api.capability.relativity.data.RelativeRedstoneTileWrapper;
 import arekkuusu.solar.api.state.State;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.util.EnumFacing;
@@ -17,14 +17,21 @@ import net.minecraft.util.EnumFacing;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Solar.
  */
-public class TileBlinker extends TileRelativityBase implements IRelativeRedstone {
+public class TileBlinker extends TileRelativeRedstoneBase {
 
 	@Override
-	public void onPowerUpdate() {
-		int power;
-		if(world.isBlockPowered(pos) && RelativityHandler.getPower(this) < (power = getRedstonePower())) {
-			RelativityHandler.setPower(this, power, false);
-		}
+	public IRelativeRedstone createHandler() {
+		return new RelativeRedstoneTileWrapper<TileBlinker>(this) {
+			@Override
+			public void onPowerUpdate() {
+				if(getWorld() != null && !getWorld().isRemote) {
+					int power;
+					if(getWorld().isBlockPowered(getPos()) && getPower() < (power = getRedstonePower())) {
+						setPower(power, false);
+					}
+				}
+			}
+		};
 	}
 
 	public int getRedstonePower() {
@@ -44,23 +51,5 @@ public class TileBlinker extends TileRelativityBase implements IRelativeRedstone
 
 	private EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
-	}
-
-	@Override
-	public void onLoad() {
-		if(!world.isRemote) {
-			onPowerUpdate();
-		}
-	}
-
-	@Override
-	public void remove() {
-		if(!world.isRemote) {
-			RelativityHandler.removeRelative(this, () -> {
-				if(world.isBlockPowered(getPos())) {
-					RelativityHandler.setPower(this, 0, true);
-				}
-			});
-		}
 	}
 }

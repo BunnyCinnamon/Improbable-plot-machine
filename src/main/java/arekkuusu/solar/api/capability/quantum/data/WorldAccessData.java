@@ -19,8 +19,8 @@ import javax.annotation.Nullable;
  * Created by <Arekkuusu> on 14/03/2018.
  * It's distributed as part of Solar.
  */
-@INBTData.NBTHolder(modId = "solar", name = "qimranut_nbt")
-public class QimranutData implements INBTData<NBTTagCompound> {
+@INBTData.NBTHolder(modId = "solar", name = "world_access_nbt")
+public class WorldAccessData implements INBTData<NBTTagCompound> {
 
 	private BlockPos pos;
 	private EnumFacing facing;
@@ -41,6 +41,7 @@ public class QimranutData implements INBTData<NBTTagCompound> {
 		dirty();
 	}
 
+	@Nullable
 	public BlockPos getPos() {
 		return pos;
 	}

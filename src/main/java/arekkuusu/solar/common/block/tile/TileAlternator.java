@@ -7,8 +7,9 @@
  */
 package arekkuusu.solar.common.block.tile;
 
-import arekkuusu.solar.api.capability.relativity.IRelative;
 import arekkuusu.solar.api.capability.relativity.RelativityHandler;
+import arekkuusu.solar.api.capability.relativity.data.IRelative;
+import arekkuusu.solar.api.capability.relativity.data.RelativeTileWrapper;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.common.handler.data.WorldAlternatorData;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,15 +21,42 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 23/01/2018.
  * It's distributed as part of Solar.
  */
-public class TileAlternator extends TileRelativityBase {
+public class TileAlternator extends TileRelativeBase {
 
 	private UUID loadKey;
 
+	@Override
+	public IRelative createHandler() {
+		return new RelativeTileWrapper<TileAlternator>(this) {
+			@Override
+			public void add() {
+				if(!getWorld().isRemote) {
+					if(loadKey == null) {
+						loadKey = UUID.randomUUID();
+						markDirty();
+					}
+					if(RelativityHandler.addRelative(this)) {
+						getKey().ifPresent(key -> TileAlternator.getData(getWorld()).add(key, loadKey));
+					}
+				}
+			}
+
+			@Override
+			public void remove() {
+				if(!getWorld().isRemote && RelativityHandler.removeRelative(this)) {
+					if(loadKey != null) {
+						getKey().ifPresent(key -> TileAlternator.getData(getWorld()).remove(key, loadKey));
+					}
+				}
+			}
+		};
+	}
+
 	public boolean areAllActive() {
-		return getKey().map(key -> {
+		return handler.getKey().map(key -> {
 			int size = 0;
 			for(IRelative tile : RelativityHandler.getRelatives(key)) {
-				if(tile.isLoaded()) ++size;
+				if(tile instanceof RelativeTileWrapper && ((RelativeTileWrapper) tile).isLoaded()) ++size;
 			}
 			int loaded = TileAlternator.getData(world).getSize(key);
 			return size == loaded;
@@ -37,34 +65,6 @@ public class TileAlternator extends TileRelativityBase {
 
 	public boolean isActiveLazy() {
 		return getStateValue(State.ACTIVE, pos).orElse(false);
-	}
-
-	@Override
-	public void add() {
-		if(!world.isRemote) {
-			if(loadKey == null) {
-				loadKey = UUID.randomUUID();
-				markDirty();
-			}
-			RelativityHandler.addRelative(this, () -> {
-				getKey().ifPresent(key -> {
-					TileAlternator.getData(world).add(key, loadKey);
-				});
-			});
-		}
-	}
-
-	@Override
-	public void remove() {
-		if(!world.isRemote) {
-			RelativityHandler.removeRelative(this, () -> {
-				if(loadKey != null) {
-					getKey().ifPresent(key -> {
-						TileAlternator.getData(world).remove(key, loadKey);
-					});
-				}
-			});
-		}
 	}
 
 	public static WorldAlternatorData getData(World world) {

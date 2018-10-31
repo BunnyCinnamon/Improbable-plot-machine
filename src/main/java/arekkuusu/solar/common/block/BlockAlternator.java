@@ -15,7 +15,6 @@ import arekkuusu.solar.common.lib.LibNames;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -25,7 +24,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -73,25 +71,29 @@ public class BlockAlternator extends BlockBase {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
-				if(!RelativityHelper.getRelativeKey(stack).isPresent())
-					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
-				RelativityHelper.getRelativeKey(stack).ifPresent(alternator::setKey);
+				RelativityHelper.getCapability(alternator).ifPresent(handler -> {
+					if(!handler.getKey().isPresent()) {
+						RelativityHelper.getCapability(stack).ifPresent(subHandler -> {
+							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
+							subHandler.getKey().ifPresent(handler::setKey);
+						});
+					}
+				});
 			});
 		}
 	}
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileAlternator> optional = getTile(TileAlternator.class, world, pos);
-		if(optional.isPresent()) {
-			TileAlternator alternator = optional.get();
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			alternator.getKey().ifPresent(uuid -> {
-				RelativityHelper.setRelativeKey(stack, uuid);
+		ItemStack stack = super.getItem(world, pos, state);
+		getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
+			RelativityHelper.getCapability(alternator).ifPresent(handler -> {
+				handler.getKey().ifPresent(key -> {
+					RelativityHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
+				});
 			});
-			return stack;
-		}
-		return super.getItem(world, pos, state);
+		});
+		return stack;
 	}
 
 	@Override

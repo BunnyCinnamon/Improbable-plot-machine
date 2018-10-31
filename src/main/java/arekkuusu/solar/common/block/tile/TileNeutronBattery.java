@@ -38,7 +38,7 @@ public class TileNeutronBattery extends TileComplexLumenBase {
 
 	@Override
 	public int getCapacity() {
-		return capacitor.getCapacity();
+		return capacitor != null ? capacitor.getCapacity() : 0;
 	}
 
 	public BatteryCapacitor getCapacitor() {

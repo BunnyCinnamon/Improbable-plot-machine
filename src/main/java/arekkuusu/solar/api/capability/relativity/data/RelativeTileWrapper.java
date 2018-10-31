@@ -1,6 +1,6 @@
-package arekkuusu.solar.api.capability.binary.data;
+package arekkuusu.solar.api.capability.relativity.data;
 
-import arekkuusu.solar.api.capability.binary.BinaryHandler;
+import arekkuusu.solar.api.capability.relativity.RelativityHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -9,26 +9,30 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class BinaryTileWrapper<T extends TileEntity> implements IBinary {
+public class RelativeTileWrapper<T extends TileEntity> implements IRelative {
 
 	private final T tile;
 	private UUID key;
 
-	public BinaryTileWrapper(T tile) {
+	public RelativeTileWrapper(T tile) {
 		this.tile = tile;
+	}
+
+	public T getTile() {
+		return tile;
 	}
 
 	@Override
 	public void add() {
 		if(!getWorld().isRemote) {
-			BinaryHandler.add(this);
+			RelativityHandler.addRelative(this);
 		}
 	}
 
 	@Override
 	public void remove() {
 		if(!getWorld().isRemote) {
-			BinaryHandler.remove(this);
+			RelativityHandler.removeRelative(this);
 		}
 	}
 

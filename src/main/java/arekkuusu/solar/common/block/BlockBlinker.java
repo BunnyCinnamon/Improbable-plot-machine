@@ -7,8 +7,8 @@
  */
 package arekkuusu.solar.common.block;
 
-import arekkuusu.solar.api.capability.relativity.RelativityHandler;
 import arekkuusu.solar.api.capability.relativity.RelativityHelper;
+import arekkuusu.solar.api.capability.relativity.data.IRelativeRedstone;
 import arekkuusu.solar.api.state.State;
 import arekkuusu.solar.api.util.FixedMaterial;
 import arekkuusu.solar.client.effect.Light;
@@ -23,7 +23,6 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -37,7 +36,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -65,7 +63,7 @@ public class BlockBlinker extends BlockBaseFacing {
 			.put(EnumFacing.WEST, Vector3.apply(0.8D, 0.5D, 0.5D))
 			.build();
 
-	public BlockBlinker()  {
+	public BlockBlinker() {
 		super(LibNames.BLINKER, FixedMaterial.BREAK);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(State.ACTIVE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
@@ -84,10 +82,12 @@ public class BlockBlinker extends BlockBaseFacing {
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if(!world.isRemote) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				boolean active = RelativityHandler.isPowered(blinker);
-				if(active != state.getValue(State.ACTIVE)) {
-					world.setBlockState(pos, state.withProperty(State.ACTIVE, active));
-				}
+				RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
+					boolean active = handler.isPowered();
+					if(active != state.getValue(State.ACTIVE)) {
+						world.setBlockState(pos, state.withProperty(State.ACTIVE, active));
+					}
+				});
 			});
 			world.scheduleUpdate(pos, this, tickRate(world));
 		}
@@ -102,9 +102,14 @@ public class BlockBlinker extends BlockBaseFacing {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				if(!RelativityHelper.getRelativeKey(stack).isPresent())
-					RelativityHelper.setRelativeKey(stack, UUID.randomUUID());
-				RelativityHelper.getRelativeKey(stack).ifPresent(blinker::setKey);
+				RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
+					if(!handler.getKey().isPresent()) {
+						RelativityHelper.getRedstoneCapability(stack).ifPresent(subHandler -> {
+							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
+							subHandler.getKey().ifPresent(handler::setKey);
+						});
+					}
+				});
 			});
 		}
 	}
@@ -116,16 +121,15 @@ public class BlockBlinker extends BlockBaseFacing {
 
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileBlinker> optional = getTile(TileBlinker.class, world, pos);
-		if(optional.isPresent()) {
-			TileBlinker blinker = optional.get();
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			blinker.getKey().ifPresent(uuid -> {
-				RelativityHelper.setRelativeKey(stack, uuid);
+		ItemStack stack = super.getItem(world, pos, state);
+		getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
+			RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
+				handler.getKey().ifPresent(key -> {
+					RelativityHelper.getRedstoneCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
+				});
 			});
-			return stack;
-		}
-		return super.getItem(world, pos, state);
+		});
+		return stack;
 	}
 
 	@Override
@@ -154,11 +158,13 @@ public class BlockBlinker extends BlockBaseFacing {
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this && !pos.offset(state.getValue(BlockDirectional.FACING)).equals(fromPos)) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				boolean wasPowered = RelativityHandler.isPowered(blinker);
-				boolean isPowered = world.isBlockPowered(pos);
-				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-					RelativityHandler.setPower(blinker, blinker.getRedstonePower(), true);
-				}
+				RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
+					boolean wasPowered = handler.isPowered();
+					boolean isPowered = world.isBlockPowered(pos);
+					if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
+						handler.setPower(blinker.getRedstonePower(), true);
+					}
+				});
 			});
 		}
 	}
@@ -177,7 +183,10 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return state.getValue(BlockDirectional.FACING).getOpposite() == side
-				? getTile(TileBlinker.class, world, pos).map(RelativityHandler::getPower).orElse(0) : 0;
+				? getTile(TileBlinker.class, world, pos)
+				.flatMap(RelativityHelper::getRedstoneCapability)
+				.map(IRelativeRedstone::getPower)
+				.orElse(0) : 0;
 	}
 
 	@Override

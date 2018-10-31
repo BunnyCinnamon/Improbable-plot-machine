@@ -11,7 +11,6 @@ import arekkuusu.solar.api.capability.energy.data.ComplexLumenStackWrapper;
 import arekkuusu.solar.api.capability.energy.data.IComplexLumen;
 import arekkuusu.solar.api.capability.energy.data.ILumen;
 import arekkuusu.solar.api.capability.energy.data.SimpleLumenStackWrapper;
-import arekkuusu.solar.api.capability.quantum.IQuantum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -41,16 +40,16 @@ public class LumenStackProvider implements ICapabilityProvider {
 
 	@Override
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return facing == null && (capability == LUMEN_CAPABILITY || (handler instanceof IComplexLumen && capability == COMPLEX_LUMEN_CAPABILITY));
+		return capability == LUMEN_CAPABILITY || (capability == COMPLEX_LUMEN_CAPABILITY && handler instanceof IComplexLumen);
 	}
 
 	@Nullable
 	@Override
 	public <C> C getCapability(@Nonnull Capability<C> capability, @Nullable EnumFacing facing) {
-		return facing == null
-				? capability == LUMEN_CAPABILITY
-				? LUMEN_CAPABILITY.cast(handler) : handler instanceof IComplexLumen && capability == COMPLEX_LUMEN_CAPABILITY
-				? COMPLEX_LUMEN_CAPABILITY.cast((IComplexLumen) handler) : null
+		return capability == LUMEN_CAPABILITY
+				? LUMEN_CAPABILITY.cast(handler)
+				: capability == COMPLEX_LUMEN_CAPABILITY && handler instanceof IComplexLumen
+				? COMPLEX_LUMEN_CAPABILITY.cast((IComplexLumen) handler)
 				: null;
 	}
 
