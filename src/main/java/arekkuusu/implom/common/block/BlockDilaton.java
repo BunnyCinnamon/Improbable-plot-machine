@@ -18,6 +18,7 @@ import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -107,6 +108,12 @@ public class BlockDilaton extends BlockBaseFacing {
 		ItemStack stack = placer.getHeldItem(hand);
 		boolean active = !stack.isEmpty() && stack.getOrCreateSubCompound("dilaton").getBoolean("active");
 		return defaultState().withProperty(BlockDirectional.FACING, facing).withProperty(State.ACTIVE, active);
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
+		EnumFacing blockFacing = state.getValue(BlockDirectional.FACING);
+		return blockFacing == facing || blockFacing == facing.getOpposite() ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
 	}
 
 	@Override
