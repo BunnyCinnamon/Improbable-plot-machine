@@ -86,6 +86,9 @@ public class BlockBlinker extends BlockBaseFacing {
 					boolean active = handler.isPowered();
 					if(active != state.getValue(State.ACTIVE)) {
 						world.setBlockState(pos, state.withProperty(State.ACTIVE, active));
+						for(EnumFacing facing : EnumFacing.values()) {
+							world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
+						}
 					}
 				});
 			});
@@ -146,7 +149,7 @@ public class BlockBlinker extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			IPM.getProxy().spawnMute(world, back, speedVec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
+			IPM.getProxy().spawnMute(world, back, speedVec, active ? 60 : 40, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
 		}
 	}
 
@@ -156,13 +159,14 @@ public class BlockBlinker extends BlockBaseFacing {
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if(block != this && !pos.offset(state.getValue(BlockDirectional.FACING)).equals(fromPos)) {
+		if(block != this) {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
 				RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
+					int power = blinker.getRedstonePower();
 					boolean wasPowered = handler.isPowered();
-					boolean isPowered = world.isBlockPowered(pos);
-					if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-						handler.setPower(blinker.getRedstonePower(), true);
+					boolean isPowered = world.isBlockPowered(pos) && power > 0;
+					if(isPowered != wasPowered) {
+						handler.setPower(power, true);
 					}
 				});
 			});
@@ -182,11 +186,20 @@ public class BlockBlinker extends BlockBaseFacing {
 
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return state.getValue(BlockDirectional.FACING).getOpposite() == side
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		return !world.getBlockState(pos.offset(facing)).canProvidePower() || facing != side.getOpposite()
 				? getTile(TileBlinker.class, world, pos)
 				.flatMap(RelativityHelper::getRedstoneCapability)
 				.map(IRelativeRedstone::getPower)
 				.orElse(0) : 0;
+	}
+
+	@Override
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return getTile(TileBlinker.class, world, pos)
+				.flatMap(RelativityHelper::getRedstoneCapability)
+				.map(IRelativeRedstone::getPower)
+				.orElse(0);
 	}
 
 	@Override

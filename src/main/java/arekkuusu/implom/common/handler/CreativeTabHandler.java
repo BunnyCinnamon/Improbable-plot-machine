@@ -80,6 +80,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.PHENOMENA);
 			addBlock(ModBlocks.Q_SQUARED);
 			addBlock(ModBlocks.ANGSTROM);
+			addBlock(ModBlocks.IMBUED_QUARTZ);
 			addBlock(ModBlocks.ALTERNATOR);
 			addBlock(ModBlocks.DILATON);
 			addBlock(ModBlocks.QELAION);
@@ -91,9 +92,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.QUANTUM_MIRROR);
 			addBlock(ModBlocks.HYPER_CONDUCTOR);
 			addBlock(ModBlocks.ELECTRON);
-			addBlock(ModBlocks.NEUTRON_BATTERY_BLUE);
-			addBlock(ModBlocks.NEUTRON_BATTERY_GREEN);
-			addBlock(ModBlocks.NEUTRON_BATTERY_PINK);
+			addBlock(ModBlocks.NEUTRON_BATTERY);
 			addBlock(ModBlocks.LUMINIC_DECOMPRESSOR);
 			addBlock(ModBlocks.LUMEN_COMPRESSOR);
 			addBlock(ModBlocks.FISSION_INDUCER);
@@ -103,7 +102,6 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR);
 			addBlock(ModBlocks.KONDENZATOR);
 			addBlock(ModBlocks.CRYSTALLIC_SYNTHESIZER);
-			addBlock(ModBlocks.IMBUED_QUARTZ);
 			addItem(ModItems.INTRINSIC_CELL);
 			addItem(ModItems.MAGNETIC_BOLT);
 			addItem(ModItems.MAGNETIC_GEAR);

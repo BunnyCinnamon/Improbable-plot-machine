@@ -17,6 +17,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * Created by <Arekkuusu> on 20/03/2018.
@@ -25,11 +26,6 @@ import javax.annotation.Nullable;
 public class TileNeutronBattery extends TileComplexLumenBase {
 
 	private BatteryCapacitor capacitor;
-
-	public TileNeutronBattery(BatteryCapacitor capacitor) {
-		this.capacitor = capacitor;
-		this.handler = createHandler();
-	}
 
 	public TileNeutronBattery() {
 		this.capacitor = new BatteryCapacitor();
@@ -41,8 +37,12 @@ public class TileNeutronBattery extends TileComplexLumenBase {
 		return capacitor != null ? capacitor.getCapacity() : 0;
 	}
 
-	public BatteryCapacitor getCapacitor() {
-		return capacitor;
+	public Optional<BatteryCapacitor> getCapacitor() {
+		return Optional.ofNullable(capacitor);
+	}
+
+	public void setCapacitor(BatteryCapacitor capacitor) {
+		this.capacitor = capacitor;
 	}
 
 	@Override
@@ -77,7 +77,9 @@ public class TileNeutronBattery extends TileComplexLumenBase {
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
+		if(capacitor != null) {
+			compound.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
+		}
 		handler.getKey().ifPresent(key -> {
 			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
 			NBTTagCompound tag = data.getCompoundTag(IComplexLumen.NBT_TAG);

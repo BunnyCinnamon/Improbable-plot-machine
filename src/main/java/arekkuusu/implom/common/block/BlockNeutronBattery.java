@@ -51,15 +51,13 @@ import java.util.UUID;
 public class BlockNeutronBattery extends BlockBaseFacing {
 
 	public static final AxisAlignedBB BB = new AxisAlignedBB(0.1875, 0.0625, 0.1875, 0.8125, 0.9375, 0.8125);
-	public final BatteryCapacitor capacitor;
 
-	public BlockNeutronBattery(BatteryCapacitor capacitor) {
-		super(LibNames.NEUTRON_BATTERY + "_" + capacitor.name, FixedMaterial.DONT_MOVE);
+	public BlockNeutronBattery() {
+		super(LibNames.NEUTRON_BATTERY, FixedMaterial.DONT_MOVE);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
 		setLightLevel(0.2F);
-		this.capacitor = capacitor;
 	}
 
 	@Override
@@ -92,27 +90,31 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 					LumenHelper.getComplexCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
 				});
 			});
+			battery.getCapacitor().ifPresent(capacitor -> {
+				NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+				root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
+			});
 		});
-		NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
-		root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
 		return stack;
 	}
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		Vector3 vec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ());
-		Vector3 facingVec = new Vector3.WrappedVec3i(state.getValue(BlockDirectional.FACING).getDirectionVec()).asImmutable();
-		for(int i = 0; i < 3 + rand.nextInt(4); i++) {
-			Vector3 posVec = vec.add(
-					0.35D + 0.3D * rand.nextFloat(),
-					0.15D + 0.35D * rand.nextFloat(),
-					0.35D + 0.3D * rand.nextFloat()
-			);
-			double speed = 0.005D + 0.005D * rand.nextDouble();
-			Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
-			IPM.getProxy().spawnMute(world, posVec, speedVec, 30, 2F, capacitor.color, Light.GLOW);
-			IPM.getProxy().spawnMute(world, vec.add(0.5D), facingVec.multiply(0.02D), 100, 2F, capacitor.color, Light.GLOW);
-		}
+		getTile(TileNeutronBattery.class, world, pos).flatMap(TileNeutronBattery::getCapacitor).ifPresent(capacitor -> {
+			Vector3 vec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ());
+			Vector3 facingVec = new Vector3.WrappedVec3i(state.getValue(BlockDirectional.FACING).getDirectionVec()).asImmutable();
+			for(int i = 0; i < 3 + rand.nextInt(4); i++) {
+				Vector3 posVec = vec.add(
+						0.35D + 0.3D * rand.nextFloat(),
+						0.15D + 0.35D * rand.nextFloat(),
+						0.35D + 0.3D * rand.nextFloat()
+				);
+				double speed = 0.005D + 0.005D * rand.nextDouble();
+				Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
+				IPM.getProxy().spawnMute(world, posVec, speedVec, 30, 2F, capacitor.color, Light.GLOW);
+				IPM.getProxy().spawnMute(world, vec.add(0.5D), facingVec.multiply(0.02D), 100, 2F, capacitor.color, Light.GLOW);
+			}
+		});
 	}
 
 	@Override
@@ -133,15 +135,17 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileNeutronBattery(capacitor.copy());
+		return new TileNeutronBattery();
 	}
 
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-		ItemStack stack = new ItemStack(this);
-		NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
-		root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
-		items.add(stack);
+		for(BatteryCapacitor capacitor : CAPACITORS) {
+			ItemStack stack = new ItemStack(this);
+			NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+			root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
+			items.add(stack);
+		}
 	}
 
 	@Override
@@ -160,18 +164,6 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		int capacity;
 		int color;
 
-		public String getName() {
-			return name;
-		}
-
-		public int getCapacity() {
-			return capacity;
-		}
-
-		public int getColor() {
-			return color;
-		}
-
 		public BatteryCapacitor(String name, int capacity, int color) {
 			this.name = name;
 			this.capacity = capacity;
@@ -179,6 +171,34 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		}
 
 		public BatteryCapacitor() {
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		public BatteryCapacitor setName(String name) {
+			this.name = name;
+			return new BatteryCapacitor(name, capacity, color);
+		}
+
+		public int getCapacity() {
+			return capacity;
+		}
+
+		public BatteryCapacitor setCapacity(int capacity) {
+			this.capacity = capacity;
+			return new BatteryCapacitor(name, capacity, color);
+		}
+
+		public int getColor() {
+			return color;
+		}
+
+		public BatteryCapacitor setColor(int color) {
+			this.color = color;
+			return new BatteryCapacitor(name, capacity, color);
 		}
 
 		@Override
@@ -203,13 +223,17 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	}
 
 	public static final List<BatteryCapacitor> CAPACITORS = Lists.newArrayList();
+	public static final BatteryCapacitor WHITE = new BatteryCapacitor("white", 8, 0xA4A4A4);
 	public static final BatteryCapacitor BLUE = new BatteryCapacitor("blue", 64, 0x00FFE1);
 	public static final BatteryCapacitor GREEN = new BatteryCapacitor("green", 512, 0x42BC49);
-	public static final BatteryCapacitor PINK = new BatteryCapacitor("pink", 4096, 0xC13DAA);
+	public static final BatteryCapacitor YELLOW = new BatteryCapacitor("yellow", 4096, 0xF2CB30);
+	public static final BatteryCapacitor PINK = new BatteryCapacitor("pink", 16777216, 0xC13DAA);
 
 	static {
+		CAPACITORS.add(WHITE);
 		CAPACITORS.add(BLUE);
 		CAPACITORS.add(GREEN);
+		CAPACITORS.add(YELLOW);
 		CAPACITORS.add(PINK);
 	}
 }

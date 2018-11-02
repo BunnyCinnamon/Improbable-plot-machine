@@ -64,9 +64,7 @@ public final class ModRenders {
 		registerTESRItemStack(ModBlocks.VACUUM_CONVEYOR, TileVacuumConveyor.class);
 		registerTESRItemStack(ModBlocks.MECHANICAL_TRANSLOCATOR, TileMechanicalTranslocator.class);
 		registerTESRItemStack(ModBlocks.QIMRANUT, TileQimranut.class);
-		registerTESRItemStack(ModBlocks.NEUTRON_BATTERY_BLUE, TileNeutronBattery.class);
-		registerTESRItemStack(ModBlocks.NEUTRON_BATTERY_GREEN, TileNeutronBattery.class);
-		registerTESRItemStack(ModBlocks.NEUTRON_BATTERY_PINK, TileNeutronBattery.class);
+		registerTESRItemStack(ModBlocks.NEUTRON_BATTERY, TileNeutronBattery.class);
 		registerTESRItemStack(ModBlocks.PHOLARIZER, TilePholarizer.class);
 		registerTESRItemStack(ModBlocks.FISSION_INDUCER, TileFissionInducer.class);
 		registerTESRItemStack(ModBlocks.ELECTRON, TileElectron.class);

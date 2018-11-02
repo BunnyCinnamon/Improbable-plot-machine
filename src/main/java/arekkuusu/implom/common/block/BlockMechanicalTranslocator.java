@@ -104,9 +104,9 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		ItemStack stack = super.getItem(world, pos, state);
 		getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(translocator -> {
-			RelativityHelper.getRedstoneCapability(translocator).ifPresent(handler -> {
+			RelativityHelper.getCapability(translocator).ifPresent(handler -> {
 				handler.getKey().ifPresent(key -> {
-					RelativityHelper.getRedstoneCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
+					RelativityHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
 				});
 			});
 		});

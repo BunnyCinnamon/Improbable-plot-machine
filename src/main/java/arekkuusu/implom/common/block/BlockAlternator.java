@@ -56,6 +56,9 @@ public class BlockAlternator extends BlockBase {
 				boolean active = alternator.areAllActive();
 				if(active != state.getValue(State.ACTIVE)) {
 					world.setBlockState(pos, state.withProperty(State.ACTIVE, active));
+					for(EnumFacing facing : EnumFacing.values()) {
+						world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
+					}
 				}
 			});
 			world.scheduleUpdate(pos, this, tickRate(world));

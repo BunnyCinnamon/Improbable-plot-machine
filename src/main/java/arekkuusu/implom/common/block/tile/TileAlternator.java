@@ -12,7 +12,6 @@ import arekkuusu.implom.api.capability.relativity.data.IRelative;
 import arekkuusu.implom.api.capability.relativity.data.RelativeTileWrapper;
 import arekkuusu.implom.api.state.State;
 import arekkuusu.implom.common.handler.data.WorldAlternatorData;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import java.util.UUID;
@@ -28,16 +27,12 @@ public class TileAlternator extends TileRelativeBase {
 	@Override
 	public IRelative createHandler() {
 		return new RelativeTileWrapper<TileAlternator>(this) {
+
 			@Override
 			public void add() {
-				if(!getWorld().isRemote) {
-					if(loadKey == null) {
-						loadKey = UUID.randomUUID();
-						markDirty();
-					}
-					if(RelativityHandler.addRelative(this)) {
-						getKey().ifPresent(key -> TileAlternator.getData(getWorld()).add(key, loadKey));
-					}
+				if(!world.isRemote && RelativityHandler.addRelative(this) && loadKey == null) {
+					loadKey = UUID.randomUUID();
+					handler.getKey().ifPresent(key -> TileAlternator.getData(getWorld()).add(key, loadKey));
 				}
 			}
 
@@ -46,19 +41,28 @@ public class TileAlternator extends TileRelativeBase {
 				if(!getWorld().isRemote && RelativityHandler.removeRelative(this)) {
 					if(loadKey != null) {
 						getKey().ifPresent(key -> TileAlternator.getData(getWorld()).remove(key, loadKey));
+						loadKey = null;
 					}
 				}
 			}
 		};
 	}
 
+	@Override
+	public void onChunkUnload() {
+		if(!world.isRemote) {
+			RelativityHandler.removeRelative(handler);
+		}
+	}
+
 	public boolean areAllActive() {
 		return handler.getKey().map(key -> {
-			int size = 0;
-			for(IRelative tile : RelativityHandler.getRelatives(key)) {
-				if(tile instanceof RelativeTileWrapper && ((RelativeTileWrapper) tile).isLoaded()) ++size;
-			}
 			int loaded = TileAlternator.getData(world).getSize(key);
+			int size = 0;
+			for(IRelative handler : RelativityHandler.getRelatives(key)) {
+				if(handler instanceof RelativeTileWrapper && ((RelativeTileWrapper) handler).isLoaded() && ((RelativeTileWrapper) handler).getTile() instanceof TileAlternator)
+					++size;
+			}
 			return size == loaded;
 		}).orElse(false);
 	}
@@ -69,17 +73,5 @@ public class TileAlternator extends TileRelativeBase {
 
 	public static WorldAlternatorData getData(World world) {
 		return WorldAlternatorData.get(world);
-	}
-
-	@Override
-	void readNBT(NBTTagCompound compound) {
-		super.readNBT(compound);
-		loadKey = compound.getUniqueId("loadKey");
-	}
-
-	@Override
-	void writeNBT(NBTTagCompound compound) {
-		super.writeNBT(compound);
-		compound.setUniqueId("loadKey", loadKey);
 	}
 }

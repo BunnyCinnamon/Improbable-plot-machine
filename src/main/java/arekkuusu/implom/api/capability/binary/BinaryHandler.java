@@ -42,9 +42,7 @@ public final class BinaryHandler {
 	public static <T extends IBinary> void add(T binary) {
 		binary.getKey().ifPresent(uuid -> IPMApi.getBinaryMap().compute(uuid, (key, pair) -> {
 			if(pair == null) pair = new Pair<>();
-			if(pair.l == null || pair.r == null) {
-				pair.offer(binary);
-			}
+			pair.offer(binary);
 			return pair;
 		}));
 	}

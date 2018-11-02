@@ -28,7 +28,7 @@ import java.util.UUID;
 public class WorldAlternatorData extends WorldSavedData {
 
 	private static final String NAME = LibMod.MOD_ID + ":" + "alternator_data";
-	public final Map<UUID, Set<UUID>> active_map = Maps.newHashMap();
+	public final Map<UUID, Set<UUID>> active = Maps.newHashMap();
 
 	public WorldAlternatorData(String name) {
 		super(name);
@@ -46,34 +46,34 @@ public class WorldAlternatorData extends WorldSavedData {
 	}
 
 	public int getSize(UUID key) {
-		return active_map.containsKey(key) ? active_map.get(key).size() : 0;
+		return active.containsKey(key) ? active.get(key).size() : 0;
 	}
 
 	public void add(UUID key, UUID value) {
-		active_map.putIfAbsent(key, Sets.newHashSet());
-		active_map.get(key).add(value);
+		active.putIfAbsent(key, Sets.newHashSet());
+		active.get(key).add(value);
 		markDirty();
 	}
 
 	public void remove(UUID key, UUID value) {
-		active_map.putIfAbsent(key, Sets.newHashSet());
-		active_map.get(key).remove(value);
+		active.putIfAbsent(key, Sets.newHashSet());
+		active.get(key).remove(value);
 		markDirty();
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagList list = compound.getTagList("list", 9);
+		NBTTagList list = compound.getTagList("map", 9);
 		list.forEach(tag -> {
 			UUID key = ((NBTTagCompound) tag).getUniqueId("key");
 			Set<UUID> value = Sets.newHashSet();
-			NBTTagList subList = compound.getTagList("value", 9);
+			NBTTagList subList = compound.getTagList("set", 9);
 			for(NBTBase subTag : subList) {
-				UUID uuid = ((NBTTagCompound) subTag).getUniqueId("uuid");
+				UUID uuid = ((NBTTagCompound) subTag).getUniqueId("key");
 				value.add(uuid);
 			}
 			if(!value.isEmpty()) {
-				active_map.put(key, value);
+				active.put(key, value);
 			}
 		});
 	}
@@ -81,19 +81,19 @@ public class WorldAlternatorData extends WorldSavedData {
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
-		active_map.forEach((k, v) -> {
+		active.forEach((k, v) -> {
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setUniqueId("key", k);
 			NBTTagList subList = new NBTTagList();
 			for(UUID uuid : v) {
 				NBTTagCompound subTag = new NBTTagCompound();
-				subTag.setUniqueId("uuid", uuid);
+				subTag.setUniqueId("key", uuid);
 				subList.appendTag(subTag);
 			}
-			tag.setTag("value", subList);
+			tag.setTag("set", subList);
 			list.appendTag(tag);
 		});
-		compound.setTag("list", list);
+		compound.setTag("map", list);
 		return compound;
 	}
 }

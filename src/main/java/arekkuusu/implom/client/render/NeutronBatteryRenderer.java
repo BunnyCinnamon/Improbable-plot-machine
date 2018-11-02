@@ -26,7 +26,7 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 
 	@Override
 	void renderTile(TileNeutronBattery te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		renderModel(te.getCapacitor(), te.getFacingLazy(), x, y, z, partialTicks);
+		te.getCapacitor().ifPresent(capacitor -> renderModel(capacitor, te.getFacingLazy(), x, y, z, partialTicks));
 	}
 
 	@Override

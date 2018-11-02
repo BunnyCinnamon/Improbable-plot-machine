@@ -50,6 +50,7 @@ public final class RelativityHandler {
 		relative.getKey().ifPresent(uuid -> IPMApi.getRelativityMap().compute(uuid, (key, list) -> {
 			list = list == null ? new ArrayList<>() : list;
 			if(list.contains(relative)) return list;
+			RelativityEvent.onRelativeValidate(relative);
 			list.add(relative);
 			updated[0] = true;
 			return list;
@@ -67,6 +68,7 @@ public final class RelativityHandler {
 		boolean[] updated = {false};
 		relative.getKey().ifPresent(uuid -> IPMApi.getRelativityMap().compute(uuid, (key, list) -> {
 			if(list != null) {
+				RelativityEvent.onRelativeInvalidate(relative);
 				list.remove(relative);
 				updated[0] = true;
 			}

@@ -36,7 +36,7 @@ public abstract class TileRelativeBase extends TileBase {
 	@Override
 	public void onLoad() {
 		handler.add();
-	}
+}
 
 	@Override
 	public void validate() {

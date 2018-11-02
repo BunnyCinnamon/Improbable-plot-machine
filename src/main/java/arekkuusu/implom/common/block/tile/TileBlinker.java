@@ -25,8 +25,10 @@ public class TileBlinker extends TileRelativeRedstoneBase {
 			@Override
 			public void onPowerUpdate() {
 				if(getWorld() != null && !getWorld().isRemote) {
-					int power;
-					if(getWorld().isBlockPowered(getPos()) && getPower() < (power = getRedstonePower())) {
+					int power = getRedstonePower();
+					boolean wasPowered = isPowered();
+					boolean isPowered = world.isBlockPowered(pos) && power > 0;
+					if(isPowered != wasPowered && getPower() < power) {
 						setPower(power, false);
 					}
 				}
@@ -35,14 +37,8 @@ public class TileBlinker extends TileRelativeRedstoneBase {
 	}
 
 	public int getRedstonePower() {
-		int power = 0;
-		EnumFacing ignored = getFacingLazy();
-		for(EnumFacing facing : EnumFacing.values()) {
-			if(facing == ignored) continue;
-			int detected = world.getRedstonePower(pos.offset(facing), facing);
-			if(detected > power) power = detected;
-		}
-		return power;
+		EnumFacing facing = getFacingLazy();
+		return world.getRedstonePower(pos.offset(facing), facing);
 	}
 
 	private boolean isPoweredLazy() {

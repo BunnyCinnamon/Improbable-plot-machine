@@ -52,11 +52,11 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IUUIDDescription
 	public void addInformation(UUID uuid, List<String> tooltip) {
 		Tooltip.inline().condition(KeyCondition$.MODULE$.shiftKeyDown()).ifTrueJ(builder ->
 				builder.condition(() -> !EntangledIItemHandler.getEntanglementStack(uuid, 0).isEmpty()).ifTrueJ(sub -> {
-					ItemStack stack = EntangledIItemHandler.getEntanglementStack(uuid, 0);
+					ItemStack contained = EntangledIItemHandler.getEntanglementStack(uuid, 0);
 					return sub.addI18n("tlp.quantum_data", Tooltip.DarkGrayItalic()).add(": ").newline()
 							.add("    - ", TextFormatting.DARK_GRAY)
-							.add(stack.getDisplayName(), Tooltip.GrayItalic())
-							.add(" x " + stack.getCount())
+							.add(contained.getDisplayName(), Tooltip.GrayItalic())
+							.add(" x " + contained.getCount())
 							.newline();
 				}).apply().condition(KeyCondition$.MODULE$.controlKeyDown()).ifTrueJ(b -> getInfo(b, uuid)).apply()
 		).apply().build(tooltip);
