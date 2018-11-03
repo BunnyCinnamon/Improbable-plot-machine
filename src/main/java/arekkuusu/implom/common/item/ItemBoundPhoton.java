@@ -29,21 +29,20 @@ public class ItemBoundPhoton extends ItemBase implements IUUIDDescription {
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		Tooltip.inline().condition(KeyCondition$.MODULE$.shiftKeyDown())
-				.ifTrueJ(builder -> builder
-						.condition(() -> NBTHelper.hasTag(stack, "BlockEntityTag"))
-						.ifTrueJ(sub -> {
-							NBTTagCompound tag = stack.getOrCreateSubCompound("BlockEntityTag");
-							NBTTagCompound keys = tag.getCompoundTag(WorldData.NBT_TAG);
-							for(String key : keys.getKeySet()) {
-								NBTTagCompound subTag = keys.getCompoundTag(key);
-								if(subTag.hasUniqueId("key")) {
-									sub = getInfo(sub, Objects.requireNonNull(subTag.getUniqueId("key")));
-								}
-							}
-							return sub;
-						}).orElseJ(sub -> sub.addI18n("tlp.uuid_key_empty", TextFormatting.DARK_GRAY).newline()).apply()
-				).apply().build(tooltip);
+		Tooltip.inline().condition(() -> NBTHelper.hasTag(stack, "BlockEntityTag")).ifTrueJ(builder -> builder
+				.condition(KeyCondition$.MODULE$.shiftKeyDown())
+				.ifTrueJ(sub -> {
+					NBTTagCompound tag = stack.getOrCreateSubCompound("BlockEntityTag");
+					NBTTagCompound keys = tag.getCompoundTag(WorldData.NBT_TAG);
+					for(String key : keys.getKeySet()) {
+						NBTTagCompound subTag = keys.getCompoundTag(key);
+						if(subTag.hasUniqueId("key")) {
+							sub = getInfo(sub, Objects.requireNonNull(subTag.getUniqueId("key")));
+						}
+					}
+					return sub;
+				}).apply()
+		).apply().build(tooltip);
 	}
 
 	@Override
