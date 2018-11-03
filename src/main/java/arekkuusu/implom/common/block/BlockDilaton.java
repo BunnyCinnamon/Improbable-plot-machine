@@ -7,6 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
+import arekkuusu.implom.api.helper.RayTraceHelper;
 import arekkuusu.implom.api.state.State;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
@@ -22,6 +23,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,6 +31,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -81,8 +84,7 @@ public class BlockDilaton extends BlockBaseFacing {
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this) {
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
-			boolean front = pos.offset(facing).equals(fromPos);
-			if(front) {
+			if(pos.offset(facing).equals(fromPos)) {
 				IBlockState from = world.getBlockState(fromPos);
 				if(from.getBlock() == ModBlocks.DILATON_EXTENSION
 						&& state.getValue(State.ACTIVE)
@@ -96,7 +98,7 @@ public class BlockDilaton extends BlockBaseFacing {
 					boolean isPowered = world.isBlockPowered(pos);
 					if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
 						dilaton.setPowered(isPowered);
-						dilaton.pushExtension(isPowered);
+						dilaton.pushExtension();
 					}
 				});
 			}
@@ -117,8 +119,40 @@ public class BlockDilaton extends BlockBaseFacing {
 	}
 
 	@Override
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+		this.onBlockHarvested(world, pos, state, player);
+		RayTraceResult result = RayTraceHelper.tracePlayerHighlight(player);
+		boolean active = state.getValue(State.ACTIVE);
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		IBlockState newState = !active && RayTraceHelper.isHittingSideOfBlock(result, facing, world, state, pos)
+				? state.withProperty(State.ACTIVE, true)
+				: net.minecraft.init.Blocks.AIR.getDefaultState();
+		return world.setBlockState(pos, newState, world.isRemote ? 11 : 3);
+	}
+
+	@Override
+	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+		IBlockState blockState = worldIn.getBlockState(pos);
+		boolean active = blockState.getBlock() == ModBlocks.DILATON && blockState.getValue(State.ACTIVE);
+		boolean unactive = !state.getValue(State.ACTIVE);
+		if(active && unactive) {
+			ModBlocks.DILATON_EXTENSION.harvestBlock(worldIn, player, pos, state, te, stack);
+		} else {
+			super.harvestBlock(worldIn, player, pos, state, te, stack);
+		}
+	}
+
+	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		drops.add(getItem((World) world, pos, state)); //Bad??
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		if(target.sideHit == state.getValue(BlockDirectional.FACING)) {
+			return new ItemStack(ModBlocks.DILATON_EXTENSION);
+		}
+		return super.getPickBlock(state, target, world, pos, player);
 	}
 
 	@Override

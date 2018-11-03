@@ -35,30 +35,35 @@ public class TileDilaton extends TileBase {
 
 	private boolean powered;
 
-	public void pushExtension(boolean powered) {
-		if(!world.isRemote && !(!isActiveLazy() && !powered)) {
+	public void pushExtension() {
+		if(!world.isRemote && powered) {
 			ProfilerHelper.flagSection("[Dilaton] Redstone signal received");
 			BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(getPos());
 			EnumFacing facing = getFacingLazy();
-			int range = powered ? getRedstonePower() + 1 : 16;
+			boolean active = isActiveLazy();
+			int range = active ? getRedstonePower() + 1 : 16;
 			int pointer = 0;
-			if(isActiveLazy()) {
+			if(active) {
 				ProfilerHelper.flagSection("[Dilaton] Locate nearest extension");
 				boolean found = false;
 				for(; pointer < range; pointer++) {
-					if(!isPosValid(pos.move(facing)) || pointer >= range) return;
+					if(!isPosValid(pos.move(facing))) return;
 					IBlockState state = world.getBlockState(pos);
 					if(state.getBlock() == ModBlocks.DILATON_EXTENSION) {
 						world.setBlockToAir(pos);
 						found = true;
 						break;
+					} else if(state.getBlock() == ModBlocks.DILATON && !state.getValue(State.ACTIVE)) {
+						world.setBlockState(pos, state.withProperty(State.ACTIVE, true));
+						found = true;
+						break;
 					}
 				}
 				if(!found) return;
-				if(!powered) pointer = 0;
+				pointer = 0;
 			}
 			ProfilerHelper.begin("[Dilaton] Gathering pushed blocks");
-			if(!powered) facing = facing.getOpposite();
+			if(active) facing = facing.getOpposite();
 			List<Triple<IBlockState, NBTTagCompound, BlockPos>> pushed = Lists.newArrayList();
 			List<BlockPos> removed = Lists.newArrayList();
 			loop : for(; pointer < range; pointer++) {
@@ -111,7 +116,7 @@ public class TileDilaton extends TileBase {
 			ProfilerHelper.flagSection("[Dilaton] Block drops");
 			removed.forEach(p -> {
 				IBlockState state = world.getBlockState(p);
-				float chance = state.getBlock() instanceof BlockSnow ? -1.0F : 1.0F;
+				float chance = state.getMaterial() == Material.SNOW ? -1.0F : 1.0F;
 				state.getBlock().dropBlockAsItemWithChance(world, p, state, chance, 0);
 				world.setBlockToAir(p);
 			});
@@ -140,6 +145,9 @@ public class TileDilaton extends TileBase {
 
 	private boolean setStateTile(IBlockState state, NBTTagCompound tag, BlockPos pos) {
 		boolean remove = isPosReplaceable(pos) && !state.getBlock().canPlaceBlockAt(world, pos); //Before setting
+		if(state.getBlock() == ModBlocks.DILATON_EXTENSION) {
+			state = state.withProperty(BlockDirectional.FACING, getFacingLazy());
+		}
 		world.setBlockState(pos, state);
 		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 			tag.setInteger("x", pos.getX());
