@@ -9,18 +9,14 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibNames;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -45,7 +41,7 @@ public class BlockAngstrom extends BlockBase {
 			world.setBlockToAir(pos); //Free pos
 			//Replace Angstrom with held block
 			EnumActionResult result = stack.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
-			if(result != EnumActionResult.SUCCESS) {
+			if(result == EnumActionResult.FAIL || result == EnumActionResult.PASS) {
 				world.setBlockState(pos, state);
 			} else if(!world.isRemote) {
 				//Giv Angstrom back to player
