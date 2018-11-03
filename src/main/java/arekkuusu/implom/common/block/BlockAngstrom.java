@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -39,24 +40,19 @@ public class BlockAngstrom extends BlockBase {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
-		boolean isBlock = stack.getItem() instanceof ItemBlock && stack.getItem() != ModItems.ANGSTROM;
-		if(!world.isRemote && isBlock) {
-			//Replace
-			ItemBlock item = (ItemBlock) stack.getItem();
-			Block block = Block.getBlockFromItem(item);
-			int meta = item.getMetadata(stack);
-			IBlockState inState = block.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, player, hand);
-			world.setBlockState(pos, inState);
-			block.onBlockPlacedBy(world, pos, inState, player, stack);
-			SoundType sound = block.getSoundType(inState, world, pos, player);
-			world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), sound.getPlaceSound(), SoundCategory.BLOCKS, 0.75F, 0.8F);
-			//Exchange
-			ItemStack drop = new ItemStack(Item.getItemFromBlock(this));
-			ItemHandlerHelper.giveItemToPlayer(player, drop);
-			if(!player.capabilities.isCreativeMode) {
-				stack.shrink(1);
+		boolean mayReplace = stack.getItem() instanceof ItemBlock && stack.getItem() != ModItems.ANGSTROM;
+		if(mayReplace) {
+			world.setBlockToAir(pos); //Free pos
+			//Replace Angstrom with held block
+			EnumActionResult result = stack.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+			if(result != EnumActionResult.SUCCESS) {
+				world.setBlockState(pos, state);
+			} else if(!world.isRemote) {
+				//Giv Angstrom back to player
+				ItemStack drop = new ItemStack(this);
+				ItemHandlerHelper.giveItemToPlayer(player, drop);
 			}
 		}
-		return isBlock;
+		return mayReplace;
 	}
 }

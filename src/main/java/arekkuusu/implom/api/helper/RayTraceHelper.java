@@ -8,15 +8,14 @@
 package arekkuusu.implom.api.helper;
 
 import com.google.common.collect.Lists;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -29,18 +28,20 @@ public final class RayTraceHelper {
 
 	@Nullable
 	public static RayTraceResult rayTraceAllAABB(List<AxisAlignedBB> boxes, BlockPos pos, Vec3d start, Vec3d end) {
-		List<RayTraceResult> list = Lists.newArrayList();
-		boxes.forEach(box -> list.add(rayTraceAABB(box, pos, start, end)));
+		List<RayTraceResult> results = Lists.newArrayList();
+		boxes.forEach(box -> {
+			RayTraceResult result = rayTraceAABB(box, pos, start, end);
+			if(result != null) {
+				results.add(result);
+			}
+		});
 		RayTraceResult result = null;
-		double d1 = 0.0D;
-		for(RayTraceResult raytraceresult : list) {
-			if(raytraceresult != null) {
-				double d0 = raytraceresult.hitVec.squareDistanceTo(end);
-
-				if(d0 > d1) {
-					result = raytraceresult;
-					d1 = d0;
-				}
+		double otherSqtDis = 0.0D;
+		for(RayTraceResult raytraceresult : results) {
+			double sqtDis = raytraceresult.hitVec.squareDistanceTo(end);
+			if(sqtDis > otherSqtDis) {
+				result = raytraceresult;
+				otherSqtDis = sqtDis;
 			}
 		}
 		return result;
@@ -51,9 +52,9 @@ public final class RayTraceHelper {
 		double x = pos.getX();
 		double y = pos.getY();
 		double z = pos.getZ();
-		Vec3d a = start.subtract(x, y, z);
-		Vec3d b = end.subtract(x, y, z);
-		RayTraceResult result = box.calculateIntercept(a, b);
+		Vec3d aVec = start.subtract(x, y, z);
+		Vec3d bVec = end.subtract(x, y, z);
+		RayTraceResult result = box.calculateIntercept(aVec, bVec);
 		return result == null ? null : new RayTraceResult(result.hitVec.addVector(x, y, z), result.sideHit, pos);
 	}
 
@@ -65,12 +66,11 @@ public final class RayTraceHelper {
 		return player.world.rayTraceBlocks(eyes, hit, false, false, true);
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static RayTraceResult tracePlayerHighlight(EntityPlayerSP player) {
-		Vec3d eyes = player.getPositionEyes(1F);
-		Vec3d look = player.getLookVec();
-		double range = Minecraft.getMinecraft().playerController.getBlockReachDistance();
-		Vec3d hit = eyes.addVector(look.x * range, look.y * range, look.z * range);
-		return player.world.rayTraceBlocks(eyes, hit, false, false, true);
+	public static boolean isHittingSideOfBlock(RayTraceResult hit, EnumFacing side, World world, IBlockState state, BlockPos pos) {
+		if(hit != null && RayTraceResult.Type.BLOCK == hit.typeOfHit && side == hit.sideHit) {
+			final BlockPos hitPos = hit.getBlockPos();
+			return pos.equals(hitPos) && state == world.getBlockState(hitPos);
+		}
+		return false;
 	}
 }
