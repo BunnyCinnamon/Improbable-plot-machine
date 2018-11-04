@@ -142,14 +142,14 @@ public class BlockBlinker extends BlockBaseFacing {
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
 		facing = facing.getOpposite();
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
-			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 5);
-			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 5);
+			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 25);
+			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 25);
 			double speed = 0.01D + rand.nextDouble() * 0.015D;
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			IPM.getProxy().spawnMute(world, back, speedVec, active ? 60 : 40, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
+			IPM.getProxy().spawnMute(world, back, speedVec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
 		}
 	}
 
