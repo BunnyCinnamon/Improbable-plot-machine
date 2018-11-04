@@ -41,7 +41,7 @@ public class TileDilaton extends TileBase {
 			BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(getPos());
 			EnumFacing facing = getFacingLazy();
 			boolean active = isActiveLazy();
-			int range = active ? getRedstonePower() + 1 : 16;
+			int range = getRedstonePower() + 1;
 			int pointer = 0;
 			if(active) {
 				ProfilerHelper.flagSection("[Dilaton] Locate nearest extension");
@@ -53,7 +53,7 @@ public class TileDilaton extends TileBase {
 						world.setBlockToAir(pos);
 						found = true;
 						break;
-					} else if(state.getBlock() == ModBlocks.DILATON && !state.getValue(State.ACTIVE)) {
+					} else if(state.getBlock() == ModBlocks.DILATON && !state.getValue(State.ACTIVE) && state.getValue(BlockDirectional.FACING) == facing.getOpposite()) {
 						world.setBlockState(pos, state.withProperty(State.ACTIVE, true));
 						found = true;
 						break;
