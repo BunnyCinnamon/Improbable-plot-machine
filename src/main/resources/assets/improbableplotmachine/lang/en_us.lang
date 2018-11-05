@@ -15,6 +15,7 @@ item.quartz.name=Quartz
 item.magnetic_gear.name=Gear
 item.magnetic_bolt.name=Bolt
 item.magnetic_spring.name=Spring
+item.clockwork.name=Clockwork
 item.bound_photon.name=Bound Photon
 
 tile.primal_stone.name=Primal Stone

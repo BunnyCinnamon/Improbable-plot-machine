@@ -1,0 +1,19 @@
+﻿{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "improbableplotmachine:magnetic_bolt"},
+    {"item": "improbableplotmachine:magnetic_gear"},
+    {"item": "improbableplotmachine:magnetic_spring"},
+	{"item": "improbableplotmachine:magnetic_bolt"},
+    {"item": "improbableplotmachine:magnetic_gear"},
+    {"item": "improbableplotmachine:magnetic_spring"},
+    {"item": "minecraft:redstone"},
+    {"item": "minecraft:redstone"},
+    {"item": "minecraft:redstone"}
+  ],
+  "result": {
+    "item": "improbableplotmachine:clockwork",
+	"nbt": {"unsealed": "true"}
+  },
+  "group": "plot_machine"
+}

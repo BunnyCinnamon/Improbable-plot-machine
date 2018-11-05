@@ -7,8 +7,6 @@
  */
 package arekkuusu.implom.client.util.baker;
 
-import arekkuusu.implom.client.util.baker.model.DummyModel;
-import com.google.common.collect.Maps;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
@@ -16,8 +14,6 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Map;
 
 /**
  * This class was created by <Arekkuusu> on 25/06/2017.
@@ -27,17 +23,16 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class DummyModelLoader implements ICustomModelLoader {
 
-	private final Map<ResourceLocation, DummyModel> created = Maps.newHashMap();
 	public static final DummyModelLoader INSTANCE = new DummyModelLoader();
 
 	@Override
 	public boolean accepts(ResourceLocation location) {
-		return DummyBakedRegistry.isRegistered(trim(location));
+		return DummyModelRegistry.isRegistered(trim(location));
 	}
 
 	@Override
 	public IModel loadModel(ResourceLocation location) {
-		return created.computeIfAbsent(trim(location), DummyModel::new);
+		return DummyModelRegistry.getModel(trim(location));
 	}
 
 	private ResourceLocation trim(ResourceLocation location) {

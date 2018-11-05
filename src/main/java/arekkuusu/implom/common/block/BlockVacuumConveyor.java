@@ -10,12 +10,12 @@ package arekkuusu.implom.common.block;
 import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.block.tile.TileVacuumConveyor;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -131,7 +131,7 @@ public class BlockVacuumConveyor extends BlockBaseFacing {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedRender()
+		DummyModelRegistry.register(this, new ModelRendered()
 				.setParticle(ResourceLibrary.VACUUM_CONVEYOR)
 		);
 		ModelHandler.registerModel(this, 0, "");

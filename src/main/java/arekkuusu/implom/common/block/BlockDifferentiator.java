@@ -9,13 +9,13 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileDifferentiator;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -91,7 +91,7 @@ public class BlockDifferentiator extends BlockBaseFacing {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedRender()
+		DummyModelRegistry.register(this, new ModelRendered()
 				.setParticle(ResourceLibrary.DIFFERENTIATOR_BASE)
 		);
 		ModelHandler.registerModel(this, 0);

@@ -10,9 +10,10 @@ package arekkuusu.implom.common.block;
 import arekkuusu.implom.api.capability.energy.LumenHelper;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.render.SpecialModelRenderer;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
-import arekkuusu.implom.client.util.baker.baked.BakedNeutronBattery;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileNeutronBattery;
@@ -151,7 +152,8 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedNeutronBattery()
+		DummyModelRegistry.register(this, new ModelRendered()
+				.setOverride(SpecialModelRenderer::setTempItemRenderer)
 				.setParticle(ResourceLibrary.NEUTRON_BATTERY)
 		);
 		ModelHandler.registerModel(this, 0);

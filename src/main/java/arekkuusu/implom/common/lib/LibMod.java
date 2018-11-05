@@ -16,6 +16,7 @@ public class LibMod {
 	public static final String MOD_ID = "improbableplotmachine";
 	public static final String MOD_NAME = "Improbable Plot Machine";
 	public static final String MOD_VERSION = "GRADLE:VERSION";
+	public static final String MOD_DEPENDENCY = "required-after:mirror;";
 
 	public static final String CLIENT_PROXY = "arekkuusu.implom.client.proxy.ClientProxy";
 	public static final String SERVER_PROXY = "arekkuusu.implom.common.proxy.ServerProxy";

@@ -2,8 +2,6 @@ package arekkuusu.implom.common.item;
 
 import net.katsstuff.teamnightclipse.mirror.client.helper.KeyCondition$;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

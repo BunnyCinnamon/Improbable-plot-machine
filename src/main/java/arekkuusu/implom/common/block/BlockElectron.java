@@ -11,13 +11,13 @@ import arekkuusu.implom.api.sound.SolarSounds;
 import arekkuusu.implom.api.state.State;
 import arekkuusu.implom.api.util.FixedDamage;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileElectron;
 import arekkuusu.implom.common.block.tile.TileHyperConductor;
 import arekkuusu.implom.common.lib.LibNames;
-import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -173,7 +173,7 @@ public class BlockElectron extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedRender()
+		DummyModelRegistry.register(this, new ModelRendered()
 				.setParticle(ResourceLibrary.ELECTRON)
 		);
 		ModelHandler.registerModel(this, 0);

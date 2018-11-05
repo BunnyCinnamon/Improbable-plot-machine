@@ -12,8 +12,8 @@ import arekkuusu.implom.api.capability.relativity.RelativityHelper;
 import arekkuusu.implom.api.state.Direction;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.effect.Light;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
-import arekkuusu.implom.client.util.baker.baked.BakedQelaion;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelQelaion;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileQelaion;
@@ -206,7 +206,7 @@ public class BlockQelaion extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, BakedQelaion::new);
+		DummyModelRegistry.register(this, new ModelQelaion());
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

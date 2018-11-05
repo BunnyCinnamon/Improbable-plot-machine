@@ -57,6 +57,10 @@ public final class ResourceLibrary {
 	public static final ResourceLocation DIFFERENTIATOR_INTERCEPTOR_BASE = getBlockTexture("differentiator_interceptor/base");
 	public static final ResourceLocation KONDENZATOR = getBlockTexture("kondenzator/base");
 	public static final ResourceLocation CRYSTALLIC = getBlockTexture("crystallic_synthesizer/base");
+	//Item Textures
+	public static final ResourceLocation CLOCKWORK_INSIDES = getItemTexture("clockwork/insides");
+	public static final ResourceLocation CLOCKWORK_SEALED = getItemTexture("clockwork/sealed");
+	public static final ResourceLocation CLOCKWORK_UNSEALED = getItemTexture("clockwork/unsealed");
 	//Raw Textures
 	public static final ResourceLocation GLOW_PARTICLE = getAtlas(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getAtlas(TextureLocation.Effect(), "dull_particle");
@@ -68,6 +72,12 @@ public final class ResourceLibrary {
 
 	private static ResourceLocation getBlockTexture(String name) {
 		ResourceLocation location = ResourceHelperStatic.getAtlas(LibMod.MOD_ID, TextureLocation.Blocks(), name);
+		ATLAS_SET.add(location);
+		return location;
+	}
+
+	private static ResourceLocation getItemTexture(String name) {
+		ResourceLocation location = ResourceHelperStatic.getAtlas(LibMod.MOD_ID, TextureLocation.Items(), name);
 		ATLAS_SET.add(location);
 		return location;
 	}

@@ -9,11 +9,11 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.block.tile.TileQSquared;
 import arekkuusu.implom.common.lib.LibNames;
-import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -60,9 +60,7 @@ public class BlockQSquared extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedRender()
-				.setParticle(ResourceLibrary.Q_SQUARED)
-		);
+		DummyModelRegistry.register(this, new ModelRendered().setParticle(ResourceLibrary.Q_SQUARED));
 		ModelHandler.registerModel(this, 0, "");
 	}
 }

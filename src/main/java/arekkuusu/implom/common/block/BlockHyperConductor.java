@@ -10,12 +10,12 @@ package arekkuusu.implom.common.block;
 import arekkuusu.implom.api.state.State;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileHyperConductor;
 import arekkuusu.implom.common.lib.LibNames;
-import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockStateContainer;
@@ -41,7 +41,7 @@ import java.util.Random;
 public class BlockHyperConductor extends BlockBase {
 
 	public static final int ELECTRIC_FIELD_REACH = 10;
-	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D,0.25D,0.25D, 0.75D, 0.75D, 0.75D);
+	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D, 0.25D, 0.25D, 0.75D, 0.75D, 0.75D);
 
 	public BlockHyperConductor() {
 		super(LibNames.HYPER_CONDUCTOR, FixedMaterial.BREAK);
@@ -133,7 +133,7 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedRender()
+		DummyModelRegistry.register(this, new ModelRendered()
 				.setParticle(ResourceLibrary.HYPER_CONDUCTOR)
 		);
 		ModelHandler.registerModel(this, 0, "");

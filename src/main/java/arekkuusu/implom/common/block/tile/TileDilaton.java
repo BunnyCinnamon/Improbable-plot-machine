@@ -13,7 +13,6 @@ import arekkuusu.implom.common.block.ModBlocks;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockSnow;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

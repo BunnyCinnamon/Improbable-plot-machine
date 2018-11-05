@@ -9,13 +9,13 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.block.tile.TileKondenzator;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
-import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -58,7 +58,7 @@ public class BlockKondenzator extends BlockBaseFacing {
 
 	public BlockKondenzator() {
 		super(LibNames.KONDENZATOR, FixedMaterial.DONT_MOVE);
-		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
+		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
 		MinecraftForge.EVENT_BUS.register(BlockKondenzator.class);
@@ -104,17 +104,17 @@ public class BlockKondenzator extends BlockBaseFacing {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedRender()
-				.setTransformsJava(ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
-						.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.mkTransform(0F, -3F, 0F, 30F, 45F, 0F, 0.63F))
+		DummyModelRegistry.register(this, new ModelRendered()
+				.setTransforms(ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
+						.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.mkTransform(0F, -6F, 0F, 30F, 45F, 0F, 0.63F))
 						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, -2.5F, 0F, 75F, 45F, 0F, 0.38F))
 						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, -2.5F, 0F, 75F, 45F, 0F, 0.38F))
 						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, -3F, 0F, 0F, 45F, 0F, 0.38F))
 						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, -3F, 0F, 0F, 225F, 0F, 0.38F))
-						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 0F, 0F, 0F, 0.25F))
-						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 0F, 4F, 90F, 0F, 0F, 0.5F))
-						.build())
-				.setParticle(ResourceLibrary.KONDENZATOR)
+						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, -4.5F, 0F, 0F, 0F, 0F, 0.25F))
+						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 0, 4F, 90F, 0F, 0F, 0.5F))
+						.build()
+				).setParticle(ResourceLibrary.KONDENZATOR)
 		);
 		ModelHandler.registerModel(this, 0, "");
 	}

@@ -23,12 +23,18 @@ public class ItemQuartz extends ItemBase {
 		addPropertyOverride(ResourceHelperStatic.getSimple(LibMod.MOD_ID, "color"), (s, w, e) ->
 				NBTHelper.getEnum(Quartz.class, s, "quartz_kind").map(q -> {
 					switch (q.color) {
-						case WHITE: return 0.0F;
-						case BLUE: return 0.1F;
-						case GREEN: return 0.2F;
-						case YELLOW: return 0.3F;
-						case PINK: return 0.4F;
-						default: return 0F;
+						case WHITE:
+							return 0.0F;
+						case BLUE:
+							return 0.1F;
+						case GREEN:
+							return 0.2F;
+						case YELLOW:
+							return 0.3F;
+						case PINK:
+							return 0.4F;
+						default:
+							return 0F;
 					}
 				}).orElse(0F)
 		);

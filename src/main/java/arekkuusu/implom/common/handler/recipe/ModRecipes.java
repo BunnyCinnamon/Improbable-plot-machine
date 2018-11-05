@@ -18,5 +18,7 @@ public final class ModRecipes {
 
 	public static void register(IForgeRegistry<IRecipe> registry) {
 		registry.register(new BoundPhotonCopyRecipe());
+		registry.register(new ClockworkAddQuartzRecipe());
+		registry.register(new ClockworkRemoveQuartzRecipe());
 	}
 }

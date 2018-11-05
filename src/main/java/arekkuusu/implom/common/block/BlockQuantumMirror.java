@@ -7,12 +7,13 @@
  */
 package arekkuusu.implom.common.block;
 
+import arekkuusu.implom.api.capability.inventory.EntangledIItemHandler;
 import arekkuusu.implom.api.capability.inventory.EntangledIItemHelper;
 import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.api.util.FixedMaterial;
-import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
-import arekkuusu.implom.client.util.baker.baked.BakedQuantumMirror;
+import arekkuusu.implom.client.render.SpecialModelRenderer;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.block.tile.TileQuantumMirror;
 import arekkuusu.implom.common.lib.LibNames;
@@ -144,8 +145,16 @@ public class BlockQuantumMirror extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedQuantumMirror()
-				.setParticle(ResourceLibrary.TRANSPARENT)
+		DummyModelRegistry.register(this, new ModelRendered().setOverride(stack -> {
+					EntangledIItemHelper.getCapability(stack).ifPresent(entangled -> {
+						entangled.getKey().ifPresent(key -> {
+							ItemStack mirrored = EntangledIItemHandler.getEntanglementStack(key, 0);
+							if(!mirrored.isEmpty()) {
+								SpecialModelRenderer.setTempItemRenderer(mirrored);
+							}
+						});
+					});
+				})
 		);
 		ModelHandler.registerModel(this, 0);
 	}

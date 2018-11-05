@@ -28,17 +28,17 @@ public final class QuadCache {
 
 	private Map<IBlockState, Map<BlockRenderLayer, List<BakedQuad>>> quads = Maps.newHashMap();
 
-	public List<BakedQuad> compute(@Nullable IBlockState state, Consumer<List<BakedQuad>> f) {
+	public List<BakedQuad> compute(@Nullable IBlockState state, Consumer<List<BakedQuad>> function) {
 		BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
 		if(!quads.containsKey(state)) {
 			Map<BlockRenderLayer, List<BakedQuad>> map = Maps.newHashMap();
 			List<BakedQuad> quads = Lists.newArrayList();
-			f.accept(quads);
+			function.accept(quads);
 			map.put(layer, quads);
 			this.quads.put(state, map);
 		} else if(state != null && !hasRenderLayer(state, layer)) {
 			List<BakedQuad> quads = Lists.newArrayList();
-			f.accept(quads);
+			function.accept(quads);
 			this.quads.get(state).put(layer, quads);
 		}
 		return quads.get(state).getOrDefault(layer, Collections.emptyList());

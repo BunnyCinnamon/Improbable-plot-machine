@@ -28,7 +28,7 @@ public class TileNeutronBattery extends TileComplexLumenBase {
 	private BatteryCapacitor capacitor;
 
 	public TileNeutronBattery() {
-		this.capacitor = new BatteryCapacitor();
+		this.capacitor = new BatteryCapacitor("", 0, 0);
 		this.handler = createHandler();
 	}
 
@@ -62,8 +62,10 @@ public class TileNeutronBattery extends TileComplexLumenBase {
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		capacitor.deserializeNBT(compound.getCompoundTag(BatteryCapacitor.NBT_TAG));
-		handler.setMax(capacitor.getCapacity());
+		if(capacitor != null) {
+			capacitor.deserializeNBT(compound.getCompoundTag(BatteryCapacitor.NBT_TAG));
+			handler.setMax(capacitor.getCapacity());
+		}
 		if(compound.hasKey(WorldData.NBT_TAG)) {
 			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
 			if(data.hasKey(IComplexLumen.NBT_TAG)) {
@@ -77,9 +79,8 @@ public class TileNeutronBattery extends TileComplexLumenBase {
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		if(capacitor != null) {
-			compound.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
-		}
+		if(capacitor == null) this.capacitor = new BatteryCapacitor();
+		compound.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
 		handler.getKey().ifPresent(key -> {
 			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
 			NBTTagCompound tag = data.getCompoundTag(IComplexLumen.NBT_TAG);

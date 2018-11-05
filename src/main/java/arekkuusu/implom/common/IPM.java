@@ -35,7 +35,7 @@ import org.apache.logging.log4j.Logger;
 	modid = LibMod.MOD_ID,
 	name = LibMod.MOD_NAME,
 	version = LibMod.MOD_VERSION,
-	dependencies = "required-after:mirror;",
+	dependencies = LibMod.MOD_DEPENDENCY,
 	acceptedMinecraftVersions = "[1.12.2]"
 )
 public final class IPM {

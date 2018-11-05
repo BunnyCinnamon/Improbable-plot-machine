@@ -12,14 +12,14 @@ import arekkuusu.implom.api.helper.RayTraceHelper;
 import arekkuusu.implom.api.state.State;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyBakedRegistry;
+import arekkuusu.implom.client.util.baker.DummyModelRegistry;
+import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.block.tile.TileMechanicalTranslocator;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
-import net.katsstuff.teamnightclipse.mirror.client.baked.BakedRender;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockStateContainer;
@@ -206,8 +206,8 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		DummyBakedRegistry.register(this, () -> new BakedRender()
-				.setTransformsJava(ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
+		DummyModelRegistry.register(this, new ModelRendered()
+				.setTransforms(ImmutableMap.<ItemCameraTransforms.TransformType, TRSRTransformation>builder()
 						.put(ItemCameraTransforms.TransformType.GUI, BakedPerspective.mkTransform(0F, 2F, 0F, 30F, 45F, 0F, 0.75F))
 						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, BakedPerspective.mkTransform(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
 						.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, 2.5F, 0F, 75F, 45F, 0F, 0.5F))
@@ -215,8 +215,8 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 						.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, BakedPerspective.mkTransform(0F, 3F, 0F, 0F, 225F, 0F, 0.5F))
 						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 0F, 0F, 0F, 0.25F))
 						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 1F, 0F, 0F, 0F, 0F, 0.5F))
-						.build())
-				.setParticle(ResourceLibrary.MECHANICAL_TRANSLOCATOR)
+						.build()
+				).setParticle(ResourceLibrary.MECHANICAL_TRANSLOCATOR)
 		);
 		ModelHandler.registerModel(this, 0, "");
 	}
