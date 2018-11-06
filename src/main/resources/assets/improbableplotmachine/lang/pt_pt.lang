@@ -15,6 +15,7 @@ item.quartz.name=Quartzo
 item.magnetic_gear.name=Engrenagem
 item.magnetic_bolt.name=Parafuso
 item.magnetic_spring.name=Mola
+item.clockwork.name=Clockwork
 item.bound_photon.name=Fotão Encadernado
 
 tile.primal_stone.name=Pedra Primitiva
@@ -23,7 +24,7 @@ tile.quantum_mirror.name=Espelho Quanto
 tile.light_particle.name=Partícula de Luz
 tile.gravity_hopper.name=Funil de Gravidade
 tile.atomic_void.name=Vazio Atómico
-tile.schrodinger_glyph.name=Glifo de Schrodinger 
+tile.schrodinger_glyph.name=Glifo de Schrodinger
 tile.blinker.name=Pisca-pisca
 tile.phenomena.name=Fenómenos
 tile.q_squared.name=Q²
