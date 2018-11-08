@@ -91,17 +91,15 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 					LumenHelper.getComplexCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
 				});
 			});
-			battery.getCapacitor().ifPresent(capacitor -> {
-				NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
-				root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
-			});
+			NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+			root.setTag(BatteryCapacitor.NBT_TAG, battery.getCapacitor().serializeNBT());
 		});
 		return stack;
 	}
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		getTile(TileNeutronBattery.class, world, pos).flatMap(TileNeutronBattery::getCapacitor).ifPresent(capacitor -> {
+		getTile(TileNeutronBattery.class, world, pos).map(TileNeutronBattery::getCapacitor).ifPresent(capacitor -> {
 			Vector3 vec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ());
 			Vector3 facingVec = new Vector3.WrappedVec3i(state.getValue(BlockDirectional.FACING).getDirectionVec()).asImmutable();
 			for(int i = 0; i < 3 + rand.nextInt(4); i++) {
