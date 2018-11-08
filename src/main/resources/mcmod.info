@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["Arekkuusu"],
   "credits": "you",
-  "logoFile": "",
+  "logoFile": "assets/improbableplotmachine/logo.png",
   "screenshots": [],
   "dependencies": []
 }
