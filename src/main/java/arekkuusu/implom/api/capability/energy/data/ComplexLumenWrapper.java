@@ -28,4 +28,9 @@ public abstract class ComplexLumenWrapper implements IComplexLumen {
 	public int getMax() {
 		return max;
 	}
+
+	@Override
+	public void setMax(int max) {
+		this.max = max;
+	}
 }
