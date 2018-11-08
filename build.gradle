@@ -26,6 +26,8 @@ minecraft {
 
     replace 'GRADLE:VERSION', project.version
     replaceIn 'LibMod.java'
+    replace 'required-after:mirror;', "required-after:mirror@[${mirror_version},);"
+    replaceIn 'LibMod.java'
 }
 
 repositories {
@@ -36,7 +38,7 @@ repositories {
 }
 
 dependencies {
-    compile("net.katsstuff.teamnightclipse:mirror:1.12.2-0.3.0")
+    compile("net.katsstuff.teamnightclipse:mirror:${mirror_version}")
 }
 
 processResources {
