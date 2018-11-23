@@ -18,7 +18,7 @@ item.magnetic_spring.name=Spring
 item.clockwork.name=Clockwork
 item.bound_photon.name=Bound Photon
 
-tile.primal_stone.name=Primal Stone
+tile.saprolite.name=Saprolite
 tile.black_hole.name=Black Hole
 tile.quantum_mirror.name=Quantum Mirror
 tile.light_particle.name=Light Particle
@@ -54,9 +54,7 @@ tile.differentiator.name=Differentiator
 tile.differentiator_interceptor.name=Differentiator Interceptor
 tile.kondenzator.name=Kondenzator
 tile.imbued_quartz.name=Imbued Quartz
-tile.crystallic_synthesizer.name=Crystalic Synthesizer
-
-fluid.tile.gold=Molten Gold
+tile.crystal_synthesizer.name=Crystal Synthesizer
 
 entity.eye_of_schrodinger.name=Eye of Schrodinger
 entity.fast_item.name=Entity Item

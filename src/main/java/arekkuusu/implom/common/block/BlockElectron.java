@@ -15,6 +15,7 @@ import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.BlockHyperConductor.Constants;
 import arekkuusu.implom.common.block.tile.TileElectron;
 import arekkuusu.implom.common.block.tile.TileHyperConductor;
 import arekkuusu.implom.common.lib.LibNames;
@@ -58,14 +59,14 @@ public class BlockElectron extends BlockBase {
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
 		if(!world.isRemote) {
 			BlockPos from = pos.add(
-					-BlockHyperConductor.ELECTRIC_FIELD_REACH,
-					-BlockHyperConductor.ELECTRIC_FIELD_REACH,
-					-BlockHyperConductor.ELECTRIC_FIELD_REACH
+					-Constants.ELECTRIC_FIELD_REACH,
+					-Constants.ELECTRIC_FIELD_REACH,
+					-Constants.ELECTRIC_FIELD_REACH
 			);
 			BlockPos to = pos.add(
-					BlockHyperConductor.ELECTRIC_FIELD_REACH,
-					BlockHyperConductor.ELECTRIC_FIELD_REACH,
-					BlockHyperConductor.ELECTRIC_FIELD_REACH
+					Constants.ELECTRIC_FIELD_REACH,
+					Constants.ELECTRIC_FIELD_REACH,
+					Constants.ELECTRIC_FIELD_REACH
 			);
 			BlockPos.getAllInBoxMutable(from, to).forEach(p ->
 					getTile(TileHyperConductor.class, world, p).ifPresent(conductor -> conductor.addElectron(pos))

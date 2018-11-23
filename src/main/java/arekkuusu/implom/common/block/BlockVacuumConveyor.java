@@ -61,43 +61,8 @@ public class BlockVacuumConveyor extends BlockBaseFacing {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if(!world.isRemote) {
-			getTile(TileVacuumConveyor.class, world, pos).ifPresent(vacuum -> {
-				NBTHelper.getNBTTag(stack, "lookup").ifPresent(tag -> {
-					vacuum.setLookup(new ItemStack(tag));
-				});
-			});
-		}
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(!world.isRemote) {
-			getTile(TileVacuumConveyor.class, world, pos).ifPresent(vacuum -> {
-				vacuum.setLookup(player.getHeldItem(hand));
-			});
-		}
-		return true;
-	}
-
-	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		drops.add(getItem((World) world, pos, state)); //Bad??
-	}
-
-	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		Optional<TileVacuumConveyor> optional = getTile(TileVacuumConveyor.class, world, pos);
-		if(optional.isPresent()) {
-			TileVacuumConveyor vacuum = optional.get();
-			ItemStack stack = new ItemStack(Item.getItemFromBlock(this));
-			if(!vacuum.getLookup().isEmpty()) {
-				NBTHelper.setNBT(stack, "lookup", vacuum.getLookup().writeToNBT(new NBTTagCompound()));
-			}
-			return stack;
-		}
-		return super.getItem(world, pos, state);
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.block.tile.TileDifferentiatorInterceptor;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -35,14 +36,11 @@ import javax.annotation.Nullable;
 @SuppressWarnings("deprecation")
 public class BlockDifferentiatorInterceptor extends BlockBaseFacing {
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.125, 0.40625, 0.125, 0.875, 0.875, 0.875))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.125, 0.125, 0.125, 0.875, 0.59375, 0.875))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0.125, 0.125, 0.875, 0.875, 0.59375))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0.125, 0.875, 0.875, 0.875, 0.40625))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.875, 0.125, 0.125, 0.40625, 0.875, 0.875))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.125, 0.125, 0.125, 0.59375, 0.875, 0.875))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(2, 6.5, 2),
+			new Vector3(14, 16, 14),
+			EnumFacing.UP
+	).build();
 
 	public BlockDifferentiatorInterceptor() {
 		super(LibNames.DIFFERENTIATOR_INTERCEPTOR, FixedMaterial.DONT_MOVE);

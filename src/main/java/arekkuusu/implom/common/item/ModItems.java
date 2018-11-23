@@ -44,7 +44,7 @@ public final class ModItems {
 	public static final Item BOUND_PHOTON = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
-		registry.register(itemBlock(ModBlocks.PRIMAL_STONE));
+		registry.register(itemBlock(ModBlocks.SAPROLITE));
 		registry.register(new ItemQuantumMirror());
 		registry.register(itemBlock(ModBlocks.GRAVITY_HOPPER));
 		registry.register(itemBlock(ModBlocks.SCHRODINGER_GLYPH));
@@ -82,7 +82,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.IMBUED_QUARTZ));
 		registry.register(new ItemBase(LibNames.INTRINSIC_CELL));
 		registry.register(new ItemBase(LibNames.CRYSTAL_QUARTZ_SHARD));
-		registry.register(itemBlock(ModBlocks.CRYSTALLIC_SYNTHESIZER));
+		registry.register(itemBlock(ModBlocks.CRYSTAL_SYNTHESIZER));
 		registry.register(new ItemQuartz());
 		registry.register(new ItemBase(LibNames.MAGNETIC_BOLT));
 		registry.register(new ItemBase(LibNames.MAGNETIC_GEAR));

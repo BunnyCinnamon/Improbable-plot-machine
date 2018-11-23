@@ -36,7 +36,7 @@ public class TileLuminicDecompressor extends TileBase implements ITickable {
 				BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(pos);
 				EnumFacing facing = getFacingLazy().getOpposite();
 				float distance = 0;
-				while(distance++ < BlockLuminicDecompressor.REACH) {
+				while(distance++ < BlockLuminicDecompressor.Constants.BEAM_REACH) {
 					IBlockState found = world.getBlockState(posOffset.move(facing));
 					if(found.getBlock() == ModBlocks.LUMEN_COMPRESSOR && found.getValue(BlockDirectional.FACING) == facing) {
 						getFilled(posOffset).ifPresent(filled -> {

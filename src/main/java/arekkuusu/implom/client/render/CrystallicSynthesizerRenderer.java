@@ -1,11 +1,11 @@
 package arekkuusu.implom.client.render;
 
-import arekkuusu.implom.common.block.tile.TileCrystallicSynthesizer;
+import arekkuusu.implom.common.block.tile.TileCrystalSynthesizer;
 
-public class CrystallicSynthesizerRenderer extends SpecialModelRenderer<TileCrystallicSynthesizer> {
+public class CrystallicSynthesizerRenderer extends SpecialModelRenderer<TileCrystalSynthesizer> {
 
 	@Override
-	void renderTile(TileCrystallicSynthesizer te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	void renderTile(TileCrystalSynthesizer te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		renderModel(x, y, z, partialTicks);
 	}
 

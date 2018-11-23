@@ -8,11 +8,8 @@
 package arekkuusu.implom.common.block.fluid;
 
 import arekkuusu.implom.common.lib.LibMod;
-import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -28,15 +25,9 @@ import java.util.function.Function;
 public final class ModFluids {
 
 	public final static Set<Block> FLUIDS = Sets.newHashSet();
-	public static Fluid GOLD;
 
 	static {
-		GOLD = create(LibNames.GOLD_FLUID,
-				f -> new BlockFluid(f, Material.LAVA).setHardness(100.0F).setLightLevel(1.0F),
-				f -> f.setLuminosity(15).setDensity(3000).setViscosity(16000).setTemperature(1300)
-						.setEmptySound(SoundEvents.ITEM_BUCKET_EMPTY_LAVA)
-						.setFillSound(SoundEvents.ITEM_BUCKET_FILL_LAVA)
-		);
+
 	}
 
 	private static Fluid create(String name, Function<Fluid, Block> f, Consumer<Fluid> c) {
@@ -44,7 +35,7 @@ public final class ModFluids {
 				new ResourceLocation(LibMod.MOD_ID + ":blocks/fluid/" + name + "_still"),
 				new ResourceLocation(LibMod.MOD_ID + ":blocks/fluid/" + name + "_flow")
 		);
-		if (!FluidRegistry.registerFluid(fluid)) {
+		if(!FluidRegistry.registerFluid(fluid)) {
 			fluid = FluidRegistry.getFluid(name);
 		} else {
 			Block block = f.apply(fluid);

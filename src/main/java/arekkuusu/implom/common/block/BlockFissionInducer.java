@@ -39,15 +39,11 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockFissionInducer extends BlockBaseFacing {
 
-	public static final int MAX_CAPACITY = 8000;
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.125, 0.25, 0.75, 0.875, 0.75))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.125, 0.25, 0.75, 0.875, 0.75))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.875, 0.75, 0.75, 0.125))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.125, 0.75, 0.75, 0.875))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.875, 0.25, 0.25, 0.125, 0.75, 0.75))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.875, 0.25, 0.25, 0.125, 0.75, 0.75))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(4, 2, 4),
+			new Vector3(12, 14, 12),
+			EnumFacing.UP
+	).build();
 
 	public BlockFissionInducer() {
 		super(LibNames.FISSION_INDUCER, FixedMaterial.DONT_MOVE);

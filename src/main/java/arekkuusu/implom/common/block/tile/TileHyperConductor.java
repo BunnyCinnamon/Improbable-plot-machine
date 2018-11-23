@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.state.State;
-import arekkuusu.implom.common.block.BlockHyperConductor;
+import arekkuusu.implom.common.block.BlockHyperConductor.Constants;
 import arekkuusu.implom.common.block.ModBlocks;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
@@ -33,14 +33,14 @@ public class TileHyperConductor extends TileBase {
 	public void onLoad() {
 		if(!world.isRemote) {
 			BlockPos from = pos.add(
-					-BlockHyperConductor.ELECTRIC_FIELD_REACH,
-					-BlockHyperConductor.ELECTRIC_FIELD_REACH,
-					-BlockHyperConductor.ELECTRIC_FIELD_REACH
+					-Constants.ELECTRIC_FIELD_REACH,
+					-Constants.ELECTRIC_FIELD_REACH,
+					-Constants.ELECTRIC_FIELD_REACH
 			);
 			BlockPos to = pos.add(
-					BlockHyperConductor.ELECTRIC_FIELD_REACH,
-					BlockHyperConductor.ELECTRIC_FIELD_REACH,
-					BlockHyperConductor.ELECTRIC_FIELD_REACH
+					Constants.ELECTRIC_FIELD_REACH,
+					Constants.ELECTRIC_FIELD_REACH,
+					Constants.ELECTRIC_FIELD_REACH
 			);
 			BlockPos.getAllInBox(from, to).forEach(this::addElectron);
 		}
@@ -72,7 +72,7 @@ public class TileHyperConductor extends TileBase {
 	}
 
 	private boolean isInRange(BlockPos pos) {
-		return getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= BlockHyperConductor.ELECTRIC_FIELD_REACH;
+		return getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= Constants.ELECTRIC_FIELD_REACH;
 	}
 
 	private void inverseElectron(BlockPos pos) {
@@ -132,7 +132,7 @@ public class TileHyperConductor extends TileBase {
 	@Override
 	void writeNBT(NBTTagCompound compound) {
 		NBTTagList list = new NBTTagList();
-		for(BlockPos pos: electrons) {
+		for(BlockPos pos : electrons) {
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setInteger("x", pos.getX());
 			tag.setInteger("y", pos.getY());

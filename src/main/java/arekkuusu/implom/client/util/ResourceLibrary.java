@@ -31,14 +31,10 @@ public final class ResourceLibrary {
 		getBlockTexture("qelaion/inside");
 		getBlockTexture("neutron_battery/white");
 		getBlockTexture("fission_inducer/center");
-		getBlockTexture("differentiator/base_1");
-		getBlockTexture("differentiator/base_2");
+		getBlockTexture("differentiator/base_");
 		getBlockTexture("differentiator/glass");
-		getBlockTexture("differentiator_interceptor/glass");
 		getBlockTexture("differentiator_interceptor/overlay");
 		getBlockTexture("kondenzator/center");
-		getBlockTexture("crystallic_synthesizer/base_overlay");
-		getBlockTexture("crystallic_synthesizer/crystal");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation Q_SQUARED = getBlockTexture("q_squared");
@@ -53,10 +49,9 @@ public final class ResourceLibrary {
 	public static final ResourceLocation NEUTRON_BATTERY = getBlockTexture("neutron_battery/base");
 	public static final ResourceLocation PHOLARIZER = getBlockTexture("pholarizer");
 	public static final ResourceLocation FISSION_INDUCER = getBlockTexture("fission_inducer/base");
-	public static final ResourceLocation DIFFERENTIATOR_BASE = getBlockTexture("differentiator/base_0");
+	public static final ResourceLocation DIFFERENTIATOR_BASE = getBlockTexture("differentiator/base");
 	public static final ResourceLocation DIFFERENTIATOR_INTERCEPTOR_BASE = getBlockTexture("differentiator_interceptor/base");
 	public static final ResourceLocation KONDENZATOR = getBlockTexture("kondenzator/base");
-	public static final ResourceLocation CRYSTALLIC = getBlockTexture("crystallic_synthesizer/base");
 	//Item Textures
 	public static final ResourceLocation CLOCKWORK_INSIDES = getItemTexture("clockwork/insides");
 	public static final ResourceLocation CLOCKWORK_SEALED = getItemTexture("clockwork/sealed");

@@ -6,15 +6,14 @@
 	},
 	"elements": [
 		{
-			"name": "cube",
 			"from": [-2, -5.5, -2],
 			"to": [2, -4.5, 2],
 			"faces": {
-				"north": {"uv": [10, 11, 14, 12], "texture": "#0"},
-				"east": {"uv": [10, 14, 14, 15], "texture": "#0"},
-				"south": {"uv": [10, 11, 14, 12], "texture": "#0"},
-				"west": {"uv": [10, 14, 14, 15], "texture": "#0"},
-				"down": {"uv": [10, 11, 14, 15], "texture": "#0"}
+				"north": {"uv": [6, 10, 10, 11], "texture": "#0"},
+				"east": {"uv": [6, 10, 10, 11], "texture": "#0"},
+				"south": {"uv": [6, 10, 10, 11], "texture": "#0"},
+				"west": {"uv": [6, 10, 10, 11], "texture": "#0"},
+				"down": {"uv": [6, 7, 10, 11], "texture": "#0"}
 			}
 		}
 	]

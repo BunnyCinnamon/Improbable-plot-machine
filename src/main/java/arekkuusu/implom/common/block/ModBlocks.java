@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.common.block.fluid.BlockMoltenGold;
 import arekkuusu.implom.common.block.fluid.ModFluids;
 import arekkuusu.implom.common.block.tile.*;
 import arekkuusu.implom.common.handler.CreativeTabHandler;
@@ -29,7 +28,7 @@ public final class ModBlocks {
 
 	private static final Block PLACE_HOLDER = new Block(Material.AIR);
 	//--------------------------------Blocks--------------------------------//
-	public static final Block PRIMAL_STONE = PLACE_HOLDER;
+	public static final Block SAPROLITE = PLACE_HOLDER;
 	public static final Block QUANTUM_MIRROR = PLACE_HOLDER;
 	public static final Block GRAVITY_HOPPER = PLACE_HOLDER;
 	public static final Block SCHRODINGER_GLYPH = PLACE_HOLDER;
@@ -53,7 +52,6 @@ public final class ModBlocks {
 	public static final Block NEUTRON_BATTERY = PLACE_HOLDER;
 	public static final Block PHOLARIZER = PLACE_HOLDER;
 	public static final Block FISSION_INDUCER = PLACE_HOLDER;
-	public static final Block MOLTEN_GOLD = PLACE_HOLDER;
 	public static final Block LUMINIC_DECOMPRESSOR = PLACE_HOLDER;
 	public static final Block QUARTZ_CONSUMER = PLACE_HOLDER;
 	public static final Block LUMEN_COMPRESSOR = PLACE_HOLDER;
@@ -61,11 +59,11 @@ public final class ModBlocks {
 	public static final Block DIFFERENTIATOR_INTERCEPTOR = PLACE_HOLDER;
 	public static final Block KONDENZATOR = PLACE_HOLDER;
 	public static final Block IMBUED_QUARTZ = PLACE_HOLDER;
-	public static final Block CRYSTALLIC_SYNTHESIZER = PLACE_HOLDER;
+	public static final Block CRYSTAL_SYNTHESIZER = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
-		registry.register(new BlockBase(LibNames.PRIMAL_STONE, Material.ROCK).setHardness(4F).setResistance(2000F));
+		registry.register(new BlockBase(LibNames.SAPROLITE, Material.ROCK).setHardness(10F).setResistance(2000F));
 		registry.register(new BlockMonolithicGlyph());
 		registry.register(new BlockQuantumMirror());
 		registry.register(new BlockGravityHopper());
@@ -89,7 +87,6 @@ public final class ModBlocks {
 		registry.register(new BlockNeutronBattery());
 		registry.register(new BlockPholarizer());
 		registry.register(new BlockFissionInducer());
-		registry.register(new BlockMoltenGold());
 		registry.register(new BlockLuminicDecompressor());
 		registry.register(new BlockQuartzConsumer());
 		registry.register(new BlockLumenCompressor());
@@ -97,7 +94,7 @@ public final class ModBlocks {
 		registry.register(new BlockDifferentiatorInterceptor());
 		registry.register(new BlockKondenzator());
 		registry.register(new BlockImbuedQuartz());
-		registry.register(new BlockCrystallicSynthesizer());
+		registry.register(new BlockCrystalSynthesizer());
 		registerTiles();
 	}
 
@@ -123,7 +120,7 @@ public final class ModBlocks {
 		registerTile(TileDifferentiator.class, LibNames.DIFFERENTIATOR);
 		registerTile(TileDifferentiatorInterceptor.class, LibNames.DIFFERENTIATOR_INTERCEPTOR);
 		registerTile(TileKondenzator.class, LibNames.KONDENZATOR);
-		registerTile(TileCrystallicSynthesizer.class, LibNames.CRYSTALLIC_SYNTHESIZER);
+		registerTile(TileCrystalSynthesizer.class, LibNames.CRYSTAL_SYNTHESIZER);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {

@@ -18,6 +18,7 @@ import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileNeutronBattery;
 import arekkuusu.implom.common.lib.LibNames;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
@@ -51,7 +52,11 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class BlockNeutronBattery extends BlockBaseFacing {
 
-	public static final AxisAlignedBB BB = new AxisAlignedBB(0.1875, 0.0625, 0.1875, 0.8125, 0.9375, 0.8125);
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(3, 1, 3),
+			new Vector3(13, 15, 13),
+			EnumFacing.UP
+	).build();
 
 	public BlockNeutronBattery() {
 		super(LibNames.NEUTRON_BATTERY, FixedMaterial.DONT_MOVE);
@@ -118,7 +123,8 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return BB;
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 
 	@Override

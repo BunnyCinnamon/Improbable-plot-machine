@@ -55,8 +55,7 @@ public enum BlockBaker {
 	PHOLARIZER_BASE("pholarizer_base"),
 	PHOLARIZER_RING("pholarizer_ring"),
 	PHOLARIZER_PILLAR("pholarizer_pillar"),
-	PHOLARIZER_POSITIVE("pholarizer_positive"),
-	PHOLARIZER_NEGATIVE("pholarizer_negative"),
+	PHOLARIZER_BOTTOM("pholarizer_bottom"),
 	FISSION_INDUCER_TOP("fission_inducer_top"),
 	FISSION_INDUCER_CENTER("fission_inducer_center"),
 	FISSION_INDUCER_INSIDE("fission_inducer_inside"),
@@ -64,14 +63,11 @@ public enum BlockBaker {
 	ELECTRON("electron"),
 	DIFFERENTIATOR_BASE("differentiator_base"),
 	DIFFERENTIATOR_CORE("differentiator_core"),
-	DIFFERENTIATOR_RING_BOTTOM("differentiator_ring_bottom"),
-	DIFFERENTIATOR_RING_MIDDLE("differentiator_ring_middle"),
-	DIFFERENTIATOR_RING_TOP("differentiator_ring_top"),
+	DIFFERENTIATOR_RING("differentiator_ring"),
 	DIFFERENTIATOR_INTERCEPTOR_BASE("differentiator_interceptor_base"),
 	DIFFERENTIATOR_INTERCEPTOR_RING("differentiator_interceptor_ring"),
-	DIFFERENTIATOR_INTERCEPTOR_BEACON("differentiator_interceptor_beacon"),
 	KONDENZATOR_BASE("kondenzator_base"),
-	KONDENZATOR_CENTER("kondenzator_center");
+	KONDENZATOR_CORE("kondenzator_core");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;

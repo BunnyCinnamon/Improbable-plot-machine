@@ -40,7 +40,6 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockHyperConductor extends BlockBase {
 
-	public static final int ELECTRIC_FIELD_REACH = 10;
 	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D, 0.25D, 0.25D, 0.75D, 0.75D, 0.75D);
 
 	public BlockHyperConductor() {
@@ -137,5 +136,9 @@ public class BlockHyperConductor extends BlockBase {
 				.setParticle(ResourceLibrary.HYPER_CONDUCTOR)
 		);
 		ModelHandler.registerModel(this, 0, "");
+	}
+
+	public static class Constants {
+		public static final int ELECTRIC_FIELD_REACH = 10;
 	}
 }

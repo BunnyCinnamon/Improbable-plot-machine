@@ -46,14 +46,11 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class BlockBlinker extends BlockBaseFacing {
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.125, 0.9375, 0.125, 0.875, 1, 0.875))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.0625, 0.875))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.125, 0.125, 0, 0.875, 0.875, 0.0625))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.125, 0.125, 0.9375, 0.875, 0.875, 1))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.9375, 0.125, 0.875, 1, 0.875, 0.125))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0.125, 0.125, 0.0625, 0.875, 0.875))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(2, 15, 2),
+			new Vector3(14, 16, 14),
+			EnumFacing.UP
+	).build();
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
 			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.2D, 0.5D))
 			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.8D, 0.5D))

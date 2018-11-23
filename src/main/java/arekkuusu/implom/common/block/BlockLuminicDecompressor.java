@@ -11,6 +11,7 @@ import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.common.block.tile.TileLuminicDecompressor;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,15 +33,11 @@ import javax.annotation.Nullable;
 @SuppressWarnings("deprecation")
 public class BlockLuminicDecompressor extends BlockBaseFacing {
 
-	public static final int REACH = 5;
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0, 0.5625, 0, 1, 1, 1))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0, 0, 1, 0.4375, 1))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0, 0, 0, 1, 1, 0.4375))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0, 0, 0.5625, 1, 1, 1))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.5625, 0, 0, 1, 1, 1))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0, 0, 0.4375, 1, 1))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(0, 9, 0),
+			new Vector3(16, 16, 16),
+			EnumFacing.UP
+	).build();
 
 	public BlockLuminicDecompressor() {
 		super(LibNames.LUMINIC_DECOMPRESSOR, FixedMaterial.DONT_MOVE);
@@ -74,5 +71,9 @@ public class BlockLuminicDecompressor extends BlockBaseFacing {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileLuminicDecompressor();
+	}
+
+	public static class Constants {
+		public static final int BEAM_REACH = 5;
 	}
 }

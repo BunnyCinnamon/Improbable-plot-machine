@@ -56,7 +56,7 @@ public final class ModRenders {
 		registerTESR(TileDifferentiator.class, new DifferentiatorRenderer());
 		registerTESR(TileDifferentiatorInterceptor.class, new DifferentiatorInterceptorRenderer());
 		registerTESR(TileKondenzator.class, new KondenzatorRenderer());
-		registerTESR(TileCrystallicSynthesizer.class, new CrystallicSynthesizerRenderer());
+		registerTESR(TileCrystalSynthesizer.class, new CrystallicSynthesizerRenderer());
 
 		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
 		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
@@ -71,7 +71,7 @@ public final class ModRenders {
 		registerTESRItemStack(ModBlocks.DIFFERENTIATOR, TileDifferentiator.class);
 		registerTESRItemStack(ModBlocks.DIFFERENTIATOR_INTERCEPTOR, TileDifferentiatorInterceptor.class);
 		registerTESRItemStack(ModBlocks.KONDENZATOR, TileKondenzator.class);
-		registerTESRItemStack(ModBlocks.CRYSTALLIC_SYNTHESIZER, TileCrystallicSynthesizer.class);
+		registerTESRItemStack(ModBlocks.CRYSTAL_SYNTHESIZER, TileCrystalSynthesizer.class);
 		IPM.LOG.info("[NOM PIE!]");
 	}
 

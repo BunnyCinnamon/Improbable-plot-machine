@@ -52,14 +52,11 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class BlockQimranut extends BlockBaseFacing {
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.5, 0.25, 0.75, 0.9375, 0.75))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.0625, 0.25, 0.75, 0.5, 0.75))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.5, 0.75, 0.75, 0.0625))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.5, 0.75, 0.75, 0.9375))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.9375, 0.25, 0.25, 0.5, 0.75, 0.75))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.5, 0.25, 0.25, 0.0625, 0.75, 0.75))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(4, 8, 4),
+			new Vector3(12, 15, 12),
+			EnumFacing.UP
+	).build();
 	private static final Map<EnumFacing, Vector3> FACING_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
 			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.2D, 0.5D))
 			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.8D, 0.5D))

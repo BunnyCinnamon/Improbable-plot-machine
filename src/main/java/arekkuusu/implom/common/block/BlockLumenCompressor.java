@@ -43,14 +43,11 @@ public class BlockLumenCompressor extends BlockBaseFacing {
 			.put(EnumFacing.EAST, Vector3.apply(0.05D, 0.5D, 0.5D))
 			.put(EnumFacing.WEST, Vector3.apply(0.95D, 0.5D, 0.5D))
 			.build();
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0, 0.5, 0, 1, 1, 1))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0, 0, 1, 0.5, 1))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0, 0, 0, 1, 1, 0.5))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0, 0, 0.5, 1, 1, 1))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.5, 0, 0, 1, 1, 1))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0, 0, 0.5, 1, 1))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(0, 8, 0),
+			new Vector3(16, 16, 16),
+			EnumFacing.UP
+	).build();
 
 	public BlockLumenCompressor() {
 		super(LibNames.LUMEN_COMPRESSOR, FixedMaterial.DONT_MOVE);

@@ -20,6 +20,7 @@ import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.BlockStateContainer;
@@ -55,22 +56,16 @@ import java.util.UUID;
 @SuppressWarnings("deprecation")
 public class BlockMechanicalTranslocator extends BlockBaseFacing {
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_BODY_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.59375, 0.25, 0.75, 0.90625, 0.75))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.09375, 0.25, 0.75, 0.40625, 0.75))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.40625, 0.75, 0.75, 0.09375))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.59375, 0.75, 0.75, 0.90625))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.90625, 0.25, 0.25, 0.59375, 0.75, 0.75))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.09375, 0.25, 0.25, 0.40625, 0.75, 0.75))
-			.build();
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_CRYSTAL_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.4375, 0.4375, 0.4375, 0.5625, 0.5625, 0.5625))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_BODY_MAP = FacingAlignedBB.create(
+			new Vector3(4, 9.5, 4),
+			new Vector3(12, 14.5, 12),
+			EnumFacing.UP
+	).build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_CRYSTAL_MAP = FacingAlignedBB.create(
+			new Vector3(7, 7, 7),
+			new Vector3(9, 9, 9),
+			EnumFacing.UP
+	).build();
 
 	public BlockMechanicalTranslocator() {
 		super(LibNames.MECHANICAL_TRANSLOCATOR, FixedMaterial.BREAK);

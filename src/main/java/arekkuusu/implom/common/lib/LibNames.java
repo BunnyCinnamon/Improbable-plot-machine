@@ -13,7 +13,7 @@ package arekkuusu.implom.common.lib;
  */
 public class LibNames {
 
-	public static final String PRIMAL_STONE = "primal_stone";
+	public static final String SAPROLITE = "saprolite";
 	public static final String SINGULARITY = "singularity";
 	public static final String QUANTUM_MIRROR = "quantum_mirror";
 	public static final String GRAVITY_HOPPER = "gravity_hopper";
@@ -42,20 +42,18 @@ public class LibNames {
 	public static final String PHOLARIZER = "pholarizer";
 	public static final String FISSION_INDUCER = "fission_inducer";
 	public static final String GOLD_FLUID = "gold";
-	public static final String MOLTEN_GOLD = "molten_gold";
 	public static final String LUMINIC_DECOMPRESSOR = "luminic_decompressor";
 	public static final String QUARTZ_CONSUMER = "quartz_consumer";
 	public static final String LUMEN_COMPRESSOR = "lumen_compressor";
 	public static final String PHOTON_CONTAINER = "photon_container";
 	public static final String DIFFERENTIATOR = "differentiator";
 	public static final String DIFFERENTIATOR_INTERCEPTOR = "differentiator_interceptor";
-	public static final String HOLOGRATH = "holograth";
 	public static final String THEOREMA = "theorema";
 	public static final String KONDENZATOR = "kondenzator";
 	public static final String IMBUED_QUARTZ = "imbued_quartz";
 	public static final String INTRINSIC_CELL = "intrinsic_cell";
 	public static final String CRYSTAL_QUARTZ_SHARD = "crystal_quartz_shard";
-	public static final String CRYSTALLIC_SYNTHESIZER = "crystallic_synthesizer";
+	public static final String CRYSTAL_SYNTHESIZER = "crystal_synthesizer";
 	public static final String QUARTZ = "quartz";
 	public static final String MAGNETIC_BOLT = "magnetic_bolt";
 	public static final String MAGNETIC_GEAR = "magnetic_gear";

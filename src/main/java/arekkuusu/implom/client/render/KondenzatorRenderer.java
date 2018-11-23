@@ -62,7 +62,7 @@ public class KondenzatorRenderer extends SpecialModelRenderer<TileKondenzator> {
 			b.set(-0.55F + brightness * 0.55F);
 			b.upload();
 		});
-		BlockBaker.KONDENZATOR_CENTER.render();
+		BlockBaker.KONDENZATOR_CORE.render();
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();

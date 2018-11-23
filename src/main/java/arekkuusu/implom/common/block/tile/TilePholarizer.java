@@ -9,7 +9,6 @@ import arekkuusu.implom.common.handler.data.ModCapability;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -92,15 +91,5 @@ public class TilePholarizer extends TileBase implements ITickable {
 
 	public Polarization getPolarizationLazy() {
 		return getStateValue(BlockPholarizer.POLARIZATION, pos).orElse(Polarization.POSITIVE);
-	}
-
-	@Override
-	void readNBT(NBTTagCompound compound) {
-
-	}
-
-	@Override
-	void writeNBT(NBTTagCompound compound) {
-
 	}
 }

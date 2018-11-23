@@ -8,6 +8,7 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.common.block.BlockDifferentiator;
+import arekkuusu.implom.common.block.BlockDifferentiator.Constants;
 import arekkuusu.implom.common.block.ModBlocks;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -60,7 +61,7 @@ public class TileDifferentiator extends TileBase implements ITickable {
 	private Optional<Integer> findInterceptor(EnumFacing facing) {
 		BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(getPos());
 		int distance = 0;
-		while(distance++ < BlockDifferentiator.REACH) {
+		while(distance++ < Constants.REACH) {
 			IBlockState state = world.getBlockState(posOffset.move(facing));
 			if(state.getBlock() == ModBlocks.DIFFERENTIATOR_INTERCEPTOR && state.getValue(BlockDirectional.FACING) == facing) {
 				return Optional.of(distance);

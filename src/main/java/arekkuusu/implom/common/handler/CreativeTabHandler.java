@@ -71,7 +71,7 @@ public final class CreativeTabHandler {
 		@SideOnly(Side.CLIENT)
 		public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> list) {
 			this.list = list;
-			addBlock(ModBlocks.PRIMAL_STONE);
+			addBlock(ModBlocks.SAPROLITE);
 			addBlock(ModBlocks.MONOLITHIC);
 			addBlock(ModBlocks.MONOLITHIC_GLYPH);
 			addBlock(ModBlocks.SCHRODINGER_GLYPH);
@@ -101,7 +101,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.DIFFERENTIATOR);
 			addBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR);
 			addBlock(ModBlocks.KONDENZATOR);
-			addBlock(ModBlocks.CRYSTALLIC_SYNTHESIZER);
+			addBlock(ModBlocks.CRYSTAL_SYNTHESIZER);
 			addItem(ModItems.INTRINSIC_CELL);
 			addItem(ModItems.MAGNETIC_BOLT);
 			addItem(ModItems.MAGNETIC_GEAR);

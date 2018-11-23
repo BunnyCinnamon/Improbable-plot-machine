@@ -16,6 +16,7 @@ import arekkuusu.implom.common.block.tile.TileKondenzator;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -46,15 +47,11 @@ import java.util.*;
 @SuppressWarnings("deprecation")
 public class BlockKondenzator extends BlockBaseFacing {
 
-	public static final int MAX_LUMEN = 100;
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.0625, 0.75, 0.0625, 0.9375, 0.9375, 0.9375))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.25, 0.9375))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.9375, 0.25))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.0625, 0.0625, 0.75, 0.9375, 0.9375, 0.9375))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.75, 0.0625, 0.9375, 0.9375, 0.9375, 0.0625))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.25, 0.9375, 0.9375))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(1, 12, 1),
+			new Vector3(15, 15, 15),
+			EnumFacing.UP
+	).build();
 
 	public BlockKondenzator() {
 		super(LibNames.KONDENZATOR, FixedMaterial.DONT_MOVE);
@@ -155,7 +152,7 @@ public class BlockKondenzator extends BlockBaseFacing {
 	}
 
 	public static Progress setProgress(TileKondenzator tile, int progress) {
-		MUTATION_PROGRESS.compute(tile.getProgressPos(), (ignored, p) -> {
+		MUTATION_PROGRESS.compute(tile.getTargetPos(), (ignored, p) -> {
 			if(p == null) p = new Progress();
 			if(progress > 0) {
 				p.from.add(tile.getPos());
@@ -168,10 +165,17 @@ public class BlockKondenzator extends BlockBaseFacing {
 			}
 			return p;
 		});
-		return getProgress(tile.getProgressPos());
+		return getProgress(tile.getTargetPos());
 	}
 
 	public static Progress getProgress(BlockPos pos) {
 		return MUTATION_PROGRESS.getOrDefault(pos, new Progress());
+	}
+
+	public static class Constants {
+		public static final int LUMEN_CAPACITY = 100;
+		public static final int CRYSTAL_FORMATION = LUMEN_CAPACITY;
+		public static final int PROGRESS_INTERVAL = 40;
+		public static final int REGRESSION_INTERVAL = 80;
 	}
 }

@@ -12,6 +12,7 @@ import arekkuusu.implom.api.capability.energy.data.ILumen;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.BlockKondenzator;
+import arekkuusu.implom.common.block.BlockKondenzator.Constants;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.ModCapability;
 import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
@@ -37,16 +38,16 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 	@Override
 	public void update() {
 		if(!world.isRemote && handler.get() > 0) {
-			if(world.getTotalWorldTime() % 20 == 0 && isFacingGlass()) {
-				BlockPos pos = getProgressPos();
-				if(BlockKondenzator.setProgress(this, BlockKondenzator.getProgress(pos).getTimer() + 1).getTimer() >= 100) {
+			if(world.getTotalWorldTime() % Constants.PROGRESS_INTERVAL == 0 && isFacingGlass()) {
+				BlockPos pos = getTargetPos();
+				if(BlockKondenzator.setProgress(this, BlockKondenzator.getProgress(pos).getTimer() + 1).getTimer() >= Constants.CRYSTAL_FORMATION) {
 					world.setBlockState(pos, ModBlocks.IMBUED_QUARTZ.getDefaultState());
 					BlockKondenzator.setProgress(this, 0);
 				}
-				handler.set(handler.get() - 1);
+				reduceLumen();
 			}
-			if(world.getTotalWorldTime() % 60 == 0 && !isFacingGlass()) {
-				handler.set(handler.get() - 1);
+			if(world.getTotalWorldTime() % Constants.REGRESSION_INTERVAL == 0 && !isFacingGlass()) {
+				reduceLumen();
 			}
 		}
 		if(world.isRemote && handler.get() > 0) {
@@ -66,14 +67,18 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 				}
 			}
 			if(isFacingGlass()) {
-				BlockKondenzator.Progress progress = BlockKondenzator.getProgress(getProgressPos());
+				BlockKondenzator.Progress progress = BlockKondenzator.getProgress(getTargetPos());
 				int amount = (int) ((float) progress.getTimer() * (0.15F * (1F - (float) progress.getMultiplier() / 6F)));
 				for(int i = 0; i < amount + world.rand.nextInt(4); i++) {
-					Vector3 posVec = new Vector3.WrappedVec3i(getProgressPos()).asImmutable().add(Math.random(), Math.random(), Math.random());
+					Vector3 posVec = new Vector3.WrappedVec3i(getTargetPos()).asImmutable().add(Math.random(), Math.random(), Math.random());
 					IPM.getProxy().spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, world.rand.nextFloat(), 0x49FFFF, GlowTexture.GLOW);
 				}
 			}
 		}
+	}
+
+	private void reduceLumen() {
+		if(handler.get() > 0) handler.set(handler.get() - 1);
 	}
 
 	private boolean isFacingGlass() {
@@ -92,7 +97,7 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 		} else return false;
 	}
 
-	public BlockPos getProgressPos() {
+	public BlockPos getTargetPos() {
 		return pos.offset(getFacingLazy());
 	}
 
@@ -103,7 +108,7 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 	@Override
 	void writeSync(NBTTagCompound compound) {
 		compound.setInteger(ILumen.NBT_TAG, handler.get());
-		compound.setInteger("mutation_progress", BlockKondenzator.getProgress(getProgressPos()).getTimer());
+		compound.setInteger("mutation_progress", BlockKondenzator.getProgress(getTargetPos()).getTimer());
 	}
 
 	@Override
@@ -120,7 +125,7 @@ public class TileKondenzator extends TileSimpleLumenBase implements ITickable {
 
 	@Override
 	public int getCapacity() {
-		return BlockKondenzator.MAX_LUMEN;
+		return Constants.LUMEN_CAPACITY;
 	}
 
 	@SideOnly(Side.CLIENT)

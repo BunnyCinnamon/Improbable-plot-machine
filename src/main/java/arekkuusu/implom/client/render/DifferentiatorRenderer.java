@@ -9,10 +9,8 @@ package arekkuusu.implom.client.render;
 
 import arekkuusu.implom.client.util.ShaderLibrary;
 import arekkuusu.implom.client.util.baker.BlockBaker;
-import arekkuusu.implom.client.util.helper.GLHelper;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import arekkuusu.implom.common.block.tile.TileDifferentiator;
-import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -28,7 +26,7 @@ public class DifferentiatorRenderer extends SpecialModelRenderer<TileDifferentia
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-		switch(te.getFacingLazy()) {
+		switch (te.getFacingLazy()) {
 			case DOWN:
 				GlStateManager.rotate(180F, 1F, 0F, 0F);
 				break;
@@ -44,30 +42,22 @@ public class DifferentiatorRenderer extends SpecialModelRenderer<TileDifferentia
 			case EAST:
 				GlStateManager.rotate(90F, 0F, 0F, -1F);
 				break;
-			case UP: break;
+			case UP:
+				break;
 		}
 		switch(MinecraftForgeClient.getRenderPass()) {
 			case 0:
 				BlockBaker.DIFFERENTIATOR_BASE.render();
 				//Rings
 				float tick = RenderHelper.getRenderWorldTime(partialTicks);
-				GlStateManager.pushMatrix(); //Bottom
-				GlStateManager.rotate(partialTicks + tick * 0.15F % 360F, 0F, 1F, 0F);
-				BlockBaker.DIFFERENTIATOR_RING_BOTTOM.render();
-				GlStateManager.popMatrix();
-				GlStateManager.pushMatrix(); //Middle
-				GlStateManager.rotate(partialTicks + tick * 0.25F % 360F, 0F, 1F, 0F);
-				BlockBaker.DIFFERENTIATOR_RING_MIDDLE.render();
-				GlStateManager.popMatrix();
-				GlStateManager.pushMatrix(); //Top
-				GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-				BlockBaker.DIFFERENTIATOR_RING_TOP.render();
+				GlStateManager.pushMatrix();
+				RenderHelper.makeUpDownTranslation(partialTicks + tick, 0.01F, 1.5F, 0F);
+				BlockBaker.DIFFERENTIATOR_RING.render();
 				GlStateManager.popMatrix();
 				break;
 			case 1:
 				//Inner core
 				GlStateManager.enableBlend();
-				GlStateManager.disableCull();
 				GlStateManager.disableLighting();
 				ShaderLibrary.BRIGHT.begin();
 				ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
@@ -77,7 +67,6 @@ public class DifferentiatorRenderer extends SpecialModelRenderer<TileDifferentia
 				BlockBaker.DIFFERENTIATOR_CORE.render();
 				ShaderLibrary.BRIGHT.end();
 				GlStateManager.enableLighting();
-				GlStateManager.enableCull();
 				GlStateManager.disableBlend();
 				break;
 		}
@@ -92,23 +81,12 @@ public class DifferentiatorRenderer extends SpecialModelRenderer<TileDifferentia
 		BlockBaker.DIFFERENTIATOR_BASE.render();
 		//Rings
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		GlStateManager.pushMatrix(); //Bottom
-		GlStateManager.rotate(partialTicks + tick * 0.05F % 360F, 0F, 1F, 0F);
-		BlockBaker.DIFFERENTIATOR_RING_BOTTOM.render();
-		GlStateManager.popMatrix();
-		GlStateManager.pushMatrix(); //Middle
-		GlStateManager.rotate(partialTicks + tick * 0.15F % 360F, 0F, 1F, 0F);
-		BlockBaker.DIFFERENTIATOR_RING_MIDDLE.render();
-		GlStateManager.popMatrix();
-		GlStateManager.pushMatrix(); //Top
-		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-		BlockBaker.DIFFERENTIATOR_RING_TOP.render();
+		GlStateManager.pushMatrix();
+		RenderHelper.makeUpDownTranslation(partialTicks + tick, 0.01F, 1.5F, 0F);
+		BlockBaker.DIFFERENTIATOR_RING.render();
 		GlStateManager.popMatrix();
 		//Inner core
-		GLHelper.disableDepth();
-		GlStateManager.disableCull();
 		GlStateManager.disableLighting();
-		Blending.AdditiveAlpha().apply();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
 			b.set(0F);
@@ -117,8 +95,6 @@ public class DifferentiatorRenderer extends SpecialModelRenderer<TileDifferentia
 		BlockBaker.DIFFERENTIATOR_CORE.render();
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
-		GlStateManager.enableCull();
-		GLHelper.enableDepth();
 		GlStateManager.popMatrix();
 	}
 }

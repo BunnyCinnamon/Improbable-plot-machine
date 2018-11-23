@@ -1,11 +1,8 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.FixedMaterial;
-import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.DummyModelRegistry;
-import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
-import arekkuusu.implom.common.block.tile.TileCrystallicSynthesizer;
+import arekkuusu.implom.common.block.tile.TileCrystalSynthesizer;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -14,10 +11,10 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("deprecation")
-public class BlockCrystallicSynthesizer extends BlockBase {
+public class BlockCrystalSynthesizer extends BlockBase {
 
-	public BlockCrystallicSynthesizer() {
-		super(LibNames.CRYSTALLIC_SYNTHESIZER, FixedMaterial.DONT_MOVE);
+	public BlockCrystalSynthesizer() {
+		super(LibNames.CRYSTAL_SYNTHESIZER, FixedMaterial.DONT_MOVE);
 		setHarvestLevel(Tool.PICK, ToolLevel.IRON);
 	}
 
@@ -39,14 +36,11 @@ public class BlockCrystallicSynthesizer extends BlockBase {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileCrystallicSynthesizer();
+		return new TileCrystalSynthesizer();
 	}
 
 	@Override
 	public void registerModel() {
-		DummyModelRegistry.register(this, new ModelRendered()
-				.setParticle(ResourceLibrary.CRYSTALLIC)
-		);
 		ModelHandler.registerModel(this, 0);
 	}
 }

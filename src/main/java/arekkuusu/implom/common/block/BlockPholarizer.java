@@ -39,14 +39,11 @@ import java.util.Random;
 public class BlockPholarizer extends BlockBaseFacing {
 
 	public static final PropertyEnum<Polarization> POLARIZATION = PropertyEnum.create("polarization", Polarization.class);
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0.25, 0.125, 0.25, 0.75, 0.875, 0.75))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0.25, 0.125, 0.25, 0.75, 0.875, 0.75))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0.25, 0.25, 0.875, 0.75, 0.75, 0.125))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0.25, 0.25, 0.125, 0.75, 0.75, 0.875))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.875, 0.25, 0.25, 0.125, 0.75, 0.75))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.875, 0.25, 0.25, 0.125, 0.75, 0.75))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+			new Vector3(4, 7, 4),
+			new Vector3(12, 14, 12),
+			EnumFacing.UP
+	).build();
 
 	public BlockPholarizer() {
 		super(LibNames.PHOLARIZER, FixedMaterial.DONT_MOVE);
@@ -69,6 +66,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		boolean active = state.getValue(POLARIZATION).isPositive();
 		Vector3 posVec = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D);
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
@@ -77,9 +75,9 @@ public class BlockPholarizer extends BlockBaseFacing {
 			double speed = 0.005D + rand.nextDouble() * 0.005D;
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
-					.multiply(speed)
+					.multiply(active ? speed : -speed)
 					.rotate(x.multiply(z));
-			IPM.getProxy().spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x29FF75, Light.GLOW);
+			IPM.getProxy().spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0xFFE077, Light.GLOW);
 		}
 	}
 

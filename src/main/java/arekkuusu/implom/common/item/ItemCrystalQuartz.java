@@ -67,7 +67,7 @@ public class ItemCrystalQuartz extends ItemBase {
 			entity = makeQuantum(entity);
 			if(itemRand.nextFloat() < 0.01F) {
 				Vector3 from = new Vector3.WrappedVec3d(entity.getPositionVector()).asImmutable();
-				Vector3 to = Vector3.rotateRandom().multiply(2).add(from);
+				Vector3 to = Vector3.rotateRandom().add(from);
 				if(isValidSpawn(entity.world, to)) {
 					entity.setPositionAndUpdate(to.x(), to.y(), to.z());
 					entity.playSound(SoundEvents.ENTITY_SHULKER_TELEPORT, 0.25F, 0.5F);

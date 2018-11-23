@@ -40,7 +40,6 @@ public class EntityLumen extends Entity {
 		this.handler = new LumenEntityWrapper(this);
 		this.setNoGravity(true);
 		this.setSize(0.2F, 0.2F);
-		this.noClip = true;
 	}
 
 	@Override

@@ -47,30 +47,16 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockDilaton extends BlockBaseFacing {
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_BASE = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0, 0, 0, 1, 0.75, 1))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0.25, 0, 1, 1, 1))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0, 0, 0, 1, 1, 0.75))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0, 0, 0.25, 1, 1, 1))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0, 0, 0, 0.75, 1, 1))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0.25, 0, 0, 1, 1, 1))
-			.build();
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_PIECE = ImmutableMap.<EnumFacing, AxisAlignedBB>builder()
-			.put(EnumFacing.UP, new AxisAlignedBB(0, 0.75, 0, 1, 1, 1))
-			.put(EnumFacing.DOWN, new AxisAlignedBB(0, 0, 0, 1, 0.25, 1))
-			.put(EnumFacing.NORTH, new AxisAlignedBB(0, 0, 0, 1, 1, 0.25))
-			.put(EnumFacing.SOUTH, new AxisAlignedBB(0, 0, 0.75, 1, 1, 1))
-			.put(EnumFacing.WEST, new AxisAlignedBB(0, 0, 0, 0.25, 1, 1))
-			.put(EnumFacing.EAST, new AxisAlignedBB(0.75, 0, 0, 1, 1, 1))
-			.build();
-	private static final ImmutableMap<EnumFacing, Vector3> VEC_MAP = ImmutableMap.<EnumFacing, Vector3>builder()
-			.put(EnumFacing.UP, Vector3.apply(0.5D, 0.75D, 0.5D))
-			.put(EnumFacing.DOWN, Vector3.apply(0.5D, 0.25D, 0.5D))
-			.put(EnumFacing.NORTH, Vector3.apply(0.5D, 0.5D, 0.25D))
-			.put(EnumFacing.SOUTH, Vector3.apply(0.5D, 0.5D, 0.75D))
-			.put(EnumFacing.EAST, Vector3.apply(0.75D, 0.5D, 0.5D))
-			.put(EnumFacing.WEST, Vector3.apply(0.25D, 0.5D, 0.5D))
-			.build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_BASE = FacingAlignedBB.create(
+			new Vector3(0, 0, 0),
+			new Vector3(16, 12, 16),
+			EnumFacing.UP
+	).build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_PIECE = FacingAlignedBB.create(
+			new Vector3(0, 12, 0),
+			new Vector3(16, 16, 16),
+			EnumFacing.UP
+	).build();
 
 	public BlockDilaton() {
 		super(LibNames.DILATON, Material.ROCK);

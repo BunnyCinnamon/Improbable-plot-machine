@@ -17,7 +17,6 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 /**
  * Created by <Arekkuusu> on 20/03/2018.
@@ -27,14 +26,9 @@ public class TileNeutronBattery extends TileComplexLumenBase {
 
 	private BatteryCapacitor capacitor;
 
-	public TileNeutronBattery() {
-		this.capacitor = new BatteryCapacitor("", 0, 0);
-		this.handler = createHandler();
-	}
-
 	@Override
 	public int getCapacity() {
-		return capacitor.getCapacity();
+		return capacitor == null ? (this.capacitor = new BatteryCapacitor("empty", 0, 0)).getCapacity() : capacitor.getCapacity();
 	}
 
 	public BatteryCapacitor getCapacitor() {

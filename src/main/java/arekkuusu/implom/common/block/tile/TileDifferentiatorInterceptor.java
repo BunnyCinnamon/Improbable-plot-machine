@@ -18,9 +18,4 @@ public class TileDifferentiatorInterceptor extends TileBase {
 	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
-
-	@Override
-	public boolean shouldRenderInPass(int pass) {
-		return pass == 0 || pass == 1;
-	}
 }
