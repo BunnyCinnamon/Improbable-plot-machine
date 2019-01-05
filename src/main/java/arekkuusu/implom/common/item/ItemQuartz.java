@@ -1,14 +1,14 @@
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.api.helper.NBTHelper;
-import arekkuusu.implom.common.lib.LibMod;
+import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.lib.LibNames;
-import net.katsstuff.teamnightclipse.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Locale;
 import java.util.stream.Stream;
@@ -17,34 +17,21 @@ public class ItemQuartz extends ItemBase {
 
 	public ItemQuartz() {
 		super(LibNames.QUARTZ);
-		addPropertyOverride(ResourceHelperStatic.getSimple(LibMod.MOD_ID, "size"), (s, w, e) ->
-				NBTHelper.getEnum(Quartz.class, s, "quartz_kind").map(q -> (float) q.size.ordinal() * 0.1F).orElse(0F)
-		);
-		addPropertyOverride(ResourceHelperStatic.getSimple(LibMod.MOD_ID, "color"), (s, w, e) ->
-				NBTHelper.getEnum(Quartz.class, s, "quartz_kind").map(q -> {
-					switch (q.color) {
-						case WHITE:
-							return 0.0F;
-						case BLUE:
-							return 0.1F;
-						case GREEN:
-							return 0.2F;
-						case YELLOW:
-							return 0.3F;
-						case PINK:
-							return 0.4F;
-						default:
-							return 0F;
-					}
-				}).orElse(0F)
-		);
+		this.setHasSubtypes(true);
+		this.setMaxDamage(0);
 	}
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if(this.isInCreativeTab(tab)) {
-			Stream.of(Quartz.values()).forEach(q -> items.add(NBTHelper.setEnum(new ItemStack(this), q, "quartz_kind")));
+			Stream.of(Quartz.values()).forEach(q -> items.add(new ItemStack(this, 1, q.ordinal())));
 		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerModel() {
+		ModelHandler.registerModel(this, Quartz.class);
 	}
 
 	public enum Quartz implements IStringSerializable {
@@ -75,6 +62,10 @@ public class ItemQuartz extends ItemBase {
 		@Override
 		public String getName() {
 			return name().toLowerCase(Locale.ROOT);
+		}
+
+		public static Quartz fromOrdinal(int ordinal) {
+			return Quartz.values()[ordinal];
 		}
 
 		public enum Size implements IStringSerializable {

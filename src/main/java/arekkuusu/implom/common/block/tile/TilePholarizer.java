@@ -33,10 +33,10 @@ public class TilePholarizer extends TileBase implements ITickable {
 	private void succ() {
 		final EnumFacing facing = getFacingLazy();
 		getTile(TileEntity.class, world, pos.offset(facing))
-				.filter(tile -> tile.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
-				.map(tile -> tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
+				/*.filter(tile -> tile.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
+				.map(tile -> tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))*/
 				.ifPresent(wrapper -> {
-					if(wrapper.get() < wrapper.getMax() && wrapper.canFill()) {
+					/*if(wrapper.get() < wrapper.getMax() && wrapper.canFill()) {
 						world.getEntitiesWithinAABB(EntityLumen.class, new AxisAlignedBB(pos.up()).grow(10D)).stream().filter(e ->
 								!e.isDead && e.hasCapability(ModCapability.LUMEN_CAPABILITY, null)
 						).forEach(e -> {
@@ -51,14 +51,14 @@ public class TilePholarizer extends TileBase implements ITickable {
 							e.motionY += (y / sqrt) * strength * power;
 							e.motionZ += (z / sqrt) * strength * power;
 						});
-						world.getEntitiesWithinAABB(EntityLumen.class, new AxisAlignedBB(pos.up()).grow(1D)).stream().filter(e ->
+						world.getEntitiesWithinAABB(EntityLumen.class, new AxisAlignedBB(pos.up()).grow(0.25D)).stream().filter(e ->
 								!e.isDead && e.hasCapability(ModCapability.LUMEN_CAPABILITY, null)
 						).forEach(e -> {
 							ILumen lumen = e.getCapability(ModCapability.LUMEN_CAPABILITY, null);
 							LumenHelper.transfer(lumen, wrapper, 1, true);
 							if(lumen.get() <= 0) e.setDead();
 						});
-					}
+					}*/
 				});
 	}
 
@@ -68,14 +68,14 @@ public class TilePholarizer extends TileBase implements ITickable {
 				.filter(tile -> tile.hasCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
 				.map(tile -> tile.getCapability(ModCapability.LUMEN_CAPABILITY, facing.getOpposite()))
 				.ifPresent(wrapper -> {
-					int drain = wrapper.drain(16, true);
-					if(drain > 0) {
+					/*if(wrapper.get() >= 15) {
+						int drain = wrapper.drain(15, true);
 						EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), drain);
 						Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 75F);
 						Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 75F);
-						Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getOpposite().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.1D);
+						Vector3 vec = new Vector3.WrappedVec3i(getFacingLazy().getOpposite().getDirectionVec()).asImmutable().rotate(x.multiply(z)).multiply(0.01D);
 						lumen.setMotion(vec);
-					}
+					}*/
 				});
 	}
 

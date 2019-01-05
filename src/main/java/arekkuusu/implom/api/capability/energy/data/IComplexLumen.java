@@ -20,7 +20,6 @@ import java.util.concurrent.Callable;
  * It's distributed as part of Improbable plot machine.
  */
 public interface IComplexLumen extends ILumen, IQuantum {
-	String NBT_TAG = "lumen_nbt";
 
 	/**
 	 * Default {@link ILumen} provider
@@ -41,7 +40,7 @@ public interface IComplexLumen extends ILumen, IQuantum {
 
 	@Override
 	default int drain(int amount, boolean drain) {
-		if(!canDrain() || !getKey().isPresent()) return 0;
+		if(!getKey().isPresent()) return 0;
 		if(amount > 0) {
 			int contained = get();
 			int drained = amount < getMax() ? amount : getMax();
@@ -57,7 +56,7 @@ public interface IComplexLumen extends ILumen, IQuantum {
 
 	@Override
 	default int fill(int amount, boolean fill) {
-		if(!canFill() || !getKey().isPresent()) return amount;
+		if(!getKey().isPresent()) return amount;
 		if(amount > 0) {
 			int contained = get();
 			if(contained >= getMax()) return amount;

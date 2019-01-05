@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  * It's distributed as part of Improbable plot machine.
  */
 public interface ILumen {
-	String NBT_TAG = "lumen";
+	String NBT_TAG = "lumen_nbt";
 
 	/**
 	 * Default {@link ILumen} provider
@@ -42,7 +42,6 @@ public interface ILumen {
 	 * @return Lumen drained
 	 */
 	default int drain(int amount, boolean drain) {
-		if(!canDrain()) return 0;
 		if(amount > 0) {
 			int contained = get();
 			int drained = amount < getMax() ? amount : getMax();
@@ -63,7 +62,6 @@ public interface ILumen {
 	 * @return Lumen remain
 	 */
 	default int fill(int amount, boolean fill) {
-		if(!canFill()) return amount;
 		if(amount > 0) {
 			int contained = get();
 			if(contained >= getMax()) return amount;
@@ -82,14 +80,6 @@ public interface ILumen {
 	 * @return Lumen capacity
 	 */
 	int getMax();
-
-	default boolean canDrain() {
-		return true;
-	}
-
-	default boolean canFill() {
-		return true;
-	}
 
 	/**
 	 * Set maximum lumen capacity

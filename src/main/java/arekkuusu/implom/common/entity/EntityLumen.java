@@ -51,10 +51,10 @@ public class EntityLumen extends Entity {
 	public void onUpdate() {
 		super.onUpdate();
 		if(world.isRemote) {
-			int lumen = MathHelper.clamp(handler.get(), 0, 4);
-			float scale = 2F * ((float) lumen / 4F);
+			int lumen = handler.get();
+			float scale = 1.5F * ((float) lumen / handler.getMax());
 			Vector3 pos = Vector3.apply(posX, posY, posZ);
-			for(int i = 0; i < lumen; i++) {
+			for(int i = 0; i < MathHelper.clamp(lumen, 0, 4); i++) {
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Vector3 vec = Vector3.apply(motionX, motionY, motionZ).rotate(x.multiply(z)).multiply(0.1D);
@@ -65,11 +65,11 @@ public class EntityLumen extends Entity {
 			motionX = MathHelper.clamp(motionX, -drag, drag);
 			motionY = MathHelper.clamp(motionY, -drag, drag);
 			motionZ = MathHelper.clamp(motionZ, -drag, drag);
-			double weightDiff = 10 * Math.log10(handler.get()) / 10 * Math.log10(handler.getMax());
-			if(tick++ % (int)(40 * (1 - weightDiff)) == 0 && tick > 1) {
-				handler.set((int) ((float) handler.get() * 0.75F));
-			}
 			if(handler.get() <= 0) setDead();
+			else {
+				double weight = (double) handler.get() / (double) handler.getMax();
+				if(tick++ % (int)(45 - 20 * weight) == 0) handler.drain(1, true);
+			}
 		}
 		move(MoverType.SELF, motionX, motionY, motionZ);
 	}
@@ -134,7 +134,7 @@ public class EntityLumen extends Entity {
 
 		@Override
 		public int getMax() {
-			return Integer.MAX_VALUE;
+			return 15;
 		}
 	}
 }

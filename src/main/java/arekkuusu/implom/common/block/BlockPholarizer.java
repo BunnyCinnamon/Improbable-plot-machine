@@ -77,7 +77,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(active ? speed : -speed)
 					.rotate(x.multiply(z));
-			IPM.getProxy().spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0xFFE077, Light.GLOW);
+			IPM.getProxy().spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0xFFFFFF, Light.GLOW);
 		}
 	}
 

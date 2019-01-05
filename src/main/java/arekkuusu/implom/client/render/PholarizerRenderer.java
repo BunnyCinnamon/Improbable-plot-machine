@@ -7,6 +7,7 @@ import arekkuusu.implom.common.block.tile.TilePholarizer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nullable;
 
@@ -51,7 +52,10 @@ public class PholarizerRenderer extends SpecialModelRenderer<TilePholarizer> {
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-			b.set(0F);
+			float brigthness = MathHelper.cos(RenderHelper.getRenderPlayerTime() * 0.05F);
+			if(brigthness > 0) brigthness *= -0.1;
+			else brigthness *= 0.1;
+			b.set(0F + brigthness);
 			b.upload();
 		});
 		BlockBaker.PHOLARIZER_BOTTOM.render();

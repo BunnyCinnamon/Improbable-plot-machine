@@ -18,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
+import javax.annotation.Nullable;
+
 /*
  * Created by <Arekkuusu> on 21/03/2018.
  * It's distributed as part of Improbable plot machine.
@@ -26,19 +28,21 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 
 	@Override
 	void renderTile(TileNeutronBattery te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		renderModel(te.getCapacitor(), te.getFacingLazy(), x, y, z, partialTicks);
+		renderModel(te.getCapacitor().orElse(null), te.getFacingLazy(), x, y, z, partialTicks);
 	}
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
 		ItemStack stack = SpecialModelRenderer.getTempItemRenderer();
-		BatteryCapacitor capacitor = new BatteryCapacitor();
-		NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
-		capacitor.deserializeNBT(root.getCompoundTag(BatteryCapacitor.NBT_TAG));
+		NBTTagCompound nbt = stack.getOrCreateSubCompound("BlockEntityTag");
+		BatteryCapacitor capacitor = null;
+		if(nbt.hasKey(BatteryCapacitor.NBT_TAG)) {
+			capacitor = BatteryCapacitor.fromOrdinal(nbt.getInteger(BatteryCapacitor.NBT_TAG));
+		}
 		renderModel(capacitor, null, x, y, z, partialTicks);
 	}
 
-	private void renderModel(BatteryCapacitor capacity, EnumFacing facing, double x, double y, double z, float partialTicks) {
+	private void renderModel(@Nullable BatteryCapacitor capacity, EnumFacing facing, double x, double y, double z, float partialTicks) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
@@ -64,25 +68,27 @@ public class NeutronBatteryRenderer extends SpecialModelRenderer<TileNeutronBatt
 			GlStateManager.translate(-0.5, -0.5, -0.5);
 		}
 		BlockBaker.NEUTRON_BATTERY_BASE.render();
-		GlStateManager.pushMatrix();
-		GlStateManager.disableLighting();
-		ShaderLibrary.RECOLOR.begin();
-		ShaderLibrary.RECOLOR.getUniformJ("greybase").ifPresent(greybase -> {
-			greybase.set(175F / 256F);
-			greybase.upload();
-		});
-		ShaderLibrary.RECOLOR.getUniformJ("rgba").ifPresent(rgba -> {
-			float r = (capacity.getColor() >>> 16 & 0xFF) / 256F;
-			float g = (capacity.getColor() >>> 8 & 0xFF) / 256F;
-			float b = (capacity.getColor() & 0xFF) / 256F;
-			rgba.set(r, g, b);
-			rgba.upload();
-		});
-		RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 1.5F, 15F);
-		BlockBaker.NEUTRON_BATTERY.render();
-		ShaderLibrary.RECOLOR.end();
-		GlStateManager.enableLighting();
-		GlStateManager.popMatrix();
+		if(capacity != null) {
+			GlStateManager.pushMatrix();
+			GlStateManager.disableLighting();
+			ShaderLibrary.RECOLOR.begin();
+			ShaderLibrary.RECOLOR.getUniformJ("greybase").ifPresent(greybase -> {
+				greybase.set(175F / 256F);
+				greybase.upload();
+			});
+			ShaderLibrary.RECOLOR.getUniformJ("rgba").ifPresent(rgba -> {
+				float r = (capacity.getColor() >>> 16 & 0xFF) / 256F;
+				float g = (capacity.getColor() >>> 8 & 0xFF) / 256F;
+				float b = (capacity.getColor() & 0xFF) / 256F;
+				rgba.set(r, g, b);
+				rgba.upload();
+			});
+			RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 1.5F, 15F);
+			BlockBaker.NEUTRON_BATTERY.render();
+			ShaderLibrary.RECOLOR.end();
+			GlStateManager.enableLighting();
+			GlStateManager.popMatrix();
+		}
 		GlStateManager.popMatrix();
 	}
 }

@@ -34,7 +34,7 @@ public class TileQuartzConsumer extends TileBase implements ITickable {
 
 	@Override
 	public void update() {
-		if(!world.isRemote && world.rand.nextFloat() < 0.1F && !handler.stack.isEmpty()) {
+		if(!world.isRemote && world.rand.nextFloat() < 0.01F && !handler.stack.isEmpty()) {
 			ILumen ilumen = handler.stack.getCapability(ModCapability.LUMEN_CAPABILITY, null);
 			assert ilumen != null;
 			int drain = world.rand.nextInt(15);
@@ -42,7 +42,7 @@ public class TileQuartzConsumer extends TileBase implements ITickable {
 				EntityLumen lumen = EntityLumen.spawn(world, new Vector3.WrappedVec3i(getPos()).asImmutable().add(0.5D), drain);
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 75F);
 				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 75F);
-				Vector3 vec = Vector3.Up().rotate(x.multiply(z)).multiply(0.1D);
+				Vector3 vec = Vector3.Up().rotate(x.multiply(z)).multiply(0.01D);
 				lumen.setMotion(vec);
 			} else {
 				handler.stack = ItemStack.EMPTY;

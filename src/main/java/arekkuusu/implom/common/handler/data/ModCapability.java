@@ -10,6 +10,7 @@ package arekkuusu.implom.common.handler.data;
 import arekkuusu.implom.api.capability.binary.data.IBinary;
 import arekkuusu.implom.api.capability.energy.data.IComplexLumen;
 import arekkuusu.implom.api.capability.energy.data.ILumen;
+import arekkuusu.implom.api.capability.quantum.IQuantum;
 import arekkuusu.implom.api.capability.relativity.data.IRelative;
 import arekkuusu.implom.api.capability.relativity.data.IRelativeRedstone;
 import arekkuusu.implom.api.capability.worldaccess.data.IWorldAccess;
@@ -46,12 +47,20 @@ public final class ModCapability {
 		register(ILumen.class, new Capability.IStorage<ILumen>() {
 			@Override
 			public NBTBase writeNBT(Capability<ILumen> capability, ILumen instance, EnumFacing side) {
-				return new NBTTagInt(instance.get());
+				if(instance instanceof IQuantum) {
+					NBTTagCompound tag = new NBTTagCompound();
+					((IQuantum) instance).getKey().ifPresent(key -> tag.setUniqueId("key", key));
+					return tag;
+				} else {
+					return new NBTTagInt(instance.get());
+				}
 			}
 
 			@Override
 			public void readNBT(Capability<ILumen> capability, ILumen instance, EnumFacing side, NBTBase nbt) {
-				if(nbt instanceof NBTTagInt) {
+				if(instance instanceof IQuantum && nbt instanceof NBTTagCompound) {
+					((IQuantum) instance).setKey(((NBTTagCompound) nbt).getUniqueId("key"));
+				} else if(nbt instanceof NBTTagInt) {
 					instance.set(((NBTTagInt) nbt).getInt());
 				}
 			}
@@ -59,16 +68,12 @@ public final class ModCapability {
 		register(IComplexLumen.class, new Capability.IStorage<IComplexLumen>() {
 			@Override
 			public NBTBase writeNBT(Capability<IComplexLumen> capability, IComplexLumen instance, EnumFacing side) {
-				NBTTagCompound tag = new NBTTagCompound();
-				instance.getKey().ifPresent(key -> tag.setUniqueId("key", key));
-				return tag;
+				return ModCapability.LUMEN_CAPABILITY.writeNBT(instance, side);
 			}
 
 			@Override
 			public void readNBT(Capability<IComplexLumen> capability, IComplexLumen instance, EnumFacing side, NBTBase nbt) {
-				if(nbt instanceof NBTTagCompound) {
-					instance.setKey(((NBTTagCompound) nbt).getUniqueId("key"));
-				}
+				ModCapability.LUMEN_CAPABILITY.readNBT(instance, side, nbt);
 			}
 		}, IComplexLumen.DEFAULT);
 		register(IBinary.class, new Capability.IStorage<IBinary>() {

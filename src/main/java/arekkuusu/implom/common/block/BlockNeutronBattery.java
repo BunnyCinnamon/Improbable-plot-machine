@@ -17,33 +17,33 @@ import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileNeutronBattery;
+import arekkuusu.implom.common.item.ItemQuartz;
+import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 /*
  * Created by <Arekkuusu> on 20/03/2018.
@@ -67,19 +67,36 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if(!world.isRemote) {
-			getTile(TileNeutronBattery.class, world, pos).ifPresent(battery -> {
-				LumenHelper.getComplexCapability(battery, battery.getFacingLazy()).ifPresent(handler -> {
-					if(!handler.getKey().isPresent()) {
-						LumenHelper.getComplexCapability(stack).ifPresent(subHandler -> {
-							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
-							subHandler.getKey().ifPresent(key -> handler.setKey(key));
-						});
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = playerIn.getHeldItem(hand);
+		if(!worldIn.isRemote) {
+			if(stack.getItem() == ModItems.QUARTZ) {
+				getTile(TileNeutronBattery.class, worldIn, pos).ifPresent(battery -> {
+					battery.getCapacitor().ifPresent(capacitor -> {
+						if(Constants.BATTERY_TO_QUARTZ.containsKey(capacitor)) {
+							ItemStack quartzStack = new ItemStack(ModItems.QUARTZ, 1, Constants.BATTERY_TO_QUARTZ.get(capacitor).ordinal());
+							ItemHandlerHelper.giveItemToPlayer(playerIn, quartzStack);
+						}
+					});
+					ItemQuartz.Quartz quartz = ItemQuartz.Quartz.fromOrdinal(stack.getMetadata());
+					if(Constants.QUARTZ_TO_BATTERY.containsKey(quartz)) {
+						battery.setCapacitor(Constants.QUARTZ_TO_BATTERY.get(quartz));
+						stack.shrink(1);
 					}
 				});
-			});
+			} else {
+				getTile(TileNeutronBattery.class, worldIn, pos).ifPresent(battery -> {
+					battery.getCapacitor().ifPresent(capacitor -> {
+						if(Constants.BATTERY_TO_QUARTZ.containsKey(capacitor)) {
+							ItemStack quartzStack = new ItemStack(ModItems.QUARTZ, 1, Constants.BATTERY_TO_QUARTZ.get(capacitor).ordinal());
+							ItemHandlerHelper.giveItemToPlayer(playerIn, quartzStack);
+							battery.setCapacitor(null);
+						}
+					});
+				});
+			}
 		}
+		return true;
 	}
 
 	@Override
@@ -96,15 +113,17 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 					LumenHelper.getComplexCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
 				});
 			});
-			NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
-			root.setTag(BatteryCapacitor.NBT_TAG, battery.getCapacitor().serializeNBT());
+			battery.getCapacitor().ifPresent(c -> {
+				NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
+				root.setTag(BatteryCapacitor.NBT_TAG, c.serializeNBT());
+			});
 		});
 		return stack;
 	}
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		getTile(TileNeutronBattery.class, world, pos).map(TileNeutronBattery::getCapacitor).ifPresent(capacitor -> {
+		getTile(TileNeutronBattery.class, world, pos).flatMap(TileNeutronBattery::getCapacitor).ifPresent(capacitor -> {
 			Vector3 vec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ());
 			Vector3 facingVec = new Vector3.WrappedVec3i(state.getValue(BlockDirectional.FACING).getDirectionVec()).asImmutable();
 			for(int i = 0; i < 3 + rand.nextInt(4); i++) {
@@ -145,12 +164,14 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-		for(BatteryCapacitor capacitor : CAPACITORS) {
+		for(BatteryCapacitor capacitor : BatteryCapacitor.values()) {
 			ItemStack stack = new ItemStack(this);
 			NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
 			root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
 			items.add(stack);
 		}
+		ItemStack stack = new ItemStack(this); //Empty capacitor
+		items.add(stack);
 	}
 
 	@Override
@@ -163,83 +184,59 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		ModelHandler.registerModel(this, 0);
 	}
 
-	public static class BatteryCapacitor implements INBTSerializable<NBTTagCompound>, IStringSerializable {
+	public enum BatteryCapacitor implements IStringSerializable {
+		WHITE(8, 0xA4A4A4),
+		BLUE(64, 0x00FFE1),
+		GREEN(512, 0x42BC49),
+		YELLOW(4096, 0xF2CB30),
+		PINK(16777216, 0xC13DAA);
 		public static String NBT_TAG = "neutron_capacitor";
 
-		String name;
 		int capacity;
 		int color;
 
-		public BatteryCapacitor(String name, int capacity, int color) {
-			this.name = name;
+		BatteryCapacitor(int capacity, int color) {
 			this.capacity = capacity;
 			this.color = color;
-		}
-
-		public BatteryCapacitor() {
-		}
-
-		@Override
-		public String getName() {
-			return name;
-		}
-
-		public BatteryCapacitor setName(String name) {
-			this.name = name;
-			return new BatteryCapacitor(name, capacity, color);
 		}
 
 		public int getCapacity() {
 			return capacity;
 		}
 
-		public BatteryCapacitor setCapacity(int capacity) {
-			this.capacity = capacity;
-			return new BatteryCapacitor(name, capacity, color);
-		}
-
 		public int getColor() {
 			return color;
 		}
 
-		public BatteryCapacitor setColor(int color) {
-			this.color = color;
-			return new BatteryCapacitor(name, capacity, color);
-		}
-
 		@Override
-		public NBTTagCompound serializeNBT() {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("name", name);
-			tag.setInteger("capacity", capacity);
-			tag.setInteger("color", color);
-			return tag;
+		public String getName() {
+			return toString().toLowerCase(Locale.ROOT);
 		}
 
-		@Override
-		public void deserializeNBT(NBTTagCompound nbt) {
-			name = nbt.getString("name");
-			capacity = nbt.getInteger("capacity");
-			color = nbt.getInteger("color");
+		public NBTTagInt serializeNBT() {
+			return new NBTTagInt(ordinal());
 		}
 
-		public BatteryCapacitor copy() {
-			return new BatteryCapacitor(name, capacity, color);
+		public static BatteryCapacitor fromOrdinal(int ordinal) {
+			return BatteryCapacitor.values()[ordinal];
 		}
 	}
 
-	public static final List<BatteryCapacitor> CAPACITORS = Lists.newArrayList();
-	public static final BatteryCapacitor WHITE = new BatteryCapacitor("white", 8, 0xA4A4A4);
-	public static final BatteryCapacitor BLUE = new BatteryCapacitor("blue", 64, 0x00FFE1);
-	public static final BatteryCapacitor GREEN = new BatteryCapacitor("green", 512, 0x42BC49);
-	public static final BatteryCapacitor YELLOW = new BatteryCapacitor("yellow", 4096, 0xF2CB30);
-	public static final BatteryCapacitor PINK = new BatteryCapacitor("pink", 16777216, 0xC13DAA);
+	public static class Constants {
+		public static final Map<ItemQuartz.Quartz, BatteryCapacitor> QUARTZ_TO_BATTERY = new HashMap<>(BatteryCapacitor.values().length);
+		public static final Map<BatteryCapacitor, ItemQuartz.Quartz> BATTERY_TO_QUARTZ = new HashMap<>(BatteryCapacitor.values().length);
 
-	static {
-		CAPACITORS.add(WHITE);
-		CAPACITORS.add(BLUE);
-		CAPACITORS.add(GREEN);
-		CAPACITORS.add(YELLOW);
-		CAPACITORS.add(PINK);
+		static {
+			Constants.putQuartzBattery(ItemQuartz.Quartz.WHITE_MEDIUM, BatteryCapacitor.WHITE);
+			Constants.putQuartzBattery(ItemQuartz.Quartz.BLUE_MEDIUM, BatteryCapacitor.BLUE);
+			Constants.putQuartzBattery(ItemQuartz.Quartz.GREEN_MEDIUM, BatteryCapacitor.GREEN);
+			Constants.putQuartzBattery(ItemQuartz.Quartz.YELLOW_MEDIUM, BatteryCapacitor.YELLOW);
+			Constants.putQuartzBattery(ItemQuartz.Quartz.PINK_MEDIUM, BatteryCapacitor.PINK);
+		}
+
+		public static void putQuartzBattery(ItemQuartz.Quartz quartz, BatteryCapacitor capacitor) {
+			QUARTZ_TO_BATTERY.put(quartz, capacitor);
+			BATTERY_TO_QUARTZ.put(capacitor, quartz);
+		}
 	}
 }

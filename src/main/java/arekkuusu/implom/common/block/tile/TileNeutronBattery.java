@@ -7,8 +7,8 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.energy.data.IComplexLumen;
-import arekkuusu.implom.api.capability.quantum.WorldData;
+import arekkuusu.implom.api.capability.energy.ILumenReciever;
+import arekkuusu.implom.api.capability.energy.ILumenSender;
 import arekkuusu.implom.common.block.BlockNeutronBattery.BatteryCapacitor;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,67 +17,65 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileNeutronBattery extends TileComplexLumenBase {
+public class TileNeutronBattery extends TileComplexLumenBase implements ILumenReciever, ILumenSender {
 
 	private BatteryCapacitor capacitor;
 
 	@Override
 	public int getCapacity() {
-		return capacitor == null ? (this.capacitor = new BatteryCapacitor("empty", 0, 0)).getCapacity() : capacitor.getCapacity();
-	}
-
-	public BatteryCapacitor getCapacitor() {
-		return capacitor;
-	}
-
-	public void setCapacitor(BatteryCapacitor capacitor) {
-		this.capacitor = capacitor;
+		return getCapacitor().map(BatteryCapacitor::getCapacity).orElse(0);
 	}
 
 	@Override
 	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return facing == getFacingLazy() && super.hasCapability(capability, facing);
+		return capacitor != null && facing == getFacingLazy() && super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <C> C getCapability(@Nonnull Capability<C> capability, @Nullable EnumFacing facing) {
-		return facing == getFacingLazy() ? super.getCapability(capability, facing) : null;
+		return capacitor != null && facing == getFacingLazy() ? super.getCapability(capability, facing) : null;
 	}
 
 	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.DOWN);
 	}
 
+	public Optional<BatteryCapacitor> getCapacitor() {
+		return Optional.ofNullable(capacitor);
+	}
+
+	public void setCapacitor(@Nullable BatteryCapacitor capacitor) {
+		this.capacitor = capacitor;
+		markDirty();
+		sync();
+	}
+
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		capacitor.deserializeNBT(compound.getCompoundTag(BatteryCapacitor.NBT_TAG));
-		handler.setMax(capacitor.getCapacity());
-		if(compound.hasKey(WorldData.NBT_TAG)) {
-			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
-			if(data.hasKey(IComplexLumen.NBT_TAG)) {
-				NBTTagCompound tag = data.getCompoundTag(IComplexLumen.NBT_TAG);
-				if(tag.hasUniqueId("key")) {
-					handler.setKey(tag.getUniqueId("key"));
-				} else handler.setKey(null);
-			} else handler.setKey(null);
-		} else handler.setKey(null);
+		if(compound.hasKey(BatteryCapacitor.NBT_TAG)) {
+			if(capacitor == null) {
+				capacitor = BatteryCapacitor.fromOrdinal(compound.getInteger(BatteryCapacitor.NBT_TAG));
+			}
+			handler.setMax(capacitor.getCapacity());
+		} else {
+			handler.setMax(0);
+			capacitor = null;
+		}
+		super.readNBT(compound);
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
-		handler.getKey().ifPresent(key -> {
-			NBTTagCompound data = compound.getCompoundTag(WorldData.NBT_TAG);
-			NBTTagCompound tag = data.getCompoundTag(IComplexLumen.NBT_TAG);
-			tag.setUniqueId("key", key);
-			data.setTag(IComplexLumen.NBT_TAG, tag);
-			compound.setTag(WorldData.NBT_TAG, data);
-		});
+		if(capacitor != null) {
+			compound.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
+		}
+		super.writeNBT(compound);
 	}
 }

@@ -79,7 +79,7 @@ public final class ModelHandler {
 
 	public static <T extends Enum<T> & IStringSerializable> void registerModel(Item item, Class<T> clazz) {
 		for(T t : clazz.getEnumConstants()) {
-			ResourceLocation location = new ResourceLocation(item.getRegistryName() + "_" + t.getName());
+			ResourceLocation location = new ResourceLocation(item.getRegistryName() + "/" + t.getName());
 			ModelResourceLocation modelResourceLocation = new ModelResourceLocation(location, "");
 			ModelLoader.setCustomModelResourceLocation(item, t.ordinal(), modelResourceLocation);
 		}

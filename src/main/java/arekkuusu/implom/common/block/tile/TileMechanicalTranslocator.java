@@ -8,7 +8,6 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.relativity.data.RelativeTileWrapper;
-import arekkuusu.implom.api.helper.FacingHelper;
 import arekkuusu.implom.api.state.State;
 import arekkuusu.implom.client.util.helper.ProfilerHelper;
 import net.minecraft.block.BlockDirectional;
@@ -24,10 +23,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static net.minecraft.util.EnumFacing.*;
+import static net.minecraft.util.EnumFacing.UP;
 
 /*
  * Created by <Arekkuusu> on 17/01/2018.
@@ -100,32 +98,9 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 
 	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
 		ProfilerHelper.begin("[Mechanical Translocator] Rotating block");
-		if(from.getAxis().isVertical() || to.getAxis().isVertical()) {
-			for(IProperty<?> p : original.getPropertyKeys()) {
-				if(p.getValueClass().equals(EnumFacing.class) && p.getName().toLowerCase(Locale.ROOT).contains("facing")) {
-					//noinspection unchecked
-					IProperty<EnumFacing> property = (IProperty<EnumFacing>) p;
-					EnumFacing actual = original.getValue(property);
-					if(from.getOpposite() == to) {
-						actual = actual.getOpposite();
-					} else {
-						if(actual == from || actual == from.getOpposite()) {
-							if(from.getAxis().isVertical()) {
-								EnumFacing facing = to == EAST || to == WEST ? to.getOpposite() : to;
-								actual = FacingHelper.rotateXY(actual, from.getAxisDirection(), facing);
-							} else {
-								EnumFacing facing = from == EAST || from == WEST ? from.getOpposite() : from;
-								actual = FacingHelper.rotateXY(actual, to.getOpposite().getAxisDirection(), facing);
-							}
-						} else actual = actual.getOpposite();
-					}
-					original = apply(property, original, actual);
-					break;
-				}
-			}
-		}
+		//Do rotation here
 		ProfilerHelper.end();
-		return original.withRotation(FacingHelper.getHorizontalRotation(from, to));
+		return original;
 	}
 
 	private static IBlockState apply(IProperty<EnumFacing> property, IBlockState state, EnumFacing facing) {

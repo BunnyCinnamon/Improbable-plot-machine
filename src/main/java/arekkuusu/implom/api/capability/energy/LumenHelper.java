@@ -1,7 +1,7 @@
 package arekkuusu.implom.api.capability.energy;
 
+import arekkuusu.implom.api.capability.energy.data.IComplexLumen;
 import arekkuusu.implom.api.capability.energy.data.ILumen;
-import arekkuusu.implom.api.capability.quantum.IQuantum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -30,22 +30,22 @@ public final class LumenHelper {
 				: Optional.empty();
 	}
 
-	public static <T extends ILumen & IQuantum> Optional<T> getComplexCapability(ItemStack stack) {
+	public static <T extends IComplexLumen> Optional<T> getComplexCapability(ItemStack stack) {
 		return getComplexCapability(stack, null);
 	}
 
-	public static <T extends ILumen & IQuantum> Optional<T> getComplexCapability(ItemStack stack, EnumFacing facing) {
+	public static <T extends IComplexLumen> Optional<T> getComplexCapability(ItemStack stack, EnumFacing facing) {
 		//noinspection unchecked
-		return getCapability(stack, facing).filter(handler -> handler instanceof IQuantum).map(handler -> (T) handler);
+		return getCapability(stack, facing).filter(handler -> handler instanceof IComplexLumen).map(handler -> (T) handler);
 	}
 
-	public static <T extends ILumen & IQuantum> Optional<T> getComplexCapability(TileEntity tile) {
+	public static <T extends IComplexLumen> Optional<T> getComplexCapability(TileEntity tile) {
 		return getComplexCapability(tile, null);
 	}
 
-	public static <T extends ILumen & IQuantum> Optional<T> getComplexCapability(TileEntity tile, EnumFacing facing) {
+	public static <T extends IComplexLumen> Optional<T> getComplexCapability(TileEntity tile, EnumFacing facing) {
 		//noinspection unchecked
-		return getCapability(tile, facing).filter(handler -> handler instanceof IQuantum).map(handler -> (T) handler);
+		return getCapability(tile, facing).filter(handler -> handler instanceof IComplexLumen).map(handler -> (T) handler);
 	}
 
 	public static void transfer(ILumen from, ILumen to, int amount, boolean exact) {

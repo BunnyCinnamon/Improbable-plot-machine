@@ -8,6 +8,8 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.RandomCollection;
+import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.handler.ConfigHandler;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,7 +17,6 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -24,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.Map;
 import java.util.Random;
 
 /*
@@ -34,15 +36,23 @@ import java.util.Random;
 public class BlockLargePot extends BlockBase {
 
 	public static final PropertyInteger POT_VARIANT = PropertyInteger.create("variant", 0, 2);
-	public static final AxisAlignedBB BB = new AxisAlignedBB(0.125,0,0.125,0.875,0.9375,0.875);
-	public static final RandomCollection<Item> DROPS = new RandomCollection<Item>()
-			.add(10, Items.BONE)
-			.add(8, Items.BOWL)
-			.add(6, Items.BREAD)
-			.add(5, Items.GOLD_NUGGET)
-			.add(2, Items.GOLD_INGOT)
-			.add(0.1, Items.EMERALD)
-			.add(0.01, Items.DIAMOND);
+	public static final AxisAlignedBB BB = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.9375, 0.875);
+	public static final RandomCollection<Item> DROPS = new RandomCollection<>();
+
+	static {
+		IPM.LOG.info("[BlockLargePot] - Gathering loots");
+		int count = 0;
+		for(Map.Entry<String, Double> entry : ConfigHandler.GEN_CONFIG.loot.largePotDecorator.weights.entrySet()) {
+			Item item = Item.getByNameOrId(entry.getKey());
+			if(item != null) {
+				DROPS.add(entry.getValue(), item);
+				count++;
+			} else {
+				IPM.LOG.warn("[BlockLargePot] - Item {} could not be found", entry.getKey());
+			}
+		}
+		IPM.LOG.info("[BlockLargePot] - Found {} loots", count);
+	}
 
 	public BlockLargePot() {
 		super(LibNames.LARGE_POT, Material.CLAY);

@@ -28,7 +28,7 @@ public class KondenzatorRenderer extends SpecialModelRenderer<TileKondenzator> {
 
 	@Override
 	void renderStack(double x, double y, double z, float partialTicks) {
-		renderModel(BlockKondenzator.MAX_LUMEN, null, x, y, z);
+		renderModel(BlockKondenzator.Constants.LUMEN_CAPACITY, null, x, y, z);
 	}
 
 	private void renderModel(int neutrons, EnumFacing facing, double x, double y, double z) {
@@ -55,16 +55,18 @@ public class KondenzatorRenderer extends SpecialModelRenderer<TileKondenzator> {
 			}
 		}
 		BlockBaker.KONDENZATOR_BASE.render();
-		GlStateManager.disableLighting();
-		ShaderLibrary.BRIGHT.begin();
-		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-			float brightness = (float) neutrons / (float) BlockKondenzator.MAX_LUMEN;
-			b.set(-0.55F + brightness * 0.55F);
-			b.upload();
-		});
-		BlockBaker.KONDENZATOR_CORE.render();
-		ShaderLibrary.BRIGHT.end();
-		GlStateManager.enableLighting();
+		if(neutrons > 0) {
+			ShaderLibrary.BRIGHT.begin();
+			ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+				float brightness = (float) neutrons / (float) BlockKondenzator.Constants.LUMEN_CAPACITY;
+				b.set(-0.25F + brightness * 0.25F);
+				b.upload();
+			});
+			BlockBaker.KONDENZATOR_CORE.render();
+			ShaderLibrary.BRIGHT.end();
+		} else {
+			BlockBaker.KONDENZATOR_CORE.render();
+		}
 		GlStateManager.popMatrix();
 	}
 }

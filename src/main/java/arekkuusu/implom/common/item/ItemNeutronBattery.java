@@ -47,24 +47,17 @@ public class ItemNeutronBattery extends ItemBaseBlock implements IUUIDDescriptio
 		return LumenStackProvider.create(new ComplexLumenStackWrapper(stack, -1) {
 
 			@Override
-			public void setMax(int max) {
-				BatteryCapacitor capacitor = getCapacitor().setCapacity(max);
-				NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
-				root.setTag(BatteryCapacitor.NBT_TAG, capacitor.serializeNBT());
-			}
-
-			@Override
 			public int getMax() {
 				return getCapacitor().getCapacity();
 			}
 
 			BatteryCapacitor getCapacitor() {
-				BatteryCapacitor capacitor = new BatteryCapacitor("", 0, 0);
 				NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
 				if(root.hasKey(BatteryCapacitor.NBT_TAG)) {
-					capacitor.deserializeNBT(root.getCompoundTag(BatteryCapacitor.NBT_TAG));
+					return BatteryCapacitor.fromOrdinal(root.getInteger(BatteryCapacitor.NBT_TAG));
+				} else {
+					return BatteryCapacitor.WHITE;
 				}
-				return capacitor;
 			}
 		});
 	}

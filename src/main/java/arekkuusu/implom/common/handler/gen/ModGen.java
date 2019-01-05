@@ -27,9 +27,8 @@ public final class ModGen {
 
 	public static void init() {
 		//World generators
-		GameRegistry.registerWorldGenerator(new AshenCubeStructure(), 5);
-		GameRegistry.registerWorldGenerator(new MonolithStructure(), 5);
-		GameRegistry.registerWorldGenerator(new ObeliskDecorator(), 5);
+		GameRegistry.registerWorldGenerator(new MonolithCubeStructure(), 5);
+		GameRegistry.registerWorldGenerator(new MonolithObeliskDecorator(), 5);
 		//Loot tables
 		LootTableList.register(SCHRODINGER_LOOT);
 	}
@@ -39,14 +38,12 @@ public final class ModGen {
 	}
 
 	public enum Structure {
-		ASHEN_CUBE("ashen_cube"),
-		ASHEN_CUBE_("ashen_cube_"),
-		ASHEN_NUGGET_BIG("ashen_nugget_big"),
-		ASHEN_NUGGET_SMALL("ashen_nugget_small"),
-		ASHEN_NUGGET_SPAWN("ashen_nugget_spawn"),
-		MONOLITH_CUBE("monolith_cube"),
-		MONOLITH_OBELISK("monolith_obelisk"),
-		MONOLITH_OBELISK_FRAGMENTED("monolith_obelisk_fragmented"),;
+		MONOLITH_CUBE_SMALL("monolith_cube_small"),
+		MONOLITH_CUBE_HUGE("monolith_cube_huge"),
+		MONOLITH_OBELISK_PIECE_BOTTOM("monolith_obelisk_piece_bottom"),
+		MONOLITH_OBELISK_PIECE_THICC("monolith_obelisk_piece_thicc"),
+		MONOLITH_OBELISK_PIECE_FLAT("monolith_obelisk_piece_flat"),
+		MONOLITH_OBELISK_PIECE_TOP("monolith_obelisk_piece_top"),;
 
 		private final ResourceLocation location;
 
