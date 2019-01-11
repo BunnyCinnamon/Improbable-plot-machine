@@ -5,11 +5,10 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Improbable-plot-machine
  */
-package arekkuusu.implom.api.state;
+package arekkuusu.implom.api.state.enums;
 
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -62,7 +61,7 @@ public enum Direction implements IStringSerializable { //Forgive me... 64 in tot
 	DOWN_EAST_WEST(true, false, false, false, true, true),
 	DOWN_NORTH_EAST(true, false, true, false, false, true),
 	DOWN_NORTH_WEST(true, false, true, false, true, false),
-	DOWN_SOUTH_EAST(true, false,  false, true, false, true),
+	DOWN_SOUTH_EAST(true, false, false, true, false, true),
 	DOWN_SOUTH_WEST(true, false, false, true, true, false),
 	UP_DOWN_NORTH(true, true, true, false, false, false),
 	UP_DOWN_SOUTH(true, true, false, true, false, false),
@@ -98,8 +97,6 @@ public enum Direction implements IStringSerializable { //Forgive me... 64 in tot
 	//FULL
 	FULL(true, true, true, true, true, true);
 
-	public static final PropertyEnum<Direction> DIR_LISTED = PropertyEnum.create("direction", Direction.class);
-	public static final UnlistedDirection DIR_UNLISTED = new UnlistedDirection();
 	private final boolean[] booleans;
 
 	Direction(boolean... booleans) {

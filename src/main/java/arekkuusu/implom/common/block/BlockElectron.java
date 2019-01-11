@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.sound.SolarSounds;
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.FixedDamage;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
@@ -50,7 +50,7 @@ public class BlockElectron extends BlockBase {
 
 	public BlockElectron() {
 		super(LibNames.ELECTRON, Material.ROCK);
-		setDefaultState(getDefaultState().withProperty(State.POWER, 0));
+		setDefaultState(getDefaultState().withProperty(Properties.POWER, 0));
 		setSound(SoundType.CLOTH);
 		setHardness(1F);
 	}
@@ -77,7 +77,7 @@ public class BlockElectron extends BlockBase {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-		int power = state.getValue(State.POWER);
+		int power = state.getValue(Properties.POWER);
 		if(!world.isRemote && power > 0) {
 			world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(1)).forEach(e -> {
 				e.attackEntityFrom(FixedDamage.ELECTRICITY, power * 0.5F);
@@ -94,7 +94,7 @@ public class BlockElectron extends BlockBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		if(state.getValue(State.POWER) > 0 && world.rand.nextBoolean()) {
+		if(state.getValue(Properties.POWER) > 0 && world.rand.nextBoolean()) {
 			for(int i = 0; i < 1 + world.rand.nextInt(3); i++) {
 				Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 				Vector3 to = Vector3.rotateRandom().add(from);
@@ -111,27 +111,27 @@ public class BlockElectron extends BlockBase {
 
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return state.getValue(State.POWER);
+		return state.getValue(Properties.POWER);
 	}
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return (int) (state.getValue(State.POWER) * 0.5);
+		return (int) (state.getValue(Properties.POWER) * 0.5);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(State.POWER);
+		return state.getValue(Properties.POWER);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(State.POWER, meta);
+		return getDefaultState().withProperty(Properties.POWER, meta);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, State.POWER);
+		return new BlockStateContainer(this, Properties.POWER);
 	}
 
 	@Override

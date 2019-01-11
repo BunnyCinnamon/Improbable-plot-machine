@@ -9,7 +9,8 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.capability.quantum.IQuantum;
 import arekkuusu.implom.api.capability.relativity.RelativityHelper;
-import arekkuusu.implom.api.state.Direction;
+import arekkuusu.implom.api.state.Properties;
+import arekkuusu.implom.api.state.enums.Direction;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
@@ -168,7 +169,7 @@ public class BlockQelaion extends BlockBase {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer.Builder(this).add(HAS_NODE).add(Direction.DIR_UNLISTED).build();
+		return new BlockStateContainer.Builder(this).add(HAS_NODE).add(Properties.DIR_UNLISTED).build();
 	}
 
 	@Override
@@ -177,7 +178,7 @@ public class BlockQelaion extends BlockBase {
 		if(optional.isPresent()) {
 			List<EnumFacing> closed = optional.get().getInputs();
 			Direction direction = Direction.getDirectionFromFacings(closed.toArray(new EnumFacing[0]));
-			return ((IExtendedBlockState) state).withProperty(Direction.DIR_UNLISTED, direction);
+			return ((IExtendedBlockState) state).withProperty(Properties.DIR_UNLISTED, direction);
 		}
 		return super.getExtendedState(state, world, pos);
 	}

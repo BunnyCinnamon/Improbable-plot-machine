@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.common.block.BlockHyperConductor.Constants;
 import arekkuusu.implom.common.block.ModBlocks;
 import com.google.common.collect.ImmutableList;
@@ -78,9 +78,9 @@ public class TileHyperConductor extends TileBase {
 	private void inverseElectron(BlockPos pos) {
 		if(!world.isRemote) {
 			IBlockState state = world.getBlockState(pos);
-			boolean powered = state.getValue(State.POWER) > 0;
+			boolean powered = state.getValue(Properties.POWER) > 0;
 			int power = powered ? 0 : (int) ((getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) / 8D) * (double) getPowerLazy());
-			world.setBlockState(pos, state.withProperty(State.POWER, power));
+			world.setBlockState(pos, state.withProperty(Properties.POWER, power));
 		}
 	}
 
@@ -89,7 +89,7 @@ public class TileHyperConductor extends TileBase {
 	}
 
 	public int getPowerLazy() {
-		return getStateValue(State.POWER, pos).orElse(0);
+		return getStateValue(Properties.POWER, pos).orElse(0);
 	}
 
 	public boolean isPowered() {
@@ -99,7 +99,7 @@ public class TileHyperConductor extends TileBase {
 	public void setPowered(boolean powered) {
 		this.powered = powered;
 		IBlockState state = world.getBlockState(pos);
-		world.setBlockState(pos, state.withProperty(State.POWER, getRedstonePower()));
+		world.setBlockState(pos, state.withProperty(Properties.POWER, getRedstonePower()));
 		if(powered) {
 			hyperInduceAtmosphere();
 		}

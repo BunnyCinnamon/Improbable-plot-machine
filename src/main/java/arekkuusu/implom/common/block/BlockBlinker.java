@@ -9,7 +9,7 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.capability.relativity.RelativityHelper;
 import arekkuusu.implom.api.capability.relativity.data.IRelativeRedstone;
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
@@ -62,7 +62,7 @@ public class BlockBlinker extends BlockBaseFacing {
 
 	public BlockBlinker() {
 		super(LibNames.BLINKER, FixedMaterial.BREAK);
-		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(State.ACTIVE, false));
+		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Properties.ACTIVE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
 		setLightLevel(0.2F);
@@ -81,8 +81,8 @@ public class BlockBlinker extends BlockBaseFacing {
 			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
 				RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
 					boolean active = handler.isPowered();
-					if(active != state.getValue(State.ACTIVE)) {
-						world.setBlockState(pos, state.withProperty(State.ACTIVE, active));
+					if(active != state.getValue(Properties.ACTIVE)) {
+						world.setBlockState(pos, state.withProperty(Properties.ACTIVE, active));
 						for(EnumFacing facing : EnumFacing.values()) {
 							world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
 						}
@@ -135,7 +135,7 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		boolean active = state.getValue(State.ACTIVE);
+		boolean active = state.getValue(Properties.ACTIVE);
 		Vector3 back = getOffSet(facing.getOpposite(), pos);
 		facing = facing.getOpposite();
 		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
@@ -201,13 +201,13 @@ public class BlockBlinker extends BlockBaseFacing {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(State.ACTIVE, false);
+		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(Properties.ACTIVE, false);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = state.getValue(BlockDirectional.FACING).ordinal();
-		if(state.getValue(State.ACTIVE)) {
+		if(state.getValue(Properties.ACTIVE)) {
 			i |= 8;
 		}
 		return i;
@@ -216,12 +216,12 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing enumfacing = EnumFacing.values()[meta & 7];
-		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(State.ACTIVE, (meta & 8) > 0);
+		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(Properties.ACTIVE, (meta & 8) > 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING, State.ACTIVE);
+		return new BlockStateContainer(this, BlockDirectional.FACING, Properties.ACTIVE);
 	}
 
 	@Override

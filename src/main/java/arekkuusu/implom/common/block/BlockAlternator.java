@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.capability.relativity.RelativityHelper;
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.common.block.tile.TileAlternator;
 import arekkuusu.implom.common.lib.LibNames;
@@ -36,7 +36,7 @@ public class BlockAlternator extends BlockBase {
 
 	public BlockAlternator() {
 		super(LibNames.ALTERNATOR, FixedMaterial.DONT_MOVE);
-		setDefaultState(getDefaultState().withProperty(State.ACTIVE, true));
+		setDefaultState(getDefaultState().withProperty(Properties.ACTIVE, true));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
 		setLightLevel(0.2F);
@@ -54,8 +54,8 @@ public class BlockAlternator extends BlockBase {
 		if(!world.isRemote) {
 			getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
 				boolean active = alternator.areAllActive();
-				if(active != state.getValue(State.ACTIVE)) {
-					world.setBlockState(pos, state.withProperty(State.ACTIVE, active));
+				if(active != state.getValue(Properties.ACTIVE)) {
+					world.setBlockState(pos, state.withProperty(Properties.ACTIVE, active));
 					for(EnumFacing facing : EnumFacing.values()) {
 						world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
 					}
@@ -111,7 +111,7 @@ public class BlockAlternator extends BlockBase {
 
 	@Override
 	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return state.getValue(State.ACTIVE) ? 15 : 0;
+		return state.getValue(Properties.ACTIVE) ? 15 : 0;
 	}
 
 	@Override
@@ -121,17 +121,17 @@ public class BlockAlternator extends BlockBase {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(State.ACTIVE, meta == 1);
+		return getDefaultState().withProperty(Properties.ACTIVE, meta == 1);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(State.ACTIVE) ? 1 : 0;
+		return state.getValue(Properties.ACTIVE) ? 1 : 0;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, State.ACTIVE);
+		return new BlockStateContainer(this, Properties.ACTIVE);
 	}
 
 	@Override

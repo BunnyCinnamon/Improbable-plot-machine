@@ -9,7 +9,7 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.capability.relativity.RelativityHelper;
 import arekkuusu.implom.api.helper.RayTraceHelper;
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
@@ -69,7 +69,7 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 
 	public BlockMechanicalTranslocator() {
 		super(LibNames.MECHANICAL_TRANSLOCATOR, FixedMaterial.BREAK);
-		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(State.ACTIVE, false));
+		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Properties.ACTIVE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
 	}
@@ -137,13 +137,13 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(State.ACTIVE, true);
+		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite()).withProperty(Properties.ACTIVE, true);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = state.getValue(BlockDirectional.FACING).ordinal();
-		if(state.getValue(State.ACTIVE)) {
+		if(state.getValue(Properties.ACTIVE)) {
 			i |= 8;
 		}
 		return i;
@@ -152,12 +152,12 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing enumfacing = EnumFacing.values()[meta & 7];
-		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(State.ACTIVE, (meta & 8) > 0);
+		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(Properties.ACTIVE, (meta & 8) > 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING, State.ACTIVE);
+		return new BlockStateContainer(this, BlockDirectional.FACING, Properties.ACTIVE);
 	}
 
 	@Override

@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.lib.LibMod;
 import arekkuusu.implom.common.network.PacketHelper;
@@ -79,7 +79,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 
 	private void inverse() {
 		IBlockState state = world.getBlockState(pos);
-		world.setBlockState(pos, state.withProperty(State.ACTIVE, !state.getValue(State.ACTIVE)));
+		world.setBlockState(pos, state.withProperty(Properties.ACTIVE, !state.getValue(Properties.ACTIVE)));
 	}
 
 	private void propagate() {
@@ -108,7 +108,7 @@ public class TilePhenomena extends TileBase implements ITickable {
 	}
 
 	public boolean isInvisible() {
-		return !getStateValue(State.ACTIVE, pos).orElse(true);
+		return !getStateValue(Properties.ACTIVE, pos).orElse(true);
 	}
 
 	@Override

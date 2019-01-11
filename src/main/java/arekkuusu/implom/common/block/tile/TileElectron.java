@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import net.minecraft.nbt.NBTTagCompound;
 
 /*
@@ -17,7 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class TileElectron extends TileBase {
 
 	public boolean isActiveLazy() {
-		return getStateValue(State.POWER, pos).map(p -> p > 0).orElse(false);
+		return getStateValue(Properties.POWER, pos).map(p -> p > 0).orElse(false);
 	}
 
 	@Override

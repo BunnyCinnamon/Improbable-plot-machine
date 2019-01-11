@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.client.util.baker.baked;
 
-import arekkuusu.implom.api.state.Direction;
+import arekkuusu.implom.api.state.enums.Direction;
 import arekkuusu.implom.client.util.baker.BlockBaker;
 import arekkuusu.implom.common.block.BlockQelaion;
 import com.google.common.collect.ImmutableList;

@@ -7,6 +7,7 @@
  */
 package arekkuusu.implom.api.state;
 
+import arekkuusu.implom.api.state.enums.Direction;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 
@@ -14,8 +15,9 @@ import net.minecraft.block.properties.PropertyInteger;
  * Created by <Arekkuusu> on 06/09/2017.
  * It's distributed as part of Improbable plot machine.
  */
-public class State {
+public class Properties {
 
+	public static final Direction.UnlistedDirection DIR_UNLISTED = new Direction.UnlistedDirection();
 	public static final PropertyInteger POWER = PropertyInteger.create("power", 0, 15);
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 

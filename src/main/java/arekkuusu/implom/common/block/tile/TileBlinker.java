@@ -9,7 +9,7 @@ package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.relativity.data.IRelativeRedstone;
 import arekkuusu.implom.api.capability.relativity.data.RelativeRedstoneTileWrapper;
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.util.EnumFacing;
 
@@ -42,7 +42,7 @@ public class TileBlinker extends TileRelativeRedstoneBase {
 	}
 
 	private boolean isPoweredLazy() {
-		return getStateValue(State.ACTIVE, pos).orElse(false);
+		return getStateValue(Properties.ACTIVE, pos).orElse(false);
 	}
 
 	private EnumFacing getFacingLazy() {

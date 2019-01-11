@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.relativity.data.RelativeTileWrapper;
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.client.util.helper.ProfilerHelper;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
@@ -133,7 +133,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 	}
 
 	public boolean isTransferable() {
-		return getStateValue(State.ACTIVE, getPos()).orElse(false);
+		return getStateValue(Properties.ACTIVE, getPos()).orElse(false);
 	}
 
 	public boolean canReceive(IBlockState state) {
@@ -149,7 +149,7 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 
 	public void setTransferable(boolean transferable) {
 		if(isTransferable() != transferable) {
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(State.ACTIVE, transferable));
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(Properties.ACTIVE, transferable));
 		}
 	}
 

@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.client.util.helper.ProfilerHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import com.google.common.collect.Lists;
@@ -52,8 +52,8 @@ public class TileDilaton extends TileBase {
 						world.setBlockToAir(pos);
 						found = true;
 						break;
-					} else if(state.getBlock() == ModBlocks.DILATON && !state.getValue(State.ACTIVE) && state.getValue(BlockDirectional.FACING) == facing.getOpposite()) {
-						world.setBlockState(pos, state.withProperty(State.ACTIVE, true));
+					} else if(state.getBlock() == ModBlocks.DILATON && !state.getValue(Properties.ACTIVE) && state.getValue(BlockDirectional.FACING) == facing.getOpposite()) {
+						world.setBlockState(pos, state.withProperty(Properties.ACTIVE, true));
 						found = true;
 						break;
 					}
@@ -122,9 +122,9 @@ public class TileDilaton extends TileBase {
 			ProfilerHelper.end();
 			ProfilerHelper.flagSection("[Dilaton] Place extension");
 			if(pos.equals(getPos().offset(facing.getOpposite()))) {
-				if(isActiveLazy()) world.setBlockState(getPos(), world.getBlockState(getPos()).withProperty(State.ACTIVE, false));
+				if(isActiveLazy()) world.setBlockState(getPos(), world.getBlockState(getPos()).withProperty(Properties.ACTIVE, false));
 			} else if(!pos.equals(getPos())) {
-				if(!isActiveLazy()) world.setBlockState(getPos(), world.getBlockState(getPos()).withProperty(State.ACTIVE, true));
+				if(!isActiveLazy()) world.setBlockState(getPos(), world.getBlockState(getPos()).withProperty(Properties.ACTIVE, true));
 				IBlockState extension = ModBlocks.DILATON_EXTENSION.getDefaultState().withProperty(BlockDirectional.FACING, facing);
 				world.setBlockState(pos, extension);
 			}
@@ -175,7 +175,7 @@ public class TileDilaton extends TileBase {
 	}
 
 	public boolean isActiveLazy() {
-		return getStateValue(State.ACTIVE, pos).orElse(false);
+		return getStateValue(Properties.ACTIVE, pos).orElse(false);
 	}
 
 	public EnumFacing getFacingLazy() {

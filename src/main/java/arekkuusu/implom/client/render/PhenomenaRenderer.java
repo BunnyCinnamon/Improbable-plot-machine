@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.client.render;
 
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.common.block.tile.TilePhenomena;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -22,7 +22,6 @@ import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.common.model.animation.IAnimationStateMachine;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
@@ -45,12 +44,12 @@ public class PhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 		IBlockState state = getState(phenomena, world, pos);
 		if(state instanceof IExtendedBlockState) {
 			IExtendedBlockState extendedState = (IExtendedBlockState) state;
-			if(extendedState.getUnlistedNames().contains(Properties.AnimationProperty)) {
+			if(extendedState.getUnlistedNames().contains(net.minecraftforge.common.property.Properties.AnimationProperty)) {
 				float time = ((20 - phenomena.timer)) / 20F; // Using tile timer instead of world time.
 				IAnimationStateMachine capability = phenomena.getCapability(CapabilityAnimation.ANIMATION_CAPABILITY, null);
 				if(capability != null) {
 					Pair<IModelState, Iterable<Event>> pair = capability.apply(time);
-					extendedState = extendedState.withProperty(Properties.AnimationProperty, pair.getLeft());
+					extendedState = extendedState.withProperty(net.minecraftforge.common.property.Properties.AnimationProperty, pair.getLeft());
 					IBakedModel model = getModel(state);
 					assert renderer != null;
 					renderer.setTranslation(x - pos.getX(), y - pos.getY(), z - pos.getZ());
@@ -62,7 +61,7 @@ public class PhenomenaRenderer extends AnimationTESR<TilePhenomena> {
 
 	private IBlockState getState(TilePhenomena phenomena, IBlockAccess world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
-		return phenomena.timer > 0 ? state.withProperty(State.ACTIVE, true) : state;
+		return phenomena.timer > 0 ? state.withProperty(Properties.ACTIVE, true) : state;
 	}
 
 	private IBakedModel getModel(IBlockState state) {

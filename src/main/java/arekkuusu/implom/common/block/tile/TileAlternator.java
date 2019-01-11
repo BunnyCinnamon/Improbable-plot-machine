@@ -10,7 +10,7 @@ package arekkuusu.implom.common.block.tile;
 import arekkuusu.implom.api.capability.relativity.RelativityHandler;
 import arekkuusu.implom.api.capability.relativity.data.IRelative;
 import arekkuusu.implom.api.capability.relativity.data.RelativeTileWrapper;
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.common.handler.data.WorldAlternatorData;
 import net.minecraft.world.World;
 
@@ -68,7 +68,7 @@ public class TileAlternator extends TileRelativeBase {
 	}
 
 	public boolean isActiveLazy() {
-		return getStateValue(State.ACTIVE, pos).orElse(false);
+		return getStateValue(Properties.ACTIVE, pos).orElse(false);
 	}
 
 	public static WorldAlternatorData getData(World world) {

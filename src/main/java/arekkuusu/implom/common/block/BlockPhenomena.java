@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.common.block.tile.TilePhenomena;
 import arekkuusu.implom.common.lib.LibNames;
@@ -20,7 +20,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.Properties;
 
 /*
  * Created by <Arekkuusu> on 08/09/2017.
@@ -33,7 +32,7 @@ public class BlockPhenomena extends BlockBase {
 
 	public BlockPhenomena() {
 		super(LibNames.PHENOMENA, FixedMaterial.BREAK);
-		setDefaultState(getDefaultState().withProperty(State.ACTIVE, true));
+		setDefaultState(getDefaultState().withProperty(Properties.ACTIVE, true));
 		setHarvestLevel(Tool.PICK, ToolLevel.DIAMOND);
 		setHardness(4F);
 	}
@@ -56,31 +55,31 @@ public class BlockPhenomena extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		boolean power = state.getValue(State.ACTIVE);
+		boolean power = state.getValue(Properties.ACTIVE);
 		return !power ? EMPTY_BB : FULL_BLOCK_AABB;
 	}
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		boolean power = state.getValue(State.ACTIVE);
+		boolean power = state.getValue(Properties.ACTIVE);
 		return !power ? NULL_AABB : FULL_BLOCK_AABB;
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(State.ACTIVE) ? 0 : 1;
+		return state.getValue(Properties.ACTIVE) ? 0 : 1;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(State.ACTIVE, meta == 0);
+		return getDefaultState().withProperty(Properties.ACTIVE, meta == 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer.Builder(this)
-				.add(State.ACTIVE)
-				.add(Properties.AnimationProperty)
+				.add(Properties.ACTIVE)
+				.add(net.minecraftforge.common.property.Properties.AnimationProperty)
 				.build();
 	}
 
@@ -91,7 +90,7 @@ public class BlockPhenomena extends BlockBase {
 
 	@Override
 	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(State.ACTIVE) ? 3 : 0;
+		return state.getValue(Properties.ACTIVE) ? 3 : 0;
 	}
 
 	@Override

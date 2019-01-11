@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.helper.RayTraceHelper;
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileDilaton;
@@ -60,7 +60,7 @@ public class BlockDilaton extends BlockBaseFacing {
 
 	public BlockDilaton() {
 		super(LibNames.DILATON, Material.ROCK);
-		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(State.ACTIVE, false));
+		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Properties.ACTIVE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(5F);
 		setResistance(2000F);
@@ -73,9 +73,9 @@ public class BlockDilaton extends BlockBaseFacing {
 			if(pos.offset(facing).equals(fromPos)) {
 				IBlockState from = world.getBlockState(fromPos);
 				if(from.getBlock() == ModBlocks.DILATON_EXTENSION
-						&& state.getValue(State.ACTIVE)
+						&& state.getValue(Properties.ACTIVE)
 						&& from.getValue(BlockDirectional.FACING).getOpposite() == facing) {
-					world.setBlockState(pos, state.withProperty(State.ACTIVE, false));
+					world.setBlockState(pos, state.withProperty(Properties.ACTIVE, false));
 					world.setBlockToAir(fromPos);
 				}
 			} else {
@@ -95,7 +95,7 @@ public class BlockDilaton extends BlockBaseFacing {
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		ItemStack stack = placer.getHeldItem(hand);
 		boolean active = !stack.isEmpty() && stack.getOrCreateSubCompound("dilaton").getBoolean("active");
-		return defaultState().withProperty(BlockDirectional.FACING, facing).withProperty(State.ACTIVE, active);
+		return defaultState().withProperty(BlockDirectional.FACING, facing).withProperty(Properties.ACTIVE, active);
 	}
 
 	@Override
@@ -108,10 +108,10 @@ public class BlockDilaton extends BlockBaseFacing {
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
 		this.onBlockHarvested(world, pos, state, player);
 		RayTraceResult result = RayTraceHelper.tracePlayerHighlight(player);
-		boolean active = state.getValue(State.ACTIVE);
+		boolean active = state.getValue(Properties.ACTIVE);
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		IBlockState newState = !active && RayTraceHelper.isHittingSideOfBlock(result, facing, world, state, pos)
-				? state.withProperty(State.ACTIVE, true)
+				? state.withProperty(Properties.ACTIVE, true)
 				: net.minecraft.init.Blocks.AIR.getDefaultState();
 		return world.setBlockState(pos, newState, world.isRemote ? 11 : 3);
 	}
@@ -119,8 +119,8 @@ public class BlockDilaton extends BlockBaseFacing {
 	@Override
 	public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
 		IBlockState blockState = worldIn.getBlockState(pos);
-		boolean active = blockState.getBlock() == ModBlocks.DILATON && blockState.getValue(State.ACTIVE);
-		boolean unactive = !state.getValue(State.ACTIVE);
+		boolean active = blockState.getBlock() == ModBlocks.DILATON && blockState.getValue(Properties.ACTIVE);
+		boolean unactive = !state.getValue(Properties.ACTIVE);
 		if(active && unactive) {
 			ModBlocks.DILATON_EXTENSION.harvestBlock(worldIn, player, pos, state, te, stack);
 		} else {
@@ -144,14 +144,14 @@ public class BlockDilaton extends BlockBaseFacing {
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		ItemStack stack = new ItemStack(this);
-		stack.getOrCreateSubCompound("dilaton").setBoolean("active", state.getValue(State.ACTIVE));
+		stack.getOrCreateSubCompound("dilaton").setBoolean("active", state.getValue(Properties.ACTIVE));
 		return stack;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		if(state.getValue(State.ACTIVE)) {
+		if(state.getValue(Properties.ACTIVE)) {
 			boolean powered = world.isBlockPowered(pos);
 			EnumFacing facing = state.getValue(BlockDirectional.FACING);
 			Vector3 posVec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ()).add(0.5D);
@@ -171,7 +171,7 @@ public class BlockDilaton extends BlockBaseFacing {
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int i = state.getValue(BlockDirectional.FACING).ordinal();
-		if(state.getValue(State.ACTIVE)) {
+		if(state.getValue(Properties.ACTIVE)) {
 			i |= 8;
 		}
 		return i;
@@ -180,17 +180,17 @@ public class BlockDilaton extends BlockBaseFacing {
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 		EnumFacing enumfacing = EnumFacing.values()[meta & 7];
-		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(State.ACTIVE, (meta & 8) > 0);
+		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(Properties.ACTIVE, (meta & 8) > 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING, State.ACTIVE);
+		return new BlockStateContainer(this, BlockDirectional.FACING, Properties.ACTIVE);
 	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return state.getValue(State.ACTIVE) ? BB_BASE.get(state.getValue(BlockDirectional.FACING)) : FULL_BLOCK_AABB;
+		return state.getValue(Properties.ACTIVE) ? BB_BASE.get(state.getValue(BlockDirectional.FACING)) : FULL_BLOCK_AABB;
 	}
 
 	@Override

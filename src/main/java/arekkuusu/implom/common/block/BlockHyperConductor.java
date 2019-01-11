@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.state.State;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.FixedMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
@@ -44,7 +44,7 @@ public class BlockHyperConductor extends BlockBase {
 
 	public BlockHyperConductor() {
 		super(LibNames.HYPER_CONDUCTOR, FixedMaterial.BREAK);
-		setDefaultState(getDefaultState().withProperty(State.POWER, 0));
+		setDefaultState(getDefaultState().withProperty(Properties.POWER, 0));
 		setHarvestLevel(Tool.PICK, ToolLevel.IRON);
 		setHardness(1F);
 	}
@@ -66,7 +66,7 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		getTile(TileHyperConductor.class, world, pos).ifPresent(conductor -> {
-			if(state.getValue(State.POWER) > 0) {
+			if(state.getValue(Properties.POWER) > 0) {
 				conductor.hyperInduceAtmosphere();
 			}
 		});
@@ -85,17 +85,17 @@ public class BlockHyperConductor extends BlockBase {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(State.POWER);
+		return state.getValue(Properties.POWER);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(State.POWER, meta);
+		return getDefaultState().withProperty(Properties.POWER, meta);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, State.POWER);
+		return new BlockStateContainer(this, Properties.POWER);
 	}
 
 	@Override
