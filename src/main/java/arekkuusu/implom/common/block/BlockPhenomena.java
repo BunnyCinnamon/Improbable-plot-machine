@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.common.block.tile.TilePhenomena;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.Block;
@@ -31,7 +31,7 @@ public class BlockPhenomena extends BlockBase {
 	private static final AxisAlignedBB EMPTY_BB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
 	public BlockPhenomena() {
-		super(LibNames.PHENOMENA, FixedMaterial.BREAK);
+		super(LibNames.PHENOMENA, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(Properties.ACTIVE, true));
 		setHarvestLevel(Tool.PICK, ToolLevel.DIAMOND);
 		setHardness(4F);

@@ -7,9 +7,8 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.capability.relativity.RelativityHelper;
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.common.block.tile.TileAlternator;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.state.BlockStateContainer;
@@ -25,7 +24,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-import java.util.UUID;
 
 /*
  * Created by <Arekkuusu> on 23/01/2018.
@@ -35,11 +33,20 @@ import java.util.UUID;
 public class BlockAlternator extends BlockBase {
 
 	public BlockAlternator() {
-		super(LibNames.ALTERNATOR, FixedMaterial.DONT_MOVE);
+		super(LibNames.ALTERNATOR, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(Properties.ACTIVE, true));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
 		setLightLevel(0.2F);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if(!worldIn.isRemote) {
+			getTile(TileAlternator.class, worldIn, pos).ifPresent(tile -> {
+				tile.fromItemStack(stack);
+			});
+		}
 	}
 
 	@Override
@@ -50,10 +57,18 @@ public class BlockAlternator extends BlockBase {
 	}
 
 	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		getTile(TileAlternator.class, worldIn, pos).ifPresent(tile -> {
+			tile.wrapper.instance.remove(worldIn, pos, null);
+		});
+		super.breakBlock(worldIn, pos, state);
+	}
+
+	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if(!world.isRemote) {
-			getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
-				boolean active = alternator.areAllActive();
+			getTile(TileAlternator.class, world, pos).ifPresent(tile -> {
+				boolean active = tile.areAllActive();
 				if(active != state.getValue(Properties.ACTIVE)) {
 					world.setBlockState(pos, state.withProperty(Properties.ACTIVE, active));
 					for(EnumFacing facing : EnumFacing.values()) {
@@ -71,30 +86,10 @@ public class BlockAlternator extends BlockBase {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if(!world.isRemote) {
-			getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
-				RelativityHelper.getCapability(alternator).ifPresent(handler -> {
-					if(!handler.getKey().isPresent()) {
-						RelativityHelper.getCapability(stack).ifPresent(subHandler -> {
-							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
-							subHandler.getKey().ifPresent(handler::setKey);
-						});
-					}
-				});
-			});
-		}
-	}
-
-	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		ItemStack stack = super.getItem(world, pos, state);
-		getTile(TileAlternator.class, world, pos).ifPresent(alternator -> {
-			RelativityHelper.getCapability(alternator).ifPresent(handler -> {
-				handler.getKey().ifPresent(key -> {
-					RelativityHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
-				});
-			});
+		getTile(TileAlternator.class, world, pos).ifPresent(tile -> {
+			tile.toItemStack(stack);
 		});
 		return stack;
 	}
@@ -158,5 +153,9 @@ public class BlockAlternator extends BlockBase {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileAlternator();
+	}
+
+	public static class Constants {
+		public static final String NBT_POSITIONS = "positions";
 	}
 }

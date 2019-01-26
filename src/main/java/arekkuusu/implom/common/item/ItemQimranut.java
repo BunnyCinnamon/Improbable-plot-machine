@@ -7,10 +7,11 @@
  */
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.api.capability.worldaccess.WorldAccessHelper;
-import arekkuusu.implom.api.capability.worldaccess.WorldAccessStackProvider;
-import arekkuusu.implom.api.capability.worldaccess.data.IWorldAccess;
+import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
+import arekkuusu.implom.api.helper.WorldAccessHelper;
 import arekkuusu.implom.common.block.ModBlocks;
+import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
+import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;
 import arekkuusu.implom.common.lib.LibMod;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -27,7 +28,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 24/12/2017.
@@ -44,15 +44,13 @@ public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		WorldAccessHelper.getCapability(stack).flatMap(IWorldAccess::getKey).ifPresent(uuid -> {
-			addInformation(uuid, tooltip);
-		});
+
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return WorldAccessStackProvider.create(stack);
+		return new WorldAccessProvider(new WorldAccessNBTDataCapability());
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -60,11 +58,10 @@ public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 		ItemStack stack = event.getItemStack();
 		if(stack.getItem() == this) {
 			if(!event.getWorld().isRemote) {
-				WorldAccessHelper.getCapability(stack).ifPresent(handler -> {
-					if(!handler.getKey().isPresent()) handler.setKey(UUID.randomUUID());
-					handler.setFacing(event.getFace());
-					handler.setPos(event.getPos());
-					handler.setWorld(event.getWorld());
+				WorldAccessHelper.getCapability(stack).map(IWorldAccessNBTDataCapability::get).ifPresent(data -> {
+					data.setWorld(event.getWorld());
+					data.setPos(event.getPos());
+					data.setFacing(event.getFace());
 				});
 			}
 			event.setCanceled(true);

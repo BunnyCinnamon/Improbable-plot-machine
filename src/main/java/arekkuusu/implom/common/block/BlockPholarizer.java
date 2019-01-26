@@ -1,6 +1,6 @@
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
@@ -46,7 +46,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 	).build();
 
 	public BlockPholarizer() {
-		super(LibNames.PHOLARIZER, FixedMaterial.DONT_MOVE);
+		super(LibNames.PHOLARIZER, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN)
 				.withProperty(POLARIZATION, Polarization.NEGATIVE));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);

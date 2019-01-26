@@ -27,9 +27,6 @@ import java.util.stream.Stream;
 @SuppressWarnings("unused")
 public final class NBTHelper {
 
-	private NBTHelper() {
-	}
-
 	public static NBTTagCompound fixNBT(ItemStack stack) {
 		NBTTagCompound tagCompound = stack.getTagCompound();
 		if(tagCompound == null) {

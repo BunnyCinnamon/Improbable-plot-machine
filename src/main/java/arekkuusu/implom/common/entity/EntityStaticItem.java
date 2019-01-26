@@ -98,7 +98,7 @@ public class EntityStaticItem extends EntityItem {
 			if(hook < 0) return;
 
 			if(hook == 1 || i <= 0 || player.inventory.addItemStackToInventory(itemstack)) {
-				net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerItemPickupEvent(player, this);
+				net.minecraftforge.fml.common.FMLCommonHandler.instance().firePlayerItemPickupEvent(player, this, itemstack.copy());
 				player.onItemPickup(this, i);
 
 				if(itemstack.isEmpty()) {

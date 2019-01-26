@@ -55,7 +55,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 							getInventory(in, facing).ifPresent(invIn -> {
 								ItemStack stack = transferOut(invOut, true);
 								if(!stack.isEmpty() && transferIn(invIn, stack, true)) {
-									if(transferIn(invIn, transferOut(invOut, false), false)) cooldown = 5;
+									if(transferIn(invIn, transferOut(invOut, false), false)) cooldown = 10;
 								}
 							});
 						});

@@ -28,8 +28,8 @@ public final class SpriteLibrary {
 	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteManager.load(
 			TextureLocation.Blocks(), "quantum_mirror", 9, 1
 	);
-	public static final SpriteResource Q_SQUARED = SpriteManager.load(
-			TextureLocation.Blocks(), "q_squared"
+	public static final SpriteResource QUANTA = SpriteManager.load(
+			TextureLocation.Blocks(), "quanta"
 	);
 	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteManager.load(
 			TextureLocation.Model(), "eye_of_schrodinger_layer"

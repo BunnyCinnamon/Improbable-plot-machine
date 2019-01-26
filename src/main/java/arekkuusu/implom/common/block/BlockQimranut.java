@@ -7,8 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.capability.worldaccess.WorldAccessHelper;
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.BlockBaker;
@@ -43,7 +42,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 /*
  * Created by <Arekkuusu> on 23/12/2017.
@@ -67,7 +65,7 @@ public class BlockQimranut extends BlockBaseFacing {
 			.build();
 
 	public BlockQimranut() {
-		super(LibNames.QIMRANUT, FixedMaterial.BREAK);
+		super(LibNames.QIMRANUT, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
@@ -77,15 +75,8 @@ public class BlockQimranut extends BlockBaseFacing {
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
-			getTile(TileQimranut.class, world, pos).ifPresent(qimranut -> {
-				WorldAccessHelper.getCapability(qimranut).ifPresent(handler -> {
-					if(!handler.getKey().isPresent()) {
-						WorldAccessHelper.getCapability(stack).ifPresent(subHandler -> {
-							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
-							subHandler.getKey().ifPresent(handler::setKey);
-						});
-					}
-				});
+			getTile(TileQimranut.class, world, pos).ifPresent(tile -> {
+				tile.fromItemStack(stack);
 			});
 		}
 	}
@@ -98,12 +89,8 @@ public class BlockQimranut extends BlockBaseFacing {
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		ItemStack stack = super.getItem(world, pos, state);
-		getTile(TileQimranut.class, world, pos).ifPresent(qimranut -> {
-			WorldAccessHelper.getCapability(qimranut).ifPresent(handler -> {
-				handler.getKey().ifPresent(key -> {
-					WorldAccessHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
-				});
-			});
+		getTile(TileQimranut.class, world, pos).ifPresent(tile -> {
+			tile.toItemStack(stack);
 		});
 		return stack;
 	}
@@ -170,5 +157,9 @@ public class BlockQimranut extends BlockBaseFacing {
 				)).setParticle(ResourceLibrary.QIMRANUT_BASE)
 		);
 		ModelHandler.registerModel(this, 0, "");
+	}
+
+	public static class Constants {
+		public static final String NBT_WORLD_ACCESS = "worldaccess";
 	}
 }

@@ -7,15 +7,15 @@
  */
 package arekkuusu.implom.common.network;
 
-import arekkuusu.implom.api.capability.inventory.EntangledIItemHandler;
+import arekkuusu.implom.api.IPMApi;
+import arekkuusu.implom.api.capability.data.ItemStackNBTData;
+import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
 import arekkuusu.implom.common.block.tile.TilePhenomena;
 import arekkuusu.implom.common.lib.LibMod;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,26 +35,13 @@ public class PacketHandler {
 
 	public static final List<IPacketHandler> HANDLERS = Lists.newArrayList();
 
-	public static final IPacketHandler QUANTUM_SYNC_ALL = (compound, context) -> {
-		NBTTagList tags = (NBTTagList) compound.getTag("tags");
-		for(NBTBase nbt : tags) {
-			NBTTagCompound tag = (NBTTagCompound) nbt;
-			UUID uuid = tag.getUniqueId("uuid");
-			EntangledIItemHandler.getEntanglement(uuid).deserializeNBT(tag);
-		}
-	};
-
-	public static final IPacketHandler QUANTUM_SYNC = (compound, context) -> {
-		UUID uuid = compound.getUniqueId("uuid");
-		EntangledIItemHandler.getEntanglement(uuid).deserializeNBT(compound);
-	};
-
-	public static final IPacketHandler QUANTUM_CHANGE = (compound, context) -> {
-		ItemStack stack = new ItemStack((NBTTagCompound) compound.getTag("stack"));
-		UUID uuid = compound.getUniqueId("uuid");
-		int slot = compound.getInteger("slot");
-		EntangledIItemHandler.setEntanglementStack(uuid, stack, slot);
-	};
+	public static final IPacketHandler QUANTUM_MIRROR = ((compound, context) -> {
+		UUID uuid = compound.getUniqueId("key");
+		ItemStack stack = new ItemStack(compound.getCompoundTag("itemstack"));
+		ItemStackNBTData data = (ItemStackNBTData) IPMApi.getInstance().dataMap.computeIfAbsent(uuid, (k) -> Maps.newHashMap())
+				.computeIfAbsent(IInventoryNBTDataCapability.class, (k) -> new ItemStackNBTData());
+		data.setStack(stack);
+	});
 
 	public static final IPacketHandler PHENOMENA = (compound, context) -> {
 		BlockPos pos = new BlockPos(
@@ -77,11 +64,8 @@ public class PacketHandler {
 	public static void init() {
 		register(ServerToClientPacket.Handler.class, ServerToClientPacket.class, Side.CLIENT);
 		register(ClientToServerPacket.Handler.class, ClientToServerPacket.class, Side.SERVER);
-
-		HANDLERS.add(QUANTUM_SYNC_ALL);
-		HANDLERS.add(QUANTUM_SYNC);
-		HANDLERS.add(QUANTUM_CHANGE);
 		HANDLERS.add(PHENOMENA);
+		HANDLERS.add(QUANTUM_MIRROR);
 	}
 
 	private static <H extends IMessageHandler<M, IMessage>, M extends IMessage> void register(Class<H> handler, Class<M> message, Side side) {

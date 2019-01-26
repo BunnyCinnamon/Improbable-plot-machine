@@ -1,10 +1,5 @@
 package arekkuusu.implom.common.entity;
 
-import arekkuusu.implom.api.capability.energy.data.ILumen;
-import arekkuusu.implom.common.IPM;
-import arekkuusu.implom.common.handler.data.ModCapability;
-import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
-import net.katsstuff.teamnightclipse.mirror.data.Quat;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
@@ -12,45 +7,36 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
 
 public class EntityLumen extends Entity {
 
-	private static final DataParameter<Integer> LUMEN = EntityDataManager.createKey(EntityLumen.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> NEUTRONS = EntityDataManager.createKey(EntityLumen.class, DataSerializers.VARINT);
 
 	public static EntityLumen spawn(World world, Vector3 pos, int neutrons) {
 		EntityLumen lumen = new EntityLumen(world);
-		Optional.ofNullable(lumen.getCapability(ModCapability.LUMEN_CAPABILITY, null)).ifPresent(l -> l.set(neutrons));
 		lumen.setPosition(pos.x(), pos.y(), pos.z());
 		world.spawnEntity(lumen);
 		return lumen;
 	}
 
-	private final ILumen handler;
 	private int tick;
 
 	public EntityLumen(World world) {
 		super(world);
-		this.handler = new LumenEntityWrapper(this);
 		this.setNoGravity(true);
 		this.setSize(0.2F, 0.2F);
 	}
 
 	@Override
 	protected void entityInit() {
-		dataManager.register(LUMEN, 0);
+		dataManager.register(NEUTRONS, 0);
 	}
 
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-		if(world.isRemote) {
+		/*if(world.isRemote) {
 			int lumen = handler.get();
 			float scale = 1.5F * ((float) lumen / handler.getMax());
 			Vector3 pos = Vector3.apply(posX, posY, posZ);
@@ -68,9 +54,9 @@ public class EntityLumen extends Entity {
 			if(handler.get() <= 0) setDead();
 			else {
 				double weight = (double) handler.get() / (double) handler.getMax();
-				if(tick++ % (int)(45 - 20 * weight) == 0) handler.drain(1, true);
+				if(tick++ % (int) (45 - 20 * weight) == 0) handler.drain(1, true);
 			}
-		}
+		}*/
 		move(MoverType.SELF, motionX, motionY, motionZ);
 	}
 
@@ -84,19 +70,6 @@ public class EntityLumen extends Entity {
 		return false;
 	}
 
-	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return ModCapability.LUMEN_CAPABILITY == capability || super.hasCapability(capability, facing);
-	}
-
-	@Nullable
-	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return ModCapability.LUMEN_CAPABILITY == capability
-				? ModCapability.LUMEN_CAPABILITY.cast(handler)
-				: super.getCapability(capability, facing);
-	}
-
 	public void setMotion(Vector3 vec) {
 		this.motionX = vec.x();
 		this.motionY = vec.y();
@@ -105,36 +78,11 @@ public class EntityLumen extends Entity {
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-		handler.set(compound.getInteger("lumen"));
+
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-		compound.setInteger("lumen", handler.get());
-	}
 
-	public static class LumenEntityWrapper implements ILumen {
-
-		private final EntityLumen lumen;
-
-		LumenEntityWrapper(EntityLumen lumen) {
-			this.lumen = lumen;
-		}
-
-		@Override
-		public int get() {
-			return lumen.dataManager.get(LUMEN);
-		}
-
-		@Override
-		public void set(int neutrons) {
-			if(neutrons < 0) neutrons = 0;
-			lumen.dataManager.set(LUMEN, neutrons);
-		}
-
-		@Override
-		public int getMax() {
-			return 15;
-		}
 	}
 }

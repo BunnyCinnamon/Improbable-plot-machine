@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
@@ -43,7 +43,7 @@ public class BlockHyperConductor extends BlockBase {
 	private static final AxisAlignedBB BB = new AxisAlignedBB(0.25D, 0.25D, 0.25D, 0.75D, 0.75D, 0.75D);
 
 	public BlockHyperConductor() {
-		super(LibNames.HYPER_CONDUCTOR, FixedMaterial.BREAK);
+		super(LibNames.HYPER_CONDUCTOR, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(Properties.POWER, 0));
 		setHarvestLevel(Tool.PICK, ToolLevel.IRON);
 		setHardness(1F);

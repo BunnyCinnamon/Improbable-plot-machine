@@ -7,10 +7,10 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.capability.relativity.RelativityHelper;
+import arekkuusu.implom.api.helper.PositionsHelper;
 import arekkuusu.implom.api.helper.RayTraceHelper;
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
@@ -47,7 +47,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 /*
  * Created by <Arekkuusu> on 16/01/2018.
@@ -68,7 +67,7 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	).build();
 
 	public BlockMechanicalTranslocator() {
-		super(LibNames.MECHANICAL_TRANSLOCATOR, FixedMaterial.BREAK);
+		super(LibNames.MECHANICAL_TRANSLOCATOR, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Properties.ACTIVE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
@@ -77,17 +76,18 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
-			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(translocator -> {
-				RelativityHelper.getCapability(translocator).ifPresent(handler -> {
-					if(!handler.getKey().isPresent()) {
-						RelativityHelper.getCapability(stack).ifPresent(subHandler -> {
-							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
-							subHandler.getKey().ifPresent(handler::setKey);
-						});
-					}
-				});
+			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> {
+				tile.fromItemStack(stack);
 			});
 		}
+	}
+
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		getTile(TileMechanicalTranslocator.class, worldIn, pos).ifPresent(tile -> {
+			tile.wrapper.instance.remove(worldIn, pos, tile.getFacingLazy());
+		});
+		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
@@ -98,12 +98,8 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		ItemStack stack = super.getItem(world, pos, state);
-		getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(translocator -> {
-			RelativityHelper.getCapability(translocator).ifPresent(handler -> {
-				handler.getKey().ifPresent(key -> {
-					RelativityHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
-				});
-			});
+		getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> {
+			tile.toItemStack(stack);
 		});
 		return stack;
 	}
@@ -111,18 +107,12 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this && !pos.offset(state.getValue(BlockDirectional.FACING)).equals(fromPos)) {
-			getTile(TileMechanicalTranslocator.class, world, pos)
-					.filter(TileMechanicalTranslocator::isTransferable)
-					.ifPresent(tile -> {
-						boolean wasPowered = tile.isPowered();
-						boolean isPowered = world.isBlockPowered(pos);
-						if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-							tile.setPowered(isPowered);
-							if(isPowered) {
-								tile.activate();
-							}
-						}
-					});
+			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> {
+				boolean isPowered = world.isBlockPowered(pos);
+				if(isPowered || block.getDefaultState().canProvidePower()) {
+					tile.activate();
+				}
+			});
 		}
 	}
 
@@ -130,7 +120,8 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		boolean success = state.getValue(BlockDirectional.FACING).getOpposite() == facing && player.getHeldItem(hand).isEmpty();
 		if(!world.isRemote && success) {
-			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> tile.setTransferable(!tile.isTransferable()));
+			boolean transferable = state.getValue(Properties.ACTIVE);
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(Properties.ACTIVE, !transferable));
 		}
 		return success;
 	}
@@ -214,5 +205,11 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 				).setParticle(ResourceLibrary.MECHANICAL_TRANSLOCATOR)
 		);
 		ModelHandler.registerModel(this, 0, "");
+	}
+
+	public static class Constants {
+		public static final String NBT_POSITIONS = "positions";
+		public static final String NBT_POWERED = "powered";
+		public static final String NBT_INDEX = "index";
 	}
 }

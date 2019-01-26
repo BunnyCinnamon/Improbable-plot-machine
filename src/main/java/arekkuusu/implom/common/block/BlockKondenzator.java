@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
@@ -18,7 +18,6 @@ import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,15 +29,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.TRSRTransformation;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.*;
 
 /*
  * Created by <Arekkuusu> on 8/9/2018.
@@ -54,11 +49,10 @@ public class BlockKondenzator extends BlockBaseFacing {
 	).build();
 
 	public BlockKondenzator() {
-		super(LibNames.KONDENZATOR, FixedMaterial.DONT_MOVE);
+		super(LibNames.KONDENZATOR, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
-		MinecraftForge.EVENT_BUS.register(BlockKondenzator.class);
 	}
 
 	@Override
@@ -116,66 +110,10 @@ public class BlockKondenzator extends BlockBaseFacing {
 		ModelHandler.registerModel(this, 0, "");
 	}
 
-	public static final Map<BlockPos, Progress> MUTATION_PROGRESS = new HashMap<>();
-
-	@SubscribeEvent
-	public static void updateProgress(TickEvent.WorldTickEvent event) {
-		Iterator<Map.Entry<BlockPos, Progress>> iterator = MUTATION_PROGRESS.entrySet().iterator();
-		while(iterator.hasNext()) {
-			Map.Entry<BlockPos, Progress> entry = iterator.next();
-			Progress progress = entry.getValue();
-			BlockPos pos = entry.getKey();
-			IBlockState state = progress.world.getBlockState(pos);
-			if(state.getMaterial() == Material.GLASS && state.getBlock() != ModBlocks.IMBUED_QUARTZ) {
-				if(progress.timer > 0 && progress.lastUpdated++ >= 240) {
-					progress.timer -= 20;
-					if(progress.timer < 0) progress.timer = 0;
-					progress.lastUpdated = 0;
-				}
-			} else iterator.remove();
-		}
-	}
-
-	public static class Progress {
-		Set<BlockPos> from = new HashSet<>();
-		int lastUpdated;
-		World world;
-		int timer;
-
-		public int getTimer() {
-			return timer;
-		}
-
-		public int getMultiplier() {
-			return from.size();
-		}
-	}
-
-	public static Progress setProgress(TileKondenzator tile, int progress) {
-		MUTATION_PROGRESS.compute(tile.getTargetPos(), (ignored, p) -> {
-			if(p == null) p = new Progress();
-			if(progress > 0) {
-				p.from.add(tile.getPos());
-				p.lastUpdated = 0;
-				p.world = tile.getWorld();
-				p.timer = progress;
-			} else {
-				p.from.remove(tile.getPos());
-				if(p.from.isEmpty()) p = null;
-			}
-			return p;
-		});
-		return getProgress(tile.getTargetPos());
-	}
-
-	public static Progress getProgress(BlockPos pos) {
-		return MUTATION_PROGRESS.getOrDefault(pos, new Progress());
-	}
-
 	public static class Constants {
 		public static final int LUMEN_CAPACITY = 100;
-		public static final int CRYSTAL_FORMATION = LUMEN_CAPACITY;
-		public static final int PROGRESS_INTERVAL = 40;
-		public static final int REGRESSION_INTERVAL = 80;
+		public static final int IMBUING_TIME = 100;
+		public static final int IMBUING_INCREASE_INTERVAL = 40;
+		public static final int IMBUING_DECREASE_INTERVAL = 80;
 	}
 }

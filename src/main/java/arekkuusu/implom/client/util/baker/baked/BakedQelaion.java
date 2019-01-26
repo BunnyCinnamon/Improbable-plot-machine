@@ -7,9 +7,9 @@
  */
 package arekkuusu.implom.client.util.baker.baked;
 
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.state.enums.Direction;
 import arekkuusu.implom.client.util.baker.BlockBaker;
-import arekkuusu.implom.common.block.BlockQelaion;
 import com.google.common.collect.ImmutableList;
 import net.katsstuff.teamnightclipse.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
@@ -52,7 +52,7 @@ public class BakedQelaion extends BakedBrightBase {
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state) {
 		return quadCache.compute(state, quads -> {
-			boolean hasNode = state != null && state.getValue(BlockQelaion.HAS_NODE);
+			boolean hasNode = state != null && state.getValue(Properties.ACTIVE);
 			VertexFormat format = state != null ? format() : DefaultVertexFormats.ITEM;
 			quads.addAll(BlockBaker.QELAION.getQuads());
 			quads.addAll(QuadBuilder.withFormat(format)
@@ -63,7 +63,7 @@ public class BakedQelaion extends BakedBrightBase {
 					.bakeJava()
 			);
 			if(state instanceof IExtendedBlockState) {
-				Direction direction = ((IExtendedBlockState) state).getValue(Direction.DIR_UNLISTED);
+				Direction direction = ((IExtendedBlockState) state).getValue(Properties.DIR_UNLISTED);
 				if(direction != null && direction != Direction.NON) {
 					QuadBuilder builder = QuadBuilder.withFormat(format)
 							.setFrom(2, 2, 2)

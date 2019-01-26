@@ -7,20 +7,14 @@
  */
 package arekkuusu.implom.common.network;
 
-import arekkuusu.implom.api.capability.inventory.EntangledIItemHandler;
-import arekkuusu.implom.api.capability.quantum.data.QuantumStackData;
+import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
 import arekkuusu.implom.common.block.tile.TilePhenomena;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-
-import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 10/12/2017.
@@ -28,32 +22,12 @@ import java.util.UUID;
  */
 public final class PacketHelper {
 
-	public static void sendQuantumChange(UUID uuid, ItemStack stack, int slot) {
+	public static void sendQuantumMirrorPacket(IInventoryNBTDataCapability instance) {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setTag("stack", stack.writeToNBT(new NBTTagCompound()));
-		tag.setUniqueId("uuid", uuid);
-		tag.setInteger("slot", slot);
-		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.QUANTUM_CHANGE, tag));
-	}
-
-	public static void sendQuantumChanges(UUID uuid) {
-		QuantumStackData data = EntangledIItemHandler.getEntanglement(uuid);
-		NBTTagCompound tag = data.serializeNBT();
-		tag.setUniqueId("uuid", uuid);
-		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.QUANTUM_SYNC, tag));
-	}
-
-	public static void syncQuantumTo(EntityPlayerMP player) {
-		NBTTagCompound compound = new NBTTagCompound();
-		NBTTagList tags = new NBTTagList();
-		EntangledIItemHandler.getEntanglements().forEach((uuid, data) -> {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setTag("list", data.serialize());
-			tag.setUniqueId("uuid", uuid);
-			tags.appendTag(tag);
-		});
-		compound.setTag("tags", tags);
-		PacketHandler.NETWORK.sendTo(new ServerToClientPacket(PacketHandler.QUANTUM_SYNC_ALL, compound), player);
+		tag.setTag("itemstack", instance.getStackInSlot(0).serializeNBT());
+		assert instance.getKey() != null; //Don't
+		tag.setUniqueId("key", instance.getKey());
+		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.QUANTUM_MIRROR, tag));
 	}
 
 	public static void sendPhenomenaPacket(TilePhenomena phenomena) {

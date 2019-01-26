@@ -7,9 +7,10 @@
  */
 package arekkuusu.implom.common;
 
-import arekkuusu.implom.common.entity.ModEntities;
-import arekkuusu.implom.common.handler.data.ModCapability;
-import arekkuusu.implom.common.handler.data.WorldQuantumData;
+import arekkuusu.implom.api.IPMApi;
+import arekkuusu.implom.common.api.ApiInstance;
+import arekkuusu.implom.common.handler.data.capability.ModCapability;
+import arekkuusu.implom.common.handler.data.WorldNBTData;
 import arekkuusu.implom.common.handler.gen.ModGen;
 import arekkuusu.implom.common.lib.LibMod;
 import arekkuusu.implom.common.network.GuiHandler;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.common.Mod.InstanceFactory;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,11 +34,11 @@ import org.apache.logging.log4j.Logger;
  * It's distributed as part of Improbable plot machine.
  */
 @Mod( // *evil chuckles*
-	modid = LibMod.MOD_ID,
-	name = LibMod.MOD_NAME,
-	version = LibMod.MOD_VERSION,
-	dependencies = LibMod.MOD_DEPENDENCY,
-	acceptedMinecraftVersions = "[1.12.2]"
+		modid = LibMod.MOD_ID,
+		name = LibMod.MOD_NAME,
+		version = LibMod.MOD_VERSION,
+		dependencies = LibMod.MOD_DEPENDENCY,
+		acceptedMinecraftVersions = "[1.12.2]"
 )
 public final class IPM {
 
@@ -49,7 +51,8 @@ public final class IPM {
 		FluidRegistry.enableUniversalBucket();
 	}
 
-	private IPM() {}
+	private IPM() {
+	}
 
 	public static IProxy getProxy() {
 		return proxy;
@@ -63,10 +66,10 @@ public final class IPM {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		proxy.preInit(event);
-		WorldQuantumData.init(event.getAsmData());
+		IPMApi.setInstance(new ApiInstance());
+		WorldNBTData.init(event.getAsmData());
 		PacketHandler.init();
 		ModCapability.init();
-		ModEntities.init();
 		ModTheorems.init();
 		ModGen.init();
 	}
@@ -75,5 +78,10 @@ public final class IPM {
 	public void init(FMLInitializationEvent event) {
 		proxy.init(event);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+	}
+
+	@EventHandler
+	public void close(FMLServerStoppedEvent event) {
+		IPMApi.getInstance().unloadWorld();
 	}
 }

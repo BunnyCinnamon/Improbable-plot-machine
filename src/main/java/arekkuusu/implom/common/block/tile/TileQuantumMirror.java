@@ -7,37 +7,60 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.inventory.data.EntangledTileWrapper;
+import arekkuusu.implom.api.capability.INBTDataTransferable;
+import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
+import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.common.IPM;
-import arekkuusu.implom.common.block.BlockQuantumMirror;
+import arekkuusu.implom.common.handler.data.capability.nbt.InventoryNBTDataCapability;
+import arekkuusu.implom.common.handler.data.capability.provider.InventoryNBTProvider;
+import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.network.PacketHelper;
 import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.ItemHandlerHelper;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 /**
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileQuantumMirror extends TileQuantumInventoryBase implements ITickable {
+public class TileQuantumMirror extends TileBase implements ITickable, INBTDataTransferable {
 
-	private boolean dirty;
+	public final InventoryNBTProvider wrapper = new InventoryNBTProvider(new InventoryNBTDataCapability() {
 
-	@Override
-	public EntangledTileWrapper createHandler() {
-		return new EntangledTileWrapper<TileQuantumMirror>(this, getCapacity()) {
-			@Override
-			protected void onChange(int slot) {
-				tile.dirty = true;
+		@Override
+		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+			return stack.getItem() != ModItems.QUANTUM_MIRROR;
+		}
+
+		@Override
+		public void onChange(ItemStack old) {
+			if(old.getItem() != getStackInSlot(0).getItem()) {
+				if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+					PacketHelper.sendQuantumMirrorPacket(wrapper.instance);
+				}
 			}
-		};
-	}
+		}
+
+		@Override
+		public void setKey(@Nullable UUID uuid) {
+			super.setKey(uuid);
+			markDirty();
+			sync();
+		}
+	});
 
 	@Override
 	public void update() {
@@ -45,19 +68,12 @@ public class TileQuantumMirror extends TileQuantumInventoryBase implements ITick
 			Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 			IPM.getProxy().spawnSpeck(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
 		}
-		if(!world.isRemote && dirty) {
-			handler.getKey().ifPresent(uuid -> {
-				if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-					PacketHelper.sendQuantumChanges(uuid);
-				}
-			});
-			dirty = false;
-		}
 	}
 
 	public void takeItem(EntityPlayer player) {
 		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
-		ItemStack contained = handler.extractItem(0, Integer.MAX_VALUE, false);
+		ItemStack contained = wrapper.instance.getStackInSlot(0);
+		wrapper.instance.setStackInSlot(0, ItemStack.EMPTY);
 		if(stack.isEmpty()) {
 			player.setHeldItem(EnumHand.MAIN_HAND, contained);
 		} else {
@@ -66,12 +82,53 @@ public class TileQuantumMirror extends TileQuantumInventoryBase implements ITick
 	}
 
 	@Override
-	public int getCapacity() {
-		return BlockQuantumMirror.SLOTS;
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return wrapper.hasCapability(capability, facing) || super.hasCapability(capability, facing);
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		return wrapper.hasCapability(capability, facing)
+				? wrapper.getCapability(capability, facing)
+				: super.getCapability(capability, facing);
+	}
+
+	@Override
+	void writeNBT(NBTTagCompound compound) {
+		compound.setTag("itemstack", wrapper.serializeNBT());
+	}
+
+	@Override
+	void readNBT(NBTTagCompound compound) {
+		wrapper.deserializeNBT(compound.getCompoundTag("itemstack"));
 	}
 
 	@Override
 	public boolean shouldRenderInPass(int pass) {
 		return pass == 0 || pass == 1;
+	}
+
+	@Override
+	public void init(NBTTagCompound compound) {
+		boolean noKey = !compound.hasUniqueId("key");
+		boolean override = wrapper.instance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.instance.getKey()));
+		if(override) {
+			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
+			UUID uuid = compound.getUniqueId("key");
+			wrapper.instance.setKey(uuid);
+		} else if(noKey) {
+			compound.setUniqueId("key", wrapper.instance.getKey());
+		}
+	}
+
+	@Override
+	public void fromItemStack(ItemStack stack) {
+		InventoryHelper.getCapability(stack).map(i -> (IInventoryNBTDataCapability) i).map(IInventoryNBTDataCapability::getKey).ifPresent(wrapper.instance::setKey);
+	}
+
+	@Override
+	public void toItemStack(ItemStack stack) {
+		InventoryHelper.getCapability(stack).map(i -> (IInventoryNBTDataCapability) i).ifPresent(instance -> instance.setKey(wrapper.instance.getKey()));
 	}
 }

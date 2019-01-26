@@ -7,10 +7,7 @@
  */
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.api.capability.energy.LumenHelper;
-import arekkuusu.implom.api.capability.energy.LumenStackProvider;
-import arekkuusu.implom.api.capability.energy.data.ComplexLumenStackWrapper;
-import arekkuusu.implom.common.block.BlockNeutronBattery.BatteryCapacitor;
+import arekkuusu.implom.common.handler.data.capability.provider.NeutronProvider;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -36,29 +33,12 @@ public class ItemNeutronBattery extends ItemBaseBlock implements IUUIDDescriptio
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		LumenHelper.getComplexCapability(stack).ifPresent(complex -> {
-			complex.getKey().ifPresent(uuid -> addInformation(uuid, tooltip));
-		});
+
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return LumenStackProvider.create(new ComplexLumenStackWrapper(stack, -1) {
-
-			@Override
-			public int getMax() {
-				return getCapacitor().getCapacity();
-			}
-
-			BatteryCapacitor getCapacitor() {
-				NBTTagCompound root = stack.getOrCreateSubCompound("BlockEntityTag");
-				if(root.hasKey(BatteryCapacitor.NBT_TAG)) {
-					return BatteryCapacitor.fromOrdinal(root.getInteger(BatteryCapacitor.NBT_TAG));
-				} else {
-					return BatteryCapacitor.WHITE;
-				}
-			}
-		});
+		return new NeutronProvider(null);
 	}
 }

@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +30,7 @@ import java.util.List;
 public class BlockMonolithic extends BlockBase {
 
 	public BlockMonolithic() {
-		super(LibNames.MONOLITHIC, FixedMaterial.DONT_MOVE);
+		super(LibNames.MONOLITHIC, IPMMaterial.MONOLITH);
 		setBlockUnbreakable();
 	}
 

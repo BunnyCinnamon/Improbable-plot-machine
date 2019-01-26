@@ -15,6 +15,7 @@ import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -34,7 +35,7 @@ public final class ModBlocks {
 	public static final Block SCHRODINGER_GLYPH = PLACE_HOLDER;
 	public static final Block BLINKER = PLACE_HOLDER;
 	public static final Block PHENOMENA = PLACE_HOLDER;
-	public static final Block Q_SQUARED = PLACE_HOLDER;
+	public static final Block QUANTA = PLACE_HOLDER;
 	public static final Block HYPER_CONDUCTOR = PLACE_HOLDER;
 	public static final Block ELECTRON = PLACE_HOLDER;
 	public static final Block ASHEN = PLACE_HOLDER;
@@ -55,11 +56,10 @@ public final class ModBlocks {
 	public static final Block LUMINIC_DECOMPRESSOR = PLACE_HOLDER;
 	public static final Block QUARTZ_CONSUMER = PLACE_HOLDER;
 	public static final Block LUMEN_COMPRESSOR = PLACE_HOLDER;
-	public static final Block DIFFERENTIATOR = PLACE_HOLDER;
-	public static final Block DIFFERENTIATOR_INTERCEPTOR = PLACE_HOLDER;
+	public static final Block SYMMETRIC_NEGATOR = PLACE_HOLDER;
+	public static final Block SYMMETRIC_EXTENSION = PLACE_HOLDER;
 	public static final Block KONDENZATOR = PLACE_HOLDER;
 	public static final Block IMBUED_QUARTZ = PLACE_HOLDER;
-	public static final Block CRYSTAL_SYNTHESIZER = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
@@ -70,7 +70,7 @@ public final class ModBlocks {
 		registry.register(new BlockSchrodingerGlyph());
 		registry.register(new BlockBlinker());
 		registry.register(new BlockPhenomena());
-		registry.register(new BlockQSquared());
+		registry.register(new BlockQuanta());
 		registry.register(new BlockHyperConductor());
 		registry.register(new BlockElectron());
 		registry.register(new BlockAshen());
@@ -90,11 +90,10 @@ public final class ModBlocks {
 		registry.register(new BlockLuminicDecompressor());
 		registry.register(new BlockQuartzConsumer());
 		registry.register(new BlockLumenCompressor());
-		registry.register(new BlockDifferentiator());
-		registry.register(new BlockDifferentiatorInterceptor());
+		registry.register(new BlockSymmetricNegator());
+		registry.register(new BlockSymmetricExtension());
 		registry.register(new BlockKondenzator());
 		registry.register(new BlockImbuedQuartz());
-		registry.register(new BlockCrystalSynthesizer());
 		registerTiles();
 	}
 
@@ -103,7 +102,7 @@ public final class ModBlocks {
 		registerTile(TileGravityHopper.class, LibNames.GRAVITY_HOPPER);
 		registerTile(TileBlinker.class, LibNames.BLINKER);
 		registerTile(TilePhenomena.class, LibNames.PHENOMENA);
-		registerTile(TileQSquared.class, LibNames.Q_SQUARED);
+		registerTile(TileQuanta.class, LibNames.QUANTA);
 		registerTile(TileHyperConductor.class, LibNames.HYPER_CONDUCTOR);
 		registerTile(TileQimranut.class, LibNames.QIMRANUT);
 		registerTile(TileVacuumConveyor.class, LibNames.VACUUM_CONVEYOR);
@@ -114,17 +113,15 @@ public final class ModBlocks {
 		registerTile(TileNeutronBattery.class, LibNames.NEUTRON_BATTERY);
 		registerTile(TilePholarizer.class, LibNames.PHOLARIZER);
 		registerTile(TileFissionInducer.class, LibNames.FISSION_INDUCER);
-		registerTile(TileLuminicDecompressor.class, LibNames.LUMINIC_DECOMPRESSOR);
 		registerTile(TileElectron.class, LibNames.ELECTRON);
 		registerTile(TileQuartzConsumer.class, LibNames.QUARTZ_CONSUMER);
-		registerTile(TileDifferentiator.class, LibNames.DIFFERENTIATOR);
-		registerTile(TileDifferentiatorInterceptor.class, LibNames.DIFFERENTIATOR_INTERCEPTOR);
+		registerTile(TileSymmetricNegator.class, LibNames.SYMMETRIC_NEGATOR);
+		registerTile(TileSymmetricExtension.class, LibNames.SYMMETRIC_EXTENSION);
 		registerTile(TileKondenzator.class, LibNames.KONDENZATOR);
-		registerTile(TileCrystalSynthesizer.class, LibNames.CRYSTAL_SYNTHESIZER);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {
-		GameRegistry.registerTileEntity(tile, LibMod.MOD_ID + ":" + name);
+		GameRegistry.registerTileEntity(tile, new ResourceLocation(LibMod.MOD_ID, name));
 	}
 
 	@SuppressWarnings({"UnusedReturnValue", "WeakerAccess"}) //Shut up

@@ -1,20 +1,19 @@
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.api.capability.quantum.WorldData;
+import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.client.helper.KeyCondition$;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -24,18 +23,19 @@ public class ItemBoundPhoton extends ItemBase implements IUUIDDescription {
 
 	public ItemBoundPhoton() {
 		super(LibNames.BOUND_PHOTON);
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		Tooltip.inline().condition(() -> NBTHelper.hasTag(stack, "BlockEntityTag")).ifTrueJ(builder -> builder
+		Tooltip.inline().condition(() -> NBTHelper.hasTag(stack, Constants.NBT_BOUND)).ifTrueJ(builder -> builder
 				.condition(KeyCondition$.MODULE$.shiftKeyDown())
 				.ifTrueJ(sub -> {
-					NBTTagCompound tag = stack.getOrCreateSubCompound("BlockEntityTag");
-					NBTTagCompound keys = tag.getCompoundTag(WorldData.NBT_TAG);
-					for(String key : keys.getKeySet()) {
-						NBTTagCompound subTag = keys.getCompoundTag(key);
+					NBTTagCompound tag = stack.getOrCreateSubCompound(Constants.NBT_BOUND);
+					for(String key : tag.getKeySet()) {
+						NBTTagCompound subTag = tag.getCompoundTag(key);
 						if(subTag.hasUniqueId("key")) {
+							sub = sub.add(key).newline();
 							sub = getInfo(sub, Objects.requireNonNull(subTag.getUniqueId("key")));
 						}
 					}
@@ -44,33 +44,25 @@ public class ItemBoundPhoton extends ItemBase implements IUUIDDescription {
 		).apply().build(tooltip);
 	}
 
-	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity tile = worldIn.getTileEntity(pos);
-		if(tile != null) {
-			ItemStack stack = player.getHeldItem(hand);
-			NBTTagCompound writtenNBT = tile.writeToNBT(new NBTTagCompound());
-			if(!NBTHelper.hasTag(stack, "BlockEntityTag")) {
-				if(writtenNBT.hasKey(WorldData.NBT_TAG)) {
-					NBTTagCompound compound = stack.getOrCreateSubCompound("BlockEntityTag");
-					compound.setTag(WorldData.NBT_TAG, writtenNBT.getCompoundTag(WorldData.NBT_TAG));
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void pickSource(PlayerInteractEvent.RightClickBlock event) {
+		ItemStack stack = event.getItemStack();
+		if(stack.getItem() == this) {
+			if(!event.getWorld().isRemote) {
+				TileEntity tile = event.getWorld().getTileEntity(event.getPos());
+				if(tile instanceof INBTDataTransferable) {
+					NBTTagCompound compound = stack.getOrCreateSubCompound(Constants.NBT_BOUND);
+					String key = ((INBTDataTransferable) tile).key();
+					NBTTagCompound tag = compound.getCompoundTag(key);
+					if(!compound.hasKey(key)) compound.setTag(key, tag);
+					((INBTDataTransferable) tile).init(tag);
 				}
-			} else {
-				NBTTagCompound compound = stack.getOrCreateSubCompound("BlockEntityTag");
-				NBTTagCompound nbt = writtenNBT.copy();
-				nbt.merge(compound);
-				nbt.setInteger("x", pos.getX());
-				nbt.setInteger("y", pos.getY());
-				nbt.setInteger("z", pos.getZ());
-				tile.readFromNBT(nbt);
-				tile.markDirty();
 			}
+			event.setCanceled(true);
 		}
-		return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 	}
 
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
+	public static class Constants {
+		public static final String NBT_BOUND = "bound_data";
 	}
 }

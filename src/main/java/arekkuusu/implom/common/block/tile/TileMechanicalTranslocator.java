@@ -7,23 +7,35 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.relativity.data.RelativeTileWrapper;
+import arekkuusu.implom.api.capability.INBTDataTransferable;
+import arekkuusu.implom.api.capability.data.PositionsNBTData;
+import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
+import arekkuusu.implom.api.helper.FacingHelper;
+import arekkuusu.implom.api.helper.PositionsHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.client.util.helper.ProfilerHelper;
+import arekkuusu.implom.common.block.BlockMechanicalTranslocator;
+import arekkuusu.implom.common.handler.data.capability.nbt.PositionsNBTDataCapability;
+import arekkuusu.implom.common.handler.data.capability.provider.PositionsNBTProvider;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.Triple;
+import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Locale;
+import java.util.UUID;
 
 import static net.minecraft.util.EnumFacing.UP;
 
@@ -31,85 +43,77 @@ import static net.minecraft.util.EnumFacing.UP;
  * Created by <Arekkuusu> on 17/01/2018.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileMechanicalTranslocator extends TileRelativeBase implements Comparable<TileMechanicalTranslocator> {
-
-	private boolean powered;
-	private int index = -1;
+public class TileMechanicalTranslocator extends TileBase implements INBTDataTransferable {
 
 	@SideOnly(Side.CLIENT)
-	public float temp = -1;
-
-	@Override
-	public void onLoad() {
-		super.onLoad();
-		if(index == -1) {
-			index = handler.getAll().indexOf(handler);
+	public float inactiveTimestamp = -1;
+	public final PositionsNBTProvider wrapper = new PositionsNBTProvider(new PositionsNBTDataCapability() {
+		@Override
+		public void setKey(@Nullable UUID uuid) {
+			wrapper.instance.remove(getWorld(), getPos(), getFacingLazy());
+			super.setKey(uuid);
+			wrapper.instance.add(getWorld(), getPos(), getFacingLazy());
 			markDirty();
 		}
+	});
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		boolean refresh = super.shouldRefresh(world, pos, oldState, newState);
+		if(!refresh && oldState != newState) {
+			int index = wrapper.instance.index(world, pos, getFacingLazy());
+			if(index != -1)
+				wrapper.instance.get().get(index).setFacing(newState.getValue(BlockDirectional.FACING));
+		}
+		return refresh;
 	}
 
 	public void activate() {
-		if(!world.isRemote && canSend()) {
+		if(!world.isRemote && isActive() && canSend()) {
 			ProfilerHelper.begin("[Mechanical Translocator] Relocating block");
-			List<TileMechanicalTranslocator> list = handler.getAll().stream()
-					.filter(handler -> handler instanceof RelativeTileWrapper)
-					.map(handler -> (RelativeTileWrapper) handler)
-					.filter(handler -> handler.isLoaded() && handler.getTile() instanceof TileMechanicalTranslocator)
-					.map(handler -> (TileMechanicalTranslocator) handler.getTile())
-					.sorted()
-					.collect(Collectors.toList());
-			int index = getIndex();
-			int size = list.size();
-			int i = index + 1 >= size ? 0 : index + 1;
-			Triple<IBlockState, EnumFacing, NBTTagCompound> triplet = getRelativeState();
-			for(; i < size; i++) {
-				TileMechanicalTranslocator mechanical = list.get(i);
-				if(mechanical.isTransferable() && mechanical != this && mechanical.canReceive(triplet.getLeft())) {
-					clearRelativeState(); //Before sending the actual state
-					mechanical.setRelativeState(triplet);
-					break;
-				}
-				if(i == index) {
-					break;
-				}
-				if(i + 1 >= size) {
-					i = -1;
+			List<PositionsNBTData.Position> list = wrapper.instance.get();
+			if(!list.isEmpty() && list.size() > 1) {
+				int index = wrapper.instance.index(getWorld(), getPos(), getFacingLazy());
+				if(index == -1) return;
+				PositionsNBTData.Position origin = wrapper.instance.get().get(index);
+				if(origin.getWorld() != null && origin.getPos() != null && origin.getFacing() != null) {
+					for(int size = list.size(), i = index + 1 >= size ? 0 : index + 1; i < size; i++) {
+						PositionsNBTData.Position destiny = list.get(i);
+						if(destiny.equals(origin)
+								|| destiny.getWorld() == null
+								|| destiny.getPos() == null
+								|| destiny.getFacing() == null)
+							continue; //Cant replace itself
+						if(!canReceive(destiny.getWorld(), destiny.getPos().offset(destiny.getFacing())))
+							continue; //Cant replace unbreakable blocks
+						Pair<IBlockState, NBTTagCompound> originTags = getState(
+								origin.getWorld(), origin.getPos().offset(origin.getFacing())
+						);
+						Pair<IBlockState, NBTTagCompound> destinyTags = getState(
+								destiny.getWorld(), destiny.getPos().offset(destiny.getFacing())
+						);
+						setState(destinyTags, origin.getWorld(), origin.getPos(), destiny.getFacing(), origin.getFacing());
+						setState(originTags, destiny.getWorld(), destiny.getPos(), origin.getFacing(), destiny.getFacing());
+					}
 				}
 			}
 			ProfilerHelper.end();
 		}
 	}
 
-	private void setRelativeState(Triple<IBlockState, EnumFacing, NBTTagCompound> data) {
+	public boolean canReceive(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		return state.getBlockHardness(world, pos) != -1 && state.getBlock().canPlaceBlockAt(world, pos);
+	}
+
+	public boolean canSend() {
 		BlockPos pos = getPos().offset(getFacingLazy());
-		IBlockState state = data.getLeft();
-		EnumFacing from = data.getMiddle();
-		EnumFacing to = getFacingLazy();
-		world.setBlockState(pos, state.getMaterial() != Material.WATER ? getRotationState(state, from, to) : state);
-		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
-			NBTTagCompound tag = data.getRight();
-			tag.setInteger("x", pos.getX());
-			tag.setInteger("y", pos.getY());
-			tag.setInteger("z", pos.getZ());
-			tile.readFromNBT(tag);
-		});
-		world.notifyNeighborsOfStateChange(getPos(), getBlockType(), true);
+		IBlockState state = world.getBlockState(pos);
+		return state.getBlockHardness(world, pos) != -1 && !getTile(TileMechanicalTranslocator.class, world, pos).isPresent();
 	}
 
-	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
-		ProfilerHelper.begin("[Mechanical Translocator] Rotating block");
-		//Do rotation here
-		ProfilerHelper.end();
-		return original;
-	}
-
-	private static IBlockState apply(IProperty<EnumFacing> property, IBlockState state, EnumFacing facing) {
-		return property.getAllowedValues().contains(facing) ? state.withProperty(property, facing) : state;
-	}
-
-	private Triple<IBlockState, EnumFacing, NBTTagCompound> getRelativeState() {
+	private Pair<IBlockState, NBTTagCompound> getState(World world, BlockPos pos) {
 		NBTTagCompound tag = new NBTTagCompound();
-		BlockPos pos = getPos().offset(getFacingLazy());
 		IBlockState state = world.getBlockState(pos);
 		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 			tile.writeToNBT(tag);
@@ -117,75 +121,107 @@ public class TileMechanicalTranslocator extends TileRelativeBase implements Comp
 			tag.removeTag("y");
 			tag.removeTag("z");
 		});
-		return Triple.of(state, getFacingLazy(), tag);
+		return Pair.of(state, tag);
 	}
 
-	private void clearRelativeState() {
-		BlockPos pos = getPos().offset(getFacingLazy());
+	private void setState(Pair<IBlockState, NBTTagCompound> data, World world, BlockPos pos, EnumFacing from, EnumFacing to) {
+		IBlockState state = data.getLeft();
+		world.setBlockState(pos, state.getMaterial() != Material.WATER ? getRotationState(state, from, to) : state);
 		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
-			world.removeTileEntity(pos);
+			NBTTagCompound tag = data.getRight();
+			tag.setInteger("x", tile.getPos().getX());
+			tag.setInteger("y", tile.getPos().getY());
+			tag.setInteger("z", tile.getPos().getZ());
+			tile.readFromNBT(tag);
+			tile.markDirty();
 		});
-		world.setBlockToAir(pos);
+		world.notifyNeighborsOfStateChange(getPos(), getBlockType(), true);
+	}
+
+	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
+		ProfilerHelper.begin("[Mechanical Translocator] Rotating block");
+		for(IProperty<?> p : original.getPropertyKeys()) {
+			if(p.getValueClass().equals(EnumFacing.class) && p.getName().toLowerCase(Locale.ROOT).contains("facing")) {
+				//noinspection unchecked
+				IProperty<EnumFacing> property = (IProperty<EnumFacing>) p;
+				EnumFacing actual = original.getValue(property);
+				if(from.getOpposite() != to) {
+					if(actual == from || actual == from.getOpposite()) {
+						if(from.getAxis().isVertical()) {
+							EnumFacing facing = to == EnumFacing.EAST || to == EnumFacing.WEST ? to.getOpposite() : to;
+							actual = FacingHelper.rotateXY(actual, from.getAxisDirection(), facing);
+						} else {
+							EnumFacing facing = from == EnumFacing.EAST || from == EnumFacing.WEST ? from.getOpposite() : from;
+							actual = FacingHelper.rotateXY(actual, to.getOpposite().getAxisDirection(), facing);
+						}
+					} else actual = actual.getOpposite();
+				} else {
+					actual = actual.getOpposite();
+				}
+				original = apply(property, original, actual);
+				original = original.withRotation(FacingHelper.getHorizontalRotation(from, to));
+				break;
+			}
+		}
+		ProfilerHelper.end();
+		return original;
+	}
+
+	private IBlockState apply(IProperty<EnumFacing> property, IBlockState state, EnumFacing facing) {
+		return property.getAllowedValues().contains(facing) ? state.withProperty(property, facing) : state;
 	}
 
 	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(UP);
 	}
 
-	public boolean isTransferable() {
+	public boolean isActive() {
 		return getStateValue(Properties.ACTIVE, getPos()).orElse(false);
 	}
 
-	public boolean canReceive(IBlockState state) {
-		BlockPos pos = getPos().offset(getFacingLazy());
-		return (world.isAirBlock(pos) || world.getBlockState(pos).getBlock().isReplaceable(world, pos))
-				&& state.getBlock().canPlaceBlockAt(world, pos);
-	}
-
-	public boolean canSend() {
-		BlockPos pos = getPos().offset(getFacingLazy());
-		return !world.isAirBlock(pos) && !getTile(TileMechanicalTranslocator.class, world, pos).isPresent();
-	}
-
-	public void setTransferable(boolean transferable) {
-		if(isTransferable() != transferable) {
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(Properties.ACTIVE, transferable));
-		}
-	}
-
-	public boolean isPowered() {
-		return powered;
-	}
-
-	public void setPowered(boolean powered) {
-		this.powered = powered;
-		this.markDirty();
-	}
-
-	public int getIndex() {
-		return index;
-	}
-
-	public void setIndex(int index) {
-		this.index = index;
-	}
-
 	@Override
-	void readNBT(NBTTagCompound compound) {
-		super.readNBT(compound);
-		this.powered = compound.getBoolean("powered");
-		this.index = compound.getInteger("index");
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return wrapper.hasCapability(capability, facing) || super.hasCapability(capability, facing);
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		return wrapper.hasCapability(capability, facing)
+				? wrapper.getCapability(capability, facing)
+				: super.getCapability(capability, facing);
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		super.writeNBT(compound);
-		compound.setBoolean("powered", powered);
-		compound.setInteger("index", index);
+		compound.setTag(BlockMechanicalTranslocator.Constants.NBT_POSITIONS, wrapper.serializeNBT());
 	}
 
 	@Override
-	public int compareTo(TileMechanicalTranslocator other) {
-		return Integer.compare(index, other.index);
+	void readNBT(NBTTagCompound compound) {
+		wrapper.deserializeNBT(compound.getCompoundTag(BlockMechanicalTranslocator.Constants.NBT_POSITIONS));
+	}
+
+	@Override
+	public void init(NBTTagCompound compound) {
+		boolean noKey = !compound.hasUniqueId("key");
+		boolean override = wrapper.instance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.instance.getKey()));
+		if(override) {
+			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
+			UUID uuid = compound.getUniqueId("key");
+			wrapper.instance.setKey(uuid);
+		} else if(noKey) {
+			compound.setUniqueId("key", wrapper.instance.getKey());
+		}
+	}
+
+	@Override
+	public void fromItemStack(ItemStack stack) {
+		PositionsHelper.getCapability(stack).map(IPositionsNBTDataCapability::getKey).ifPresent(wrapper.instance::setKey);
+	}
+
+	@Override
+	public void toItemStack(ItemStack stack) {
+		PositionsHelper.getCapability(stack).ifPresent(instance -> instance.setKey(wrapper.instance.getKey()));
 	}
 }

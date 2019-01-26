@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
@@ -41,7 +41,7 @@ public class BlockMonolithicGlyph extends BlockBase {
 	public static final PropertyInteger GLYPH = PropertyInteger.create("glyph", 0, 15);
 
 	public BlockMonolithicGlyph() {
-		super(LibNames.MONOLITHIC_GLYPH, FixedMaterial.DONT_MOVE);
+		super(LibNames.MONOLITHIC_GLYPH, IPMMaterial.MONOLITH);
 		setBlockUnbreakable();
 	}
 
@@ -58,7 +58,7 @@ public class BlockMonolithicGlyph extends BlockBase {
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return ModItems.CRYSTAL_QUARTZ_SHARD;
+		return ModItems.CRYSTAL_SHARD;
 	}
 
 	@Override

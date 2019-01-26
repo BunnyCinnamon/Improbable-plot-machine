@@ -1,6 +1,8 @@
 package arekkuusu.implom.common.handler.recipe;
 
+import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.api.helper.NBTHelper;
+import arekkuusu.implom.common.item.ItemClockwork;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibMod;
 import net.minecraft.inventory.InventoryCrafting;
@@ -22,7 +24,7 @@ public class ClockworkRemoveQuartzRecipe extends IForgeRegistryEntry.Impl<IRecip
 		for(int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if(stack.getItem() == ModItems.CLOCKWORK) {
-				if(!NBTHelper.getNBTTag(stack, "quartz").isPresent())
+				if(InventoryHelper.getCapability(stack).map(c -> c.getStackInSlot(0).isEmpty()).orElse(false))
 					return false;
 				else if(!clockwork) clockwork = true;
 				else return false;
@@ -42,7 +44,7 @@ public class ClockworkRemoveQuartzRecipe extends IForgeRegistryEntry.Impl<IRecip
 			}
 		}
 		if(!clockwork.isEmpty()) {
-			return NBTHelper.getNBTTag(clockwork, "quartz").map(ItemStack::new).orElse(ItemStack.EMPTY);
+			return InventoryHelper.getCapability(clockwork).map(c -> c.getStackInSlot(0)).orElse(ItemStack.EMPTY);
 		}
 		return ItemStack.EMPTY;
 	}
@@ -54,8 +56,8 @@ public class ClockworkRemoveQuartzRecipe extends IForgeRegistryEntry.Impl<IRecip
 			ItemStack stack = inv.getStackInSlot(i);
 			if(stack.getItem() == ModItems.CLOCKWORK) {
 				ItemStack clockwork = stack.copy();
-				NBTHelper.setBoolean(clockwork, "unsealed", true);
-				NBTHelper.removeTag(clockwork, "quartz");
+				NBTHelper.setBoolean(clockwork, ItemClockwork.Constants.NBT_UNSEALED, true);
+				InventoryHelper.getCapability(clockwork).map(c -> c.extractItem(0, 1, false));
 				ret.set(i, clockwork);
 				break;
 			}

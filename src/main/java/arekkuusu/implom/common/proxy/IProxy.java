@@ -27,21 +27,39 @@ public interface IProxy {
 
 	void init(FMLInitializationEvent event);
 
-	void playSound(World world, BlockPos pos, SoundEvent event, SoundCategory category, float volume);
+	default void playSound(World world, BlockPos pos, SoundEvent event, SoundCategory category, float volume) {
+		//NO-OP
+	}
 
-	void spawnMute(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light type);
+	default void spawnMute(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light type) {
+		//NO-OP
+	}
 
-	void spawnSpeck(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow);
+	default void spawnSpeck(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
+		//NO-OP
+	}
 
-	void spawnNeutronBlast(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, boolean collide);
+	default void spawnNeutronBlast(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, boolean collide) {
+		//NO-OP
+	}
 
-	void spawnLuminescence(World world, Vector3 pos, Vector3 speed, int age, float scale, GlowTexture glow);
+	default void spawnLuminescence(World world, Vector3 pos, Vector3 speed, int age, float scale, GlowTexture glow) {
+		//NO-OP
+	}
 
-	void spawnDepthTunneling(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow);
+	default void spawnDepthTunneling(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
+		//NO-OP
+	}
 
-	void spawnArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade);
+	default void spawnArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
+		//NO-OP
+	}
 
-	void spawnSquared(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb);
+	default void spawnSquared(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
+		//NO-OP
+	}
 
-	void spawnBeam(World world, Vector3 from, Vector3 direction, float distance, int amount, float size, int color);
+	default void spawnBeam(World world, Vector3 from, Vector3 direction, float distance, int amount, float size, int color) {
+		//NO-OP
+	}
 }

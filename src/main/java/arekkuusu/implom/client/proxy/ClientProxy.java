@@ -25,7 +25,6 @@ import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -33,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -78,10 +78,10 @@ public class ClientProxy implements IProxy {
 
 	@SubscribeEvent
 	public static void disconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
-		IPMApi.setWorldData(null);
+		IPMApi.getInstance().unloadWorld();
 	}
 
-	private static void registerResourceReloadListener(IResourceManagerReloadListener listener) {
+	private static void registerResourceReloadListener(ISelectiveResourceReloadListener listener) {
 		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(listener);
 	}
 

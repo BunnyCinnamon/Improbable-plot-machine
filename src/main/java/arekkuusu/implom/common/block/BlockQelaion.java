@@ -7,46 +7,35 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.capability.quantum.IQuantum;
-import arekkuusu.implom.api.capability.relativity.RelativityHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.state.enums.Direction;
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelQelaion;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileQelaion;
-import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
+import java.util.Arrays;
 import java.util.Random;
-import java.util.UUID;
 
 /*
  * Created by <Arekkuusu> on 24/02/2018.
@@ -56,12 +45,10 @@ import java.util.UUID;
 public class BlockQelaion extends BlockBase {
 
 	public static final AxisAlignedBB BB = new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.9375, 0.9375);
-	public static final PropertyBool HAS_NODE = PropertyBool.create("has_node");
 
 	public BlockQelaion() {
-		super(LibNames.QELAION, FixedMaterial.DONT_MOVE);
-		MinecraftForge.EVENT_BUS.register(this);
-		setDefaultState(getDefaultState().withProperty(HAS_NODE, false));
+		super(LibNames.QELAION, IPMMaterial.MONOLITH);
+		setDefaultState(getDefaultState().withProperty(Properties.ACTIVE, true));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
 		setLightLevel(0.2F);
@@ -69,75 +56,19 @@ public class BlockQelaion extends BlockBase {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(world.isRemote) return true;
-		ItemStack stack = player.getHeldItem(hand);
-		if(stack.getItem() == ModItems.QELAION) {
-			Optional<TileQelaion> optional = getTile(TileQelaion.class, world, pos);
-			if(optional.isPresent()) {
-				TileQelaion qelaion = optional.get();
-				Optional<UUID> nodes = RelativityHelper.getCapability(stack).flatMap(IQuantum::getKey);
-				Optional<UUID> parent = RelativityHelper.getCapability(qelaion).flatMap(IQuantum::getKey);
-				if(nodes.isPresent() && parent.isPresent()) {
-					qelaion.setNodes(nodes.get());
-					return true;
-				}
-				return false;
-			}
-		} else if(stack.isEmpty()) {
-			getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
-				if(!player.isSneaking()) {
-					qelaion.put(facing);
-				} else qelaion.setNodes(null);
-			});
-		}
-		return false;
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if(!world.isRemote) {
-			getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
-				RelativityHelper.getCapability(qelaion).ifPresent(handler -> {
-					if(!handler.getKey().isPresent()) {
-						RelativityHelper.getCapability(stack).ifPresent(subHandler -> {
-							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
-							subHandler.getKey().ifPresent(handler::setKey);
-						});
-					}
-				});
-			});
+			getTile(TileQelaion.class, world, pos).ifPresent(tile -> tile.put(facing));
 		}
-	}
-
-	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		drops.add(getItem((World) world, pos, state)); //Bad??
-	}
-
-	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		ItemStack stack = super.getItem(world, pos, state);
-		getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
-			RelativityHelper.getCapability(qelaion).ifPresent(handler -> {
-				handler.getKey().ifPresent(key -> {
-					RelativityHelper.getCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
-				});
-			});
-			qelaion.getNodes().ifPresent(nodes -> {
-				NBTTagCompound tag = stack.getOrCreateSubCompound("BlockEntityTag");
-				tag.setUniqueId("nodes", nodes);
-			});
-		});
-		return stack;
+		return true;
 	}
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		getTile(TileQelaion.class, world, pos).ifPresent(qelaion -> {
+		getTile(TileQelaion.class, world, pos).ifPresent(tile -> {
 			Vector3 posVec = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
-			boolean on = state.getValue(HAS_NODE);
+			boolean on = state.getValue(Properties.ACTIVE);
 			for(EnumFacing facing : EnumFacing.values()) {
-				if(qelaion.isInput(facing)) continue;
+				if(!tile.facings.contains(facing)) continue;
 				for(int i = 0; i < 1 + rand.nextInt(3); i++) {
 					Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 6);
 					Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 6);
@@ -159,28 +90,28 @@ public class BlockQelaion extends BlockBase {
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(HAS_NODE) ? 1 : 0;
+		return state.getValue(Properties.ACTIVE) ? 1 : 0;
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(HAS_NODE, meta != 0);
+		return getDefaultState().withProperty(Properties.ACTIVE, meta != 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer.Builder(this).add(HAS_NODE).add(Properties.DIR_UNLISTED).build();
+		return new BlockStateContainer.Builder(this).add(Properties.ACTIVE).add(Properties.DIR_UNLISTED).build();
 	}
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		Optional<TileQelaion> optional = getTile(TileQelaion.class, world, pos);
-		if(optional.isPresent()) {
-			List<EnumFacing> closed = optional.get().getInputs();
-			Direction direction = Direction.getDirectionFromFacings(closed.toArray(new EnumFacing[0]));
-			return ((IExtendedBlockState) state).withProperty(Properties.DIR_UNLISTED, direction);
-		}
-		return super.getExtendedState(state, world, pos);
+		return getTile(TileQelaion.class, world, pos).map(tile -> {
+			Direction direction = Direction.getDirectionFromFacings(Arrays.stream(EnumFacing.values())
+					.filter(f -> !tile.facings.contains(f))
+					.distinct()
+					.toArray(EnumFacing[]::new));
+			return (IBlockState) ((IExtendedBlockState) state).withProperty(Properties.DIR_UNLISTED, direction);
+		}).orElse(super.getExtendedState(state, world, pos));
 	}
 
 	@Override

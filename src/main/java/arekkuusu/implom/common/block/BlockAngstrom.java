@@ -28,7 +28,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 public class BlockAngstrom extends BlockBase {
 
 	public BlockAngstrom() {
-		super(LibNames.ANGSTROM, Material.IRON);
+		super(LibNames.ANGSTROM, Material.ROCK);
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
 	}

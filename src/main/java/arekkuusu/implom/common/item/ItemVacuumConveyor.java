@@ -7,9 +7,7 @@
  */
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.common.block.ModBlocks;
-import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -32,11 +30,6 @@ public class ItemVacuumConveyor extends ItemBaseBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		Tooltip.inline().condition(() -> NBTHelper.hasTag(stack, "lookup")).ifTrueJ(sub -> sub
-				.addI18n("tlp.item_filter", Tooltip.DarkGrayItalic()).add(": ")
-				.add(new ItemStack(stack.getOrCreateSubCompound("lookup")).getDisplayName(), Tooltip.GrayItalic())
-				.newline()
-				.newline()
-		).apply().build(tooltip);
+
 	}
 }

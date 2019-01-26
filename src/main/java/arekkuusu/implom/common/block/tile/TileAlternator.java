@@ -7,71 +7,90 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.relativity.RelativityHandler;
-import arekkuusu.implom.api.capability.relativity.data.IRelative;
-import arekkuusu.implom.api.capability.relativity.data.RelativeTileWrapper;
+import arekkuusu.implom.api.capability.INBTDataTransferable;
+import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
+import arekkuusu.implom.api.helper.PositionsHelper;
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.common.handler.data.WorldAlternatorData;
-import net.minecraft.world.World;
+import arekkuusu.implom.common.block.BlockAlternator;
+import arekkuusu.implom.common.handler.data.capability.nbt.PositionsNBTDataCapability;
+import arekkuusu.implom.common.handler.data.capability.provider.PositionsNBTProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 /*
  * Created by <Arekkuusu> on 23/01/2018.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileAlternator extends TileRelativeBase {
+public class TileAlternator extends TileBase implements INBTDataTransferable {
 
-	private UUID loadKey;
-
-	@Override
-	public IRelative createHandler() {
-		return new RelativeTileWrapper<TileAlternator>(this) {
-
-			@Override
-			public void add() {
-				if(!world.isRemote && RelativityHandler.addRelative(this) && loadKey == null) {
-					loadKey = UUID.randomUUID();
-					handler.getKey().ifPresent(key -> TileAlternator.getData(getWorld()).add(key, loadKey));
-				}
-			}
-
-			@Override
-			public void remove() {
-				if(!getWorld().isRemote && RelativityHandler.removeRelative(this)) {
-					if(loadKey != null) {
-						getKey().ifPresent(key -> TileAlternator.getData(getWorld()).remove(key, loadKey));
-						loadKey = null;
-					}
-				}
-			}
-		};
-	}
-
-	@Override
-	public void onChunkUnload() {
-		if(!world.isRemote) {
-			RelativityHandler.removeRelative(handler);
+	public final PositionsNBTProvider wrapper = new PositionsNBTProvider(new PositionsNBTDataCapability() {
+		@Override
+		public void setKey(@Nullable UUID uuid) {
+			wrapper.instance.remove(getWorld(), getPos(), null);
+			super.setKey(uuid);
+			wrapper.instance.add(getWorld(), getPos(), null);
+			markDirty();
 		}
-	}
+	});
 
 	public boolean areAllActive() {
-		return handler.getKey().map(key -> {
-			int loaded = TileAlternator.getData(world).getSize(key);
-			int size = 0;
-			for(IRelative handler : RelativityHandler.getRelatives(key)) {
-				if(handler instanceof RelativeTileWrapper && ((RelativeTileWrapper) handler).isLoaded() && ((RelativeTileWrapper) handler).getTile() instanceof TileAlternator)
-					++size;
-			}
-			return size == loaded;
-		}).orElse(false);
+		return wrapper.instance.get().stream().anyMatch(wa -> (
+				(wa.getWorld() == null || wa.getPos() == null) || (wa.getWorld().isBlockLoaded(wa.getPos()))
+		));
 	}
 
 	public boolean isActiveLazy() {
 		return getStateValue(Properties.ACTIVE, pos).orElse(false);
 	}
 
-	public static WorldAlternatorData getData(World world) {
-		return WorldAlternatorData.get(world);
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return wrapper.hasCapability(capability, facing) || super.hasCapability(capability, facing);
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		return wrapper.hasCapability(capability, facing)
+				? wrapper.getCapability(capability, facing)
+				: super.getCapability(capability, facing);
+	}
+
+	@Override
+	void writeNBT(NBTTagCompound compound) {
+		compound.setTag(BlockAlternator.Constants.NBT_POSITIONS, wrapper.serializeNBT());
+	}
+
+	@Override
+	void readNBT(NBTTagCompound compound) {
+		wrapper.deserializeNBT(compound.getCompoundTag(BlockAlternator.Constants.NBT_POSITIONS));
+	}
+
+	@Override
+	public void init(NBTTagCompound compound) {
+		boolean noKey = !compound.hasUniqueId("key");
+		boolean override = wrapper.instance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.instance.getKey()));
+		if(override) {
+			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
+			UUID uuid = compound.getUniqueId("key");
+			wrapper.instance.setKey(uuid);
+		} else if(noKey) {
+			compound.setUniqueId("key", wrapper.instance.getKey());
+		}
+	}
+
+	@Override
+	public void fromItemStack(ItemStack stack) {
+		PositionsHelper.getCapability(stack).map(IPositionsNBTDataCapability::getKey).ifPresent(wrapper.instance::setKey);
+	}
+
+	@Override
+	public void toItemStack(ItemStack stack) {
+		PositionsHelper.getCapability(stack).ifPresent(instance -> instance.setKey(wrapper.instance.getKey()));
 	}
 }

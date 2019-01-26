@@ -7,13 +7,11 @@
  */
 package arekkuusu.implom.api;
 
-import arekkuusu.implom.api.capability.binary.data.IBinary;
-import arekkuusu.implom.api.capability.quantum.WorldData;
-import arekkuusu.implom.api.capability.relativity.data.IRelative;
-import arekkuusu.implom.api.util.Pair;
+import arekkuusu.implom.api.capability.data.INBTData;
 import com.google.common.collect.Maps;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -22,25 +20,25 @@ import java.util.UUID;
  * It's distributed as part of Improbable plot machine.
  */
 //If you modify any of these I will break your bones
-public class IPMApi {
+public abstract class IPMApi {
 
-	private static final Map<UUID, List<IRelative>> RELATIVITY_MAP = Maps.newHashMap();
-	private static final Map<UUID, Pair<IBinary>> BINARY_MAP = Maps.newHashMap();
-	private static WorldData worldData;
+	private static IPMApi instance;
+	public final Map<UUID, Map<Class<?>, INBTData<?>>> dataMap = Maps.newHashMap();
+	public final Map<ResourceLocation, Class<INBTData<?>>> classMap = Maps.newHashMap();
 
-	public static Map<UUID, List<IRelative>> getRelativityMap() {
-		return RELATIVITY_MAP;
+	public static void setInstance(IPMApi instance) {
+		if(IPMApi.instance == null) {
+			IPMApi.instance = instance;
+		}
 	}
 
-	public static Map<UUID, Pair<IBinary>> getBinaryMap() {
-		return BINARY_MAP;
+	public static IPMApi getInstance() {
+		return instance;
 	}
 
-	public static synchronized WorldData getWorldData() {
-		return worldData;
-	}
+	public abstract void loadWorld(World world);
 
-	public static synchronized void setWorldData(WorldData worldData) {
-		IPMApi.worldData = worldData; //Do you hear that? That's the sound of forgiveness...
-	}
+	public abstract void unloadWorld();
+
+	public abstract void markWorldDirty();
 }

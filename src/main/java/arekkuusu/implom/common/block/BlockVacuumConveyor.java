@@ -7,8 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.helper.NBTHelper;
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
@@ -18,10 +17,7 @@ import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -35,7 +31,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 import static net.minecraft.block.BlockDirectional.FACING;
 
@@ -56,7 +51,7 @@ public class BlockVacuumConveyor extends BlockBaseFacing {
 			.build();
 
 	public BlockVacuumConveyor() {
-		super(LibNames.VACUUM_CONVEYOR, FixedMaterial.BREAK);
+		super(LibNames.VACUUM_CONVEYOR, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.DOWN));
 	}
 

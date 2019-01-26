@@ -10,7 +10,7 @@ package arekkuusu.implom.common;
 import arekkuusu.implom.api.IPMApi;
 import arekkuusu.implom.client.effect.SoundBase;
 import arekkuusu.implom.common.block.ModBlocks;
-import arekkuusu.implom.common.handler.data.WorldQuantumData;
+import arekkuusu.implom.common.entity.ModEntities;
 import arekkuusu.implom.common.handler.recipe.ModRecipes;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibMod;
@@ -22,6 +22,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /*
@@ -47,16 +49,23 @@ public final class CommonEvents {
 	}
 
 	@SubscribeEvent
+	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+		ModEntities.register(event.getRegistry());
+	}
+
+	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
 		IForgeRegistry<SoundEvent> registry = event.getRegistry();
 		registry.register(new SoundBase("spark"));
 	}
 
 	@SubscribeEvent
-	public static void loadQuantumData(WorldEvent.Load event) {
-		if(IPMApi.getWorldData() == null) {
-			IPM.LOG.info("[WorldQuantumData] Loading Data");
-			IPMApi.setWorldData(WorldQuantumData.get(event.getWorld()));
-		}
+	public static void loadWorldData(WorldEvent.Load event) {
+		IPMApi.getInstance().loadWorld(event.getWorld());
+	}
+
+	@SubscribeEvent
+	public static void unloadWorldData(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+		IPMApi.getInstance().unloadWorld();
 	}
 }

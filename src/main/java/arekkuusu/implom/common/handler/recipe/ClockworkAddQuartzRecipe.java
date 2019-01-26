@@ -1,6 +1,8 @@
 package arekkuusu.implom.common.handler.recipe;
 
+import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.api.helper.NBTHelper;
+import arekkuusu.implom.common.item.ItemClockwork;
 import arekkuusu.implom.common.item.ItemQuartz;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibMod;
@@ -22,12 +24,14 @@ public class ClockworkAddQuartzRecipe extends IForgeRegistryEntry.Impl<IRecipe> 
 		for(int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if(stack.getItem() == ModItems.CLOCKWORK) {
-				if(!NBTHelper.getBoolean(stack, "unsealed") || NBTHelper.getNBTTag(stack, "quartz").isPresent())
+				if(!NBTHelper.getBoolean(stack, ItemClockwork.Constants.NBT_UNSEALED))
+					return false;
+				if(!InventoryHelper.getCapability(stack).map(c -> c.getStackInSlot(0).isEmpty()).orElse(false))
 					return false;
 				else if(!clockwork) clockwork = true;
 				else return false;
 			} else if(stack.getItem() == ModItems.QUARTZ) {
-				if(!NBTHelper.getEnum(ItemQuartz.Quartz.class, stack, "quartz_kind")
+				if(!NBTHelper.getEnum(ItemQuartz.Quartz.class, stack, ItemQuartz.Constants.NBT_QUARTZ)
 						.filter(tag -> tag.size == ItemQuartz.Quartz.Size.SMALL)
 						.isPresent())
 					return false;
@@ -50,8 +54,9 @@ public class ClockworkAddQuartzRecipe extends IForgeRegistryEntry.Impl<IRecipe> 
 			}
 		}
 		if(!quartz.isEmpty() && !clockwork.isEmpty()) {
-			NBTHelper.setBoolean(clockwork, "unsealed", false);
-			NBTHelper.setNBT(clockwork, "quartz", quartz.serializeNBT());
+			NBTHelper.setBoolean(clockwork, ItemClockwork.Constants.NBT_UNSEALED, false);
+			ItemStack stack = quartz.copy();
+			InventoryHelper.getCapability(clockwork).ifPresent(c -> c.insertItem(0, stack, false));
 			return clockwork;
 		}
 		return ItemStack.EMPTY;

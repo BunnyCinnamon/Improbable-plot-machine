@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
@@ -46,7 +46,7 @@ public class BlockFissionInducer extends BlockBaseFacing {
 	).build();
 
 	public BlockFissionInducer() {
-		super(LibNames.FISSION_INDUCER, FixedMaterial.DONT_MOVE);
+		super(LibNames.FISSION_INDUCER, IPMMaterial.MONOLITH);
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(5F);
 		setResistance(2000F);

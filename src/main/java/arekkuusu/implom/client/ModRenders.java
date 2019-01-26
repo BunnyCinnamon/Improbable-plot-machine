@@ -7,20 +7,18 @@
  */
 package arekkuusu.implom.client;
 
-import arekkuusu.implom.client.render.*;
 import arekkuusu.implom.client.render.entity.EyeOfSchrodingerRenderer;
 import arekkuusu.implom.client.render.entity.LumenRenderer;
+import arekkuusu.implom.client.render.stack.*;
+import arekkuusu.implom.client.render.tile.*;
 import arekkuusu.implom.common.IPM;
-import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.block.tile.*;
 import arekkuusu.implom.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.implom.common.entity.EntityLumen;
-import net.minecraft.block.Block;
+import arekkuusu.implom.common.item.ModItems;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -41,52 +39,40 @@ public final class ModRenders {
 	}
 
 	public static void init() {
-		registerTESR(TileQuantumMirror.class, new QuantumMirrorRenderer());
-		registerTESR(TilePhenomena.class, new PhenomenaRenderer());
-		registerTESR(TileQSquared.class, new QSquaredRenderer());
-		registerTESR(TileHyperConductor.class, new HyperConductorRenderer());
-		registerTESR(TileVacuumConveyor.class, new VacuumConveyorRenderer());
-		registerTESR(TileMechanicalTranslocator.class, new MechanicalTranslocatorRenderer());
-		registerTESR(TileQimranut.class, new QimranutRenderer());
-		registerTESR(TileNeutronBattery.class, new NeutronBatteryRenderer());
-		registerTESR(TilePholarizer.class, new PholarizerRenderer());
-		registerTESR(TileFissionInducer.class, new FissionInducerRenderer());
-		registerTESR(TileElectron.class, new ElectronRenderer());
-		registerTESR(TileQuartzConsumer.class, new QuartzConsumerRenderer());
-		registerTESR(TileDifferentiator.class, new DifferentiatorRenderer());
-		registerTESR(TileDifferentiatorInterceptor.class, new DifferentiatorInterceptorRenderer());
-		registerTESR(TileKondenzator.class, new KondenzatorRenderer());
-		registerTESR(TileCrystalSynthesizer.class, new CrystallicSynthesizerRenderer());
+		registerTESR(TileQuantumMirror.class, new TileQuantumMirrorRenderer());
+		registerTESR(TilePhenomena.class, new TilePhenomenaRenderer());
+		registerTESR(TileQuanta.class, new TileQuantaRenderer());
+		registerTESR(TileHyperConductor.class, new TileHyperConductorRenderer());
+		registerTESR(TileVacuumConveyor.class, new TileVacuumConveyorRenderer());
+		registerTESR(TileMechanicalTranslocator.class, new TileMechanicalTranslocatorRenderer());
+		registerTESR(TileQimranut.class, new TileQimranutRenderer());
+		registerTESR(TileNeutronBattery.class, new TileNeutronBatteryRenderer());
+		registerTESR(TilePholarizer.class, new TilePholarizerRenderer());
+		registerTESR(TileFissionInducer.class, new TileFissionInducerRenderer());
+		registerTESR(TileElectron.class, new TileElectronRenderer());
+		registerTESR(TileQuartzConsumer.class, new TileQuartzConsumerRenderer());
+		registerTESR(TileSymmetricNegator.class, new TileSymmetricNegatorRenderer());
+		registerTESR(TileSymmetricExtension.class, new TileSymmetricExtensionRenderer());
+		registerTESR(TileKondenzator.class, new TileKondenzatorRenderer());
 
-		registerTESRItemStack(ModBlocks.QUANTUM_MIRROR, TileQuantumMirror.class);
-		registerTESRItemStack(ModBlocks.Q_SQUARED, TileQSquared.class);
-		registerTESRItemStack(ModBlocks.HYPER_CONDUCTOR, TileHyperConductor.class);
-		registerTESRItemStack(ModBlocks.VACUUM_CONVEYOR, TileVacuumConveyor.class);
-		registerTESRItemStack(ModBlocks.MECHANICAL_TRANSLOCATOR, TileMechanicalTranslocator.class);
-		registerTESRItemStack(ModBlocks.QIMRANUT, TileQimranut.class);
-		registerTESRItemStack(ModBlocks.NEUTRON_BATTERY, TileNeutronBattery.class);
-		registerTESRItemStack(ModBlocks.PHOLARIZER, TilePholarizer.class);
-		registerTESRItemStack(ModBlocks.FISSION_INDUCER, TileFissionInducer.class);
-		registerTESRItemStack(ModBlocks.ELECTRON, TileElectron.class);
-		registerTESRItemStack(ModBlocks.DIFFERENTIATOR, TileDifferentiator.class);
-		registerTESRItemStack(ModBlocks.DIFFERENTIATOR_INTERCEPTOR, TileDifferentiatorInterceptor.class);
-		registerTESRItemStack(ModBlocks.KONDENZATOR, TileKondenzator.class);
-		registerTESRItemStack(ModBlocks.CRYSTAL_SYNTHESIZER, TileCrystalSynthesizer.class);
+		ModItems.QUANTUM_MIRROR.setTileEntityItemStackRenderer(new ItemQuantumMirrorRenderer());
+		ModItems.QUANTA.setTileEntityItemStackRenderer(new ItemQuantaRenderer());
+		ModItems.HYPER_CONDUCTOR.setTileEntityItemStackRenderer(new ItemHyperConductorRenderer());
+		ModItems.VACUUM_CONVEYOR.setTileEntityItemStackRenderer(new ItemVacuumConveyorRenderer());
+		ModItems.MECHANICAL_TRANSLOCATOR.setTileEntityItemStackRenderer(new ItemMechanicalTranslocatorRenderer());
+		ModItems.QIMRANUT.setTileEntityItemStackRenderer(new ItemQimranutRenderer());
+		ModItems.NEUTRON_BATTERY.setTileEntityItemStackRenderer(new ItemNeutronBatteryRenderer());
+		ModItems.PHOLARIZER.setTileEntityItemStackRenderer(new ItemPholarizerRenderer());
+		ModItems.FISSION_INDUCER.setTileEntityItemStackRenderer(new ItemFissionInducerRenderer());
+		ModItems.ELECTRON.setTileEntityItemStackRenderer(new ItemElectronRenderer());
+		ModItems.SYMMETRIC_NEGATOR.setTileEntityItemStackRenderer(new ItemSymmetricNegatorRenderer());
+		ModItems.SYMMETRIC_EXTENSION.setTileEntityItemStackRenderer(new ItemSymmetricExtensionRenderer());
+		ModItems.KONDENZATOR.setTileEntityItemStackRenderer(new ItemKondenzatorRenderer());
 		IPM.LOG.info("[NOM PIE!]");
 	}
 
 	private static <T extends TileEntity> void registerTESR(Class<T> tile, TileEntitySpecialRenderer<T> render) {
 		ClientRegistry.bindTileEntitySpecialRenderer(tile, render);
-	}
-
-	@SuppressWarnings("deprecation")
-	private static <T extends TileEntity> void registerTESRItemStack(Item item, Class<T> tile) {
-		ForgeHooksClient.registerTESRItemStack(item, 0, tile);
-	}
-
-	@SuppressWarnings("deprecation")
-	private static <T extends TileEntity> void registerTESRItemStack(Block block, Class<T> tile) {
-		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(block), 0, tile);
 	}
 
 	private static <T extends Entity> void registerEntity(Class<T> entity, IRenderFactory<? super T> render) {

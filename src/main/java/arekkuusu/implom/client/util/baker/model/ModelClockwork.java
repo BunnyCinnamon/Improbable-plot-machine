@@ -1,8 +1,10 @@
 package arekkuusu.implom.client.util.baker.model;
 
+import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.baked.BakedClockwork;
+import arekkuusu.implom.common.item.ItemClockwork;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
@@ -98,11 +100,11 @@ public class ModelClockwork implements IModel {
 		@Override
 		public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
 			Function<ResourceLocation, TextureAtlasSprite> textureGetter = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-			boolean unsealed = NBTHelper.getBoolean(stack, "unsealed");
+			boolean unsealed = NBTHelper.getBoolean(stack, ItemClockwork.Constants.NBT_UNSEALED);
 			ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 			builder.put("background", ResourceLibrary.CLOCKWORK_INSIDES.toString());
-			NBTHelper.getNBTTag(stack, "quartz")
-					.map(ItemStack::new)
+			InventoryHelper.getCapability(stack).map(c -> c.getStackInSlot(0))
+					.filter(i -> !i.isEmpty())
 					.map(quartz -> {
 						RenderItem render = Minecraft.getMinecraft().getRenderItem();
 						IBakedModel model = render.getItemModelWithOverrides(quartz, null, null);

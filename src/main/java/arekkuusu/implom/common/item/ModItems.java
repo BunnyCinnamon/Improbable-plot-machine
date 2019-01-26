@@ -26,22 +26,33 @@ public final class ModItems {
 
 	private static final Item PLACE_HOLDER = new Item();
 	//--------------------------------Items--------------------------------//
-	public static final Item CRYSTAL_QUARTZ = PLACE_HOLDER;
+	public static final Item CRYSTAL_PRISM = PLACE_HOLDER;
 	public static final Item ANGSTROM = PLACE_HOLDER;
 	public static final Item ASH = PLACE_HOLDER;
 	public static final Item SINGULARITY = PLACE_HOLDER;
 	public static final Item PLASMON = PLACE_HOLDER;
-	public static final Item QELAION = PLACE_HOLDER;
 	public static final Item NEUTRON_BATTERY = PLACE_HOLDER;
 	public static final Item THEOREMA = PLACE_HOLDER;
 	public static final Item INTRINSIC_CELL = PLACE_HOLDER;
-	public static final Item CRYSTAL_QUARTZ_SHARD = PLACE_HOLDER;
+	public static final Item CRYSTAL_SHARD = PLACE_HOLDER;
 	public static final Item QUARTZ = PLACE_HOLDER;
 	public static final Item MAGNETIC_BOLT = PLACE_HOLDER;
 	public static final Item MAGNETIC_GEAR = PLACE_HOLDER;
 	public static final Item MAGNETIC_SPRING = PLACE_HOLDER;
 	public static final Item CLOCKWORK = PLACE_HOLDER;
 	public static final Item BOUND_PHOTON = PLACE_HOLDER;
+	public static final Item QUANTA = PLACE_HOLDER;
+	public static final Item QUANTUM_MIRROR = PLACE_HOLDER;
+	public static final Item HYPER_CONDUCTOR = PLACE_HOLDER;
+	public static final Item VACUUM_CONVEYOR = PLACE_HOLDER;
+	public static final Item MECHANICAL_TRANSLOCATOR = PLACE_HOLDER;
+	public static final Item QIMRANUT = PLACE_HOLDER;
+	public static final Item PHOLARIZER = PLACE_HOLDER;
+	public static final Item FISSION_INDUCER = PLACE_HOLDER;
+	public static final Item ELECTRON = PLACE_HOLDER;
+	public static final Item SYMMETRIC_NEGATOR = PLACE_HOLDER;
+	public static final Item SYMMETRIC_EXTENSION = PLACE_HOLDER;
+	public static final Item KONDENZATOR = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.SAPROLITE));
@@ -50,8 +61,8 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.SCHRODINGER_GLYPH));
 		registry.register(new ItemBlinker());
 		registry.register(itemBlock(ModBlocks.PHENOMENA));
-		registry.register(new ItemCrystalQuartz());
-		registry.register(itemBlock(ModBlocks.Q_SQUARED));
+		registry.register(new ItemBase(LibNames.CRYSTAL_PRISM));
+		registry.register(itemBlock(ModBlocks.QUANTA));
 		registry.register(itemBlock(ModBlocks.HYPER_CONDUCTOR));
 		registry.register(itemBlock(ModBlocks.ELECTRON));
 		registry.register(itemBlock(ModBlocks.ASHEN));
@@ -75,14 +86,13 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.LUMINIC_DECOMPRESSOR));
 		registry.register(itemBlock(ModBlocks.QUARTZ_CONSUMER));
 		registry.register(itemBlock(ModBlocks.LUMEN_COMPRESSOR));
-		registry.register(itemBlock(ModBlocks.DIFFERENTIATOR));
-		registry.register(itemBlock(ModBlocks.DIFFERENTIATOR_INTERCEPTOR));
+		registry.register(itemBlock(ModBlocks.SYMMETRIC_NEGATOR));
+		registry.register(itemBlock(ModBlocks.SYMMETRIC_EXTENSION));
 		registry.register(itemBlock(ModBlocks.KONDENZATOR));
 		registry.register(new ItemTheorema());
 		registry.register(itemBlock(ModBlocks.IMBUED_QUARTZ));
 		registry.register(new ItemBase(LibNames.INTRINSIC_CELL));
-		registry.register(new ItemBase(LibNames.CRYSTAL_QUARTZ_SHARD));
-		registry.register(itemBlock(ModBlocks.CRYSTAL_SYNTHESIZER));
+		registry.register(new ItemCrystalShard());
 		registry.register(new ItemQuartz());
 		registry.register(new ItemBase(LibNames.MAGNETIC_BOLT));
 		registry.register(new ItemBase(LibNames.MAGNETIC_GEAR));

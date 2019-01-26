@@ -1,0 +1,87 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "improbableplotmachine:blocks/symmetric_negator/base",
+		"particle": "improbableplotmachine:blocks/symmetric_negator/base"
+	},
+	"elements": [
+		{
+			"from": [-6, -7.5, -4],
+			"to": [-4, -4.5, 6],
+			"faces": {
+				"east": {"uv": [3, 3, 13, 6], "texture": "#0"},
+				"south": {"uv": [2, 11, 4, 14], "texture": "#0"},
+				"west": {"uv": [4, 2, 14, 5], "texture": "#0"},
+				"up": {"uv": [2, 4, 4, 14], "texture": "#0"},
+				"down": {"uv": [2, 2, 4, 12], "texture": "#0"}
+			}
+		},
+		{
+			"from": [-6, -7.5, -6],
+			"to": [4, -4.5, -4],
+			"faces": {
+				"north": {"uv": [4, 11, 14, 14], "texture": "#0"},
+				"south": {"uv": [3, 3, 13, 6], "texture": "#0"},
+				"west": {"uv": [2, 2, 4, 5], "texture": "#0"},
+				"up": {"uv": [2, 2, 12, 4], "texture": "#0"},
+				"down": {"uv": [2, 12, 12, 14], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, -7.5, -6],
+			"to": [6, -4.5, 4],
+			"faces": {
+				"north": {"uv": [2, 11, 4, 14], "texture": "#0"},
+				"east": {"uv": [4, 2, 14, 5], "texture": "#0"},
+				"west": {"uv": [3, 3, 13, 6], "texture": "#0"},
+				"up": {"uv": [12, 2, 14, 12], "texture": "#0"},
+				"down": {"uv": [12, 4, 14, 14], "texture": "#0"}
+			}
+		},
+		{
+			"from": [-4, -7.5, 4],
+			"to": [6, -4.5, 6],
+			"faces": {
+				"north": {"uv": [3, 3, 13, 6], "texture": "#0"},
+				"east": {"uv": [2, 2, 4, 5], "texture": "#0"},
+				"south": {"uv": [4, 11, 14, 14], "texture": "#0"},
+				"up": {"uv": [4, 12, 14, 14], "texture": "#0"},
+				"down": {"uv": [4, 2, 14, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [-4, -8, -4],
+			"to": [4, -7, 4],
+			"faces": {
+				"north": {"uv": [2, 13, 10, 14], "texture": "#0"},
+				"east": {"uv": [5, 2, 13, 3], "texture": "#0"},
+				"south": {"uv": [4, 13, 12, 14], "texture": "#0"},
+				"west": {"uv": [6, 2, 14, 3], "texture": "#0"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#0"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"isOpen": true,
+			"shade": true,
+			"display": {
+				"visibility": true,
+				"autouv": true
+			},
+			"children": [
+				{
+					"name": "group",
+					"isOpen": true,
+					"shade": true,
+					"display": {
+						"visibility": true,
+						"autouv": true
+					},
+					"children": [0, 1, 2, 3]
+				}
+			]
+		}, 4]
+}

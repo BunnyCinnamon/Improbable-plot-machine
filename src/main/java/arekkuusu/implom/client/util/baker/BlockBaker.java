@@ -61,11 +61,11 @@ public enum BlockBaker {
 	FISSION_INDUCER_INSIDE("fission_inducer_inside"),
 	FISSION_INDUCER_BOTTOM("fission_inducer_bottom"),
 	ELECTRON("electron"),
-	DIFFERENTIATOR_BASE("differentiator_base"),
-	DIFFERENTIATOR_CORE("differentiator_core"),
-	DIFFERENTIATOR_RING("differentiator_ring"),
-	DIFFERENTIATOR_INTERCEPTOR_BASE("differentiator_interceptor_base"),
-	DIFFERENTIATOR_INTERCEPTOR_RING("differentiator_interceptor_ring"),
+	SYMMETRIC_NEGATOR_BASE("symmetric_negator_base"),
+	SYMMETRIC_NEGATOR_CORE("symmetric_negator_core"),
+	SYMMETRIC_NEGATOR_RING("symmetric_negator_ring"),
+	SYMMETRIC_EXTENSION_BASE("symmetric_extension_base"),
+	SYMMETRIC_EXTENSION_RING("symmetric_extension_ring"),
 	KONDENZATOR_BASE("kondenzator_base"),
 	KONDENZATOR_CORE("kondenzator_core");
 
@@ -75,7 +75,7 @@ public enum BlockBaker {
 	private IBakedModel baked;
 
 	BlockBaker(String name) {
-		ModelLocation modelLocation = new ModelLocation("other");
+		ModelLocation modelLocation = new ModelLocation("rendered");
 		location = ResourceHelperStatic.getLocation(LibMod.MOD_ID, null, modelLocation, name, "");
 	}
 

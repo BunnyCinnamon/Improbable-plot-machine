@@ -7,15 +7,13 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.FixedMaterial;
-import arekkuusu.implom.common.block.tile.TileLuminicDecompressor;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -23,8 +21,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 /*
  * Created by <Arekkuusu> on 4/9/2018.
@@ -40,7 +36,7 @@ public class BlockLuminicDecompressor extends BlockBaseFacing {
 	).build();
 
 	public BlockLuminicDecompressor() {
-		super(LibNames.LUMINIC_DECOMPRESSOR, FixedMaterial.DONT_MOVE);
+		super(LibNames.LUMINIC_DECOMPRESSOR, IPMMaterial.MONOLITH);
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
 		setLightLevel(0.2F);
@@ -60,20 +56,5 @@ public class BlockLuminicDecompressor extends BlockBaseFacing {
 	@Override
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
-	}
-
-	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
-
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileLuminicDecompressor();
-	}
-
-	public static class Constants {
-		public static final int BEAM_REACH = 5;
 	}
 }

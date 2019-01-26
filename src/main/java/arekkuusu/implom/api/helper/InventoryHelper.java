@@ -9,10 +9,13 @@ package arekkuusu.implom.api.helper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+
+import java.util.Optional;
 
 /**
  * Created by <Arekkuusu> on 14/03/2018.
@@ -20,12 +23,20 @@ import net.minecraftforge.items.IItemHandler;
  */
 public final class InventoryHelper {
 
-	@SuppressWarnings({"ConstantConditions", "unchecked"})
-	public static void handleItemTransfer(TileEntity tile, EntityPlayer player, EnumHand hand) {
-		if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler handler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			ItemStack inserted = player.getHeldItem(hand);
+	public static Optional<IItemHandler> getCapability(ICapabilityProvider provider) {
+		return getCapability(provider, null);
+	}
 
+	public static Optional<IItemHandler> getCapability(ICapabilityProvider provider, EnumFacing facing) {
+		return provider.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)
+				? Optional.ofNullable(provider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing))
+				: Optional.empty();
+	}
+
+	@SuppressWarnings({"ConstantConditions", "unchecked"})
+	public static void handleItemTransfer(ICapabilityProvider provider, EntityPlayer player, EnumHand hand) {
+		getCapability(provider).ifPresent(handler -> {
+			ItemStack inserted = player.getHeldItem(hand);
 			if(!inserted.isEmpty()) {
 				for(int i = 0; i < handler.getSlots(); i++) {
 					ItemStack test = handler.insertItem(i, inserted, true);
@@ -43,6 +54,6 @@ public final class InventoryHelper {
 					}
 				}
 			}
-		}
+		});
 	}
 }

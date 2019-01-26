@@ -7,10 +7,8 @@
  */
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.api.capability.relativity.RelativityHelper;
-import arekkuusu.implom.api.capability.relativity.RelativityStackProvider;
-import arekkuusu.implom.api.capability.relativity.data.IRelativeRedstone;
 import arekkuusu.implom.common.block.ModBlocks;
+import arekkuusu.implom.common.handler.data.capability.provider.BlinkerProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,14 +33,12 @@ public class ItemBlinker extends ItemBaseBlock implements IUUIDDescription {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		RelativityHelper.getRedstoneCapability(stack).flatMap(IRelativeRedstone::getKey).ifPresent(uuid -> {
-			addInformation(uuid, tooltip);
-		});
+
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return RelativityStackProvider.createRedstone(stack);
+		return new BlinkerProvider(null);
 	}
 }

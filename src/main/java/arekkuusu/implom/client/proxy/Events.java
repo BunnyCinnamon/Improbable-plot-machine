@@ -23,13 +23,11 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*
  * Created by <Arekkuusu> on 21/12/2017.
  * It's distributed as part of Improbable plot machine.
  */
-@SideOnly(Side.CLIENT)
 @EventBusSubscriber(modid = LibMod.MOD_ID, value = Side.CLIENT)
 public class Events {
 

@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.lib.LibNames;
@@ -50,7 +50,7 @@ public class BlockLumenCompressor extends BlockBaseFacing {
 	).build();
 
 	public BlockLumenCompressor() {
-		super(LibNames.LUMEN_COMPRESSOR, FixedMaterial.DONT_MOVE);
+		super(LibNames.LUMEN_COMPRESSOR, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);

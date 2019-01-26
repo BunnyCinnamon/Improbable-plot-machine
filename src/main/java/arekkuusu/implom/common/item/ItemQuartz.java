@@ -1,5 +1,6 @@
 package arekkuusu.implom.common.item;
 
+import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.client.util.helper.ModelHandler;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.creativetab.CreativeTabs;
@@ -22,9 +23,14 @@ public class ItemQuartz extends ItemBase {
 	}
 
 	@Override
+	public int getMetadata(ItemStack stack) {
+		return NBTHelper.getEnum(Quartz.class, stack, "quartz").map(Enum::ordinal).orElse(0);
+	}
+
+	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if(this.isInCreativeTab(tab)) {
-			Stream.of(Quartz.values()).forEach(q -> items.add(new ItemStack(this, 1, q.ordinal())));
+			Stream.of(Quartz.values()).forEach(q -> items.add(NBTHelper.setEnum(new ItemStack(this), q, Constants.NBT_QUARTZ)));
 		}
 	}
 
@@ -32,6 +38,10 @@ public class ItemQuartz extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		ModelHandler.registerModel(this, Quartz.class);
+	}
+
+	public static class Constants {
+		public static final String NBT_QUARTZ = "quartz";
 	}
 
 	public enum Quartz implements IStringSerializable {
@@ -62,10 +72,6 @@ public class ItemQuartz extends ItemBase {
 		@Override
 		public String getName() {
 			return name().toLowerCase(Locale.ROOT);
-		}
-
-		public static Quartz fromOrdinal(int ordinal) {
-			return Quartz.values()[ordinal];
 		}
 
 		public enum Size implements IStringSerializable {

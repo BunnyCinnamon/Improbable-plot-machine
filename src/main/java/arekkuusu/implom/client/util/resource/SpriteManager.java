@@ -14,8 +14,9 @@ import arekkuusu.implom.common.lib.LibMod;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Location;
 import net.katsstuff.teamnightclipse.mirror.client.helper.ResourceHelperStatic;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.resource.IResourceType;
+import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
 import net.minecraftforge.fml.common.ProgressManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,13 +24,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 /*
  * Created by <Arekkuusu> on 03/07/2017.
  * It's distributed as part of Improbable plot machine.
  */
 @SideOnly(Side.CLIENT)
-public final class SpriteManager implements IResourceManagerReloadListener {
+public final class SpriteManager implements ISelectiveResourceReloadListener {
 
 	private static final Map<ResourceLocation, SpriteResource> SPRITE_RESOURCE_MAP = new HashMap<>();
 	public static final SpriteManager INSTANCE = new SpriteManager();
@@ -63,6 +65,11 @@ public final class SpriteManager implements IResourceManagerReloadListener {
 		}
 		reloading = false;
 		ProgressManager.pop(bar);
+	}
+
+	@Override
+	public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
+
 	}
 
 	public static boolean isReloading() {

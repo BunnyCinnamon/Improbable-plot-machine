@@ -7,10 +7,8 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.capability.relativity.RelativityHelper;
-import arekkuusu.implom.api.capability.relativity.data.IRelativeRedstone;
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileBlinker;
@@ -37,7 +35,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 /*
  * Created by <Arekkuusu> on 03/09/2017.
@@ -61,11 +58,29 @@ public class BlockBlinker extends BlockBaseFacing {
 			.build();
 
 	public BlockBlinker() {
-		super(LibNames.BLINKER, FixedMaterial.BREAK);
+		super(LibNames.BLINKER, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP).withProperty(Properties.ACTIVE, false));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
 		setLightLevel(0.2F);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if(!worldIn.isRemote) {
+			getTile(TileBlinker.class, worldIn, pos).ifPresent(tile -> {
+				tile.fromItemStack(stack);
+			});
+		}
+	}
+
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		getTile(TileBlinker.class, worldIn, pos).ifPresent(tile -> {
+			tile.wrapper.positionInstance.remove(worldIn, pos, tile.getFacingLazy());
+			tile.wrapper.redstoneInstance.set(0);
+		});
+		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
@@ -76,18 +91,25 @@ public class BlockBlinker extends BlockBaseFacing {
 	}
 
 	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if(block != this) {
+			getTile(TileBlinker.class, world, pos).ifPresent(tile -> {
+				tile.wrapper.redstoneInstance.set(0);
+			});
+		}
+	}
+
+	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if(!world.isRemote) {
-			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
-					boolean active = handler.isPowered();
-					if(active != state.getValue(Properties.ACTIVE)) {
-						world.setBlockState(pos, state.withProperty(Properties.ACTIVE, active));
-						for(EnumFacing facing : EnumFacing.values()) {
-							world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
-						}
+			getTile(TileBlinker.class, world, pos).ifPresent(tile -> {
+				boolean active = tile.wrapper.redstoneInstance.get() > 0;
+				if(active != state.getValue(Properties.ACTIVE)) {
+					world.setBlockState(pos, state.withProperty(Properties.ACTIVE, active));
+					for(EnumFacing facing : EnumFacing.values()) {
+						world.notifyNeighborsOfStateChange(pos.offset(facing), this, false);
 					}
-				});
+				}
 			});
 			world.scheduleUpdate(pos, this, tickRate(world));
 		}
@@ -99,22 +121,6 @@ public class BlockBlinker extends BlockBaseFacing {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if(!world.isRemote) {
-			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
-					if(!handler.getKey().isPresent()) {
-						RelativityHelper.getRedstoneCapability(stack).ifPresent(subHandler -> {
-							if(!subHandler.getKey().isPresent()) subHandler.setKey(UUID.randomUUID());
-							subHandler.getKey().ifPresent(handler::setKey);
-						});
-					}
-				});
-			});
-		}
-	}
-
-	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		drops.add(getItem((World) world, pos, state)); //Bad??
 	}
@@ -122,12 +128,8 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
 		ItemStack stack = super.getItem(world, pos, state);
-		getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-			RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
-				handler.getKey().ifPresent(key -> {
-					RelativityHelper.getRedstoneCapability(stack).ifPresent(subHandler -> subHandler.setKey(key));
-				});
-			});
+		getTile(TileBlinker.class, world, pos).ifPresent(tile -> {
+			tile.toItemStack(stack);
 		});
 		return stack;
 	}
@@ -155,22 +157,6 @@ public class BlockBlinker extends BlockBaseFacing {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		if(block != this) {
-			getTile(TileBlinker.class, world, pos).ifPresent(blinker -> {
-				RelativityHelper.getRedstoneCapability(blinker).ifPresent(handler -> {
-					int power = blinker.getRedstonePower();
-					boolean wasPowered = handler.isPowered();
-					boolean isPowered = world.isBlockPowered(pos) && power > 0;
-					if(isPowered != wasPowered) {
-						handler.setPower(power, true);
-					}
-				});
-			});
-		}
-	}
-
-	@Override
 	public boolean canProvidePower(IBlockState state) {
 		return true;
 	}
@@ -186,17 +172,16 @@ public class BlockBlinker extends BlockBaseFacing {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		return !world.getBlockState(pos.offset(facing)).canProvidePower() || facing != side.getOpposite()
 				? getTile(TileBlinker.class, world, pos)
-				.flatMap(RelativityHelper::getRedstoneCapability)
-				.map(IRelativeRedstone::getPower)
+				.map(tile -> tile.wrapper.redstoneInstance.get())
 				.orElse(0) : 0;
 	}
 
 	@Override
 	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return getTile(TileBlinker.class, world, pos)
-				.flatMap(RelativityHelper::getRedstoneCapability)
-				.map(IRelativeRedstone::getPower)
-				.orElse(0);
+		return !world.getBlockState(pos.offset(side.getOpposite())).canProvidePower()
+				? getTile(TileBlinker.class, world, pos)
+				.map(tile -> tile.wrapper.redstoneInstance.get())
+				.orElse(0) : 0;
 	}
 
 	@Override
@@ -244,5 +229,9 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileBlinker();
+	}
+
+	public static class Constants {
+		public static final String NBT_REDSTONE = "redstone";
 	}
 }

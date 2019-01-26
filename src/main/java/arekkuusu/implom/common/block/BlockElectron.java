@@ -7,9 +7,9 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.sound.SolarSounds;
+import arekkuusu.implom.api.sound.IMPSounds;
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.api.util.FixedDamage;
+import arekkuusu.implom.api.util.IPMDamage;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
@@ -80,7 +80,7 @@ public class BlockElectron extends BlockBase {
 		int power = state.getValue(Properties.POWER);
 		if(!world.isRemote && power > 0) {
 			world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(1)).forEach(e -> {
-				e.attackEntityFrom(FixedDamage.ELECTRICITY, power * 0.5F);
+				e.attackEntityFrom(IPMDamage.SHOCK, power * 0.5F);
 			});
 		}
 		world.scheduleUpdate(pos, this, tickRate(world));
@@ -100,7 +100,7 @@ public class BlockElectron extends BlockBase {
 				Vector3 to = Vector3.rotateRandom().add(from);
 				IPM.getProxy().spawnArcDischarge(world, from, to, 4, 0.25F, 15, 0x5194FF, true, true);
 			}
-			IPM.getProxy().playSound(world, pos, SolarSounds.SPARK, SoundCategory.BLOCKS, 0.05F);
+			IPM.getProxy().playSound(world, pos, IMPSounds.SPARK, SoundCategory.BLOCKS, 0.05F);
 		}
 	}
 

@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.FixedMaterial;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.common.block.tile.TileGravityHopper;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.Block;
@@ -34,7 +34,7 @@ public class BlockGravityHopper extends BlockBaseFacing {
 	private static final AxisAlignedBB BB = new AxisAlignedBB(0.3D,0.3D,0.3D, 0.7D, 0.7D, 0.7D);
 
 	public BlockGravityHopper() {
-		super(LibNames.GRAVITY_HOPPER, FixedMaterial.DONT_MOVE);
+		super(LibNames.GRAVITY_HOPPER, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(FACING, EnumFacing.DOWN));
 		setHarvestLevel(Tool.PICK, ToolLevel.IRON);
 		setHardness(2F);
