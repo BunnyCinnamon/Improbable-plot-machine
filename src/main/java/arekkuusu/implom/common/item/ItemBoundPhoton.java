@@ -9,6 +9,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -56,6 +57,7 @@ public class ItemBoundPhoton extends ItemBase implements IUUIDDescription {
 					NBTTagCompound tag = compound.getCompoundTag(key);
 					if(!compound.hasKey(key)) compound.setTag(key, tag);
 					((INBTDataTransferable) tile).init(tag);
+					event.getEntityPlayer().sendStatusMessage(new TextComponentTranslation("status.bound.success"), true);
 				}
 			}
 			event.setCanceled(true);

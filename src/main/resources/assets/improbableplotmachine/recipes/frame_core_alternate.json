@@ -6,19 +6,18 @@
     "#G#"
   ],
   "key": {
-    "#": {
-      "item": "improbableplotmachine:monolithic"
-    },
     "G": {
+      "item": "improbableplotmachine:magnetic_spring"
+    },
+    "#": {
       "item": "improbableplotmachine:magnetic_bolt"
     },
     "D": {
-      "item": "improbableplotmachine:simple_mechanism"
+      "item": "improbableplotmachine:monolithic"
     }
   },
   "result": {
-    "item": "improbableplotmachine:clockwork",
-	"nbt": {"unsealed": "true"}
+    "item": "improbableplotmachine:frame_core"
   },
   "group": "plot_machine"
 }

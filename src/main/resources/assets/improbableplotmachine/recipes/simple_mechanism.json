@@ -1,0 +1,29 @@
+﻿{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "B B",
+    "RGR",
+    "SIS"
+  ],
+  "key": {
+    "B": {
+      "item": "improbableplotmachine:magnetic_bolt"
+    },
+    "S": {
+      "item": "improbableplotmachine:magnetic_spring"
+    },
+    "G": {
+      "item": "improbableplotmachine:magnetic_gear"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "improbableplotmachine:simple_mechanism"
+  },
+  "group": "plot_machine"
+}

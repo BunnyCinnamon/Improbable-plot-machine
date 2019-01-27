@@ -57,4 +57,6 @@ public class LibNames {
 	public static final String MAGNETIC_SPRING = "magnetic_spring";
 	public static final String CLOCKWORK = "clockwork";
 	public static final String BOUND_PHOTON = "bound_photon";
+	public static final String SIMPLE_MECHANISM = "simple_mechanism";
+	public static final String FRAME_CORE = "frame_core";
 }

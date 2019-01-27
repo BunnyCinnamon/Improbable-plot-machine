@@ -11,7 +11,7 @@
     },
     "G": {
       "type": "forge:ore_dict",
-      "ore": "blockGlass"
+      "ore": "paneGlass"
     },
     "D": {
       "item": "improbableplotmachine:intrinsic_cell"

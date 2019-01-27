@@ -35,6 +35,7 @@ public class TileQimranut extends TileBase implements INBTDataTransferable {
 		public void setKey(@Nullable UUID uuid) {
 			super.setKey(uuid);
 			markDirty();
+			sync();
 		}
 	});
 

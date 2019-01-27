@@ -6,19 +6,19 @@
     "#G#"
   ],
   "key": {
-    "#": {
+    "G": {
       "item": "improbableplotmachine:monolithic"
     },
-    "G": {
-      "type": "forge:ore_dict",
-      "ore": "paneGlass"
+    "#": {
+      "item": "improbableplotmachine:magnetic_bolt"
     },
     "D": {
-      "item": "improbableplotmachine:intrinsic_cell"
+      "item": "improbableplotmachine:simple_mechanism"
     }
   },
   "result": {
-    "item": "improbableplotmachine:kondenzator"
+    "item": "improbableplotmachine:clockwork",
+	"nbt": {"unsealed": "true"}
   },
   "group": "plot_machine"
 }
