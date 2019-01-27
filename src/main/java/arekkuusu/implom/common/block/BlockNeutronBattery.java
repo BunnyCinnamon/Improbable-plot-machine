@@ -163,11 +163,11 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	}
 
 	public enum BatteryCapacitor {
-		WHITE(8, 0xA4A4A4),
+		/*WHITE(8, 0xA4A4A4),*/
 		BLUE(64, 0x00FFE1),
-		GREEN(512, 0x42BC49),
+		/*GREEN(512, 0x42BC49),
 		YELLOW(4096, 0xF2CB30),
-		PINK(16777216, 0xC13DAA);
+		PINK(16777216, 0xC13DAA)*/;
 
 		int capacity;
 		int color;
@@ -192,11 +192,11 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		public static final String NBT_NEUTRON = "neutron";
 
 		static {
-			Constants.putQuartzBattery(ItemQuartz.Quartz.WHITE_MEDIUM, BatteryCapacitor.WHITE);
+			/*Constants.putQuartzBattery(ItemQuartz.Quartz.WHITE_MEDIUM, BatteryCapacitor.WHITE);*/
 			Constants.putQuartzBattery(ItemQuartz.Quartz.BLUE_MEDIUM, BatteryCapacitor.BLUE);
-			Constants.putQuartzBattery(ItemQuartz.Quartz.GREEN_MEDIUM, BatteryCapacitor.GREEN);
+			/*Constants.putQuartzBattery(ItemQuartz.Quartz.GREEN_MEDIUM, BatteryCapacitor.GREEN);
 			Constants.putQuartzBattery(ItemQuartz.Quartz.YELLOW_MEDIUM, BatteryCapacitor.YELLOW);
-			Constants.putQuartzBattery(ItemQuartz.Quartz.PINK_MEDIUM, BatteryCapacitor.PINK);
+			Constants.putQuartzBattery(ItemQuartz.Quartz.PINK_MEDIUM, BatteryCapacitor.PINK);*/
 		}
 
 		public static void putQuartzBattery(ItemQuartz.Quartz quartz, BatteryCapacitor capacitor) {

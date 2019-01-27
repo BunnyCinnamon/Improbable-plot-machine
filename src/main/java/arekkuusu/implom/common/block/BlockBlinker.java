@@ -77,7 +77,7 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		getTile(TileBlinker.class, worldIn, pos).ifPresent(tile -> {
-			tile.wrapper.positionInstance.remove(worldIn, pos, tile.getFacingLazy());
+			tile.wrapper.positionInstance.remove(worldIn, pos, state.getValue(BlockDirectional.FACING));
 			tile.wrapper.redstoneInstance.set(0);
 		});
 		super.breakBlock(worldIn, pos, state);

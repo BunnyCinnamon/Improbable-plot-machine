@@ -47,6 +47,7 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 
 	@SideOnly(Side.CLIENT)
 	public float inactiveTimestamp = -1;
+	public boolean powered;
 	public final PositionsNBTProvider wrapper = new PositionsNBTProvider(new PositionsNBTDataCapability() {
 		@Override
 		public void setKey(@Nullable UUID uuid) {
@@ -92,8 +93,8 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 						Pair<IBlockState, NBTTagCompound> destinyTags = getState(
 								destiny.getWorld(), destiny.getPos().offset(destiny.getFacing())
 						);
-						setState(destinyTags, origin.getWorld(), origin.getPos(), destiny.getFacing(), origin.getFacing());
-						setState(originTags, destiny.getWorld(), destiny.getPos(), origin.getFacing(), destiny.getFacing());
+						setState(destinyTags, origin.getWorld(), origin.getPos().offset(origin.getFacing()), destiny.getFacing(), origin.getFacing());
+						setState(originTags, destiny.getWorld(), destiny.getPos().offset(destiny.getFacing()), origin.getFacing(), destiny.getFacing());
 					}
 				}
 			}
@@ -103,7 +104,7 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 
 	public boolean canReceive(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
-		return state.getBlockHardness(world, pos) != -1 && state.getBlock().canPlaceBlockAt(world, pos);
+		return state.getBlockHardness(world, pos) != -1;
 	}
 
 	public boolean canSend() {
@@ -136,6 +137,7 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 			tile.markDirty();
 		});
 		world.notifyNeighborsOfStateChange(getPos(), getBlockType(), true);
+		world.notifyBlockUpdate(pos, state, state, 16);
 	}
 
 	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
@@ -145,21 +147,7 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 				//noinspection unchecked
 				IProperty<EnumFacing> property = (IProperty<EnumFacing>) p;
 				EnumFacing actual = original.getValue(property);
-				if(from.getOpposite() != to) {
-					if(actual == from || actual == from.getOpposite()) {
-						if(from.getAxis().isVertical()) {
-							EnumFacing facing = to == EnumFacing.EAST || to == EnumFacing.WEST ? to.getOpposite() : to;
-							actual = FacingHelper.rotateXY(actual, from.getAxisDirection(), facing);
-						} else {
-							EnumFacing facing = from == EnumFacing.EAST || from == EnumFacing.WEST ? from.getOpposite() : from;
-							actual = FacingHelper.rotateXY(actual, to.getOpposite().getAxisDirection(), facing);
-						}
-					} else actual = actual.getOpposite();
-				} else {
-					actual = actual.getOpposite();
-				}
-				original = apply(property, original, actual);
-				original = original.withRotation(FacingHelper.getHorizontalRotation(from, to));
+				original = apply(property, original, FacingHelper.rotate(actual, from, to));
 				break;
 			}
 		}
@@ -195,11 +183,13 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 	@Override
 	void writeNBT(NBTTagCompound compound) {
 		compound.setTag(BlockMechanicalTranslocator.Constants.NBT_POSITIONS, wrapper.serializeNBT());
+		compound.setBoolean("powered", powered);
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
 		wrapper.deserializeNBT(compound.getCompoundTag(BlockMechanicalTranslocator.Constants.NBT_POSITIONS));
+		powered = compound.getBoolean("powered");
 	}
 
 	@Override

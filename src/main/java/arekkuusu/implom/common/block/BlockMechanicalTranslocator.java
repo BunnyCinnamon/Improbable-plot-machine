@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.helper.PositionsHelper;
 import arekkuusu.implom.api.helper.RayTraceHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.IPMMaterial;
@@ -85,7 +84,7 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		getTile(TileMechanicalTranslocator.class, worldIn, pos).ifPresent(tile -> {
-			tile.wrapper.instance.remove(worldIn, pos, tile.getFacingLazy());
+			tile.wrapper.instance.remove(worldIn, pos, state.getValue(BlockDirectional.FACING));
 		});
 		super.breakBlock(worldIn, pos, state);
 	}
@@ -109,8 +108,11 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 		if(block != this && !pos.offset(state.getValue(BlockDirectional.FACING)).equals(fromPos)) {
 			getTile(TileMechanicalTranslocator.class, world, pos).ifPresent(tile -> {
 				boolean isPowered = world.isBlockPowered(pos);
-				if(isPowered || block.getDefaultState().canProvidePower()) {
-					tile.activate();
+				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != tile.powered) {
+					tile.powered = isPowered;
+					if(tile.powered) {
+						tile.activate();
+					}
 				}
 			});
 		}

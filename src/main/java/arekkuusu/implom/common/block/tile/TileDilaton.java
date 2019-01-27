@@ -77,7 +77,7 @@ public class TileDilaton extends TileBase {
 				switch(reaction) {
 					case PUSH_ONLY:
 					case NORMAL:
-						if(pushed.add(getStateTile(next, pos.toImmutable())) && pushed.size() > 15) break loop;
+						if(pushed.add(getState(next, pos.toImmutable())) && pushed.size() > 15) break loop;
 						else ++range;
 						continue loop;
 					case DESTROY:
@@ -97,7 +97,7 @@ public class TileDilaton extends TileBase {
 				if(isPosReplaceable(pos)) {
 					for(int index = pushed.size() - 1; index >= 0; index--) {
 						Triple<IBlockState, NBTTagCompound, BlockPos> triplet = pushed.get(index);
-						if(setStateTile(triplet.getLeft(), triplet.getMiddle(), pos.toImmutable()))
+						if(setState(triplet.getLeft(), triplet.getMiddle(), pos.toImmutable()))
 							removed.add(pos.toImmutable());
 						BlockPos oldPos = triplet.getRight();
 						if(deleted.add(oldPos))
@@ -131,7 +131,7 @@ public class TileDilaton extends TileBase {
 		}
 	}
 
-	private Triple<IBlockState, NBTTagCompound, BlockPos> getStateTile(IBlockState state, BlockPos pos) {
+	private Triple<IBlockState, NBTTagCompound, BlockPos> getState(IBlockState state, BlockPos pos) {
 		NBTTagCompound tag = new NBTTagCompound();
 		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 			tile.writeToNBT(tag);
@@ -142,7 +142,7 @@ public class TileDilaton extends TileBase {
 		return Triple.of(state, tag, pos);
 	}
 
-	private boolean setStateTile(IBlockState state, NBTTagCompound tag, BlockPos pos) {
+	private boolean setState(IBlockState state, NBTTagCompound tag, BlockPos pos) {
 		boolean remove = isPosReplaceable(pos) && !state.getBlock().canPlaceBlockAt(world, pos); //Before setting
 		if(state.getBlock() == ModBlocks.DILATON_EXTENSION) {
 			state = state.withProperty(BlockDirectional.FACING, getFacingLazy());

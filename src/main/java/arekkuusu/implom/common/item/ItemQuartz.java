@@ -45,13 +45,13 @@ public class ItemQuartz extends ItemBase {
 	}
 
 	public enum Quartz implements IStringSerializable {
-		WHITE_SMALL(Size.SMALL, EnumDyeColor.WHITE),
+		/*WHITE_SMALL(Size.SMALL, EnumDyeColor.WHITE),
 		WHITE_MEDIUM(Size.MEDIUM, EnumDyeColor.WHITE),
-		WHITE_LARGE(Size.LARGE, EnumDyeColor.WHITE),
+		WHITE_LARGE(Size.LARGE, EnumDyeColor.WHITE),*/
 		BLUE_SMALL(Size.SMALL, EnumDyeColor.BLUE),
 		BLUE_MEDIUM(Size.MEDIUM, EnumDyeColor.BLUE),
 		BLUE_LARGE(Size.LARGE, EnumDyeColor.BLUE),
-		GREEN_SMALL(Size.SMALL, EnumDyeColor.GREEN),
+		/*GREEN_SMALL(Size.SMALL, EnumDyeColor.GREEN),
 		GREEN_MEDIUM(Size.MEDIUM, EnumDyeColor.GREEN),
 		GREEN_LARGE(Size.LARGE, EnumDyeColor.GREEN),
 		YELLOW_SMALL(Size.SMALL, EnumDyeColor.YELLOW),
@@ -59,7 +59,7 @@ public class ItemQuartz extends ItemBase {
 		YELLOW_LARGE(Size.LARGE, EnumDyeColor.YELLOW),
 		PINK_SMALL(Size.SMALL, EnumDyeColor.PINK),
 		PINK_MEDIUM(Size.MEDIUM, EnumDyeColor.PINK),
-		PINK_LARGE(Size.LARGE, EnumDyeColor.PINK);
+		PINK_LARGE(Size.LARGE, EnumDyeColor.PINK)*/;
 
 		public final Size size;
 		public final EnumDyeColor color;
