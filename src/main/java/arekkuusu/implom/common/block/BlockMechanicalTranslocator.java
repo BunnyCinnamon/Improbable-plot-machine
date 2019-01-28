@@ -212,6 +212,5 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	public static class Constants {
 		public static final String NBT_POSITIONS = "positions";
 		public static final String NBT_POWERED = "powered";
-		public static final String NBT_INDEX = "index";
 	}
 }

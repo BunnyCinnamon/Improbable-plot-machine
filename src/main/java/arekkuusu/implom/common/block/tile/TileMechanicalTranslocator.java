@@ -183,13 +183,13 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 	@Override
 	void writeNBT(NBTTagCompound compound) {
 		compound.setTag(BlockMechanicalTranslocator.Constants.NBT_POSITIONS, wrapper.serializeNBT());
-		compound.setBoolean("powered", powered);
+		compound.setBoolean(BlockMechanicalTranslocator.Constants.NBT_POWERED, powered);
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
 		wrapper.deserializeNBT(compound.getCompoundTag(BlockMechanicalTranslocator.Constants.NBT_POSITIONS));
-		powered = compound.getBoolean("powered");
+		powered = compound.getBoolean(BlockMechanicalTranslocator.Constants.NBT_POWERED);
 	}
 
 	@Override
