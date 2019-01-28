@@ -26,19 +26,12 @@ public class TileMechanicalTranslocatorRenderer extends TileEntitySpecialRendere
 
 	@Override
 	public void render(TileMechanicalTranslocator translocator, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		boolean active = translocator.isActive();
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		if(!active) {
-			if(translocator.inactiveTimestamp == -1)
-				translocator.inactiveTimestamp = RenderHelper.getRenderWorldTime(partialTicks);
-		} else if(translocator.inactiveTimestamp != -1) {
-			translocator.inactiveTimestamp = -1;
-		}
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		renderModel(translocator.getFacingLazy(), active ? tick : translocator.inactiveTimestamp, active, x, y, z, active ? partialTicks : 0);
+		renderModel(translocator.getFacingLazy(), tick, x, y, z, partialTicks);
 	}
 
-	public static void renderModel(@Nullable EnumFacing facing, float tick, boolean active, double x, double y, double z, float partialTicks) {
+	public static void renderModel(@Nullable EnumFacing facing, float tick, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 		if(facing != null && facing != EnumFacing.DOWN) {
@@ -65,14 +58,12 @@ public class TileMechanicalTranslocatorRenderer extends TileEntitySpecialRendere
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
 		BlockBaker.TRANSLOCATOR_BASE.render();
 		GlStateManager.popMatrix();
-		if(active) {
-			GlStateManager.disableLighting();
-			ShaderLibrary.BRIGHT.begin();
-			ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-				b.set(0F);
-				b.upload();
-			});
-		}
+		GlStateManager.disableLighting();
+		ShaderLibrary.BRIGHT.begin();
+		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
+			b.set(0F);
+			b.upload();
+		});
 		//Middle
 		GlStateManager.pushMatrix();
 		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, -1F, 0F);
@@ -100,10 +91,8 @@ public class TileMechanicalTranslocatorRenderer extends TileEntitySpecialRendere
 		GlStateManager.popMatrix();
 		/*--- Inwards ---*/
 		GlStateManager.popMatrix();
-		if(active) {
-			GlStateManager.enableLighting();
-			ShaderLibrary.BRIGHT.end();
-		}
+		GlStateManager.enableLighting();
+		ShaderLibrary.BRIGHT.end();
 		GlStateManager.popMatrix();
 	}
 }

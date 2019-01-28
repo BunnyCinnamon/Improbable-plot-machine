@@ -28,8 +28,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -45,8 +43,6 @@ import static net.minecraft.util.EnumFacing.UP;
  */
 public class TileMechanicalTranslocator extends TileBase implements INBTDataTransferable {
 
-	@SideOnly(Side.CLIENT)
-	public float inactiveTimestamp = -1;
 	public boolean powered;
 	public final PositionsNBTProvider wrapper = new PositionsNBTProvider(new PositionsNBTDataCapability() {
 		@Override
@@ -76,17 +72,20 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 			if(!list.isEmpty() && list.size() > 1) {
 				int index = wrapper.instance.index(getWorld(), getPos(), getFacingLazy());
 				if(index == -1) return;
-				PositionsNBTData.Position origin = wrapper.instance.get().get(index);
+				PositionsNBTData.Position origin = list.get(index);
 				if(origin.getWorld() != null && origin.getPos() != null && origin.getFacing() != null) {
-					for(int size = list.size(), i = index + 1 >= size ? 0 : index + 1; i < size; i++) {
+					for(int size = list.size(), i = index + 1; ; i++) {
+						if(i >= size) i = 0; //Lööps brøther
 						PositionsNBTData.Position destiny = list.get(i);
-						if(destiny.equals(origin)
-								|| destiny.getWorld() == null
+						if(destiny.equals(origin))
+							break; //Cant replace itself brøther
+						if(destiny.getWorld() == null
 								|| destiny.getPos() == null
-								|| destiny.getFacing() == null)
-							continue; //Cant replace itself
-						if(!canReceive(destiny.getWorld(), destiny.getPos().offset(destiny.getFacing())))
-							continue; //Cant replace unbreakable blocks
+								|| destiny.getFacing() == null
+								|| !destiny.getWorld().isBlockLoaded(destiny.getPos().offset(destiny.getFacing())))
+							continue; //Cant replace invalid pös brøther
+						if(isUnbreakable(destiny.getWorld(), destiny.getPos().offset(destiny.getFacing())))
+							continue; //Cant replace unbreakable blöcks brøther
 						Pair<IBlockState, NBTTagCompound> originTags = getState(
 								origin.getWorld(), origin.getPos().offset(origin.getFacing())
 						);
@@ -102,12 +101,12 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 		}
 	}
 
-	public boolean canReceive(World world, BlockPos pos) {
+	private boolean isUnbreakable(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
-		return state.getBlockHardness(world, pos) != -1;
+		return state.getBlockHardness(world, pos) == -1;
 	}
 
-	public boolean canSend() {
+	private boolean canSend() {
 		BlockPos pos = getPos().offset(getFacingLazy());
 		IBlockState state = world.getBlockState(pos);
 		return state.getBlockHardness(world, pos) != -1 && !getTile(TileMechanicalTranslocator.class, world, pos).isPresent();
@@ -142,14 +141,19 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 
 	private IBlockState getRotationState(IBlockState original, EnumFacing from, EnumFacing to) {
 		ProfilerHelper.begin("[Mechanical Translocator] Rotating block");
+		boolean hasProperty = false;
 		for(IProperty<?> p : original.getPropertyKeys()) {
 			if(p.getValueClass().equals(EnumFacing.class) && p.getName().toLowerCase(Locale.ROOT).contains("facing")) {
+				hasProperty = true;
 				//noinspection unchecked
 				IProperty<EnumFacing> property = (IProperty<EnumFacing>) p;
 				EnumFacing actual = original.getValue(property);
 				original = apply(property, original, FacingHelper.rotate(actual, from, to));
 				break;
 			}
+		}
+		if(!hasProperty) { // uwu
+			original = original.withRotation(FacingHelper.getHorizontalRotation(from, to));
 		}
 		ProfilerHelper.end();
 		return original;

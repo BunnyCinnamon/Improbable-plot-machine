@@ -68,7 +68,10 @@ public class PositionsNBTData implements INBTData<NBTTagList> {
 		public World getWorld() {
 			World world = null;
 			if(cacheWorld != null) world = cacheWorld.get();
-			if(world == null) cacheWorld = new WeakReference<>(DimensionManager.getWorld(worldId));
+			if(world == null) {
+				cacheWorld = new WeakReference<>(DimensionManager.getWorld(worldId));
+				world = cacheWorld.get();
+			}
 			return world;
 		}
 

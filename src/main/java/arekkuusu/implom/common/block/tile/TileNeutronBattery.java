@@ -11,9 +11,11 @@ import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.api.helper.WorldAccessHelper;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.common.block.BlockNeutronBattery;
 import arekkuusu.implom.common.handler.data.capability.provider.NeutronProvider;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -29,6 +31,18 @@ import java.util.UUID;
 public class TileNeutronBattery extends TileBase implements INBTDataTransferable {
 
 	public final NeutronProvider wrapper = new NeutronProvider(this);
+
+	public void setActiveLazy(boolean active) {
+		IBlockState state = world.getBlockState(getPos());
+		boolean wasActive = isActiveLazy();
+		if(active != wasActive) {
+			world.setBlockState(getPos(), state.withProperty(Properties.ACTIVE, active));
+		}
+	}
+
+	public boolean isActiveLazy() {
+		return getStateValue(Properties.ACTIVE, getPos()).orElse(false);
+	}
 
 	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.DOWN);

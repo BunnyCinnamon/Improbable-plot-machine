@@ -10,6 +10,6 @@ public class ItemMechanicalTranslocatorRenderer extends ItemRender {
 	public void renderByItem(ItemStack stack, float partialTicks) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		TileMechanicalTranslocatorRenderer.renderModel(null, tick, true, 0, 0, 0, partialTicks);
+		TileMechanicalTranslocatorRenderer.renderModel(null, tick, 0, 0, 0, partialTicks);
 	}
 }

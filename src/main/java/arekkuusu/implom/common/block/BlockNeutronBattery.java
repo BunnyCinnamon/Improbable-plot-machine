@@ -9,6 +9,7 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.api.helper.NBTHelper;
+import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
@@ -23,6 +24,7 @@ import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -53,8 +55,13 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class BlockNeutronBattery extends BlockBaseFacing {
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP_ACTIVE = FacingAlignedBB.create(
 			new Vector3(3, 1, 3),
+			new Vector3(13, 15, 13),
+			EnumFacing.UP
+	).build();
+	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP_INACTIVE = FacingAlignedBB.create(
+			new Vector3(3, 11, 3),
 			new Vector3(13, 15, 13),
 			EnumFacing.UP
 	).build();
@@ -107,9 +114,9 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 			Vector3 facingVec = new Vector3.WrappedVec3i(state.getValue(BlockDirectional.FACING).getDirectionVec()).asImmutable();
 			for(int i = 0; i < 3 + rand.nextInt(4); i++) {
 				Vector3 posVec = vec.add(
-						0.35D + 0.3D * rand.nextFloat(),
-						0.15D + 0.35D * rand.nextFloat(),
-						0.35D + 0.3D * rand.nextFloat()
+						0.35D + 0.35D * rand.nextFloat(),
+						0.35D + 0.35D * rand.nextFloat(),
+						0.35D + 0.35D * rand.nextFloat()
 				);
 				double speed = 0.005D + 0.005D * rand.nextDouble();
 				Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
@@ -120,9 +127,32 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	}
 
 	@Override
+	public int getMetaFromState(IBlockState state) {
+		int i = state.getValue(BlockDirectional.FACING).ordinal();
+		if(state.getValue(Properties.ACTIVE)) {
+			i |= 8;
+		}
+		return i;
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.values()[meta & 7];
+		return this.getDefaultState().withProperty(BlockDirectional.FACING, enumfacing).withProperty(Properties.ACTIVE, (meta & 8) > 0);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, BlockDirectional.FACING, Properties.ACTIVE);
+	}
+
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
+		boolean active = state.getValue(Properties.ACTIVE);
+		return active
+				? BB_MAP_ACTIVE.getOrDefault(facing, FULL_BLOCK_AABB)
+				: BB_MAP_INACTIVE.getOrDefault(facing, FULL_BLOCK_AABB);
 	}
 
 	@Override

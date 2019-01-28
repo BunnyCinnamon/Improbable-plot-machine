@@ -34,6 +34,7 @@ public class NeutronProvider implements ICapabilityProvider, INBTSerializable<NB
 		@Override
 		protected void onChange() {
 			if(tile != null) {
+				tile.setActiveLazy(!getStackInSlot(0).isEmpty());
 				tile.markDirty();
 				tile.sync();
 			}
