@@ -17,6 +17,8 @@ item.magnetic_bolt.name=Bolt
 item.magnetic_spring.name=Spring
 item.clockwork.name=Clockwork
 item.bound_photon.name=Bound Photon
+item.simple_mechanism.name=Simple Mechanism
+item.frame_core.name=Frame Core
 
 tile.saprolite.name=Saprolite
 tile.quantum_mirror.name=Quantum Mirror
@@ -49,7 +51,7 @@ tile.symmetric_negator.name=Symmetric Negator
 tile.symmetric_extension.name=Symmetric Extension
 tile.kondenzator.name=Kondenzator
 tile.imbued_quartz.name=Imbued Quartz
-tile.crystal_synthesizer.name=Crystal Synthesizer
+tile.mutaror.name=Mutator
 
 entity.eye_of_schrodinger.name=Eye of Schrodinger
 entity.fast_item.name=Entity Item

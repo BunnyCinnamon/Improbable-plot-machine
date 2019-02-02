@@ -11,6 +11,7 @@ import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -45,6 +46,22 @@ public class BlockMutator extends BlockBaseFacing {
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(2F);
 		setLightLevel(0.2F);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if(block != this && !pos.offset(state.getValue(BlockDirectional.FACING)).equals(fromPos)) {
+			getTile(TileMutator.class, world, pos).ifPresent(tile -> {
+				boolean isPowered = world.isBlockPowered(pos);
+				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != tile.powered) {
+					tile.powered = isPowered;
+					tile.markDirty();
+					if(tile.powered) {
+						tile.overrideWorldAccess();
+					}
+				}
+			});
+		}
 	}
 
 	@Override

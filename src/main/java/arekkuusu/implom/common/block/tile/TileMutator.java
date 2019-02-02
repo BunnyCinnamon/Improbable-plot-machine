@@ -38,6 +38,7 @@ public class TileMutator extends TileBase implements INBTDataTransferable {
 			}
 		}
 	});
+	public boolean powered;
 
 	public void overrideWorldAccess() {
 		wrapper.instance.set(getWorld(), getPos().offset(getFacingLazy()), getFacingLazy().getOpposite());
@@ -72,11 +73,13 @@ public class TileMutator extends TileBase implements INBTDataTransferable {
 	@Override
 	void writeNBT(NBTTagCompound compound) {
 		compound.setTag(BlockMutator.Constants.NBT_WORLD_ACCESS, wrapper.serializeNBT());
+		compound.setBoolean("powered", powered);
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
 		wrapper.deserializeNBT(compound.getTag(BlockMutator.Constants.NBT_WORLD_ACCESS));
+		powered = compound.getBoolean("powered");
 	}
 
 	@Override
