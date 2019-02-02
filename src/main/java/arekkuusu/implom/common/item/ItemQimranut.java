@@ -7,6 +7,7 @@
  */
 package arekkuusu.implom.common.item;
 
+import arekkuusu.implom.api.helper.WorldAccessHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;
@@ -37,7 +38,9 @@ public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
+		WorldAccessHelper.getCapability(stack).ifPresent(instance -> {
+			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip);
+		});
 	}
 
 	@Nullable
