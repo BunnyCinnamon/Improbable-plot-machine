@@ -38,36 +38,53 @@ public enum BlockBaker {
 	VACUUM_TOP("vacuum_top"),
 	VACUUM_PIECE("vacuum_piece"),
 	VACUUM_BOTTOM("vacuum_bottom"),
+
 	TRANSLOCATOR_BASE("translocator_base"),
 	TRANSLOCATOR_CENTER("translocator_center"),
 	TRANSLOCATOR_PIECE_RING("translocator_piece_ring"),
+
 	CONDUCTOR_PIECE_0("conductor_piece_0"),
 	CONDUCTOR_PIECE_1("conductor_piece_1"),
 	CONDUCTOR_PIECE_2("conductor_piece_2"),
 	CONDUCTOR_PIECE_3("conductor_piece_3"),
 	CONDUCTOR_PIECE_4("conductor_piece_4"),
+
 	QIMRANUT("qimranut"),
 	QIMRANUT_("qimranut_"),
 	QIMRANUT_RING("qimranut_ring"),
+
 	QELAION("qelaion"),
+
 	NEUTRON_BATTERY("neutron_battery"),
 	NEUTRON_BATTERY_BASE("neutron_battery_base"),
+
 	PHOLARIZER_BASE("pholarizer_base"),
 	PHOLARIZER_RING("pholarizer_ring"),
 	PHOLARIZER_PILLAR("pholarizer_pillar"),
 	PHOLARIZER_BOTTOM("pholarizer_bottom"),
+
 	FISSION_INDUCER_TOP("fission_inducer_top"),
 	FISSION_INDUCER_CENTER("fission_inducer_center"),
 	FISSION_INDUCER_INSIDE("fission_inducer_inside"),
 	FISSION_INDUCER_BOTTOM("fission_inducer_bottom"),
+
 	ELECTRON("electron"),
+
 	SYMMETRIC_NEGATOR_BASE("symmetric_negator_base"),
 	SYMMETRIC_NEGATOR_CORE("symmetric_negator_core"),
 	SYMMETRIC_NEGATOR_RING("symmetric_negator_ring"),
+
 	SYMMETRIC_EXTENSION_BASE("symmetric_extension_base"),
 	SYMMETRIC_EXTENSION_RING("symmetric_extension_ring"),
+
 	KONDENZATOR_BASE("kondenzator_base"),
-	KONDENZATOR_CORE("kondenzator_core");
+	KONDENZATOR_CORE("kondenzator_core"),
+
+	MUTATOR_BASE("mutator_base"),
+	MUTATOR_FRONT("mutator_front"),
+	MUTATOR_BASE_OVERLAY("mutator_base_overlay"),
+	MUTATOR_BASE_NODES("mutator_base_nodes"),
+	MUTATOR_PLATE("mutator_plate");
 
 	private ResourceLocation location;
 	private List<BakedQuad> quads;

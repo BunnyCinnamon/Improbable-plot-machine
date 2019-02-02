@@ -7,18 +7,28 @@
  */
 package arekkuusu.implom.client.proxy;
 
+import arekkuusu.implom.api.capability.data.WorldAccessNBTData;
+import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.api.helper.RayTraceHelper;
+import arekkuusu.implom.api.helper.WorldAccessHelper;
+import arekkuusu.implom.client.util.SpriteLibrary;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import arekkuusu.implom.common.block.ModBlocks;
+import arekkuusu.implom.common.block.tile.TileMutator;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibMod;
+import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -49,6 +59,56 @@ public class Events {
 					RenderHelper.renderGhostBlock(pos, ModBlocks.ANGSTROM.getDefaultState());
 				}
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void renderMutatorWorld(DrawBlockHighlightEvent event) {
+		if(event.getTarget().typeOfHit == RayTraceResult.Type.BLOCK) {
+			BlockPos pos = event.getTarget().getBlockPos();
+			EntityPlayer player = event.getPlayer();
+			IBlockState state = player.world.getBlockState(pos);
+			if(state.getBlock() == ModBlocks.MUTATOR) {
+				TileMutator tile = (TileMutator) player.world.getTileEntity(pos);
+				if(tile == null) return;
+				WorldAccessHelper.getCapability(tile, tile.getFacingLazy().getOpposite()).map(IWorldAccessNBTDataCapability::get).ifPresent(Events::renderMutator);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void renderMutatorInventory(RenderWorldLastEvent event) {
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		ItemStack stack = player.getHeldItemMainhand();
+		if(stack.isEmpty()) stack = player.getHeldItemOffhand();
+		if(stack.getItem() == ModItems.MUTATOR) {
+			GlStateManager.enableBlend();
+			GlStateManager.disableCull();
+			WorldAccessHelper.getCapability(stack).map(IWorldAccessNBTDataCapability::get).ifPresent(Events::renderMutator);
+			GlStateManager.enableCull();
+			GlStateManager.disableBlend();
+		}
+	}
+
+	private static void renderMutator(WorldAccessNBTData data) {
+		if(data.getWorld() != null && data.getPos() != null && data.getFacing() != null
+				&& data.getWorld().provider.getDimension() == Minecraft.getMinecraft().player.world.provider.getDimension()) {
+			double x = Minecraft.getMinecraft().getRenderManager().viewerPosX;
+			double y = Minecraft.getMinecraft().getRenderManager().viewerPosY;
+			double z = Minecraft.getMinecraft().getRenderManager().viewerPosZ;
+			float tick = RenderHelper.getRenderWorldTime(1F);
+			GlStateManager.pushMatrix();
+			GlStateManager.depthMask(false);
+			Blending.Normal().apply();
+			GlStateManager.translate(-x, -y, -z);
+			GlStateManager.translate(data.getPos().getX(), data.getPos().getY(), data.getPos().getZ());
+			Tuple<Double, Double> uv = SpriteLibrary.MUTATOR_SELECTION.getUVFrame((int) (tick * 0.08F));
+			double vOffset = SpriteLibrary.MUTATOR_SELECTION.getV();
+			double v = uv.getSecond();
+			SpriteLibrary.MUTATOR_SELECTION.bindManager();
+			RenderHelper.renderSideTexture(data.getFacing(), 1, 0, v, v, v + vOffset, v + vOffset);
+			GlStateManager.depthMask(true);
+			GlStateManager.popMatrix();
 		}
 	}
 }

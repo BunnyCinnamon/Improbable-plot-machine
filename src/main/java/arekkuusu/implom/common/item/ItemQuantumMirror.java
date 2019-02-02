@@ -7,6 +7,8 @@
  */
 package arekkuusu.implom.common.item;
 
+import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
+import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.nbt.InventoryNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.InventoryNBTProvider;
@@ -36,7 +38,9 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IUUIDDescription
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
-
+		InventoryHelper.getCapability(stack).map(data -> (IInventoryNBTDataCapability) data).ifPresent(instance -> {
+			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip);
+		});
 	}
 
 	@Override

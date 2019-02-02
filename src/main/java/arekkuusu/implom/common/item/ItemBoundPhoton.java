@@ -53,7 +53,7 @@ public class ItemBoundPhoton extends ItemBase implements IUUIDDescription {
 				TileEntity tile = event.getWorld().getTileEntity(event.getPos());
 				if(tile instanceof INBTDataTransferable) {
 					NBTTagCompound compound = stack.getOrCreateSubCompound(Constants.NBT_BOUND);
-					String key = ((INBTDataTransferable) tile).key();
+					String key = ((INBTDataTransferable) tile).group();
 					NBTTagCompound tag = compound.getCompoundTag(key);
 					if(!compound.hasKey(key)) compound.setTag(key, tag);
 					((INBTDataTransferable) tile).init(tag);

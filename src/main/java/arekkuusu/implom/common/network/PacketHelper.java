@@ -7,7 +7,10 @@
  */
 package arekkuusu.implom.common.network;
 
+import arekkuusu.implom.api.capability.data.WorldAccessNBTData;
 import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
+import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
+import arekkuusu.implom.common.block.tile.TileMutator;
 import arekkuusu.implom.common.block.tile.TilePhenomena;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,6 +41,16 @@ public final class PacketHelper {
 		tag.setInteger("z", pos.getZ());
 		TargetPoint point = fromTileEntity(phenomena, 25);
 		PacketHandler.NETWORK.sendToAllAround(new ServerToClientPacket(PacketHandler.PHENOMENA, tag), point);
+	}
+
+	public static void sendMutatorPacket(IWorldAccessNBTDataCapability instance) {
+		NBTTagCompound tag = new NBTTagCompound();
+		WorldAccessNBTData data = instance.get();
+		assert data != null;
+		assert instance.getKey() != null; //Don't
+		tag.setTag("data", data.serializeNBT());
+		tag.setUniqueId("key", instance.getKey());
+		PacketHandler.NETWORK.sendToAll(new ServerToClientPacket(PacketHandler.MUTATOR, tag));
 	}
 
 	public static TargetPoint fromWorldPos(World world, BlockPos pos, int range) {

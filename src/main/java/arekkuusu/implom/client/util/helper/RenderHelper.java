@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -81,10 +82,10 @@ public final class RenderHelper {
 			float sizeMulti = BEAM_RAND.nextFloat() * min + (min * 0.5F);
 			bufferbuilder.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
 			bufferbuilder.pos(0.0D, 0.0D, 0.0D).color(r_, g_, b_, 1F).endVertex();
-			bufferbuilder.pos(-0.866D *  sizeMulti,  resized,  (-0.5F * sizeMulti)).color(r, g, b, 0F).endVertex();
-			bufferbuilder.pos(0.866D *  sizeMulti,  resized,  (-0.5F * sizeMulti)).color(r, g, b, 0F).endVertex();
-			bufferbuilder.pos(0.0D,  resized,  (1.0F * sizeMulti)).color(r, g, b, 0F).endVertex();
-			bufferbuilder.pos(-0.866D *  sizeMulti,  resized,  (-0.5F * sizeMulti)).color(r, g, b, 0F).endVertex();
+			bufferbuilder.pos(-0.866D * sizeMulti, resized, (-0.5F * sizeMulti)).color(r, g, b, 0F).endVertex();
+			bufferbuilder.pos(0.866D * sizeMulti, resized, (-0.5F * sizeMulti)).color(r, g, b, 0F).endVertex();
+			bufferbuilder.pos(0.0D, resized, (1.0F * sizeMulti)).color(r, g, b, 0F).endVertex();
+			bufferbuilder.pos(-0.866D * sizeMulti, resized, (-0.5F * sizeMulti)).color(r, g, b, 0F).endVertex();
 			tessellator.draw();
 		}
 
@@ -137,10 +138,61 @@ public final class RenderHelper {
 		}
 	}
 
+	public static void renderSideTexture(EnumFacing facing, double uMin, double uMax, double vMinL, double vMaxL, double vMinR, double vMaxR) {
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buff = tessellator.getBuffer();
+		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		switch (facing) {
+			case DOWN:
+				//Bottom
+				buff.pos(0, 0, 1).tex(uMax, vMinL).endVertex();
+				buff.pos(0, 0, 0).tex(uMin, vMinR).endVertex();
+				buff.pos(1, 0, 0).tex(uMin, vMaxR).endVertex();
+				buff.pos(1, 0, 1).tex(uMax, vMaxL).endVertex();
+				break;
+			case UP:
+				//Top
+				buff.pos(0, 1, 0).tex(uMax, vMinL).endVertex();
+				buff.pos(1, 1, 0).tex(uMax, vMinR).endVertex();
+				buff.pos(1, 1, 1).tex(uMin, vMaxR).endVertex();
+				buff.pos(0, 1, 1).tex(uMin, vMaxL).endVertex();
+				break;
+			case NORTH:
+				//Front
+				buff.pos(0, 0, 0).tex(uMax, vMinL).endVertex();
+				buff.pos(1, 0, 0).tex(uMax, vMinR).endVertex();
+				buff.pos(1, 1, 0).tex(uMin, vMaxR).endVertex();
+				buff.pos(0, 1, 0).tex(uMin, vMaxL).endVertex();
+				break;
+			case SOUTH:
+				//Back
+				buff.pos(1, 0, 1).tex(uMax, vMinL).endVertex();
+				buff.pos(0, 0, 1).tex(uMax, vMinR).endVertex();
+				buff.pos(0, 1, 1).tex(uMin, vMaxR).endVertex();
+				buff.pos(1, 1, 1).tex(uMin, vMaxL).endVertex();
+				break;
+			case WEST:
+				buff.pos(0, 0, 1).tex(uMax, vMinL).endVertex();
+				buff.pos(0, 0, 0).tex(uMax, vMinR).endVertex();
+				buff.pos(0, 1, 0).tex(uMin, vMaxR).endVertex();
+				buff.pos(0, 1, 1).tex(uMin, vMaxL).endVertex();
+				//Right
+				break;
+			case EAST:
+				//Left
+				buff.pos(1, 0, 0).tex(uMax, vMinL).endVertex();
+				buff.pos(1, 0, 1).tex(uMax, vMinR).endVertex();
+				buff.pos(1, 1, 1).tex(uMin, vMaxR).endVertex();
+				buff.pos(1, 1, 0).tex(uMin, vMaxL).endVertex();
+				break;
+		}
+		tessellator.draw();
+	}
+
 	public static void makeUpDownTranslation(float tick, float max, float speed, float angle) {
 		float toDegrees = (float) Math.PI / 180F;
 		angle += speed * tick;
-		if (angle > 360) angle -= 360;
+		if(angle > 360) angle -= 360;
 		GlStateManager.translate(0, max * Math.sin(angle * toDegrees), 0);
 	}
 }

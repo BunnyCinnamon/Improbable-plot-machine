@@ -59,4 +59,5 @@ public class LibNames {
 	public static final String BOUND_PHOTON = "bound_photon";
 	public static final String SIMPLE_MECHANISM = "simple_mechanism";
 	public static final String FRAME_CORE = "frame_core";
+	public static final String MUTATOR = "mutator";
 }

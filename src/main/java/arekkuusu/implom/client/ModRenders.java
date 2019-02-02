@@ -54,6 +54,7 @@ public final class ModRenders {
 		registerTESR(TileSymmetricNegator.class, new TileSymmetricNegatorRenderer());
 		registerTESR(TileSymmetricExtension.class, new TileSymmetricExtensionRenderer());
 		registerTESR(TileKondenzator.class, new TileKondenzatorRenderer());
+		registerTESR(TileMutator.class, new TileMutatorRenderer());
 
 		ModItems.QUANTUM_MIRROR.setTileEntityItemStackRenderer(new ItemQuantumMirrorRenderer());
 		ModItems.QUANTA.setTileEntityItemStackRenderer(new ItemQuantaRenderer());
@@ -68,6 +69,7 @@ public final class ModRenders {
 		ModItems.SYMMETRIC_NEGATOR.setTileEntityItemStackRenderer(new ItemSymmetricNegatorRenderer());
 		ModItems.SYMMETRIC_EXTENSION.setTileEntityItemStackRenderer(new ItemSymmetricExtensionRenderer());
 		ModItems.KONDENZATOR.setTileEntityItemStackRenderer(new ItemKondenzatorRenderer());
+		ModItems.MUTATOR.setTileEntityItemStackRenderer(new ItemMutatorRenderer());
 		IPM.LOG.info("[NOM PIE!]");
 	}
 

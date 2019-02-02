@@ -34,6 +34,9 @@ public final class SpriteLibrary {
 	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteManager.load(
 			TextureLocation.Model(), "eye_of_schrodinger_layer"
 	);
+	public static final FrameSpriteResource MUTATOR_SELECTION = SpriteManager.load(
+			TextureLocation.Blocks(), "mutator_selection", 4, 1
+	);
 
 	public static void init() {
 		IPM.LOG.info("[MAKING PIE!]");

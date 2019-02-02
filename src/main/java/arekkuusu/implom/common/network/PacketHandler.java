@@ -9,7 +9,9 @@ package arekkuusu.implom.common.network;
 
 import arekkuusu.implom.api.IPMApi;
 import arekkuusu.implom.api.capability.data.ItemStackNBTData;
+import arekkuusu.implom.api.capability.data.WorldAccessNBTData;
 import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
+import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.common.block.tile.TilePhenomena;
 import arekkuusu.implom.common.lib.LibMod;
 import com.google.common.collect.Lists;
@@ -58,6 +60,13 @@ public class PacketHandler {
 		}
 	};
 
+	public static final IPacketHandler MUTATOR = ((compound, context) -> {
+		UUID uuid = compound.getUniqueId("key");
+		WorldAccessNBTData data = (WorldAccessNBTData) IPMApi.getInstance().dataMap.computeIfAbsent(uuid, (k) -> Maps.newHashMap())
+				.computeIfAbsent(IWorldAccessNBTDataCapability.class, (k) -> new WorldAccessNBTData());
+		data.deserialize(compound.getCompoundTag("data"));
+	});
+
 	public static final SimpleNetworkWrapper NETWORK = new SimpleNetworkWrapper(LibMod.MOD_ID);
 	private static int id = 0;
 
@@ -66,6 +75,7 @@ public class PacketHandler {
 		register(ClientToServerPacket.Handler.class, ClientToServerPacket.class, Side.SERVER);
 		HANDLERS.add(PHENOMENA);
 		HANDLERS.add(QUANTUM_MIRROR);
+		HANDLERS.add(MUTATOR);
 	}
 
 	private static <H extends IMessageHandler<M, IMessage>, M extends IMessage> void register(Class<H> handler, Class<M> message, Side side) {

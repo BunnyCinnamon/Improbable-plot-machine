@@ -7,8 +7,10 @@
  */
 package arekkuusu.implom.common.item;
 
+import arekkuusu.implom.api.capability.nbt.ILumenNBTDataCapability;
+import arekkuusu.implom.api.helper.LumenHelper;
+import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.provider.NeutronProvider;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,14 +28,16 @@ import java.util.List;
  */
 public class ItemNeutronBattery extends ItemBaseBlock implements IUUIDDescription {
 
-	public ItemNeutronBattery(Block block) {
-		super(block);
+	public ItemNeutronBattery() {
+		super(ModBlocks.NEUTRON_BATTERY);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-
+		LumenHelper.getCapability(stack).map(data -> (ILumenNBTDataCapability) data).ifPresent(instance -> {
+			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip);
+		});
 	}
 
 	@Nullable

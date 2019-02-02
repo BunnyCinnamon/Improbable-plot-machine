@@ -1,35 +1,27 @@
-/*
- * Arekkuusu / Improbable plot machine. 2018
- *
- * This project is licensed under the MIT.
- * The source code is available on github:
- * https://github.com/ArekkuusuJerii/Improbable-plot-machine
- */
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.api.helper.WorldAccessHelper;
-import arekkuusu.implom.common.block.BlockQimranut;
+import arekkuusu.implom.common.block.BlockMutator;
 import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;
+import arekkuusu.implom.common.network.PacketHelper;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
-/*
- * Created by <Arekkuusu> on 23/12/2017.
- * It's distributed as part of Improbable plot machine.
- */
-public class TileQimranut extends TileBase implements INBTDataTransferable {
+public class TileMutator extends TileBase implements INBTDataTransferable {
 
 	public final WorldAccessProvider wrapper = new WorldAccessProvider(new WorldAccessNBTDataCapability() {
 		@Override
@@ -38,27 +30,26 @@ public class TileQimranut extends TileBase implements INBTDataTransferable {
 			markDirty();
 			sync();
 		}
+
+		@Override
+		public void onChange() {
+			if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+				PacketHelper.sendMutatorPacket(this);
+			}
+		}
 	});
 
-	@Override
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return getFacingLazy() == facing ? Optional.ofNullable(wrapper.instance.get())
-				.filter(data -> data.getPos() != null && data.getWorld() != null && data.getFacing() != null)
-				.map(data -> getTile(TileEntity.class, data.getWorld(), data.getPos()).map(tile -> tile.hasCapability(capability, data.getFacing())).orElse(false))
-				.orElse(false)
-				: wrapper.hasCapability(capability, facing)
-				|| super.hasCapability(capability, facing);
+	public void overrideWorldAccess() {
+		wrapper.instance.set(getWorld(), getPos().offset(getFacingLazy()), getFacingLazy().getOpposite());
 	}
 
-	@Nullable
 	@Override
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return getFacingLazy() == facing ? Optional.ofNullable(wrapper.instance.get())
-				.filter(data -> data.getPos() != null && data.getWorld() != null && data.getFacing() != null)
-				.map(data -> getTile(TileEntity.class, data.getWorld(), data.getPos()).map(tile -> tile.getCapability(capability, data.getFacing())).orElse(null))
-				.orElse(null) : wrapper.hasCapability(capability, facing)
-				? wrapper.getCapability(capability, facing)
-				: super.getCapability(capability, facing);
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+		boolean refresh = super.shouldRefresh(world, pos, oldState, newState);
+		if(!refresh) {
+			wrapper.instance.setFacing(newState.getValue(BlockDirectional.FACING));
+		}
+		return refresh;
 	}
 
 	public EnumFacing getFacingLazy() {
@@ -66,18 +57,26 @@ public class TileQimranut extends TileBase implements INBTDataTransferable {
 	}
 
 	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return getFacingLazy().getOpposite() == facing && wrapper.hasCapability(capability, facing) || super.hasCapability(capability, facing);
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		return getFacingLazy().getOpposite() == facing && wrapper.hasCapability(capability, facing)
+				? wrapper.getCapability(capability, facing)
+				: super.getCapability(capability, facing);
+	}
+
+	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setTag(BlockQimranut.Constants.NBT_WORLD_ACCESS, wrapper.serializeNBT());
+		compound.setTag(BlockMutator.Constants.NBT_WORLD_ACCESS, wrapper.serializeNBT());
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		wrapper.deserializeNBT(compound.getTag(BlockQimranut.Constants.NBT_WORLD_ACCESS));
-	}
-
-	@Override
-	public String group() {
-		return Objects.requireNonNull(TileEntity.getKey(TileMutator.class)).toString();
+		wrapper.deserializeNBT(compound.getTag(BlockMutator.Constants.NBT_WORLD_ACCESS));
 	}
 
 	@Override

@@ -35,6 +35,9 @@ public final class ResourceLibrary {
 		getBlockTexture("symmetric_negator/glass");
 		getBlockTexture("symmetric_extension/overlay");
 		getBlockTexture("kondenzator/center");
+		getBlockTexture("mutator/ends");
+		getBlockTexture("mutator/sides");
+		getBlockTexture("mutator/overlay");
 	}
 	public static final ResourceLocation TRANSPARENT = getBlockTexture("null");
 	public static final ResourceLocation QUANTA = getBlockTexture("quanta");
@@ -52,6 +55,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation SYMMETRIC_NEGATOR = getBlockTexture("symmetric_negator/base");
 	public static final ResourceLocation SYMMETRIC_EXTENSION = getBlockTexture("symmetric_extension/base");
 	public static final ResourceLocation KONDENZATOR = getBlockTexture("kondenzator/base");
+	public static final ResourceLocation MUTATOR = getBlockTexture("mutator/base");
 	//Item Textures
 	public static final ResourceLocation CLOCKWORK_INSIDES = getItemTexture("clockwork/insides");
 	public static final ResourceLocation CLOCKWORK_SEALED = getItemTexture("clockwork/sealed");

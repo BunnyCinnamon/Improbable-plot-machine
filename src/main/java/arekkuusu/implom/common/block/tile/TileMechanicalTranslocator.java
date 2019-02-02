@@ -24,6 +24,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -126,6 +128,7 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 
 	private void setState(Pair<IBlockState, NBTTagCompound> data, World world, BlockPos pos, EnumFacing from, EnumFacing to) {
 		IBlockState state = data.getLeft();
+		getTile(TileEntityLockable.class, world, pos).ifPresent(tile -> world.removeTileEntity(pos));
 		world.setBlockState(pos, state.getMaterial() != Material.WATER ? getRotationState(state, from, to) : state);
 		getTile(TileEntity.class, world, pos).ifPresent(tile -> {
 			NBTTagCompound tag = data.getRight();

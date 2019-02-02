@@ -60,6 +60,7 @@ public final class ModBlocks {
 	public static final Block SYMMETRIC_EXTENSION = PLACE_HOLDER;
 	public static final Block KONDENZATOR = PLACE_HOLDER;
 	public static final Block IMBUED_QUARTZ = PLACE_HOLDER;
+	public static final Block MUTATOR = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
@@ -94,6 +95,7 @@ public final class ModBlocks {
 		registry.register(new BlockSymmetricExtension());
 		registry.register(new BlockKondenzator());
 		registry.register(new BlockImbuedQuartz());
+		registry.register(new BlockMutator());
 		registerTiles();
 	}
 
@@ -118,6 +120,7 @@ public final class ModBlocks {
 		registerTile(TileSymmetricNegator.class, LibNames.SYMMETRIC_NEGATOR);
 		registerTile(TileSymmetricExtension.class, LibNames.SYMMETRIC_EXTENSION);
 		registerTile(TileKondenzator.class, LibNames.KONDENZATOR);
+		registerTile(TileMutator.class, LibNames.MUTATOR);
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {

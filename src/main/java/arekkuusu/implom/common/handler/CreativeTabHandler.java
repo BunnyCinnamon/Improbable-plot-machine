@@ -101,6 +101,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.SYMMETRIC_NEGATOR);
 			addBlock(ModBlocks.SYMMETRIC_EXTENSION);
 			addBlock(ModBlocks.KONDENZATOR);
+			addBlock(ModBlocks.MUTATOR);
 			addItem(ModItems.INTRINSIC_CELL);
 			addItem(ModItems.MAGNETIC_BOLT);
 			addItem(ModItems.MAGNETIC_GEAR);

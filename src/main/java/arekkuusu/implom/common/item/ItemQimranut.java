@@ -7,8 +7,6 @@
  */
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
-import arekkuusu.implom.api.helper.WorldAccessHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;
@@ -17,12 +15,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,7 +32,6 @@ public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 
 	public ItemQimranut() {
 		super(ModBlocks.QIMRANUT);
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
@@ -51,20 +44,5 @@ public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
 		return new WorldAccessProvider(new WorldAccessNBTDataCapability());
-	}
-
-	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public void pickSource(PlayerInteractEvent.LeftClickBlock event) {
-		ItemStack stack = event.getItemStack();
-		if(stack.getItem() == this) {
-			if(!event.getWorld().isRemote) {
-				WorldAccessHelper.getCapability(stack).map(IWorldAccessNBTDataCapability::get).ifPresent(data -> {
-					data.setWorld(event.getWorld());
-					data.setPos(event.getPos());
-					data.setFacing(event.getFace());
-				});
-			}
-			event.setCanceled(true);
-		}
 	}
 }

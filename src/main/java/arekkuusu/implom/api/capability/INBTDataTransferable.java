@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public interface INBTDataTransferable {
 
-	default String key() {
+	default String group() {
 		//noinspection unchecked
 		return Objects.requireNonNull(TileEntity.getKey((Class<? extends TileEntity>) getClass())).toString();
 	}
