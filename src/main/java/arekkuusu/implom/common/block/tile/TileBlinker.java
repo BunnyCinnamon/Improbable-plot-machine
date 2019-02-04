@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.helper.PositionsHelper;
 import arekkuusu.implom.api.state.Properties;
@@ -29,7 +28,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 03/09/2017.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileBlinker extends TileBase implements INBTDataTransferable {
+public class TileBlinker extends TileBase implements INBTDataTransferableImpl {
 
 	public final BlinkerProvider wrapper = new BlinkerProvider(this);
 
@@ -90,16 +89,19 @@ public class TileBlinker extends TileBase implements INBTDataTransferable {
 	}
 
 	@Override
-	public void init(NBTTagCompound compound) {
-		boolean noKey = !compound.hasUniqueId("key");
-		boolean override = wrapper.redstoneInstance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.redstoneInstance.getKey()));
-		if(override) {
-			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
-			UUID uuid = compound.getUniqueId("key");
-			wrapper.redstoneInstance.setKey(uuid);
-		} else if(noKey) {
-			compound.setUniqueId("key", wrapper.redstoneInstance.getKey());
-		}
+	public String group() {
+		return DefaultGroup.REDSTONE;
+	}
+
+	@Override
+	public void setKey(UUID uuid) {
+		wrapper.redstoneInstance.setKey(uuid);
+	}
+
+	@Nullable
+	@Override
+	public UUID getKey() {
+		return wrapper.redstoneInstance.getKey();
 	}
 
 	@Override

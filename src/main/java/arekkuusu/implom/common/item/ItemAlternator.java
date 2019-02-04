@@ -7,6 +7,7 @@
  */
 package arekkuusu.implom.common.item;
 
+import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.helper.PositionsHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.nbt.PositionsNBTDataCapability;
@@ -36,7 +37,7 @@ public class ItemAlternator extends ItemBaseBlock implements IUUIDDescription {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		PositionsHelper.getCapability(stack).ifPresent(instance -> {
-			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip);
+			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip, INBTDataTransferable.DefaultGroup.ALTERNATOR);
 		});
 	}
 

@@ -1,6 +1,5 @@
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.api.helper.WorldAccessHelper;
 import arekkuusu.implom.common.block.BlockMutator;
@@ -21,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class TileMutator extends TileBase implements INBTDataTransferable {
+public class TileMutator extends TileBase implements INBTDataTransferableImpl {
 
 	public final WorldAccessProvider wrapper = new WorldAccessProvider(new WorldAccessNBTDataCapability() {
 		@Override
@@ -83,16 +82,19 @@ public class TileMutator extends TileBase implements INBTDataTransferable {
 	}
 
 	@Override
-	public void init(NBTTagCompound compound) {
-		boolean noKey = !compound.hasUniqueId("key");
-		boolean override = wrapper.instance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.instance.getKey()));
-		if(override) {
-			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
-			UUID uuid = compound.getUniqueId("key");
-			wrapper.instance.setKey(uuid);
-		} else if(noKey) {
-			compound.setUniqueId("key", wrapper.instance.getKey());
-		}
+	public String group() {
+		return DefaultGroup.WORLD_ACCESS;
+	}
+
+	@Override
+	public void setKey(UUID uuid) {
+		wrapper.instance.setKey(uuid);
+	}
+
+	@Nullable
+	@Override
+	public UUID getKey() {
+		return wrapper.instance.getKey();
 	}
 
 	@Override

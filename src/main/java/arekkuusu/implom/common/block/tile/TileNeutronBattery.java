@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.api.helper.WorldAccessHelper;
@@ -28,7 +27,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 20/03/2018.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileNeutronBattery extends TileBase implements INBTDataTransferable {
+public class TileNeutronBattery extends TileBase implements INBTDataTransferableImpl {
 
 	public final NeutronProvider wrapper = new NeutronProvider(this);
 
@@ -85,16 +84,19 @@ public class TileNeutronBattery extends TileBase implements INBTDataTransferable
 	}
 
 	@Override
-	public void init(NBTTagCompound compound) {
-		boolean noKey = !compound.hasUniqueId("key");
-		boolean override = wrapper.worldAccessInstance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.worldAccessInstance.getKey()));
-		if(override) {
-			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
-			UUID uuid = compound.getUniqueId("key");
-			wrapper.worldAccessInstance.setKey(uuid);
-		} else if(noKey) {
-			compound.setUniqueId("key", wrapper.worldAccessInstance.getKey());
-		}
+	public String group() {
+		return DefaultGroup.LUMEN;
+	}
+
+	@Override
+	public void setKey(@Nullable UUID uuid) {
+		wrapper.worldAccessInstance.setKey(uuid);
+	}
+
+	@Nullable
+	@Override
+	public UUID getKey() {
+		return wrapper.worldAccessInstance.getKey();
 	}
 
 	@Override

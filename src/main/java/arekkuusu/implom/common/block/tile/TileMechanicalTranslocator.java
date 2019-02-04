@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.data.PositionsNBTData;
 import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.helper.FacingHelper;
@@ -24,7 +23,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityLockable;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -43,7 +41,7 @@ import static net.minecraft.util.EnumFacing.UP;
  * Created by <Arekkuusu> on 17/01/2018.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileMechanicalTranslocator extends TileBase implements INBTDataTransferable {
+public class TileMechanicalTranslocator extends TileBase implements INBTDataTransferableImpl {
 
 	public boolean powered;
 	public final PositionsNBTProvider wrapper = new PositionsNBTProvider(new PositionsNBTDataCapability() {
@@ -200,16 +198,19 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 	}
 
 	@Override
-	public void init(NBTTagCompound compound) {
-		boolean noKey = !compound.hasUniqueId("key");
-		boolean override = wrapper.instance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.instance.getKey()));
-		if(override) {
-			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
-			UUID uuid = compound.getUniqueId("key");
-			wrapper.instance.setKey(uuid);
-		} else if(noKey) {
-			compound.setUniqueId("key", wrapper.instance.getKey());
-		}
+	public String group() {
+		return DefaultGroup.TRANSLOCATOR;
+	}
+
+	@Override
+	public void setKey(@Nullable UUID uuid) {
+		wrapper.instance.setKey(uuid);
+	}
+
+	@Nullable
+	@Override
+	public UUID getKey() {
+		return wrapper.instance.getKey();
 	}
 
 	@Override

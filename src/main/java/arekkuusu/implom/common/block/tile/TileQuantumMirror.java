@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
 import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.common.IPM;
@@ -36,7 +35,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 17/07/2017.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileQuantumMirror extends TileBase implements ITickable, INBTDataTransferable {
+public class TileQuantumMirror extends TileBase implements ITickable, INBTDataTransferableImpl {
 
 	public final InventoryNBTProvider wrapper = new InventoryNBTProvider(new InventoryNBTDataCapability() {
 
@@ -110,16 +109,19 @@ public class TileQuantumMirror extends TileBase implements ITickable, INBTDataTr
 	}
 
 	@Override
-	public void init(NBTTagCompound compound) {
-		boolean noKey = !compound.hasUniqueId("key");
-		boolean override = wrapper.instance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.instance.getKey()));
-		if(override) {
-			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
-			UUID uuid = compound.getUniqueId("key");
-			wrapper.instance.setKey(uuid);
-		} else if(noKey) {
-			compound.setUniqueId("key", wrapper.instance.getKey());
-		}
+	public String group() {
+		return DefaultGroup.INVENTORY;
+	}
+
+	@Override
+	public void setKey(UUID uuid) {
+		wrapper.instance.setKey(uuid);
+	}
+
+	@Nullable
+	@Override
+	public UUID getKey() {
+		return wrapper.instance.getKey();
 	}
 
 	@Override

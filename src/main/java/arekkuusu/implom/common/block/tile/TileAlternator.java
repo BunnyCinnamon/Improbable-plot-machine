@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.helper.PositionsHelper;
 import arekkuusu.implom.api.state.Properties;
@@ -26,7 +25,7 @@ import java.util.UUID;
  * Created by <Arekkuusu> on 23/01/2018.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileAlternator extends TileBase implements INBTDataTransferable {
+public class TileAlternator extends TileBase implements INBTDataTransferableImpl {
 
 	public final PositionsNBTProvider wrapper = new PositionsNBTProvider(new PositionsNBTDataCapability() {
 		@Override
@@ -72,16 +71,19 @@ public class TileAlternator extends TileBase implements INBTDataTransferable {
 	}
 
 	@Override
-	public void init(NBTTagCompound compound) {
-		boolean noKey = !compound.hasUniqueId("key");
-		boolean override = wrapper.instance.getKey() == null && (noKey || !compound.getUniqueId("key").equals(wrapper.instance.getKey()));
-		if(override) {
-			if(noKey) compound.setUniqueId("key", UUID.randomUUID());
-			UUID uuid = compound.getUniqueId("key");
-			wrapper.instance.setKey(uuid);
-		} else if(noKey) {
-			compound.setUniqueId("key", wrapper.instance.getKey());
-		}
+	public String group() {
+		return DefaultGroup.ALTERNATOR;
+	}
+
+	@Override
+	public void setKey(UUID uuid) {
+		wrapper.instance.setKey(uuid);
+	}
+
+	@Nullable
+	@Override
+	public UUID getKey() {
+		return wrapper.instance.getKey();
 	}
 
 	@Override

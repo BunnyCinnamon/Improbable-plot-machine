@@ -9,7 +9,9 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -32,12 +34,14 @@ public class ItemBoundPhoton extends ItemBase implements IUUIDDescription {
 		Tooltip.inline().condition(() -> NBTHelper.hasTag(stack, Constants.NBT_BOUND)).ifTrueJ(builder -> builder
 				.condition(KeyCondition$.MODULE$.shiftKeyDown())
 				.ifTrueJ(sub -> {
-					NBTTagCompound tag = stack.getOrCreateSubCompound(Constants.NBT_BOUND);
-					for(String key : tag.getKeySet()) {
-						NBTTagCompound subTag = tag.getCompoundTag(key);
-						if(subTag.hasUniqueId("key")) {
-							sub = sub.add(key).newline();
-							sub = getInfo(sub, Objects.requireNonNull(subTag.getUniqueId("key")));
+					NBTTagCompound compound = stack.getOrCreateSubCompound(Constants.NBT_BOUND);
+					for(String key : compound.getKeySet()) {
+						NBTTagCompound tag = compound.getCompoundTag(key);
+						sub = sub.addI18n("tlp." + key + ".group").space();
+						for(String subKey : tag.getKeySet()) {
+							if(tag.hasUniqueId(subKey.replace("Most", ""))) {
+								sub = getInfo(sub, Objects.requireNonNull(tag.getUniqueId(subKey.replace("Most", ""))));
+							}
 						}
 					}
 					return sub;
@@ -56,8 +60,12 @@ public class ItemBoundPhoton extends ItemBase implements IUUIDDescription {
 					String key = ((INBTDataTransferable) tile).group();
 					NBTTagCompound tag = compound.getCompoundTag(key);
 					if(!compound.hasKey(key)) compound.setTag(key, tag);
-					((INBTDataTransferable) tile).init(tag);
-					event.getEntityPlayer().sendStatusMessage(new TextComponentTranslation("status.bound.success"), true);
+					EnumActionResult result = ((INBTDataTransferable) tile).init(tag);
+					if(result != EnumActionResult.FAIL) {
+						TextComponentTranslation bound = new TextComponentTranslation("tlp." + key + ".group", TextFormatting.DARK_GRAY);
+						TextComponentTranslation action = new TextComponentTranslation("status.bound", bound, TextFormatting.BLACK);
+						event.getEntityPlayer().sendStatusMessage(action, true);
+					}
 				}
 			}
 			event.setCanceled(true);

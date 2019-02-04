@@ -17,9 +17,9 @@ public interface IUUIDDescription {
 	 * @param tooltip The {@link List <String>}
 	 */
 	@SideOnly(Side.CLIENT)
-	default void addInformation(UUID uuid, List<String> tooltip) {
+	default void addInformation(UUID uuid, List<String> tooltip, String group) {
 		Tooltip.inline().condition(KeyCondition$.MODULE$.shiftKeyDown())
-				.ifTrueJ(builder -> getInfo(builder, uuid)).apply()
+				.ifTrueJ(builder -> getInfo(builder.addI18n("tlp." + group + ".group").space(), uuid)).apply()
 				.build(tooltip);
 	}
 
@@ -34,6 +34,6 @@ public interface IUUIDDescription {
 	default Tooltip getInfo(Tooltip builder, UUID uuid) {
 		String key = String.valueOf(uuid.hashCode());
 		return builder.addI18n("tlp.uuid_key", Tooltip.DarkGrayItalic()).add(": ").newline()
-				.add(" > ").add(key).newline();
+				.add("    > ").add(key, Tooltip.GrayItalic()).newline();
 	}
 }
