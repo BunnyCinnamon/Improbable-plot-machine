@@ -106,7 +106,7 @@ public final class CreativeTabHandler {
 			addItem(ModItems.MAGNETIC_BOLT);
 			addItem(ModItems.MAGNETIC_GEAR);
 			addItem(ModItems.MAGNETIC_SPRING);
-			addItem(ModItems.SIMPLE_MECHANISM);
+			addItem(ModItems.MAINSPRING_MECHANISM);
 			addItem(ModItems.FRAME_CORE);
 			addItem(ModItems.CLOCKWORK);
 			addItem(ModItems.BOUND_PHOTON);
@@ -117,6 +117,7 @@ public final class CreativeTabHandler {
 			addItem(ModItems.PLASMON);
 			addItem(ModItems.ASH);
 			addItem(ModItems.THEOREMA);
+			addItem(ModItems.SOLENOID);
 		}
 	}
 }

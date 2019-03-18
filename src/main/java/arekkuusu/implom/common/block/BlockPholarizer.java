@@ -68,7 +68,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		boolean active = state.getValue(POLARIZATION).isPositive();
 		Vector3 posVec = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D);
-		for(int i = 0; i < 3 + rand.nextInt(6); i++) {
+		for(int i = 0; i < 6 + rand.nextInt(6); i++) {
 			Quat x = Quat.fromAxisAngle(Vector3.Forward(), (rand.nextFloat() * 2F - 1F) * 45);
 			Quat z = Quat.fromAxisAngle(Vector3.Right(), (rand.nextFloat() * 2F - 1F) * 45);
 			Vector3 randVec = Vector3.randomVector().multiply(0.1D);

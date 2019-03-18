@@ -47,7 +47,6 @@ public class TileHyperConductorRenderer extends TileEntitySpecialRenderer<TileHy
 	public static void renderModel(double x, double y, double z, float partialTicks) {
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		GlStateManager.pushMatrix();
-		GlStateManager.enableCull();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
 		for(int i = 0; i < 5; i++) {
 			GlStateManager.pushMatrix();
@@ -56,7 +55,6 @@ public class TileHyperConductorRenderer extends TileEntitySpecialRenderer<TileHy
 			MODELS[i].render();
 			GlStateManager.popMatrix();
 		}
-		GlStateManager.disableCull();
 		GlStateManager.popMatrix();
 	}
 

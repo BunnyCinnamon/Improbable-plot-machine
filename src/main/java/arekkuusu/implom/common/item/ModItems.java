@@ -53,9 +53,11 @@ public final class ModItems {
 	public static final Item SYMMETRIC_NEGATOR = PLACE_HOLDER;
 	public static final Item SYMMETRIC_EXTENSION = PLACE_HOLDER;
 	public static final Item KONDENZATOR = PLACE_HOLDER;
-	public static final Item SIMPLE_MECHANISM = PLACE_HOLDER;
+	public static final Item MAINSPRING_MECHANISM = PLACE_HOLDER;
 	public static final Item FRAME_CORE = PLACE_HOLDER;
 	public static final Item MUTATOR = PLACE_HOLDER;
+	public static final Item IMBUED_QUARTZ = PLACE_HOLDER;
+	public static final Item SOLENOID = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.SAPROLITE));
@@ -102,9 +104,10 @@ public final class ModItems {
 		registry.register(new ItemBase(LibNames.MAGNETIC_SPRING));
 		registry.register(new ItemClockwork());
 		registry.register(new ItemBoundPhoton());
-		registry.register(new ItemBase(LibNames.SIMPLE_MECHANISM));
+		registry.register(new ItemBase(LibNames.MAINSPRING_MECHANISM));
 		registry.register(new ItemBase(LibNames.FRAME_CORE));
 		registry.register(new ItemMutator());
+		registry.register(new ItemBase(LibNames.SOLENOID));
 	}
 
 	@SuppressWarnings("ConstantConditions")

@@ -38,8 +38,8 @@ public class TileAlternator extends TileBase implements INBTDataTransferableImpl
 	});
 
 	public boolean areAllActive() {
-		return wrapper.instance.get().stream().anyMatch(wa -> (
-				(wa.getWorld() == null || wa.getPos() == null) || (wa.getWorld().isBlockLoaded(wa.getPos()))
+		return wrapper.instance.get().stream().noneMatch(wa -> (
+				(wa.getWorld() == null || wa.getPos() == null) || !(wa.getWorld().isBlockLoaded(wa.getPos()))
 		));
 	}
 
