@@ -1,8 +1,8 @@
 ﻿{
   "type": "forge:ore_shaped",
   "pattern": [
-    "B B",
-    "RGR",
+    "BGB",
+    "RFR",
     "SIS"
   ],
   "key": {
@@ -14,6 +14,9 @@
     },
     "G": {
       "item": "improbableplotmachine:magnetic_gear"
+    },
+	"F": {
+      "item": "improbableplotmachine:frame_core"
     },
     "R": {
       "item": "minecraft:redstone"

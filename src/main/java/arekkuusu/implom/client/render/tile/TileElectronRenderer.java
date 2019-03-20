@@ -24,7 +24,7 @@ public class TileElectronRenderer extends net.minecraft.client.renderer.tileenti
 	public void render(TileElectron te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		renderModel(te.isActiveLazy(), tick, x, y, z, partialTicks);
+		renderModel(te.power > 0, tick, x, y, z, partialTicks);
 	}
 
 	public static void renderModel(boolean active, float tick, double x, double y, double z, float partialTicks) {

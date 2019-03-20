@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
@@ -18,7 +17,6 @@ import arekkuusu.implom.common.block.tile.TileHyperConductor;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -44,7 +42,6 @@ public class BlockHyperConductor extends BlockBase {
 
 	public BlockHyperConductor() {
 		super(LibNames.HYPER_CONDUCTOR, IPMMaterial.MONOLITH);
-		setDefaultState(getDefaultState().withProperty(Properties.POWER, 0));
 		setHarvestLevel(Tool.PICK, ToolLevel.IRON);
 		setHardness(1F);
 	}
@@ -52,25 +49,15 @@ public class BlockHyperConductor extends BlockBase {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this) {
-			getTile(TileHyperConductor.class, world, pos).ifPresent(conductor -> {
-				if(conductor.getElectrons().contains(fromPos)) return;
-				boolean wasPowered = conductor.isPowered();
+			getTile(TileHyperConductor.class, world, pos).ifPresent(tile -> {
+				boolean wasPowered = tile.powered;
 				boolean isPowered = world.isBlockPowered(pos);
 				if((isPowered || block.getDefaultState().canProvidePower()) && isPowered != wasPowered) {
-					conductor.setPowered(isPowered);
+					tile.powered = isPowered;
+					tile.markDirty();
 				}
 			});
 		}
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		getTile(TileHyperConductor.class, world, pos).ifPresent(conductor -> {
-			if(state.getValue(Properties.POWER) > 0) {
-				conductor.hyperInduceAtmosphere();
-			}
-		});
-		super.breakBlock(world, pos, state);
 	}
 
 	@Override
@@ -81,21 +68,6 @@ public class BlockHyperConductor extends BlockBase {
 			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.025D);
 			IPM.getProxy().spawnSquared(world, origin, vec, 40, 4F, 0xFFFFFF);
 		}
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(Properties.POWER);
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(Properties.POWER, meta);
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, Properties.POWER);
 	}
 
 	@Override

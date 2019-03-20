@@ -6,19 +6,18 @@
     "#$#"
   ],
   "key": {
-    "#": {
+    "$": {
       "item": "improbableplotmachine:monolithic"
     },
-    "$": {
-      "type": "forge:ore_dict",
-      "ore": "paneGlass"
+    "#": {
+      "item": "minecraft:packed_ice"
     },
     "I": {
-      "item": "improbableplotmachine:intrinsic_cell"
+      "item": "improbableplotmachine:magnetic_bolt"
     }
   },
   "result": {
-    "item": "improbableplotmachine:kondenzator"
+    "item": "improbableplotmachine:hyper_conductor"
   },
   "group": "plot_machine"
 }

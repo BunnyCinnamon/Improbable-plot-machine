@@ -1,19 +1,19 @@
 ﻿{
   "type": "forge:ore_shaped",
   "pattern": [
-    "#G#",
-    "GDG",
-    "#G#"
+    "#$#",
+    "$I$",
+    "#$#"
   ],
   "key": {
-    "#": {
+    "$": {
       "item": "improbableplotmachine:monolithic"
     },
-    "G": {
+    "#": {
       "type": "forge:ore_dict",
       "ore": "paneGlass"
     },
-    "D": {
+    "I": {
       "item": "improbableplotmachine:intrinsic_cell"
     }
   },

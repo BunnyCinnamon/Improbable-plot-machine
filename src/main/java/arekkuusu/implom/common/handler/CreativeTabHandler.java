@@ -76,6 +76,30 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.MONOLITHIC_GLYPH);
 			addBlock(ModBlocks.SCHRODINGER_GLYPH);
 			addBlock(ModBlocks.ASHEN);
+			addItem(ModItems.ASH);
+			addItem(ModItems.ASH_BRICK_MIX);
+			addItem(ModItems.ASH_BRICK);
+			addItem(ModItems.ASH_PLATE_MIX);
+			addItem(ModItems.ASH_PLATE);
+			addItem(ModItems.GOLD_PLATE);
+			addItem(ModItems.MAGNETIC_PLATE);
+			addItem(ModItems.INTRINSIC_CELL);
+			addItem(ModItems.MAGNETIC_BOLT);
+			addItem(ModItems.MAGNETIC_GEAR);
+			addItem(ModItems.MAGNETIC_SPRING);
+			addItem(ModItems.SOLENOID);
+			addItem(ModItems.RESISTOR);
+			addItem(ModItems.CAPACITOR);
+			addItem(ModItems.FRAME_CORE);
+			addItem(ModItems.MAINSPRING_MECHANISM);
+			addItem(ModItems.CLOCKWORK);
+			addItem(ModItems.BOUND_PHOTON);
+			addItem(ModItems.CRYSTAL_PRISM);
+			addItem(ModItems.CRYSTAL_SHARD);
+			addItem(ModItems.QUARTZ);
+			addItem(ModItems.SINGULARITY);
+			addItem(ModItems.PLASMON);
+			addItem(ModItems.THEOREMA);
 			addBlock(ModBlocks.LARGE_POT);
 			addBlock(ModBlocks.PHENOMENA);
 			addBlock(ModBlocks.QUANTA);
@@ -102,22 +126,6 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.SYMMETRIC_EXTENSION);
 			addBlock(ModBlocks.KONDENZATOR);
 			addBlock(ModBlocks.MUTATOR);
-			addItem(ModItems.INTRINSIC_CELL);
-			addItem(ModItems.MAGNETIC_BOLT);
-			addItem(ModItems.MAGNETIC_GEAR);
-			addItem(ModItems.MAGNETIC_SPRING);
-			addItem(ModItems.MAINSPRING_MECHANISM);
-			addItem(ModItems.FRAME_CORE);
-			addItem(ModItems.CLOCKWORK);
-			addItem(ModItems.BOUND_PHOTON);
-			addItem(ModItems.CRYSTAL_PRISM);
-			addItem(ModItems.CRYSTAL_SHARD);
-			addItem(ModItems.QUARTZ);
-			addItem(ModItems.SINGULARITY);
-			addItem(ModItems.PLASMON);
-			addItem(ModItems.ASH);
-			addItem(ModItems.THEOREMA);
-			addItem(ModItems.SOLENOID);
 		}
 	}
 }

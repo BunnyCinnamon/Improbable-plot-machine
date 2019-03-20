@@ -58,6 +58,14 @@ public final class ModItems {
 	public static final Item MUTATOR = PLACE_HOLDER;
 	public static final Item IMBUED_QUARTZ = PLACE_HOLDER;
 	public static final Item SOLENOID = PLACE_HOLDER;
+	public static final Item RESISTOR = PLACE_HOLDER;
+	public static final Item CAPACITOR = PLACE_HOLDER;
+	public static final Item ASH_BRICK_MIX = PLACE_HOLDER;
+	public static final Item ASH_BRICK = PLACE_HOLDER;
+	public static final Item ASH_PLATE = PLACE_HOLDER;
+	public static final Item ASH_PLATE_MIX = PLACE_HOLDER;
+	public static final Item GOLD_PLATE = PLACE_HOLDER;
+	public static final Item MAGNETIC_PLATE = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(itemBlock(ModBlocks.SAPROLITE));
@@ -108,6 +116,14 @@ public final class ModItems {
 		registry.register(new ItemBase(LibNames.FRAME_CORE));
 		registry.register(new ItemMutator());
 		registry.register(new ItemBase(LibNames.SOLENOID));
+		registry.register(new ItemBase(LibNames.RESISTOR));
+		registry.register(new ItemBase(LibNames.CAPACITOR));
+		registry.register(new ItemBase(LibNames.ASH_BRICK_MIX));
+		registry.register(new ItemBase(LibNames.ASH_BRICK));
+		registry.register(new ItemBase(LibNames.ASH_PLATE_MIX));
+		registry.register(new ItemBase(LibNames.ASH_PLATE));
+		registry.register(new ItemBase(LibNames.GOLD_PLATE));
+		registry.register(new ItemBase(LibNames.MAGNETIC_PLATE));
 	}
 
 	@SuppressWarnings("ConstantConditions")

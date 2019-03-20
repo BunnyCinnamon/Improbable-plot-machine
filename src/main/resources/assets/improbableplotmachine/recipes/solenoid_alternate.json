@@ -6,19 +6,19 @@
     "#$#"
   ],
   "key": {
-    "#": {
-      "item": "improbableplotmachine:monolithic"
-    },
     "$": {
+      "item": "minecraft:gunpowder"
+    },
+    "#": {
       "type": "forge:ore_dict",
-      "ore": "paneGlass"
+      "ore": "nuggetGold"
     },
     "I": {
-      "item": "improbableplotmachine:intrinsic_cell"
+      "item": "improbableplotmachine:magnetic_bolt"
     }
   },
   "result": {
-    "item": "improbableplotmachine:kondenzator"
+    "item": "improbableplotmachine:solenoid"
   },
   "group": "plot_machine"
 }

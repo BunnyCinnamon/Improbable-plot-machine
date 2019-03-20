@@ -1,18 +1,18 @@
 ﻿{
   "type": "forge:ore_shaped",
   "pattern": [
-    "#G#",
-    "GDG",
-    "#G#"
+    "#$#",
+    "$I$",
+    "#$#"
   ],
   "key": {
-    "G": {
+    "$": {
       "item": "improbableplotmachine:monolithic"
     },
     "#": {
       "item": "improbableplotmachine:magnetic_bolt"
     },
-    "D": {
+    "I": {
       "item": "improbableplotmachine:mainspring_mechanism"
     }
   },
