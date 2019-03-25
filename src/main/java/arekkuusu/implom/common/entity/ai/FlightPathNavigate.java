@@ -28,12 +28,13 @@ public class FlightPathNavigate extends PathNavigate {
 
 	@Override
 	protected PathFinder getPathFinder() {
-		return new PathFinder(new FlyingNodeProcessor());
+		this.nodeProcessor = new FlyingNodeProcessor();
+		return new PathFinder(this.nodeProcessor);
 	}
 
 	@Override
 	protected boolean canNavigate() {
-		return !this.isInLiquid();
+		return this.nodeProcessor.getCanSwim() && this.isInLiquid() || !this.entity.isRiding();
 	}
 
 	@Override
@@ -71,6 +72,6 @@ public class FlightPathNavigate extends PathNavigate {
 
 	@Override
 	public boolean canEntityStandOnPos(BlockPos pos) {
-		return !this.world.getBlockState(pos).isFullBlock();
+		return this.world.isAirBlock(pos);
 	}
 }

@@ -115,22 +115,29 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void initEntityAI() {
-		EntityAINearestAttackableTarget nearestTarget = new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 2, true, false, new AITargetSelector());
-		this.targetTasks.addTask(1, nearestTarget);
 		EntityAIBase attack = new EyeAIAttack(this);
-		this.tasks.addTask(2, new EyeAIRunAway(this, attack));
-		this.tasks.addTask(3, attack);
-		this.tasks.addTask(4, new EntityAIWander(this, 1D, 50));
+		this.tasks.addTask(1, new EyeAIRunAway(this, attack));
+		this.tasks.addTask(2, attack);
+		this.tasks.addTask(3, new EntityAIWanderAvoidWaterFlying(this, 1D));
+		this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1.0D));
 		this.tasks.addTask(5, new EntityAISwimming(this));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, Entity.class, 8));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 2, true, false, new AITargetSelector()));
+	}
+
+	@Override
+	protected void updateAITasks() {
+		super.updateAITasks();
+		if(!this.hasHome()) {
+			this.setHomePosAndDistance(new BlockPos(this), 5);
+		}
 	}
 
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
-
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.25D);
@@ -215,7 +222,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 
 		@Override
 		public boolean apply(@Nullable Entity entity) {
-			return entity instanceof EntityLivingBase && (entity instanceof EntityPlayer || ((EntityLivingBase) entity).isEntityUndead());
+			return entity instanceof EntityPlayer || (entity instanceof EntityMob && !(entity instanceof EntityEyeOfSchrodinger));
 		}
 	}
 
