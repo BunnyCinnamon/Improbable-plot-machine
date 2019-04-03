@@ -10,6 +10,7 @@ package arekkuusu.implom.common.block;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileBlinker;
 import arekkuusu.implom.common.lib.LibNames;
@@ -148,7 +149,7 @@ public class BlockBlinker extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			IPM.getProxy().spawnMute(world, back, speedVec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
+			IPM.getProxy().spawnSpeck(world, back, speedVec, 60, 2.5F, active ? 0x49FFFF : 0xFFFFFF, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 		}
 	}
 

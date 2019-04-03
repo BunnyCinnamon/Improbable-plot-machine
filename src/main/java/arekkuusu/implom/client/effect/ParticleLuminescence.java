@@ -7,8 +7,8 @@
  */
 package arekkuusu.implom.client.effect;
 
-import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 /*
@@ -20,9 +20,8 @@ public class ParticleLuminescence extends ParticleBase {
 	private final float initialG;
 	private final float initialB;
 
-	ParticleLuminescence(World world, Vector3 pos, Vector3 speed, float scale, int age, GlowTexture glow) {
-		super(world, pos, speed, scale, age, 0xFFE077);
-		setParticleTexture(glow.getTexture());
+	ParticleLuminescence(World world, Vector3 pos, Vector3 speed, float scale, int age, int rgb, Light light, ResourceLocation location) {
+		super(world, pos, speed, scale, age, rgb, light, location);
 		this.initialG = getGreenColorF();
 		this.initialB = getBlueColorF();
 	}

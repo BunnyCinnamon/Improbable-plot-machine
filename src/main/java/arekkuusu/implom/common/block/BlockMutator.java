@@ -2,10 +2,9 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.BlockBaker;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.block.tile.TileMutator;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableList;
@@ -122,11 +121,9 @@ public class BlockMutator extends BlockBaseFacing {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyModelRegistry.register(this, new ModelRendered()
-				.setDependencies(ImmutableList.of(
-						BlockBaker.MUTATOR_BASE.getLocation()
-				)).setParticle(ResourceLibrary.MUTATOR)
+				.setParticle(ResourceLibrary.MUTATOR)
 		);
-		ModelHandler.registerModel(this, 0, "");
+		ModelHelper.registerModel(this, 0, "");
 	}
 
 	public static class Constants {

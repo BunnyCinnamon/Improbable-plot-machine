@@ -11,7 +11,7 @@ import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.block.tile.TileVacuumConveyor;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
@@ -94,6 +94,6 @@ public class BlockVacuumConveyor extends BlockBaseFacing {
 		DummyModelRegistry.register(this, new ModelRendered()
 				.setParticle(ResourceLibrary.VACUUM_CONVEYOR)
 		);
-		ModelHandler.registerModel(this, 0, "");
+		ModelHelper.registerModel(this, 0, "");
 	}
 }

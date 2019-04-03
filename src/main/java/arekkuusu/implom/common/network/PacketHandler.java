@@ -37,6 +37,10 @@ public class PacketHandler {
 
 	public static final List<IPacketHandler> HANDLERS = Lists.newArrayList();
 
+	public static final IPacketHandler PARTICLE = (((compound, context) -> {
+
+	}));
+
 	public static final IPacketHandler QUANTUM_MIRROR = ((compound, context) -> {
 		UUID uuid = compound.getUniqueId("key");
 		ItemStack stack = new ItemStack(compound.getCompoundTag("itemstack"));
@@ -76,6 +80,7 @@ public class PacketHandler {
 		HANDLERS.add(PHENOMENA);
 		HANDLERS.add(QUANTUM_MIRROR);
 		HANDLERS.add(MUTATOR);
+		HANDLERS.add(PARTICLE);
 	}
 
 	private static <H extends IMessageHandler<M, IMessage>, M extends IMessage> void register(Class<H> handler, Class<M> message, Side side) {

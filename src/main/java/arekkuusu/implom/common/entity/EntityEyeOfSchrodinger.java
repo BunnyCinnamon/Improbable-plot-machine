@@ -8,6 +8,8 @@
 package arekkuusu.implom.common.entity;
 
 import arekkuusu.implom.api.helper.NBTHelper;
+import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.entity.ai.FlightMoveHelper;
 import arekkuusu.implom.common.entity.ai.FlightPathNavigate;
@@ -76,9 +78,9 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		//Spawn Particles
 		if(world.isRemote) {
 			int rgb = hasTargetedEntity() ? RED : BLUE;
-			IPM.getProxy().spawnDepthTunneling(world
+			IPM.getProxy().spawnSpeck(world
 					, Vector3.apply(posX, posY + 0.25D, posZ)
-					, Vector3.Zero(), 10, 1.5F, rgb, GlowTexture.GLOW);
+					, Vector3.Zero(), 10, 1.5F, rgb, Light.GLOW, GlowTexture.GLOW.getTexture());
 			Entity entity = getTargetedEntity();
 			if(entity != null) {
 				MutableVector3 speed = Vector3.apply(posX, posY + 0.25D, posZ)
@@ -88,7 +90,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 				if(speed.x() > 0.15D || speed.x() < -0.15D) speed.setX(0.15);
 				if(speed.y() > 0.15D || speed.y() < -0.15D) speed.setY(0.15);
 				if(speed.z() > 0.15D || speed.z() < -0.15D) speed.setZ(0.15);
-				IPM.getProxy().spawnSquared(world, Vector3.apply(posX, posY + 0.25D, posZ), speed.asImmutable(), 10, 4F, RED);
+				IPM.getProxy().spawnSpeck(world, Vector3.apply(posX, posY + 0.25D, posZ), speed.asImmutable(), 10, 4F, RED, Light.GLOW, ResourceLibrary.SQUARE_PARTICLE);
 			}
 		}
 	}

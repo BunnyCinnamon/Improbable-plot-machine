@@ -10,6 +10,7 @@ package arekkuusu.implom.common.proxy;
 import arekkuusu.implom.client.effect.Light;
 import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -31,23 +32,15 @@ public interface IProxy {
 		//NO-OP
 	}
 
-	default void spawnMute(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light type) {
+	default void spawnSpeck(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light light, ResourceLocation location) {
 		//NO-OP
 	}
 
-	default void spawnSpeck(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
+	default void spawnLuminescence(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light light, ResourceLocation location) {
 		//NO-OP
 	}
 
-	default void spawnNeutronBlast(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, boolean collide) {
-		//NO-OP
-	}
-
-	default void spawnLuminescence(World world, Vector3 pos, Vector3 speed, int age, float scale, GlowTexture glow) {
-		//NO-OP
-	}
-
-	default void spawnDepthTunneling(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
+	default void spawnNeutronBlast(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light light, ResourceLocation location, boolean collide) {
 		//NO-OP
 	}
 
@@ -55,11 +48,7 @@ public interface IProxy {
 		//NO-OP
 	}
 
-	default void spawnSquared(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
-		//NO-OP
-	}
-
-	default void spawnBeam(World world, Vector3 from, Vector3 direction, float distance, int amount, float size, int color) {
+	default void spawnBeam(World world, Vector3 pos, Vector3 direction, float distance, int amount, float size, int rgb, Light light, ResourceLocation location) {
 		//NO-OP
 	}
 }

@@ -1,0 +1,31 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"5_1": "improbableplotmachine:blocks/mutator/overlay"
+	},
+	"elements": [
+		{
+			"from": [4, 2, 4],
+			"to": [12, 3, 12],
+			"faces": {
+				"north": {"uv": [4, 4, 12, 5], "texture": "#5_1"},
+				"east": {"uv": [4, 11, 12, 12], "texture": "#5_1"},
+				"south": {"uv": [4, 11, 12, 12], "texture": "#5_1"},
+				"west": {"uv": [4, 4, 12, 5], "texture": "#5_1"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#5_1"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#5_1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "plate",
+			"children": [
+				{
+					"name": "group",
+					"children": [0]
+				}
+			]
+		}
+	]
+}

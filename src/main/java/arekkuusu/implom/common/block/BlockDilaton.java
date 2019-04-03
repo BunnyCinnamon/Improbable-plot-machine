@@ -10,6 +10,7 @@ package arekkuusu.implom.common.block;
 import arekkuusu.implom.api.helper.RayTraceHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileDilaton;
 import arekkuusu.implom.common.lib.LibNames;
@@ -163,7 +164,7 @@ public class BlockDilaton extends BlockBaseFacing {
 						.asImmutable()
 						.multiply(speed)
 						.rotate(x.multiply(z));
-				IPM.getProxy().spawnMute(world, posVec, speedVec, 60, 2F, powered ? 0x49FFFF : 0xFFFFFF, Light.GLOW);
+				IPM.getProxy().spawnSpeck(world, posVec, speedVec, 60, 2F, powered ? 0x49FFFF : 0xFFFFFF, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 			}
 		}
 	}

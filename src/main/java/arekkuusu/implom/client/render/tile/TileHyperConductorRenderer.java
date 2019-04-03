@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.client.render.tile;
 
-import arekkuusu.implom.client.util.baker.BlockBaker;
+import arekkuusu.implom.client.util.BakerLibrary;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import arekkuusu.implom.common.block.tile.TileHyperConductor;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,13 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class TileHyperConductorRenderer extends TileEntitySpecialRenderer<TileHyperConductor> {
 
-	private static final BlockBaker[] MODELS = {
-			BlockBaker.CONDUCTOR_PIECE_0,
-			BlockBaker.CONDUCTOR_PIECE_1,
-			BlockBaker.CONDUCTOR_PIECE_2,
-			BlockBaker.CONDUCTOR_PIECE_3,
-			BlockBaker.CONDUCTOR_PIECE_4
-	};
 	private static final float OFFSETS[][] = {
 			{0.0025F, 0.0025F, -0.0025F},
 			{-0.0025F, -0.0025F, 0.0025F},
@@ -47,12 +40,12 @@ public class TileHyperConductorRenderer extends TileEntitySpecialRenderer<TileHy
 	public static void renderModel(double x, double y, double z, float partialTicks) {
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
+		GlStateManager.translate(x, y, z);
 		for(int i = 0; i < 5; i++) {
 			GlStateManager.pushMatrix();
 			float offset[] = OFFSETS[i];
 			wobble(tick, 1.5F, partialTicks, offset);
-			MODELS[i].render();
+			BakerLibrary.HYPER_CONDUCTOR[i].render();
 			GlStateManager.popMatrix();
 		}
 		GlStateManager.popMatrix();

@@ -10,7 +10,7 @@ package arekkuusu.implom.common.block;
 import arekkuusu.implom.api.helper.InventoryHelper;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.block.tile.TileQuantumMirror;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.SoundType;
@@ -127,6 +127,6 @@ public class BlockQuantumMirror extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyModelRegistry.register(this, new ModelRendered());
-		ModelHandler.registerModel(this, 0);
+		ModelHelper.registerModel(this, 0);
 	}
 }

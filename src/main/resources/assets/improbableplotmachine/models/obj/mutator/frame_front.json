@@ -1,0 +1,32 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "improbableplotmachine:blocks/mutator/base",
+		"particle": "improbableplotmachine:blocks/mutator/base"
+	},
+	"elements": [
+		{
+			"from": [3, 0.5, 3],
+			"to": [13, 1.5, 13],
+			"faces": {
+				"north": {"uv": [3, 3, 13, 4], "texture": "#0"},
+				"east": {"uv": [3, 12, 13, 13], "texture": "#0"},
+				"south": {"uv": [3, 12, 13, 13], "texture": "#0"},
+				"west": {"uv": [3, 3, 13, 4], "texture": "#0"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#0"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "frame_front",
+			"children": [
+				{
+					"name": "group",
+					"children": [0]
+				}
+			]
+		}
+	]
+}

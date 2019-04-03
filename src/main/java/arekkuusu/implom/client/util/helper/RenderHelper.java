@@ -7,9 +7,8 @@
  */
 package arekkuusu.implom.client.util.helper;
 
+import arekkuusu.implom.api.helper.MathHelper;
 import arekkuusu.implom.client.util.ShaderLibrary;
-import arekkuusu.implom.client.util.baker.BlockBaker;
-import arekkuusu.implom.common.IPM;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -38,11 +37,6 @@ import java.util.Random;
 public final class RenderHelper {
 
 	private static final Random BEAM_RAND = new Random();
-
-	public static void bake() {
-		BlockBaker.bakeAll();
-		IPM.LOG.info("[PIE HAS BEEN SUCCESSFULLY BAKED!]");
-	}
 
 	public static float getRenderWorldTime(float partialTicks) {
 		return (Minecraft.getSystemTime() + partialTicks) / 20F;
@@ -138,61 +132,58 @@ public final class RenderHelper {
 		}
 	}
 
-	public static void renderSideTexture(EnumFacing facing, double uMin, double uMax, double vMinL, double vMaxL, double vMinR, double vMaxR) {
+	public static void renderSideTexture(EnumFacing facing, double uMin, double uMax, double vMin, double vMax) {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buff = tessellator.getBuffer();
 		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		switch (facing) {
 			case DOWN:
 				//Bottom
-				buff.pos(0, 0, 1).tex(uMax, vMinL).endVertex();
-				buff.pos(0, 0, 0).tex(uMin, vMinR).endVertex();
-				buff.pos(1, 0, 0).tex(uMin, vMaxR).endVertex();
-				buff.pos(1, 0, 1).tex(uMax, vMaxL).endVertex();
+				buff.pos(0, 0, 1).tex(uMax, vMin).endVertex();
+				buff.pos(0, 0, 0).tex(uMin, vMax).endVertex();
+				buff.pos(1, 0, 0).tex(uMin, vMax).endVertex();
+				buff.pos(1, 0, 1).tex(uMax, vMin).endVertex();
 				break;
 			case UP:
 				//Top
-				buff.pos(0, 1, 0).tex(uMax, vMinL).endVertex();
-				buff.pos(1, 1, 0).tex(uMax, vMinR).endVertex();
-				buff.pos(1, 1, 1).tex(uMin, vMaxR).endVertex();
-				buff.pos(0, 1, 1).tex(uMin, vMaxL).endVertex();
+				buff.pos(0, 1, 0).tex(uMax, vMin).endVertex();
+				buff.pos(1, 1, 0).tex(uMax, vMax).endVertex();
+				buff.pos(1, 1, 1).tex(uMin, vMax).endVertex();
+				buff.pos(0, 1, 1).tex(uMin, vMin).endVertex();
 				break;
 			case NORTH:
 				//Front
-				buff.pos(0, 0, 0).tex(uMax, vMinL).endVertex();
-				buff.pos(1, 0, 0).tex(uMax, vMinR).endVertex();
-				buff.pos(1, 1, 0).tex(uMin, vMaxR).endVertex();
-				buff.pos(0, 1, 0).tex(uMin, vMaxL).endVertex();
+				buff.pos(0, 0, 0).tex(uMin, vMin).endVertex();
+				buff.pos(1, 0, 0).tex(uMax, vMin).endVertex();
+				buff.pos(1, 1, 0).tex(uMax, vMax).endVertex();
+				buff.pos(0, 1, 0).tex(uMin, vMax).endVertex();
 				break;
 			case SOUTH:
 				//Back
-				buff.pos(1, 0, 1).tex(uMax, vMinL).endVertex();
-				buff.pos(0, 0, 1).tex(uMax, vMinR).endVertex();
-				buff.pos(0, 1, 1).tex(uMin, vMaxR).endVertex();
-				buff.pos(1, 1, 1).tex(uMin, vMaxL).endVertex();
+				buff.pos(1, 0, 1).tex(uMin, vMin).endVertex();
+				buff.pos(0, 0, 1).tex(uMax, vMin).endVertex();
+				buff.pos(0, 1, 1).tex(uMax, vMax).endVertex();
+				buff.pos(1, 1, 1).tex(uMin, vMax).endVertex();
 				break;
 			case WEST:
-				buff.pos(0, 0, 1).tex(uMax, vMinL).endVertex();
-				buff.pos(0, 0, 0).tex(uMax, vMinR).endVertex();
-				buff.pos(0, 1, 0).tex(uMin, vMaxR).endVertex();
-				buff.pos(0, 1, 1).tex(uMin, vMaxL).endVertex();
+				buff.pos(0, 0, 1).tex(uMin, vMin).endVertex();
+				buff.pos(0, 0, 0).tex(uMax, vMin).endVertex();
+				buff.pos(0, 1, 0).tex(uMax, vMax).endVertex();
+				buff.pos(0, 1, 1).tex(uMin, vMax).endVertex();
 				//Right
 				break;
 			case EAST:
 				//Left
-				buff.pos(1, 0, 0).tex(uMax, vMinL).endVertex();
-				buff.pos(1, 0, 1).tex(uMax, vMinR).endVertex();
-				buff.pos(1, 1, 1).tex(uMin, vMaxR).endVertex();
-				buff.pos(1, 1, 0).tex(uMin, vMaxL).endVertex();
+				buff.pos(1, 0, 0).tex(uMin, vMin).endVertex();
+				buff.pos(1, 0, 1).tex(uMax, vMin).endVertex();
+				buff.pos(1, 1, 1).tex(uMax, vMax).endVertex();
+				buff.pos(1, 1, 0).tex(uMin, vMax).endVertex();
 				break;
 		}
 		tessellator.draw();
 	}
 
-	public static void makeUpDownTranslation(float tick, float max, float speed, float angle) {
-		float toDegrees = (float) Math.PI / 180F;
-		angle += speed * tick;
-		if(angle > 360) angle -= 360;
-		GlStateManager.translate(0, max * Math.sin(angle * toDegrees), 0);
+	public static void makeUpDownTranslation(float tick, float max, float speed) {
+		GlStateManager.translate(0, MathHelper.getInterpolated(tick, max, speed), 0);
 	}
 }

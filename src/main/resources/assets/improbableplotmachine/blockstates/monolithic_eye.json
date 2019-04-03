@@ -1,0 +1,34 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "all": "improbableplotmachine:blocks/monolithic/base",
+            "overlay": "improbableplotmachine:blocks/monolithic_eye/inactive",
+            "particle": "improbableplotmachine:blocks/monolithic/base"
+        },
+        "model": "improbableplotmachine:block_overlay",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [
+            {
+            }
+        ],
+        "inventory": [
+            {
+            }
+        ],
+        "active": {
+            "true": {
+                "textures": {
+                    "overlay": "improbableplotmachine:blocks/monolithic_eye/active"
+                }
+            },
+            "false": {
+                "textures": {
+                    "overlay": "improbableplotmachine:blocks/monolithic_eye/inactive"
+                }
+            }
+        }
+    }
+}

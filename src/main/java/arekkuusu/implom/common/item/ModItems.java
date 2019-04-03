@@ -75,7 +75,7 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.SAPROLITE));
 		registry.register(new ItemQuantumMirror());
 		registry.register(itemBlock(ModBlocks.GRAVITY_HOPPER));
-		registry.register(itemBlock(ModBlocks.SCHRODINGER_GLYPH));
+		registry.register(itemBlock(ModBlocks.MONOLITHIC_EYE));
 		registry.register(new ItemBlinker());
 		registry.register(itemBlock(ModBlocks.PHENOMENA));
 		registry.register(new ItemBase(LibNames.CRYSTAL_PRISM));
@@ -102,7 +102,6 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.FISSION_INDUCER));
 		registry.register(itemBlock(ModBlocks.LUMINIC_DECOMPRESSOR));
 		registry.register(itemBlock(ModBlocks.QUARTZ_CONSUMER));
-		registry.register(itemBlock(ModBlocks.LUMEN_COMPRESSOR));
 		registry.register(itemBlock(ModBlocks.SYMMETRIC_NEGATOR));
 		registry.register(itemBlock(ModBlocks.SYMMETRIC_EXTENSION));
 		registry.register(itemBlock(ModBlocks.KONDENZATOR));

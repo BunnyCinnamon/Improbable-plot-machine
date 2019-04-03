@@ -11,9 +11,10 @@ import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.state.enums.Direction;
 import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelQelaion;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileQelaion;
 import arekkuusu.implom.common.lib.LibNames;
@@ -77,7 +78,7 @@ public class BlockQelaion extends BlockBase {
 							.asImmutable()
 							.multiply(speed)
 							.rotate(x.multiply(z));
-					IPM.getProxy().spawnMute(world, posVec, speedVec, 60, 2F, on ? 0x49FFFF : 0xFF0303, Light.GLOW);
+					IPM.getProxy().spawnSpeck(world, posVec, speedVec, 60, 2F, on ? 0x49FFFF : 0xFF0303, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 				}
 			}
 		});
@@ -139,6 +140,6 @@ public class BlockQelaion extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyModelRegistry.register(this, new ModelQelaion());
-		ModelHandler.registerModel(this, 0, "");
+		ModelHelper.registerModel(this, 0, "");
 	}
 }

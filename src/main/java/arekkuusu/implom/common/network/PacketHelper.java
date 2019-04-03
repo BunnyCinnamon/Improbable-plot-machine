@@ -25,6 +25,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
  */
 public final class PacketHelper {
 
+	public static void sendParticlePacket() {
+
+	}
+
 	public static void sendQuantumMirrorPacket(IInventoryNBTDataCapability instance) {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setTag("itemstack", instance.getStackInSlot(0).serializeNBT());

@@ -5,7 +5,7 @@ import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TilePholarizer;
 import arekkuusu.implom.common.lib.LibNames;
@@ -77,7 +77,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(active ? speed : -speed)
 					.rotate(x.multiply(z));
-			IPM.getProxy().spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0xFFFFFF, Light.GLOW);
+			IPM.getProxy().spawnSpeck(world, posVec.add(randVec), speedVec, 45, 0.5F, 0xFFFFFF, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 		}
 	}
 
@@ -136,7 +136,7 @@ public class BlockPholarizer extends BlockBaseFacing {
 		DummyModelRegistry.register(this, new ModelRendered()
 				.setParticle(ResourceLibrary.PHOLARIZER)
 		);
-		ModelHandler.registerModel(this, 0);
+		ModelHelper.registerModel(this, 0);
 	}
 
 	public enum Polarization implements IStringSerializable {

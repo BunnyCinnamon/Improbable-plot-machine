@@ -20,8 +20,10 @@ public class WorldAccessNBTData implements INBTData<NBTTagCompound> {
 	@Nullable
 	public World getWorld() {
 		World world = null;
-		if(cacheWorld != null) world = cacheWorld.get();
-		if(world == null) cacheWorld = new WeakReference<>(DimensionManager.getWorld(worldId));
+		if(cacheWorld != null)
+			world = cacheWorld.get();
+		if(world == null && worldId != null)
+			cacheWorld = new WeakReference<>(DimensionManager.getWorld(worldId));
 		return world;
 	}
 

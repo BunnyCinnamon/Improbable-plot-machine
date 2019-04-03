@@ -7,8 +7,9 @@
  */
 package arekkuusu.implom.client.render.tile;
 
+import arekkuusu.implom.api.helper.MathHelper;
+import arekkuusu.implom.client.util.BakerLibrary;
 import arekkuusu.implom.client.util.ShaderLibrary;
-import arekkuusu.implom.client.util.baker.BlockBaker;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import arekkuusu.implom.common.block.BlockNeutronBattery.BatteryCapacitor;
 import arekkuusu.implom.common.block.tile.TileNeutronBattery;
@@ -30,32 +31,11 @@ public class TileNeutronBatteryRenderer extends TileEntitySpecialRenderer<TileNe
 	}
 
 	public static void renderModel(BatteryCapacitor capacity, EnumFacing facing, double x, double y, double z, float partialTicks) {
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		if(facing != EnumFacing.UP) {
-			GlStateManager.translate(0.5, 0.5, 0.5);
-			switch (facing) {
-				case DOWN:
-					GlStateManager.rotate(180F, 1F, 0F, 0F);
-					break;
-				case NORTH:
-					GlStateManager.rotate(90F, -1F, 0F, 0F);
-					break;
-				case SOUTH:
-					GlStateManager.rotate(90F, 1F, 0F, 0F);
-					break;
-				case WEST:
-					GlStateManager.rotate(90F, 0F, 0F, 1F);
-					break;
-				case EAST:
-					GlStateManager.rotate(90F, 0F, 0F, -1F);
-					break;
-			}
-			GlStateManager.translate(-0.5, -0.5, -0.5);
-		}
-		BlockBaker.NEUTRON_BATTERY_BASE.render();
+		BakerLibrary.NEUTRON_BATTERY_FRAME.renderWithRotation(facing);
 		if(capacity != null) {
-			GlStateManager.pushMatrix();
 			GlStateManager.disableLighting();
 			ShaderLibrary.RECOLOR.begin();
 			ShaderLibrary.RECOLOR.getUniformJ("greybase").ifPresent(greybase -> {
@@ -69,11 +49,9 @@ public class TileNeutronBatteryRenderer extends TileEntitySpecialRenderer<TileNe
 				rgba.set(r, g, b);
 				rgba.upload();
 			});
-			RenderHelper.makeUpDownTranslation(RenderHelper.getRenderWorldTime(partialTicks), 0.025F, 1.5F, 15F);
-			BlockBaker.NEUTRON_BATTERY.render();
+			BakerLibrary.NEUTRON_BATTERY_CRYSTAL.renderWithYOffset(facing, MathHelper.getInterpolated(tick, 0.025F, 1.5F));
 			ShaderLibrary.RECOLOR.end();
 			GlStateManager.enableLighting();
-			GlStateManager.popMatrix();
 		}
 		GlStateManager.popMatrix();
 	}

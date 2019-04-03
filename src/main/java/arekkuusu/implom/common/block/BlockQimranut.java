@@ -10,14 +10,12 @@ package arekkuusu.implom.common.block;
 import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
-import arekkuusu.implom.client.util.baker.BlockBaker;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileQimranut;
 import arekkuusu.implom.common.lib.LibNames;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.client.baked.BakedPerspective;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;
@@ -107,7 +105,7 @@ public class BlockQimranut extends BlockBaseFacing {
 					.asImmutable()
 					.multiply(speed)
 					.rotate(x.multiply(z));
-			IPM.getProxy().spawnMute(world, back, speedVec, 45, 1F, 0x1BE564, Light.GLOW);
+			IPM.getProxy().spawnSpeck(world, back, speedVec, 45, 1F, 0x1BE564, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 		}
 	}
 
@@ -150,13 +148,9 @@ public class BlockQimranut extends BlockBaseFacing {
 						.put(ItemCameraTransforms.TransformType.GROUND, BakedPerspective.mkTransform(0F, 3.5F, 0F, 0F, 0F, 0F, 0.25F))
 						.put(ItemCameraTransforms.TransformType.FIXED, BakedPerspective.mkTransform(0F, 1F, 0F, 0F, 0F, 0F, 0.5F))
 						.build()
-				).setDependencies(ImmutableList.of(
-						BlockBaker.QIMRANUT.getLocation(),
-						BlockBaker.QIMRANUT_.getLocation(),
-						BlockBaker.QIMRANUT_RING.getLocation()
-				)).setParticle(ResourceLibrary.QIMRANUT_BASE)
+				).setParticle(ResourceLibrary.QIMRANUT)
 		);
-		ModelHandler.registerModel(this, 0, "");
+		ModelHelper.registerModel(this, 0, "");
 	}
 
 	public static class Constants {

@@ -1,0 +1,73 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"3_0": "improbableplotmachine:blocks/mechanical_translocator",
+		"particle": "improbableplotmachine:blocks/mechanical_translocator"
+	},
+	"elements": [
+		{
+			"from": [6.5, 9.5, 7.5],
+			"to": [9.5, 10.5, 8.5],
+			"faces": {
+				"north": {"uv": [9, 8, 15, 10], "texture": "#3_0"},
+				"east": {"uv": [13, 8, 15, 10], "texture": "#3_0"},
+				"south": {"uv": [9, 8, 15, 10], "texture": "#3_0"},
+				"west": {"uv": [9, 8, 11, 10], "texture": "#3_0"},
+				"up": {"uv": [9, 14, 15, 16], "texture": "#3_0"},
+				"down": {"uv": [9, 10, 15, 12], "texture": "#3_0"}
+			}
+		},
+		{
+			"from": [9.5, 6.5, 7.5],
+			"to": [10.5, 9.5, 8.5],
+			"faces": {
+				"north": {"uv": [9, 8, 11, 14], "texture": "#3_0"},
+				"east": {"uv": [9, 14, 15, 16], "rotation": 90, "texture": "#3_0"},
+				"south": {"uv": [13, 8, 15, 14], "texture": "#3_0"},
+				"west": {"uv": [11, 8, 13, 14], "texture": "#3_0"},
+				"up": {"uv": [13, 8, 15, 10], "texture": "#3_0"},
+				"down": {"uv": [13, 12, 15, 14], "texture": "#3_0"}
+			}
+		},
+		{
+			"from": [6.5, 5.5, 7.5],
+			"to": [9.5, 6.5, 8.5],
+			"faces": {
+				"north": {"uv": [9, 12, 15, 14], "texture": "#3_0"},
+				"east": {"uv": [13, 12, 15, 14], "texture": "#3_0"},
+				"south": {"uv": [9, 12, 15, 14], "texture": "#3_0"},
+				"west": {"uv": [9, 12, 11, 14], "texture": "#3_0"},
+				"up": {"uv": [9, 10, 15, 12], "texture": "#3_0"},
+				"down": {"uv": [9, 14, 15, 16], "texture": "#3_0"}
+			}
+		},
+		{
+			"from": [5.5, 6.5, 7.5],
+			"to": [6.5, 9.5, 8.5],
+			"faces": {
+				"north": {"uv": [13, 8, 15, 14], "texture": "#3_0"},
+				"east": {"uv": [11, 8, 13, 14], "texture": "#3_0"},
+				"south": {"uv": [9, 8, 11, 14], "texture": "#3_0"},
+				"west": {"uv": [9, 14, 15, 16], "rotation": 90, "texture": "#3_0"},
+				"up": {"uv": [9, 8, 11, 10], "texture": "#3_0"},
+				"down": {"uv": [9, 12, 11, 14], "texture": "#3_0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "ring",
+			"children": [
+				{
+					"name": "ring",
+					"children": [
+						{
+							"name": "group",
+							"children": [0, 1, 2, 3]
+						}
+					]
+				}
+			]
+		}
+	]
+}

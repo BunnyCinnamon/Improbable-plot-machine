@@ -11,24 +11,25 @@ import arekkuusu.implom.api.IPMApi;
 import arekkuusu.implom.client.ModRenders;
 import arekkuusu.implom.client.effect.FXUtil;
 import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.BakerLibrary;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.ShaderLibrary;
 import arekkuusu.implom.client.util.SpriteLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelLoader;
-import arekkuusu.implom.client.util.helper.ModelHandler;
-import arekkuusu.implom.client.util.helper.RenderHelper;
-import arekkuusu.implom.client.util.resource.SpriteManager;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.lib.LibMod;
 import arekkuusu.implom.common.proxy.IProxy;
-import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -51,28 +52,35 @@ public class ClientProxy implements IProxy {
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
-		ModelHandler.registerModels();
+		ModelHelper.registerModels();
 	}
 
 	@SubscribeEvent
-	public static void registerSprites(TextureStitchEvent event) {
+	public static void stitchTextures(TextureStitchEvent event) {
+		BakerLibrary.stitchTextureModels();
 		TextureMap map = event.getMap();
 		ResourceLibrary.ATLAS_SET.forEach(map::registerSprite);
+		map.registerSprite(ResourceLibrary.GLOW_PARTICLE);
+		map.registerSprite(ResourceLibrary.SQUARE_PARTICLE);
+		map.registerSprite(ResourceLibrary.DULL_PARTICLE);
+	}
+
+	@SubscribeEvent
+	public static void bakeModels(ModelBakeEvent event) {
+		BakerLibrary.bakeModels();
 	}
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		registerResourceReloadListener(SpriteManager.INSTANCE);
 		registerResourceReloadListener(DummyModelLoader.INSTANCE);
 		ModelLoaderRegistry.registerLoader(DummyModelLoader.INSTANCE);
+		SpriteLibrary.preInit();
 		ModRenders.preInit();
 	}
 
 	@Override
 	public void init(FMLInitializationEvent event) {
-		SpriteLibrary.init();
 		ShaderLibrary.init();
-		RenderHelper.bake();
 		ModRenders.init();
 	}
 
@@ -87,32 +95,22 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void playSound(World world, BlockPos pos, SoundEvent event, SoundCategory category, float volume) {
-		FXUtil.playSound(world, pos, event, category, volume);
+		((WorldClient) world).playSound(pos, event, category, volume, 1F, false);
 	}
 
 	@Override
-	public void spawnMute(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light type) {
-		if(canParticleSpawn()) FXUtil.spawnMute(world, pos, speed, age, scale, rgb, type);
+	public void spawnSpeck(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light light, ResourceLocation location) {
+		if(canParticleSpawn()) FXUtil.spawnSpeck(world, pos, speed, age, scale, rgb, light, location);
 	}
 
 	@Override
-	public void spawnSpeck(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
-		if(canParticleSpawn()) FXUtil.spawnSpeck(world, pos, speed, age, scale, rgb, glow);
+	public void spawnNeutronBlast(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light light, ResourceLocation location, boolean collide) {
+		if(canParticleSpawn()) FXUtil.spawnNeutronBlast(world, pos, speed, age, scale, rgb, light, location, collide);
 	}
 
 	@Override
-	public void spawnNeutronBlast(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, boolean collide) {
-		if(canParticleSpawn()) FXUtil.spawnNeutronBlast(world, pos, speed, age, scale, rgb, collide);
-	}
-
-	@Override
-	public void spawnLuminescence(World world, Vector3 pos, Vector3 speed, int age, float scale, GlowTexture glow) {
-		if(canParticleSpawn()) FXUtil.spawnLuminescence(world, pos, speed, age, scale, glow);
-	}
-
-	@Override
-	public void spawnDepthTunneling(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, GlowTexture glow) {
-		if(canParticleSpawn()) FXUtil.spawnDepthTunneling(world, pos, speed, age, scale, rgb, glow);
+	public void spawnLuminescence(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb, Light light, ResourceLocation location) {
+		if(canParticleSpawn()) FXUtil.spawnLuminescence(world, pos, speed, age, scale, rgb, light, location);
 	}
 
 	@Override
@@ -121,13 +119,8 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public void spawnSquared(World world, Vector3 pos, Vector3 speed, int age, float scale, int rgb) {
-		if(canParticleSpawn()) FXUtil.spawnSquared(world, pos, speed, age, scale, rgb);
-	}
-
-	@Override
-	public void spawnBeam(World world, Vector3 from, Vector3 direction, float distance, int amount, float size, int color) {
-		if(canParticleSpawn()) FXUtil.spawnBeam(world, from, direction, distance, amount, size, color);
+	public void spawnBeam(World world, Vector3 pos, Vector3 direction, float distance, int amount, float size, int rgb, Light light, ResourceLocation location) {
+		if(canParticleSpawn()) FXUtil.spawnBeam(world, pos, direction, distance, amount, size, rgb, light, location);
 	}
 
 	private boolean canParticleSpawn() {

@@ -7,11 +7,11 @@
  */
 package arekkuusu.implom.client.effect;
 
-import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,24 +22,21 @@ import net.minecraft.world.World;
  */
 public class ParticleNeutronBlast extends ParticleBase {
 
+	private final ResourceLocation location;
 	private final boolean collide;
 	private final int rgb;
 
-	ParticleNeutronBlast(World world, Vector3 pos, Vector3 speed, float scale, int age, int rgb, boolean collide) {
-		super(world, pos, speed, scale, age, rgb);
+	ParticleNeutronBlast(World world, Vector3 pos, Vector3 speed, float scale, int age, int rgb, Light light, ResourceLocation location, boolean collide) {
+		super(world, pos, speed, scale, age, rgb, light, location);
 		this.rgb = rgb;
 		this.collide = collide;
 		this.canCollide = !this.collide;
+		this.location = location;
 	}
 
 	@Override
 	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		//NO-OP
-	}
-
-	@Override
-	public void onUpdateGlow() {
-		this.onUpdate();
 	}
 
 	@Override
@@ -66,7 +63,7 @@ public class ParticleNeutronBlast extends ParticleBase {
 				for(int i = 0; i < 4 + rand.nextInt(5); i++) {
 					double speed = world.rand.nextDouble() * 0.015D;
 					Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
-					FXUtil.spawnSpeck(world, vecPos, speedVec, 75, 1.75F, rgb, GlowTexture.GLINT);
+					FXUtil.spawnSpeck(world, vecPos, speedVec, 75, particleScale + 1.55F, rgb, light, location);
 				}
 				setExpired();
 			}
@@ -77,8 +74,7 @@ public class ParticleNeutronBlast extends ParticleBase {
 		xOffset += posX;
 		yOffset += posY;
 		zOffset += posZ;
-		FXUtil.spawnSpeck(world, Vector3.apply(xOffset, yOffset, zOffset), Vector3.Zero(),
-				60, particleScale, rgb, GlowTexture.GLOW);
+		FXUtil.spawnSpeck(world, Vector3.apply(xOffset, yOffset, zOffset), Vector3.Zero(), 60, particleScale, rgb, light, location);
 	}
 
 	@Override

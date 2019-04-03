@@ -7,8 +7,8 @@
  */
 package arekkuusu.implom.client.render.tile;
 
+import arekkuusu.implom.client.util.BakerLibrary;
 import arekkuusu.implom.client.util.ShaderLibrary;
-import arekkuusu.implom.client.util.baker.BlockBaker;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import arekkuusu.implom.common.block.tile.TileMutator;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,28 +30,9 @@ public class TileMutatorRenderer extends TileEntitySpecialRenderer<TileMutator> 
 
 	public static void renderModel(EnumFacing facing, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-		if(facing != null && facing != EnumFacing.DOWN) {
-			switch (facing) {
-				case UP:
-					GlStateManager.rotate(180F, 1F, 0F, 0F);
-					break;
-				case NORTH:
-					GlStateManager.rotate(90F, 1F, 0F, 0F);
-					break;
-				case SOUTH:
-					GlStateManager.rotate(90F, -1F, 0F, 0F);
-					break;
-				case WEST:
-					GlStateManager.rotate(90F, 0F, 0F, -1F);
-					break;
-				case EAST:
-					GlStateManager.rotate(90F, 0F, 0F, 1F);
-					break;
-			}
-		}
-		BlockBaker.MUTATOR_BASE.render();
-		BlockBaker.MUTATOR_FRONT.render();
+		GlStateManager.translate(x, y, z);
+		BakerLibrary.MUTATOR_FRAME.render();
+		BakerLibrary.MUTATOR_FRAME_FRONT.renderWithRotation(facing);
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
@@ -59,13 +40,10 @@ public class TileMutatorRenderer extends TileEntitySpecialRenderer<TileMutator> 
 			b.upload();
 		});
 		//Overlay
-		BlockBaker.MUTATOR_BASE_OVERLAY.render();
-		BlockBaker.MUTATOR_BASE_NODES.render();
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		GlStateManager.pushMatrix();
-		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, 1F, 0F);
-		BlockBaker.MUTATOR_PLATE.render();
-		GlStateManager.popMatrix();
+		BakerLibrary.MUTATOR_FRAME_OVERLAY.renderWithRotation(facing);
+		BakerLibrary.MUTATOR_BOLTS.renderWithRotation(facing);
+		BakerLibrary.MUTATOR_PLATE.renderWithRotation(facing, EnumFacing.Axis.Y, tick * 0.5F % 360F);
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();

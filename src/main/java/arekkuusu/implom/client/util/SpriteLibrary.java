@@ -1,44 +1,47 @@
-/*
- * Arekkuusu / solar 2018
- *
- * This project is licensed under the MIT.
- * The source code is available on github:
- * https://github.com/ArekkuusuJerii/Improbable-plot-machine
- */
 package arekkuusu.implom.client.util;
 
-import arekkuusu.implom.client.util.resource.SpriteManager;
-import arekkuusu.implom.client.util.resource.sprite.FrameSpriteResource;
-import arekkuusu.implom.client.util.resource.sprite.SpriteResource;
+import arekkuusu.implom.client.util.sprite.SpriteAtlasResource;
+import arekkuusu.implom.client.util.sprite.SpriteFrameResource;
+import arekkuusu.implom.client.util.sprite.SpriteResource;
 import arekkuusu.implom.common.IPM;
-import net.katsstuff.teamnightclipse.mirror.client.helper.TextureLocation;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/*
- * Created by <Arekkuusu> on 03/07/2017.
- * It's distributed as part of solar.
- */
 @SideOnly(Side.CLIENT)
 public final class SpriteLibrary {
 
-	public static final FrameSpriteResource SQUARED_PARTICLE = SpriteManager.load(
-			TextureLocation.Effect(), "squared_particle", 12, 1
+	public static final SpriteAtlasResource EMPTY = find(
+			ResourceLibrary.EMPTY
 	);
-	public static final FrameSpriteResource QUANTUM_MIRROR = SpriteManager.load(
-			TextureLocation.Blocks(), "quantum_mirror", 9, 1
+	public static final SpriteAtlasResource QUANTA = find(
+			ResourceLibrary.QUANTA
 	);
-	public static final SpriteResource QUANTA = SpriteManager.load(
-			TextureLocation.Blocks(), "quanta"
+	public static final SpriteAtlasResource MUTATOR_SELECTION = find(
+			ResourceLibrary.MUTATOR_SELECTION
 	);
-	public static final SpriteResource EYE_OF_SCHRODINGER_LAYER = SpriteManager.load(
-			TextureLocation.Model(), "eye_of_schrodinger_layer"
-	);
-	public static final FrameSpriteResource MUTATOR_SELECTION = SpriteManager.load(
-			TextureLocation.Blocks(), "mutator_selection", 4, 1
+	public static final SpriteFrameResource QUANTUM_MIRROR = load(
+			ResourceLibrary.QUANTUM_MIRROR, 9, 1
 	);
 
-	public static void init() {
+	public static SpriteAtlasResource find(ResourceLocation location) {
+		SpriteAtlasResource sprite = new SpriteAtlasResource(location);
+		ResourceLibrary.ATLAS_SET.add(location);
+		return sprite;
+	}
+
+	public static SpriteResource load(ResourceLocation location) {
+		return new SpriteResource(location);
+	}
+
+	public static SpriteFrameResource load(ResourceLocation location, int rows, int columns) {
+		if(rows <= 0 || columns <= 0) {
+			IPM.LOG.fatal("[SpriteLibrary] Your sprite can't have 0 rows or columns" + location.toString());
+		}
+		return new SpriteFrameResource(location, rows, columns);
+	}
+
+	public static void preInit() {
 		IPM.LOG.info("[MAKING PIE!]");
 	}
 }

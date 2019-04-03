@@ -49,7 +49,8 @@ public class ModelClockwork implements IModel {
 	public ModelClockwork() {
 		this(ImmutableList.of(
 				ResourceLibrary.CLOCKWORK_INSIDES,
-				ResourceLibrary.CLOCKWORK_SEALED
+				ResourceLibrary.CLOCKWORK_SEALED,
+				ResourceLibrary.CLOCKWORK_UNSEALED
 		), new ItemOverrides());
 	}
 

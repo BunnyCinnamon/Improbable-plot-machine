@@ -1,0 +1,26 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"2_0": "improbableplotmachine:blocks/vacuum_conveyor"
+	},
+	"elements": [
+		{
+			"from": [5, 7.5, 5],
+			"to": [11, 8.5, 11],
+			"faces": {
+				"north": {"uv": [10, 5, 16, 6], "texture": "#2_0"},
+				"east": {"uv": [10, 5, 16, 6], "texture": "#2_0"},
+				"south": {"uv": [10, 5, 16, 6], "texture": "#2_0"},
+				"west": {"uv": [10, 5, 16, 6], "texture": "#2_0"},
+				"up": {"uv": [10, 0, 16, 6], "texture": "#2_0"},
+				"down": {"uv": [10, 0, 16, 6], "texture": "#2_0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "plate",
+			"children": [0]
+		}
+	]
+}

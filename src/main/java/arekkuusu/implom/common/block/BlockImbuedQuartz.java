@@ -7,6 +7,8 @@
  */
 package arekkuusu.implom.common.block;
 
+import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
@@ -39,7 +41,7 @@ public class BlockImbuedQuartz extends BlockBase {
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 		for(int i = 0; i < 1 + rand.nextInt(4); i++) {
 			Vector3 posVec = new Vector3.WrappedVec3i(pos).asImmutable().add(Math.random(), Math.random(), Math.random());
-			IPM.getProxy().spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, rand.nextFloat(), 0x49FFFF, GlowTexture.GLOW);
+			IPM.getProxy().spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, rand.nextFloat(), 0x49FFFF, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 		}
 	}
 

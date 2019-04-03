@@ -64,7 +64,7 @@ public final class CreativeTabHandler {
 		@Override
 		@Nonnull
 		public ItemStack getIconItemStack() {
-			return new ItemStack(ModBlocks.SCHRODINGER_GLYPH);
+			return new ItemStack(ModBlocks.MONOLITHIC_EYE);
 		}
 
 		@Override
@@ -74,7 +74,7 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.SAPROLITE);
 			addBlock(ModBlocks.MONOLITHIC);
 			addBlock(ModBlocks.MONOLITHIC_GLYPH);
-			addBlock(ModBlocks.SCHRODINGER_GLYPH);
+			addBlock(ModBlocks.MONOLITHIC_EYE);
 			addBlock(ModBlocks.ASHEN);
 			addItem(ModItems.ASH);
 			addItem(ModItems.ASH_BRICK_MIX);
@@ -122,7 +122,6 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.ELECTRON);
 			addBlock(ModBlocks.NEUTRON_BATTERY);
 			addBlock(ModBlocks.LUMINIC_DECOMPRESSOR);
-			addBlock(ModBlocks.LUMEN_COMPRESSOR);
 			addBlock(ModBlocks.FISSION_INDUCER);
 			addBlock(ModBlocks.QUARTZ_CONSUMER);
 			addBlock(ModBlocks.PHOLARIZER);

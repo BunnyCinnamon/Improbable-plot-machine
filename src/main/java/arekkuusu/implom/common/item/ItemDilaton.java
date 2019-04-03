@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,6 +29,6 @@ public class ItemDilaton extends ItemBaseBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		ModelHandler.registerModel(this, 0);
+		ModelHelper.registerModel(this, 0);
 	}
 }

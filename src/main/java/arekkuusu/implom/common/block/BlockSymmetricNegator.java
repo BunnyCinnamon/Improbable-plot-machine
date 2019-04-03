@@ -8,14 +8,16 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileSymmetricNegator;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -68,7 +70,7 @@ public class BlockSymmetricNegator extends BlockBaseFacing {
 			if(found.getBlock() == ModBlocks.SYMMETRIC_EXTENSION && found.getValue(BlockDirectional.FACING) == facing) {
 				Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
 				Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D).offset(offset, -0.19);
-				IPM.getProxy().spawnBeam(world, from, offset, distance + 0.41F, 36, 0.75F, 0xFF0303);
+				IPM.getProxy().spawnBeam(world, from, offset, distance + 0.41F, 36, 0.75F, 0xFF0303, Light.GLOW, GlowTexture.GLOW.getTexture());
 				break;
 			}
 		}
@@ -95,9 +97,9 @@ public class BlockSymmetricNegator extends BlockBaseFacing {
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyModelRegistry.register(this, new ModelRendered()
-				.setParticle(ResourceLibrary.SYMMETRIC_NEGATOR)
+				.setParticle(ResourceLibrary.SYMMETRIC_SENDER)
 		);
-		ModelHandler.registerModel(this, 0);
+		ModelHelper.registerModel(this, 0);
 	}
 
 	public static class Constants {

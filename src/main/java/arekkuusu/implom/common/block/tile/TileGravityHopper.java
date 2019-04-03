@@ -8,6 +8,7 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
@@ -124,7 +125,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
 					.multiply(0.005D);
-			IPM.getProxy().spawnNeutronBlast(world, back, speedVec, 40, 0.25F, 0xFF0303, false);
+			IPM.getProxy().spawnNeutronBlast(world, back, speedVec, 40, 0.25F, 0xFF0303, Light.GLOW, ResourceLibrary.GLOW_PARTICLE, false);
 		} else if(world.getTotalWorldTime() % 4 == 0 && world.rand.nextBoolean()) {
 			EnumFacing facing = getFacing().getOpposite();
 			Vector3 back = getOffSet(facing);
@@ -132,7 +133,7 @@ public class TileGravityHopper extends TileBase implements ITickable {
 			Vector3 speedVec = new Vector3.WrappedVec3i(facing.getDirectionVec())
 					.asImmutable()
 					.multiply(speed);
-			IPM.getProxy().spawnMute(world, back, speedVec, 30, 2F, 0x49FFFF, Light.GLOW);
+			IPM.getProxy().spawnSpeck(world, back, speedVec, 30, 2F, 0x49FFFF, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 		}
 	}
 

@@ -32,7 +32,7 @@ public final class ModBlocks {
 	public static final Block SAPROLITE = PLACE_HOLDER;
 	public static final Block QUANTUM_MIRROR = PLACE_HOLDER;
 	public static final Block GRAVITY_HOPPER = PLACE_HOLDER;
-	public static final Block SCHRODINGER_GLYPH = PLACE_HOLDER;
+	public static final Block MONOLITHIC_EYE = PLACE_HOLDER;
 	public static final Block BLINKER = PLACE_HOLDER;
 	public static final Block PHENOMENA = PLACE_HOLDER;
 	public static final Block QUANTA = PLACE_HOLDER;
@@ -55,7 +55,6 @@ public final class ModBlocks {
 	public static final Block FISSION_INDUCER = PLACE_HOLDER;
 	public static final Block LUMINIC_DECOMPRESSOR = PLACE_HOLDER;
 	public static final Block QUARTZ_CONSUMER = PLACE_HOLDER;
-	public static final Block LUMEN_COMPRESSOR = PLACE_HOLDER;
 	public static final Block SYMMETRIC_NEGATOR = PLACE_HOLDER;
 	public static final Block SYMMETRIC_EXTENSION = PLACE_HOLDER;
 	public static final Block KONDENZATOR = PLACE_HOLDER;
@@ -68,7 +67,7 @@ public final class ModBlocks {
 		registry.register(new BlockMonolithicGlyph());
 		registry.register(new BlockQuantumMirror());
 		registry.register(new BlockGravityHopper());
-		registry.register(new BlockSchrodingerGlyph());
+		registry.register(new BlockMonolithicEye());
 		registry.register(new BlockBlinker());
 		registry.register(new BlockPhenomena());
 		registry.register(new BlockQuanta());
@@ -90,7 +89,6 @@ public final class ModBlocks {
 		registry.register(new BlockFissionInducer());
 		registry.register(new BlockLuminicDecompressor());
 		registry.register(new BlockQuartzConsumer());
-		registry.register(new BlockLumenCompressor());
 		registry.register(new BlockSymmetricNegator());
 		registry.register(new BlockSymmetricExtension());
 		registry.register(new BlockKondenzator());

@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.lib.LibMod;
 import net.katsstuff.teamnightclipse.mirror.client.helper.ResourceHelperStatic;
@@ -35,7 +35,7 @@ public class ItemMonolithicGlyph extends ItemBaseBlock {
 	@Override
 	public void registerModel() {
 		for (int i = 0; i < 16; i++) {
-			ModelHandler.registerModel(this, i, ResourceHelperStatic.getModel(LibMod.MOD_ID, "monolithic_glyph", "glyph=" + i));
+			ModelHelper.registerModel(this, i, ResourceHelperStatic.getModel(LibMod.MOD_ID, "monolithic_glyph", "glyph=" + i));
 		}
 	}
 }

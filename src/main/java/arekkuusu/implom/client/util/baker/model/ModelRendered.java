@@ -32,7 +32,7 @@ public class ModelRendered implements IModel {
 	private ResourceLocation particle;
 
 	public ModelRendered() {
-		this(BakedPerspective.BlockTransformsJava(), ImmutableList.of(), new ItemOverrideList(ImmutableList.of()), ResourceLibrary.TRANSPARENT);
+		this(BakedPerspective.BlockTransformsJava(), ImmutableList.of(), new ItemOverrideList(ImmutableList.of()), ResourceLibrary.EMPTY);
 	}
 
 	public ModelRendered(Map<ItemCameraTransforms.TransformType, TRSRTransformation> transforms, List<ResourceLocation> dependencies, ItemOverrideList override, ResourceLocation particle) {

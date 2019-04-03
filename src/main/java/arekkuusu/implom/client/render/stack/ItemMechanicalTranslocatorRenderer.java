@@ -4,12 +4,12 @@ import arekkuusu.implom.client.render.tile.TileMechanicalTranslocatorRenderer;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 public class ItemMechanicalTranslocatorRenderer extends ItemRender {
 	@Override
 	public void renderByItem(ItemStack stack, float partialTicks) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		TileMechanicalTranslocatorRenderer.renderModel(null, tick, 0, 0, 0, partialTicks);
+		TileMechanicalTranslocatorRenderer.renderModel(EnumFacing.DOWN, 0, 0, 0, partialTicks);
 	}
 }

@@ -9,6 +9,7 @@ package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
 import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.handler.data.capability.nbt.InventoryNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.InventoryNBTProvider;
@@ -65,7 +66,7 @@ public class TileQuantumMirror extends TileBase implements ITickable, INBTDataTr
 	public void update() {
 		if(world.isRemote && world.rand.nextInt(10) == 0) {
 			Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
-			IPM.getProxy().spawnSpeck(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, GlowTexture.STAR);
+			IPM.getProxy().spawnSpeck(world, from, Vector3.rotateRandom().multiply(0.1F), 20, 0.1F, 0XFFFFFF, Light.GLOW, GlowTexture.STAR.getTexture());
 		}
 	}
 

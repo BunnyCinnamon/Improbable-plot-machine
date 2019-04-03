@@ -1,38 +1,42 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-	"model": "improbableplotmachine:luminic_decompressor",
-	"uvlock": false
-  },
-  "variants": {
-	"normal": [{
-	}],
-    "inventory": [{
-	  "model": "improbableplotmachine:item/luminic_decompressor",
-	  "uvlock": false
-	}],
-	"facing": {
-	  "up": {
-		"x": 180
-	  },
-	  "down": {
-	  },
-	  "north": {
-		"x": -90,
-		"y": 0
-	  },
-	  "south": {
-		"x": 90,
-		"y": 0
-	  },
-	  "east": {
-		"x": -90,
-		"y": 90
-	  },
-	  "west": {
-		"x": 90,
-		"y": 90
-	  }
-	}
-  }
+    "forge_marker": 1,
+    "defaults": {
+        "model": "improbableplotmachine:luminic_decompressor",
+        "uvlock": false
+    },
+    "variants": {
+        "normal": [
+            {
+            }
+        ],
+        "inventory": [
+            {
+                "model": "improbableplotmachine:item/luminic_decompressor",
+                "uvlock": false
+            }
+        ],
+        "facing": {
+            "up": {
+                "x": 180
+            },
+            "down": {
+            },
+            "north": {
+                "x": -90,
+                "y": 0
+            },
+            "south": {
+                "x": 90,
+                "y": 0
+            },
+            "east": {
+                "x": -90,
+                "y": 90
+            },
+            "west": {
+                "x": 90,
+                "y": 90
+            }
+        }
+    }
 }

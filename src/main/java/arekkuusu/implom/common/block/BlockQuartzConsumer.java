@@ -9,6 +9,7 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileQuartzConsumer;
 import arekkuusu.implom.common.lib.LibNames;
@@ -53,7 +54,7 @@ public class BlockQuartzConsumer extends BlockBase {
 				Vector3 speedVec = Vector3.rotateRandom()
 						.multiply(speed)
 						.rotate(x.multiply(z));
-				IPM.getProxy().spawnMute(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x49FFFF, Light.GLOW);
+				IPM.getProxy().spawnSpeck(world, posVec.add(randVec), speedVec, 45, 0.5F, 0x49FFFF, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 			}
 		});
 	}

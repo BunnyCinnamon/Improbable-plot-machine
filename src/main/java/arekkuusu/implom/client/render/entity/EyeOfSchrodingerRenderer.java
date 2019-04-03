@@ -9,7 +9,6 @@ package arekkuusu.implom.client.render.entity;
 
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.ShaderLibrary;
-import arekkuusu.implom.client.util.SpriteLibrary;
 import arekkuusu.implom.common.entity.EntityEyeOfSchrodinger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -57,7 +56,7 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 
 	@Override
 	protected float getDeathMaxRotation(EntityEyeOfSchrodinger entityLivingBaseIn) {
-		return 360F;
+		return 420F;
 	}
 
 	@Override
@@ -79,7 +78,7 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 			GlStateManager.disableLighting();
 			GlStateManager.enableBlend();
 			GlStateManager.disableAlpha();
-			SpriteLibrary.EYE_OF_SCHRODINGER_LAYER.bindManager();
+			render.bindTexture(ResourceLibrary.EYE_OF_SCHRODINGER_LAYER);
 			if(schrodinger.isInvisible()) {
 				GlStateManager.depthMask(false);
 			} else {
@@ -102,9 +101,7 @@ public class EyeOfSchrodingerRenderer extends RenderLiving<EntityEyeOfSchrodinge
 				br.set(-1 + brigth);
 				br.upload();
 			});
-			Minecraft.getMinecraft().entityRenderer.setupFogColor(true);
 			render.mainModel.render(schrodinger, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-			Minecraft.getMinecraft().entityRenderer.setupFogColor(false);
 			render.setLightmap(schrodinger);
 			GlStateManager.enableAlpha();
 			GlStateManager.disableBlend();

@@ -7,8 +7,8 @@
  */
 package arekkuusu.implom.client.render.tile;
 
+import arekkuusu.implom.client.util.BakerLibrary;
 import arekkuusu.implom.client.util.ShaderLibrary;
-import arekkuusu.implom.client.util.baker.BlockBaker;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import arekkuusu.implom.common.block.tile.TileElectron;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,11 +23,11 @@ public class TileElectronRenderer extends net.minecraft.client.renderer.tileenti
 	@Override
 	public void render(TileElectron te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		renderModel(te.power > 0, tick, x, y, z, partialTicks);
+		renderModel(te.power > 0, x, y, z, partialTicks);
 	}
 
-	public static void renderModel(boolean active, float tick, double x, double y, double z, float partialTicks) {
+	public static void renderModel(boolean active, double x, double y, double z, float partialTicks) {
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		if(active) {
 			GlStateManager.disableLighting();
 			ShaderLibrary.BRIGHT.begin();
@@ -42,7 +42,7 @@ public class TileElectronRenderer extends net.minecraft.client.renderer.tileenti
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 1F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 1F, 0F, 0F);
 		GlStateManager.rotate(partialTicks + tick * 0.75F % 360F, 0F, 0F, 1F);
-		BlockBaker.ELECTRON.render();
+		BakerLibrary.ELECTRON_RING.render();
 		if(active) {
 			GlStateManager.enableLighting();
 			ShaderLibrary.BRIGHT.end();

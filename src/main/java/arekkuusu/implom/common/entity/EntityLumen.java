@@ -1,5 +1,6 @@
 package arekkuusu.implom.common.entity;
 
+import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.handler.data.capability.LumenEntityCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.LumenProvider;
@@ -55,7 +56,7 @@ public class EntityLumen extends Entity {
 				Quat x = Quat.fromAxisAngle(Vector3.Forward(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Quat z = Quat.fromAxisAngle(Vector3.Right(), (world.rand.nextFloat() * 2F - 1F) * 25F);
 				Vector3 vec = Vector3.apply(motionX, motionY, motionZ).rotate(x.multiply(z)).multiply(0.1D);
-				IPM.getProxy().spawnLuminescence(world, pos, vec, 30 + world.rand.nextInt(40), scale, GlowTexture.GLINT);
+				IPM.getProxy().spawnSpeck(world, pos, vec, 30 + world.rand.nextInt(40), scale, 0xFFE077, Light.GLOW, GlowTexture.GLINT.getTexture());
 			}
 		} else {
 			double drag = 0.128D;

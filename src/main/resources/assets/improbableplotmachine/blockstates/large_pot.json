@@ -1,33 +1,37 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-	"model": "improbableplotmachine:large_pot",
-	"textures": {
-		"0": "improbableplotmachine:blocks/pottery/large_pot/base_0"
-	},
-	"uvlock": false
-  },
-  "variants": {
-	"normal": [{
-	}],
-    "inventory": [{
-	}],
-	"variant": {
-	  "0": {
-		"textures": {
-			"0": "improbableplotmachine:blocks/pottery/large_pot/base_0"
-		}
-	  },
-	  "1": {
-		"textures": {
-			"0": "improbableplotmachine:blocks/pottery/large_pot/base_1"
-		}
-	  },
-	  "2": {
-		"textures": {
-			"0": "improbableplotmachine:blocks/pottery/large_pot/base_2"
-		}
-	  }
-	}
-  }
+    "forge_marker": 1,
+    "defaults": {
+        "model": "improbableplotmachine:large_pot",
+        "textures": {
+            "0": "improbableplotmachine:blocks/pottery/large_pot/base_0"
+        },
+        "uvlock": false
+    },
+    "variants": {
+        "normal": [
+            {
+            }
+        ],
+        "inventory": [
+            {
+            }
+        ],
+        "variant": {
+            "0": {
+                "textures": {
+                    "0": "improbableplotmachine:blocks/pottery/large_pot/base_0"
+                }
+            },
+            "1": {
+                "textures": {
+                    "0": "improbableplotmachine:blocks/pottery/large_pot/base_1"
+                }
+            },
+            "2": {
+                "textures": {
+                    "0": "improbableplotmachine:blocks/pottery/large_pot/base_2"
+                }
+            }
+        }
+    }
 }

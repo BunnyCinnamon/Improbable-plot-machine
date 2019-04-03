@@ -143,6 +143,10 @@
                     "type": "item",
                     "name": "improbableplotmachine:intrinsic_cell",
                     "weight": 1
+                },
+                {
+                    "type": "empty",
+                    "weight": 5
                 }
             ]
         }

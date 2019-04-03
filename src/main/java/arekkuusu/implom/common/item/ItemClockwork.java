@@ -3,7 +3,7 @@ package arekkuusu.implom.common.item;
 import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelClockwork;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.handler.data.capability.InventoryClockworkCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.InventoryProvider;
 import arekkuusu.implom.common.lib.LibNames;
@@ -40,7 +40,7 @@ public class ItemClockwork extends ItemBase {
 	@Override
 	public void registerModel() {
 		DummyModelRegistry.register(this, new ModelClockwork());
-		ModelHandler.registerModel(this, 0);
+		ModelHelper.registerModel(this, 0);
 	}
 
 	public static class Constants {

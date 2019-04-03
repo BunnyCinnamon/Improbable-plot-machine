@@ -11,7 +11,7 @@ import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.block.tile.TileKondenzator;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
@@ -107,7 +107,7 @@ public class BlockKondenzator extends BlockBaseFacing {
 						.build()
 				).setParticle(ResourceLibrary.KONDENZATOR)
 		);
-		ModelHandler.registerModel(this, 0, "");
+		ModelHelper.registerModel(this, 0, "");
 	}
 
 	public static class Constants {

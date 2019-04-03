@@ -1,7 +1,7 @@
 package arekkuusu.implom.common.item;
 
 import arekkuusu.implom.api.helper.NBTHelper;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
@@ -37,7 +37,7 @@ public class ItemQuartz extends ItemBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		ModelHandler.registerModel(this, Quartz.class);
+		ModelHelper.registerModel(this, Quartz.class);
 	}
 
 	public static class Constants {

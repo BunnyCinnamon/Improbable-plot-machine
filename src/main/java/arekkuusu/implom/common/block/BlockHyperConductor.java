@@ -8,10 +8,11 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileHyperConductor;
 import arekkuusu.implom.common.lib.LibNames;
@@ -66,7 +67,7 @@ public class BlockHyperConductor extends BlockBase {
 		Vector3 origin = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 		for(EnumFacing facing : EnumFacing.values()) {
 			Vector3 vec = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable().multiply(0.025D);
-			IPM.getProxy().spawnSquared(world, origin, vec, 40, 4F, 0xFFFFFF);
+			IPM.getProxy().spawnSpeck(world, origin, vec, 40, 4F, 0xFFFFFF, Light.GLOW, ResourceLibrary.SQUARE_PARTICLE);
 		}
 	}
 
@@ -107,7 +108,7 @@ public class BlockHyperConductor extends BlockBase {
 		DummyModelRegistry.register(this, new ModelRendered()
 				.setParticle(ResourceLibrary.HYPER_CONDUCTOR)
 		);
-		ModelHandler.registerModel(this, 0, "");
+		ModelHelper.registerModel(this, 0, "");
 	}
 
 	public static class Constants {

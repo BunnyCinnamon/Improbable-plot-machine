@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.client.util.helper.IModel;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -56,7 +56,7 @@ public class BlockBase extends Block implements IModel {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		ModelHandler.registerModel(this, 0);
+		ModelHelper.registerModel(this, 0);
 	}
 
 	public enum Tool {

@@ -15,7 +15,7 @@ import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.tile.TileNeutronBattery;
 import arekkuusu.implom.common.item.ItemQuartz;
@@ -120,8 +120,8 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 				);
 				double speed = 0.005D + 0.005D * rand.nextDouble();
 				Vector3 speedVec = Vector3.rotateRandom().multiply(speed);
-				IPM.getProxy().spawnMute(world, posVec, speedVec, 30, 2F, capacitor.color, Light.GLOW);
-				IPM.getProxy().spawnMute(world, vec.add(0.5D), facingVec.multiply(0.02D), 100, 2F, capacitor.color, Light.GLOW);
+				IPM.getProxy().spawnSpeck(world, posVec, speedVec, 30, 2F, capacitor.color, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
+				IPM.getProxy().spawnSpeck(world, vec.add(0.5D), facingVec.multiply(0.02D), 100, 2F, capacitor.color, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 			}
 		});
 	}
@@ -189,7 +189,7 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		DummyModelRegistry.register(this, new ModelRendered()
 				.setParticle(ResourceLibrary.NEUTRON_BATTERY)
 		);
-		ModelHandler.registerModel(this, 0);
+		ModelHelper.registerModel(this, 0);
 	}
 
 	public enum BatteryCapacitor {

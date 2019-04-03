@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.item;
 
 import arekkuusu.implom.client.util.helper.IModel;
-import arekkuusu.implom.client.util.helper.ModelHandler;
+import arekkuusu.implom.client.util.helper.ModelHelper;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -44,6 +44,6 @@ public class ItemBase extends Item implements IModel {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
-		ModelHandler.registerModel(this, 0);
+		ModelHelper.registerModel(this, 0);
 	}
 }

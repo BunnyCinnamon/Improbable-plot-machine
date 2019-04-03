@@ -17,7 +17,7 @@ public class LibNames {
 	public static final String SINGULARITY = "singularity";
 	public static final String QUANTUM_MIRROR = "quantum_mirror";
 	public static final String GRAVITY_HOPPER = "gravity_hopper";
-	public static final String SCHRODINGER_GLYPH = "schrodinger_glyph";
+	public static final String MONOLITHIC_EYE = "monolithic_eye";
 	public static final String BLINKER = "blinker";
 	public static final String PHENOMENA = "phenomena";
 	public static final String CRYSTAL_PRISM = "crystal_prism";
@@ -43,7 +43,6 @@ public class LibNames {
 	public static final String FISSION_INDUCER = "fission_inducer";
 	public static final String LUMINIC_DECOMPRESSOR = "luminic_decompressor";
 	public static final String QUARTZ_CONSUMER = "quartz_consumer";
-	public static final String LUMEN_COMPRESSOR = "lumen_compressor";
 	public static final String SYMMETRIC_NEGATOR = "symmetric_negator";
 	public static final String SYMMETRIC_EXTENSION = "symmetric_extension";
 	public static final String THEOREMA = "theorema";

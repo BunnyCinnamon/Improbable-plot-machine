@@ -7,8 +7,8 @@
  */
 package arekkuusu.implom.client.render.tile;
 
+import arekkuusu.implom.client.util.BakerLibrary;
 import arekkuusu.implom.client.util.ShaderLibrary;
-import arekkuusu.implom.client.util.baker.BlockBaker;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import arekkuusu.implom.common.block.tile.TileQimranut;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,28 +30,9 @@ public class TileQimranutRenderer extends TileEntitySpecialRenderer<TileQimranut
 
 	public static void renderModel(EnumFacing facing, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-		if(facing != null && facing != EnumFacing.DOWN) {
-			switch(facing) {
-				case UP:
-					GlStateManager.rotate(180F, 1F, 0F, 0F);
-					break;
-				case NORTH:
-					GlStateManager.rotate(90F, 1F, 0F, 0F);
-					break;
-				case SOUTH:
-					GlStateManager.rotate(90F, -1F, 0F, 0F);
-					break;
-				case WEST:
-					GlStateManager.rotate(90F, 0F, 0F, -1F);
-					break;
-				case EAST:
-					GlStateManager.rotate(90F, 0F, 0F, 1F);
-					break;
-			}
-		}
+		GlStateManager.translate(x, y, z);
 		//Base
-		BlockBaker.QIMRANUT.render();
+		BakerLibrary.QIMRANUT_FRAME.renderWithRotation(facing);
 		//Piece
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
@@ -59,12 +40,9 @@ public class TileQimranutRenderer extends TileEntitySpecialRenderer<TileQimranut
 			b.set(0F);
 			b.upload();
 		});
-		BlockBaker.QIMRANUT_RING.render();
+		BakerLibrary.QIMRANUT_OVERLAY.renderWithRotation(facing);
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
-		GlStateManager.pushMatrix();
-		GlStateManager.rotate(partialTicks + tick * 0.5F % 360F, 0F, -1F, 0F);
-		BlockBaker.QIMRANUT_.render();
-		GlStateManager.popMatrix();
+		BakerLibrary.QIMRANUT_PLATE.renderWithRotation(facing, EnumFacing.Axis.Y, tick * 0.5F % 360F);
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();

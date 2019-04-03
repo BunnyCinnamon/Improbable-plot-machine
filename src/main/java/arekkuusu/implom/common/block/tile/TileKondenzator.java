@@ -10,6 +10,7 @@ package arekkuusu.implom.common.block.tile;
 import arekkuusu.implom.api.capability.Capabilities;
 import arekkuusu.implom.api.helper.LumenHelper;
 import arekkuusu.implom.client.effect.Light;
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.block.BlockKondenzator;
 import arekkuusu.implom.common.block.ModBlocks;
@@ -68,7 +69,7 @@ public class TileKondenzator extends TileBase implements ITickable {
 							.asImmutable()
 							.rotate(x.multiply(z))
 							.multiply(speed);
-					IPM.getProxy().spawnMute(world, pos, speedVec, 75, 1.75F, 0x49FFFF, Light.GLOW);
+					IPM.getProxy().spawnSpeck(world, pos, speedVec, 75, 1.75F, 0x49FFFF, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 				}
 			}
 			return true;
@@ -95,7 +96,7 @@ public class TileKondenzator extends TileBase implements ITickable {
 			int amount = (int) ((float) progress.timer * (0.15F * (1F - (float) progress.getMultiplier() / 6F)));
 			for(int i = 0; i < amount + world.rand.nextInt(4); i++) {
 				Vector3 posVec = new Vector3.WrappedVec3i(getTargetPos()).asImmutable().add(Math.random(), Math.random(), Math.random());
-				IPM.getProxy().spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, world.rand.nextFloat(), 0x49FFFF, GlowTexture.GLOW);
+				IPM.getProxy().spawnSpeck(world, posVec, Vector3.rotateRandom().multiply(0.01D), 45, world.rand.nextFloat(), 0x49FFFF, Light.GLOW, ResourceLibrary.GLOW_PARTICLE);
 			}
 		}
 	}

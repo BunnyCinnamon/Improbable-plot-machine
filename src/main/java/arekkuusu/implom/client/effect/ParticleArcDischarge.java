@@ -7,6 +7,7 @@
  */
 package arekkuusu.implom.client.effect;
 
+import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.helper.ProfilerHelper;
 import com.google.common.collect.Lists;
 import net.katsstuff.teamnightclipse.mirror.data.MutableVector3;
@@ -39,7 +40,7 @@ public class ParticleArcDischarge extends ParticleBase {
 	private float offset;
 
 	ParticleArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
-		super(world, from.add(to).divide(2D), Vector3.Zero(), 0, age, rgb);
+		super(world, from.add(to).divide(2D), Vector3.Zero(), 0, age, rgb, Light.GLOW, ResourceLibrary.EMPTY);
 		this.segments.add(new VoltSegment(from, to));
 		this.generations = generations;
 		this.branch = branch;
@@ -148,7 +149,7 @@ public class ParticleArcDischarge extends ParticleBase {
 					.endVertex();
 			buff.pos(to.x(), to.y(), to.z()).color(getRedColorF(), getGreenColorF(), getBlueColorF(), alpha * particleAlpha)
 					.endVertex();
-			buff.setTranslation(0,0,0);
+			buff.setTranslation(0, 0, 0);
 			tessellator.draw();
 		}
 	}

@@ -10,6 +10,7 @@ package arekkuusu.implom.client.render.tile;
 import arekkuusu.implom.client.util.ShaderLibrary;
 import arekkuusu.implom.client.util.SpriteLibrary;
 import arekkuusu.implom.client.util.helper.ProfilerHelper;
+import arekkuusu.implom.client.util.sprite.UVFrame;
 import arekkuusu.implom.common.block.tile.TileQuanta;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -47,7 +48,7 @@ public class TileQuantaRenderer extends TileEntitySpecialRenderer<TileQuanta> {
 		GlStateManager.disableLighting();
 		GlStateManager.disableCull();
 		GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
-		renderWaves(tick);
+		renderWaves(tick * 0.035F);
 		GlStateManager.enableCull();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
@@ -59,7 +60,7 @@ public class TileQuantaRenderer extends TileEntitySpecialRenderer<TileQuanta> {
 		double[] layers = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		double perLayer = 0.00625D;
 		double maxLayer = 0.025D;
-		double modifier = MathHelper.sin(tick * 0.035F) * 24D;
+		double modifier = MathHelper.sin(tick) * 24D;
 		for(int wave = 0; wave < 2; wave++) {
 			int num = wave == 0 ? (int) modifier : (int) (modifier + (-(modifier - 7D) * 2D));
 			for(int i = num - 4; i < num + 4; i++) {
@@ -73,55 +74,56 @@ public class TileQuantaRenderer extends TileEntitySpecialRenderer<TileQuanta> {
 				}
 			}
 		}
-		SpriteLibrary.QUANTA.bindManager();
+		SpriteLibrary.QUANTA.bind();
+		UVFrame frame = SpriteLibrary.QUANTA.getFrame();
 		for(int layer = 0; layer < 16; layer++) {
-			renderLayer(0.5F + layers[layer], layer);
+			renderLayer(frame, 0.5F + layers[layer], layer);
 		}
 	}
 
-	private static void renderLayer(double size, int layer) {
-		double min = 0.0625D;
+	private static void renderLayer(UVFrame frame, double size, int layer) {
+		double offset = (frame.vMin - frame.vMax) / 16D;
 		//UV
-		double vMin = min * (double) layer;
-		double vMax = vMin + min;
-		double uMin = 0;
-		double uMax = 1D;
+		double vMin = frame.vMin - offset * (layer + 1);
+		double vMax = vMin + offset;
+		double uMin = frame.uMin;
+		double uMax = frame.uMax;
 		//POS
-		double yMin = 0.5D - vMin;
-		double yMax = -yMin + min;
+		double yMax = 0.5D - 0.0625D * (double) layer;
+		double yMin = yMax - 0.0625D;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buff = tessellator.getBuffer();
 		buff.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		//Front
-		buff.pos(size, -yMin, -size).tex(uMax, vMin).endVertex();
+		buff.pos(size, yMin, -size).tex(uMax, vMin).endVertex();
 		buff.pos(size, yMax, -size).tex(uMax, vMax).endVertex();
 		buff.pos(-size, yMax, -size).tex(uMin, vMax).endVertex();
-		buff.pos(-size, -yMin, -size).tex(uMin, vMin).endVertex();
+		buff.pos(-size, yMin, -size).tex(uMin, vMin).endVertex();
 		//Back
-		buff.pos(-size, -yMin, size).tex(uMax, vMin).endVertex();
+		buff.pos(-size, yMin, size).tex(uMax, vMin).endVertex();
 		buff.pos(-size, yMax, size).tex(uMax, vMax).endVertex();
 		buff.pos(size, yMax, size).tex(uMin, vMax).endVertex();
-		buff.pos(size, -yMin, size).tex(uMin, vMin).endVertex();
+		buff.pos(size, yMin, size).tex(uMin, vMin).endVertex();
 		//Right
-		buff.pos(size, -yMin, size).tex(uMax, vMin).endVertex();
+		buff.pos(size, yMin, size).tex(uMax, vMin).endVertex();
 		buff.pos(size, yMax, size).tex(uMax, vMax).endVertex();
 		buff.pos(size, yMax, -size).tex(uMin, vMax).endVertex();
-		buff.pos(size, -yMin, -size).tex(uMin, vMin).endVertex();
+		buff.pos(size, yMin, -size).tex(uMin, vMin).endVertex();
 		//Left
-		buff.pos(-size, -yMin, -size).tex(uMax, vMin).endVertex();
+		buff.pos(-size, yMin, -size).tex(uMax, vMin).endVertex();
 		buff.pos(-size, yMax, -size).tex(uMax, vMax).endVertex();
 		buff.pos(-size, yMax, size).tex(uMin, vMax).endVertex();
-		buff.pos(-size, -yMin, size).tex(uMin, vMin).endVertex();
+		buff.pos(-size, yMin, size).tex(uMin, vMin).endVertex();
 		//Top
-		buff.pos(-size, yMax, -size).tex(uMax, uMin).endVertex();
-		buff.pos(size, yMax, -size).tex(uMax, uMax).endVertex();
-		buff.pos(size, yMax, size).tex(uMin, uMax).endVertex();
-		buff.pos(-size, yMax, size).tex(uMin, uMin).endVertex();
+		buff.pos(-size, yMax, -size).tex(frame.uMax, frame.vMin).endVertex();
+		buff.pos(size, yMax, -size).tex(frame.uMax, frame.vMax).endVertex();
+		buff.pos(size, yMax, size).tex(frame.uMin, frame.vMax).endVertex();
+		buff.pos(-size, yMax, size).tex(frame.uMin, frame.vMin).endVertex();
 		//Bottom
-		buff.pos(-size, -yMin, -size).tex(uMax, uMin).endVertex();
-		buff.pos(size, -yMin, -size).tex(uMax, uMax).endVertex();
-		buff.pos(size, -yMin, size).tex(uMin, uMax).endVertex();
-		buff.pos(-size, -yMin, size).tex(uMin, uMin).endVertex();
+		buff.pos(-size, yMin, -size).tex(frame.uMax, frame.vMin).endVertex();
+		buff.pos(size, yMin, -size).tex(frame.uMax, frame.vMax).endVertex();
+		buff.pos(size, yMin, size).tex(frame.uMin, frame.vMax).endVertex();
+		buff.pos(-size, yMin, size).tex(frame.uMin, frame.vMin).endVertex();
 		tessellator.draw();
 	}
 }

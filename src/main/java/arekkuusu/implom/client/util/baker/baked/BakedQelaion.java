@@ -9,7 +9,7 @@ package arekkuusu.implom.client.util.baker.baked;
 
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.state.enums.Direction;
-import arekkuusu.implom.client.util.baker.BlockBaker;
+import arekkuusu.implom.client.util.BakerLibrary;
 import com.google.common.collect.ImmutableList;
 import net.katsstuff.teamnightclipse.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
@@ -54,7 +54,7 @@ public class BakedQelaion extends BakedBrightBase {
 		return quadCache.compute(state, quads -> {
 			boolean hasNode = state != null && state.getValue(Properties.ACTIVE);
 			VertexFormat format = state != null ? format() : DefaultVertexFormats.ITEM;
-			quads.addAll(BlockBaker.QELAION.getQuads());
+			quads.addAll(BakerLibrary.QELAION_FRAME.getQuads());
 			quads.addAll(QuadBuilder.withFormat(format)
 					.setFrom(5, 5, 5)
 					.setTo(11, 11, 11)
