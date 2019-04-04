@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "improbableplotmachine:blocks/symmetric_negator/base",
-		"particle": "improbableplotmachine:blocks/symmetric_negator/base"
+		"0": "improbableplotmachine:blocks/symmetrical_machination/base",
+		"particle": "improbableplotmachine:blocks/symmetrical_machination/base"
 	},
 	"elements": [
 		{

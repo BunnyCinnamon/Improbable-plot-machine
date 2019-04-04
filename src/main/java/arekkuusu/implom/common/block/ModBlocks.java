@@ -55,8 +55,8 @@ public final class ModBlocks {
 	public static final Block FISSION_INDUCER = PLACE_HOLDER;
 	public static final Block LUMINIC_DECOMPRESSOR = PLACE_HOLDER;
 	public static final Block QUARTZ_CONSUMER = PLACE_HOLDER;
-	public static final Block SYMMETRIC_NEGATOR = PLACE_HOLDER;
-	public static final Block SYMMETRIC_EXTENSION = PLACE_HOLDER;
+	public static final Block SYMMETRICAL_MACHINATION = PLACE_HOLDER;
+	public static final Block ASYMMETRICAL_MACHINATION = PLACE_HOLDER;
 	public static final Block KONDENZATOR = PLACE_HOLDER;
 	public static final Block IMBUED_QUARTZ = PLACE_HOLDER;
 	public static final Block MUTATOR = PLACE_HOLDER;
@@ -89,8 +89,8 @@ public final class ModBlocks {
 		registry.register(new BlockFissionInducer());
 		registry.register(new BlockLuminicDecompressor());
 		registry.register(new BlockQuartzConsumer());
-		registry.register(new BlockSymmetricNegator());
-		registry.register(new BlockSymmetricExtension());
+		registry.register(new BlockSymmetricalMachination());
+		registry.register(new BlockAsymmetricalMachination());
 		registry.register(new BlockKondenzator());
 		registry.register(new BlockImbuedQuartz());
 		registry.register(new BlockMutator());
@@ -115,8 +115,8 @@ public final class ModBlocks {
 		registerTile(TileFissionInducer.class, LibNames.FISSION_INDUCER);
 		registerTile(TileElectron.class, LibNames.ELECTRON);
 		registerTile(TileQuartzConsumer.class, LibNames.QUARTZ_CONSUMER);
-		registerTile(TileSymmetricNegator.class, LibNames.SYMMETRIC_NEGATOR);
-		registerTile(TileSymmetricExtension.class, LibNames.SYMMETRIC_EXTENSION);
+		registerTile(TileSymmetricalMachination.class, LibNames.SYMMETRICAL_MACHINATION);
+		registerTile(TileAsymmetricalMachination.class, LibNames.ASYMMETRICAL_MACHINATION);
 		registerTile(TileKondenzator.class, LibNames.KONDENZATOR);
 		registerTile(TileMutator.class, LibNames.MUTATOR);
 	}

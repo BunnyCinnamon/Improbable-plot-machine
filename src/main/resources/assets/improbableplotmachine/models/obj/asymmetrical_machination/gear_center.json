@@ -1,13 +1,14 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"1": "improbableplotmachine:blocks/symmetric_extension/base",
-		"particle": "improbableplotmachine:blocks/symmetric_extension/base"
+		"1": "improbableplotmachine:blocks/asymmetrical_machination/base",
+		"particle": "improbableplotmachine:blocks/asymmetrical_machination/base"
 	},
 	"elements": [
 		{
-			"from": [7, 4.5, 4],
-			"to": [12, 5.5, 7],
+			"from": [7, 5.5, 4],
+			"to": [12, 6.5, 7],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [7, 2, 11, 3], "texture": "#1"},
 				"east": {"uv": [10, 2, 12, 3], "texture": "#1"},
@@ -17,8 +18,9 @@
 			}
 		},
 		{
-			"from": [9, 4.5, 7],
-			"to": [12, 5.5, 12],
+			"from": [9, 5.5, 7],
+			"to": [12, 6.5, 12],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"east": {"uv": [5, 2, 9, 3], "texture": "#1"},
 				"south": {"uv": [9, 2, 11, 3], "texture": "#1"},
@@ -28,8 +30,9 @@
 			}
 		},
 		{
-			"from": [4, 4.5, 9],
-			"to": [9, 5.5, 12],
+			"from": [4, 5.5, 9],
+			"to": [9, 6.5, 12],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [6, 2, 10, 3], "texture": "#1"},
 				"south": {"uv": [4, 2, 8, 3], "texture": "#1"},
@@ -39,8 +42,9 @@
 			}
 		},
 		{
-			"from": [4, 4.5, 4],
-			"to": [7, 5.5, 9],
+			"from": [4, 5.5, 4],
+			"to": [7, 6.5, 9],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [7, 2, 9, 3], "texture": "#1"},
 				"east": {"uv": [3, 2, 12, 3], "texture": "#1"},
@@ -50,8 +54,9 @@
 			}
 		},
 		{
-			"from": [3, 4.5, 3],
-			"to": [5, 5.5, 5],
+			"from": [3, 5.5, 3],
+			"to": [5, 6.5, 5],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [11, 2, 13, 3], "texture": "#1"},
 				"east": {"uv": [7, 2, 9, 3], "texture": "#1"},
@@ -62,8 +67,9 @@
 			}
 		},
 		{
-			"from": [3, 4.5, 11],
-			"to": [5, 5.5, 13],
+			"from": [3, 5.5, 11],
+			"to": [5, 6.5, 13],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [11, 2, 13, 3], "texture": "#1"},
 				"east": {"uv": [7, 2, 9, 3], "texture": "#1"},
@@ -74,8 +80,9 @@
 			}
 		},
 		{
-			"from": [11, 4.5, 11],
-			"to": [13, 5.5, 13],
+			"from": [11, 5.5, 11],
+			"to": [13, 6.5, 13],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [11, 2, 13, 3], "texture": "#1"},
 				"east": {"uv": [7, 2, 9, 3], "texture": "#1"},
@@ -86,8 +93,9 @@
 			}
 		},
 		{
-			"from": [11, 4.5, 3],
-			"to": [13, 5.5, 5],
+			"from": [11, 5.5, 3],
+			"to": [13, 6.5, 5],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [11, 2, 13, 3], "texture": "#1"},
 				"east": {"uv": [7, 2, 9, 3], "texture": "#1"},
@@ -98,8 +106,9 @@
 			}
 		},
 		{
-			"from": [3, 4.5, 7],
-			"to": [5, 5.5, 9],
+			"from": [3, 5.5, 7],
+			"to": [5, 6.5, 9],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [11, 2, 13, 3], "texture": "#1"},
 				"east": {"uv": [7, 2, 9, 3], "texture": "#missing"},
@@ -110,8 +119,9 @@
 			}
 		},
 		{
-			"from": [7, 4.5, 11],
-			"to": [9, 5.5, 13],
+			"from": [7, 5.5, 11],
+			"to": [9, 6.5, 13],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [11, 2, 13, 3], "texture": "#missing"},
 				"east": {"uv": [7, 2, 9, 3], "texture": "#1"},
@@ -122,8 +132,9 @@
 			}
 		},
 		{
-			"from": [11, 4.5, 7],
-			"to": [13, 5.5, 9],
+			"from": [11, 5.5, 7],
+			"to": [13, 6.5, 9],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [11, 2, 13, 3], "texture": "#1"},
 				"east": {"uv": [7, 2, 9, 3], "texture": "#1"},
@@ -134,8 +145,9 @@
 			}
 		},
 		{
-			"from": [7, 4.5, 3],
-			"to": [9, 5.5, 5],
+			"from": [7, 5.5, 3],
+			"to": [9, 6.5, 5],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
 				"north": {"uv": [11, 2, 13, 3], "texture": "#1"},
 				"east": {"uv": [7, 2, 9, 3], "texture": "#1"},
@@ -148,10 +160,10 @@
 	],
 	"groups": [
 		{
-			"name": "gear_bottom",
+			"name": "gear_center",
 			"children": [
 				{
-					"name": "gear2",
+					"name": "gear1",
 					"children": [
 						{
 							"name": "group",

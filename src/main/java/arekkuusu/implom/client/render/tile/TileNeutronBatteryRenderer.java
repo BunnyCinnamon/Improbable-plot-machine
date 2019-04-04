@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.client.render.tile;
 
-import arekkuusu.implom.api.helper.MathHelper;
 import arekkuusu.implom.client.util.BakerLibrary;
 import arekkuusu.implom.client.util.ShaderLibrary;
 import arekkuusu.implom.client.util.helper.RenderHelper;
@@ -49,7 +48,7 @@ public class TileNeutronBatteryRenderer extends TileEntitySpecialRenderer<TileNe
 				rgba.set(r, g, b);
 				rgba.upload();
 			});
-			BakerLibrary.NEUTRON_BATTERY_CRYSTAL.renderWithYOffset(facing, MathHelper.getInterpolated(tick, 0.025F, 1.5F));
+			BakerLibrary.NEUTRON_BATTERY_CRYSTAL.renderWithYOffset(facing, RenderHelper.getInterpolated(tick, 0.025F, 1.5F));
 			ShaderLibrary.RECOLOR.end();
 			GlStateManager.enableLighting();
 		}

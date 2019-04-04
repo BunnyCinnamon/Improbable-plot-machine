@@ -31,7 +31,7 @@ public class TileMutatorRenderer extends TileEntitySpecialRenderer<TileMutator> 
 	public static void renderModel(EnumFacing facing, double x, double y, double z, float partialTicks) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		BakerLibrary.MUTATOR_FRAME.render();
+		BakerLibrary.MUTATOR_FRAME.renderWithRotation(facing);
 		BakerLibrary.MUTATOR_FRAME_FRONT.renderWithRotation(facing);
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();

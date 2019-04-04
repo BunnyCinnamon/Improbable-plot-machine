@@ -8,18 +8,23 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHelper;
-import arekkuusu.implom.common.block.tile.TileSymmetricExtension;
+import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.tile.TileSymmetricalMachination;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
+import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -28,25 +33,47 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 /*
- * Created by <Arekkuusu> on 6/21/2018.
+ * Created by <Arekkuusu> on 5/13/2018.
  * It's distributed as part of Improbable plot machine.
  */
 @SuppressWarnings("deprecation")
-public class BlockSymmetricExtension extends BlockBaseFacing {
+public class BlockSymmetricalMachination extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
-			new Vector3(2, 6.5, 2),
-			new Vector3(14, 16, 14),
+			new Vector3(2, 0, 2),
+			new Vector3(14, 6, 14),
 			EnumFacing.UP
 	).build();
 
-	public BlockSymmetricExtension() {
-		super(LibNames.SYMMETRIC_EXTENSION, IPMMaterial.MONOLITH);
+	public BlockSymmetricalMachination() {
+		super(LibNames.SYMMETRICAL_MACHINATION, IPMMaterial.MONOLITH);
 		setDefaultState(getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
 		setHarvestLevel(Tool.PICK, ToolLevel.STONE);
 		setHardness(1F);
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return defaultState().withProperty(BlockDirectional.FACING, facing);
+	}
+
+	@Override
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+		BlockPos.MutableBlockPos posOffset = new BlockPos.MutableBlockPos(pos);
+		float distance = 0;
+		while(distance++ < Constants.REACH) {
+			IBlockState found = world.getBlockState(posOffset.move(facing));
+			if(found.getBlock() == ModBlocks.ASYMMETRICAL_MACHINATION && found.getValue(BlockDirectional.FACING) == facing) {
+				Vector3 offset = new Vector3.WrappedVec3i(facing.getDirectionVec()).asImmutable();
+				Vector3 from = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5D).offset(offset, -0.19);
+				IPM.getProxy().spawnBeam(world, from, offset, distance + 0.41F, 36, 0.75F, 0xFF0303, Light.GLOW, GlowTexture.GLOW.getTexture());
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -63,15 +90,19 @@ public class BlockSymmetricExtension extends BlockBaseFacing {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileSymmetricExtension();
+		return new TileSymmetricalMachination();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerModel() {
 		DummyModelRegistry.register(this, new ModelRendered()
-				.setParticle(ResourceLibrary.SYMMETRIC_RECEIVER)
+				.setParticle(ResourceLibrary.SYMMETRICAL_MACHINATION)
 		);
 		ModelHelper.registerModel(this, 0);
+	}
+
+	public static class Constants {
+		public static int REACH = 15;
 	}
 }

@@ -34,8 +34,8 @@ import javax.annotation.Nullable;
 public class BlockMutator extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
-			new Vector3(4, 8, 4),
-			new Vector3(12, 15, 12),
+			new Vector3(3, 4.5, 3),
+			new Vector3(13, 15.5, 13),
 			EnumFacing.UP
 	).build();
 

@@ -10,7 +10,7 @@ package arekkuusu.implom.client.proxy;
 import arekkuusu.implom.api.capability.data.WorldAccessNBTData;
 import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.api.helper.RayTraceHelper;
-import arekkuusu.implom.api.helper.WorldAccessHelper;
+import arekkuusu.implom.api.capability.WorldAccessHelper;
 import arekkuusu.implom.client.util.SpriteLibrary;
 import arekkuusu.implom.client.util.helper.RenderHelper;
 import arekkuusu.implom.client.util.sprite.UVFrame;

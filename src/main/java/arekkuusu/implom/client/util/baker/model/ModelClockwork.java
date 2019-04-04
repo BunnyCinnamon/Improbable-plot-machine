@@ -1,6 +1,6 @@
 package arekkuusu.implom.client.util.baker.model;
 
-import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
 import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.baked.BakedClockwork;

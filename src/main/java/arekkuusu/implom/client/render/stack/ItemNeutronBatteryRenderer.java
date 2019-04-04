@@ -1,6 +1,6 @@
 package arekkuusu.implom.client.render.stack;
 
-import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
 import arekkuusu.implom.client.render.tile.TileNeutronBatteryRenderer;
 import arekkuusu.implom.common.block.BlockNeutronBattery;
 import arekkuusu.implom.common.handler.data.capability.InventoryNeutronCapability;

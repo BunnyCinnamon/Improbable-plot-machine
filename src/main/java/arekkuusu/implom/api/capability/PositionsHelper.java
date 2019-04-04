@@ -1,4 +1,4 @@
-package arekkuusu.implom.api.helper;
+package arekkuusu.implom.api.capability;
 
 import arekkuusu.implom.api.capability.Capabilities;
 import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;

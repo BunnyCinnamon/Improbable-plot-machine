@@ -125,8 +125,8 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.FISSION_INDUCER);
 			addBlock(ModBlocks.QUARTZ_CONSUMER);
 			addBlock(ModBlocks.PHOLARIZER);
-			addBlock(ModBlocks.SYMMETRIC_NEGATOR);
-			addBlock(ModBlocks.SYMMETRIC_EXTENSION);
+			addBlock(ModBlocks.SYMMETRICAL_MACHINATION);
+			addBlock(ModBlocks.ASYMMETRICAL_MACHINATION);
 			addBlock(ModBlocks.KONDENZATOR);
 			addBlock(ModBlocks.MUTATOR);
 		}

@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.client.util.helper;
 
-import arekkuusu.implom.api.helper.MathHelper;
 import arekkuusu.implom.client.util.ShaderLibrary;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
 import net.minecraft.block.state.IBlockState;
@@ -184,6 +183,14 @@ public final class RenderHelper {
 	}
 
 	public static void makeUpDownTranslation(float tick, float max, float speed) {
-		GlStateManager.translate(0, MathHelper.getInterpolated(tick, max, speed), 0);
+		GlStateManager.translate(0, getInterpolated(tick, max, speed), 0);
+	}
+
+	public static double getInterpolated(float tick, float max, float speed) {
+		float angle = 0;
+		double toDegrees = Math.PI / 180D;
+		angle += speed * tick;
+		if(angle > 360) angle -= 360;
+		return max * Math.sin(angle * toDegrees);
 	}
 }

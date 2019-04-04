@@ -7,16 +7,16 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 
-public class ItemSymmetricNegatorRenderer extends ItemRender {
+public class ItemSymmetricalMachinationRenderer extends ItemRender {
 	@Override
 	public void renderByItem(ItemStack stack, float partialTicks) {
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		GlStateManager.pushMatrix();
-		BakerLibrary.SYMMETRIC_SENDER_FRAME.render();
+		BakerLibrary.SYMMETRICAL_MACHINATION_FRAME.render();
 		//Rings
 		GlStateManager.pushMatrix();
 		RenderHelper.makeUpDownTranslation(tick, 0.01F, 1.5F);
-		BakerLibrary.SYMMETRIC_SENDER_RING.render();
+		BakerLibrary.SYMMETRICAL_MACHINATION_RING.render();
 		GlStateManager.popMatrix();
 		//Inner core
 		GlStateManager.disableLighting();
@@ -25,7 +25,7 @@ public class ItemSymmetricNegatorRenderer extends ItemRender {
 			b.set(0F);
 			b.upload();
 		});
-		BakerLibrary.SYMMETRIC_SENDER_CORE.render();
+		BakerLibrary.SYMMETRICAL_MACHINATION_CORE.render();
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();

@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "improbableplotmachine:blocks/symmetric_extension/overlay",
-		"1": "improbableplotmachine:blocks/symmetric_extension/base",
-		"2": "improbableplotmachine:blocks/symmetric_extension/side",
-		"particle": "improbableplotmachine:blocks/symmetric_extension/base"
+		"0": "improbableplotmachine:blocks/asymmetrical_machination/overlay",
+		"1": "improbableplotmachine:blocks/asymmetrical_machination/base",
+		"2": "improbableplotmachine:blocks/asymmetrical_machination/side",
+		"particle": "improbableplotmachine:blocks/asymmetrical_machination/base"
 	},
 	"elements": [
 		{

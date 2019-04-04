@@ -1,4 +1,4 @@
-package arekkuusu.implom.api.helper;
+package arekkuusu.implom.api.capability;
 
 import arekkuusu.implom.api.capability.Capabilities;
 import arekkuusu.implom.api.capability.nbt.IRedstoneNBTCapability;
@@ -7,7 +7,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.Optional;
 
-public class RedstoneHelper {
+public final class RedstoneHelper {
 
 	public static Optional<IRedstoneNBTCapability> getCapability(ICapabilityProvider provider) {
 		return getCapability(provider, null);

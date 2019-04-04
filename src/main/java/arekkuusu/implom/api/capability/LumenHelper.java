@@ -1,7 +1,5 @@
-package arekkuusu.implom.api.helper;
+package arekkuusu.implom.api.capability;
 
-import arekkuusu.implom.api.capability.Capabilities;
-import arekkuusu.implom.api.capability.ILumenCapability;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 

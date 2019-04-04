@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.common.block.BlockSymmetricNegator.Constants;
+import arekkuusu.implom.common.block.BlockSymmetricalMachination.Constants;
 import arekkuusu.implom.common.block.ModBlocks;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +24,7 @@ import java.util.Optional;
  * Created by <Arekkuusu> on 5/13/2018.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileSymmetricNegator extends TileBase implements ITickable {
+public class TileSymmetricalMachination extends TileBase implements ITickable {
 
 	private int tick;
 
@@ -62,7 +62,7 @@ public class TileSymmetricNegator extends TileBase implements ITickable {
 		int distance = 0;
 		while(distance++ < Constants.REACH) {
 			IBlockState state = world.getBlockState(posOffset.move(facing));
-			if(state.getBlock() == ModBlocks.SYMMETRIC_EXTENSION && state.getValue(BlockDirectional.FACING) == facing) {
+			if(state.getBlock() == ModBlocks.ASYMMETRICAL_MACHINATION && state.getValue(BlockDirectional.FACING) == facing) {
 				return Optional.of(distance);
 			}
 		}
@@ -71,7 +71,7 @@ public class TileSymmetricNegator extends TileBase implements ITickable {
 
 	private Optional<IFluidHandler> getInterceptor(BlockPos pos, EnumFacing facing) {
 		IBlockState state = world.getBlockState(pos);
-		if(state.getBlock() == ModBlocks.SYMMETRIC_EXTENSION && state.getValue(BlockDirectional.FACING) == facing) {
+		if(state.getBlock() == ModBlocks.ASYMMETRICAL_MACHINATION && state.getValue(BlockDirectional.FACING) == facing) {
 			BlockPos offset = pos.offset(facing);
 			return getContainer(offset, facing.getOpposite());
 		}

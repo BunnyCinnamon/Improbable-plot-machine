@@ -40,8 +40,8 @@ import java.util.Random;
 public class BlockFissionInducer extends BlockBaseFacing {
 
 	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
-			new Vector3(4, 2, 4),
-			new Vector3(12, 14, 12),
+			new Vector3(4, 1, 4),
+			new Vector3(12, 15, 12),
 			EnumFacing.UP
 	).build();
 

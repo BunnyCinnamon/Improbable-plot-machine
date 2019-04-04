@@ -23,6 +23,7 @@ public class TileVacuumConveyorRenderer extends net.minecraft.client.renderer.ti
 
 	@Override
 	public void render(TileVacuumConveyor te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		renderModel(te.getFacingLazy(), x, y, z, partialTicks);
 	}
 

@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
-import arekkuusu.implom.api.helper.PositionsHelper;
+import arekkuusu.implom.api.capability.PositionsHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.common.block.BlockBlinker;
 import arekkuusu.implom.common.handler.data.capability.provider.BlinkerProvider;

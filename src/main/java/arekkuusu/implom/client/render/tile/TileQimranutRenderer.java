@@ -40,8 +40,8 @@ public class TileQimranutRenderer extends TileEntitySpecialRenderer<TileQimranut
 			b.set(0F);
 			b.upload();
 		});
-		BakerLibrary.QIMRANUT_OVERLAY.renderWithRotation(facing);
 		float tick = RenderHelper.getRenderWorldTime(partialTicks);
+		BakerLibrary.QIMRANUT_OVERLAY.renderWithRotation(facing);
 		BakerLibrary.QIMRANUT_PLATE.renderWithRotation(facing, EnumFacing.Axis.Y, tick * 0.5F % 360F);
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();

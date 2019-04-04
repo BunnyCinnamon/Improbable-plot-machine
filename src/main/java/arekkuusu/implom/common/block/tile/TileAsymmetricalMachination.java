@@ -14,7 +14,7 @@ import net.minecraft.util.EnumFacing;
  * Created by <Arekkuusu> on 6/21/2018.
  * It's distributed as part of Improbable plot machine.
  */
-public class TileSymmetricExtension extends TileBase {
+public class TileAsymmetricalMachination extends TileBase {
 	public EnumFacing getFacingLazy() {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}

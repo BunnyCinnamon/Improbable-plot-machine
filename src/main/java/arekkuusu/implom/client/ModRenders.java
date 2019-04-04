@@ -51,8 +51,8 @@ public final class ModRenders {
 		registerTESR(TileFissionInducer.class, new TileFissionInducerRenderer());
 		registerTESR(TileElectron.class, new TileElectronRenderer());
 		registerTESR(TileQuartzConsumer.class, new TileQuartzConsumerRenderer());
-		registerTESR(TileSymmetricNegator.class, new TileSymmetricNegatorRenderer());
-		registerTESR(TileSymmetricExtension.class, new TileSymmetricExtensionRenderer());
+		registerTESR(TileSymmetricalMachination.class, new TileSymmetricalMachinationRenderer());
+		registerTESR(TileAsymmetricalMachination.class, new TileAsymmetricalMachinationRenderer());
 		registerTESR(TileKondenzator.class, new TileKondenzatorRenderer());
 		registerTESR(TileMutator.class, new TileMutatorRenderer());
 
@@ -66,8 +66,8 @@ public final class ModRenders {
 		ModItems.PHOLARIZER.setTileEntityItemStackRenderer(new ItemPholarizerRenderer());
 		ModItems.FISSION_INDUCER.setTileEntityItemStackRenderer(new ItemFissionInducerRenderer());
 		ModItems.ELECTRON.setTileEntityItemStackRenderer(new ItemElectronRenderer());
-		ModItems.SYMMETRIC_NEGATOR.setTileEntityItemStackRenderer(new ItemSymmetricNegatorRenderer());
-		ModItems.SYMMETRIC_EXTENSION.setTileEntityItemStackRenderer(new ItemSymmetricExtensionRenderer());
+		ModItems.SYMMETRICAL_MACHINATION.setTileEntityItemStackRenderer(new ItemSymmetricalMachinationRenderer());
+		ModItems.ASYMMETRICAL_MACHINATION.setTileEntityItemStackRenderer(new ItemAsymmetricalMachinationRenderer());
 		ModItems.KONDENZATOR.setTileEntityItemStackRenderer(new ItemKondenzatorRenderer());
 		ModItems.MUTATOR.setTileEntityItemStackRenderer(new ItemMutatorRenderer());
 		IPM.LOG.info("[NOM PIE!]");

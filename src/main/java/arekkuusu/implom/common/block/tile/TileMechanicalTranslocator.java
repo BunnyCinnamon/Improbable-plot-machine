@@ -10,7 +10,7 @@ package arekkuusu.implom.common.block.tile;
 import arekkuusu.implom.api.capability.data.PositionsNBTData;
 import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.helper.FacingHelper;
-import arekkuusu.implom.api.helper.PositionsHelper;
+import arekkuusu.implom.api.capability.PositionsHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.client.util.helper.ProfilerHelper;
 import arekkuusu.implom.common.block.BlockMechanicalTranslocator;

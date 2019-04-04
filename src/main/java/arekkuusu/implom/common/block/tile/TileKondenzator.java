@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.Capabilities;
-import arekkuusu.implom.api.helper.LumenHelper;
+import arekkuusu.implom.api.capability.LumenHelper;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
@@ -17,7 +17,6 @@ import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.ImbuingData;
 import arekkuusu.implom.common.handler.data.capability.LumenCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.LumenProvider;
-import net.katsstuff.teamnightclipse.mirror.client.particles.GlowTexture;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;

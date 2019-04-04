@@ -50,8 +50,8 @@ public final class ModItems {
 	public static final Item PHOLARIZER = PLACE_HOLDER;
 	public static final Item FISSION_INDUCER = PLACE_HOLDER;
 	public static final Item ELECTRON = PLACE_HOLDER;
-	public static final Item SYMMETRIC_NEGATOR = PLACE_HOLDER;
-	public static final Item SYMMETRIC_EXTENSION = PLACE_HOLDER;
+	public static final Item SYMMETRICAL_MACHINATION = PLACE_HOLDER;
+	public static final Item ASYMMETRICAL_MACHINATION = PLACE_HOLDER;
 	public static final Item KONDENZATOR = PLACE_HOLDER;
 	public static final Item MAINSPRING_MECHANISM = PLACE_HOLDER;
 	public static final Item FRAME_CORE = PLACE_HOLDER;
@@ -102,8 +102,8 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.FISSION_INDUCER));
 		registry.register(itemBlock(ModBlocks.LUMINIC_DECOMPRESSOR));
 		registry.register(itemBlock(ModBlocks.QUARTZ_CONSUMER));
-		registry.register(itemBlock(ModBlocks.SYMMETRIC_NEGATOR));
-		registry.register(itemBlock(ModBlocks.SYMMETRIC_EXTENSION));
+		registry.register(itemBlock(ModBlocks.SYMMETRICAL_MACHINATION));
+		registry.register(itemBlock(ModBlocks.ASYMMETRICAL_MACHINATION));
 		registry.register(itemBlock(ModBlocks.KONDENZATOR));
 		registry.register(new ItemTheorema());
 		registry.register(itemBlock(ModBlocks.IMBUED_QUARTZ));

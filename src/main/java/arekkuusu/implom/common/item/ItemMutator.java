@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.item;
 
 import arekkuusu.implom.api.capability.INBTDataTransferable;
-import arekkuusu.implom.api.helper.WorldAccessHelper;
+import arekkuusu.implom.api.capability.WorldAccessHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;

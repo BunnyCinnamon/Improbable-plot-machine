@@ -9,7 +9,7 @@ package arekkuusu.implom.common.item;
 
 import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.ILumenNBTDataCapability;
-import arekkuusu.implom.api.helper.LumenHelper;
+import arekkuusu.implom.api.capability.LumenHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.provider.NeutronProvider;
 import net.minecraft.client.util.ITooltipFlag;

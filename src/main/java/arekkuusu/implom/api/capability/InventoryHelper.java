@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Improbable-plot-machine
  */
-package arekkuusu.implom.api.helper;
+package arekkuusu.implom.api.capability;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

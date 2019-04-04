@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHelper;

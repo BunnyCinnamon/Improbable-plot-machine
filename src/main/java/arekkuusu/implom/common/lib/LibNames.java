@@ -43,8 +43,8 @@ public class LibNames {
 	public static final String FISSION_INDUCER = "fission_inducer";
 	public static final String LUMINIC_DECOMPRESSOR = "luminic_decompressor";
 	public static final String QUARTZ_CONSUMER = "quartz_consumer";
-	public static final String SYMMETRIC_NEGATOR = "symmetric_negator";
-	public static final String SYMMETRIC_EXTENSION = "symmetric_extension";
+	public static final String SYMMETRICAL_MACHINATION = "symmetrical_machination";
+	public static final String ASYMMETRICAL_MACHINATION = "asymmetrical_machination";
 	public static final String THEOREMA = "theorema";
 	public static final String KONDENZATOR = "kondenzator";
 	public static final String IMBUED_QUARTZ = "imbued_quartz";

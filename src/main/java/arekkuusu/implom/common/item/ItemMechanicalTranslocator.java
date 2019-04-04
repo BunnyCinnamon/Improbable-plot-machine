@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.item;
 
 import arekkuusu.implom.api.capability.INBTDataTransferable;
-import arekkuusu.implom.api.helper.PositionsHelper;
+import arekkuusu.implom.api.capability.PositionsHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.nbt.PositionsNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.PositionsNBTProvider;

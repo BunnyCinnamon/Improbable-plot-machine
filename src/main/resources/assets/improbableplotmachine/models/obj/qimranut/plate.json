@@ -21,17 +21,7 @@
 	"groups": [
 		{
 			"name": "plate",
-			"children": [
-				{
-					"name": "plate",
-					"children": [
-						{
-							"name": "plate",
-							"children": [0]
-						}
-					]
-				}
-			]
+			"children": [0]
 		}
 	]
 }

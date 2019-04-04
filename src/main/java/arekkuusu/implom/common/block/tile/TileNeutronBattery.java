@@ -8,8 +8,8 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
-import arekkuusu.implom.api.helper.InventoryHelper;
-import arekkuusu.implom.api.helper.WorldAccessHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
+import arekkuusu.implom.api.capability.WorldAccessHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.common.block.BlockNeutronBattery;
 import arekkuusu.implom.common.handler.data.capability.provider.NeutronProvider;

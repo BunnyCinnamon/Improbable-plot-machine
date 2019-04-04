@@ -7,7 +7,6 @@
  */
 package arekkuusu.implom.client.render.tile;
 
-import arekkuusu.implom.api.helper.MathHelper;
 import arekkuusu.implom.client.util.BakerLibrary;
 import arekkuusu.implom.client.util.ShaderLibrary;
 import arekkuusu.implom.client.util.helper.RenderHelper;
@@ -52,7 +51,7 @@ public class TileMechanicalTranslocatorRenderer extends TileEntitySpecialRendere
 		GlStateManager.rotate(tick * 0.75F % 720F, 1F, 0F, 0F);
 		GlStateManager.rotate(tick * 0.75F % 360F, 0F, 0F, 1F);
 		GlStateManager.translate(-0.5, -0.5, -0.5);
-		BakerLibrary.TRANSLOCATOR_RING.renderWithYOffset(facing, MathHelper.getInterpolated(tick, 0.05F, 1F));
+		BakerLibrary.TRANSLOCATOR_RING.renderWithYOffset(facing, RenderHelper.getInterpolated(tick, 0.05F, 1F));
 		GlStateManager.popMatrix();
 
 		GlStateManager.pushMatrix();
@@ -62,7 +61,7 @@ public class TileMechanicalTranslocatorRenderer extends TileEntitySpecialRendere
 		GlStateManager.rotate(tick % 720F, -1F, 0F, 0F);
 		GlStateManager.rotate(tick % 360F, 0F, 0F, -1F);
 		GlStateManager.translate(-0.5, -0.5, -0.5);
-		BakerLibrary.TRANSLOCATOR_RING.renderWithYOffset(facing, MathHelper.getInterpolated(tick, 0.05F, 1F));
+		BakerLibrary.TRANSLOCATOR_RING.renderWithYOffset(facing, RenderHelper.getInterpolated(tick, 0.05F, 1F));
 		GlStateManager.popMatrix();
 		/*--- Inwards ---*/
 		GlStateManager.enableLighting();

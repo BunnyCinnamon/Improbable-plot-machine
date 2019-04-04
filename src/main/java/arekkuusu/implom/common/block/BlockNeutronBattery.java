@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
 import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.IPMMaterial;

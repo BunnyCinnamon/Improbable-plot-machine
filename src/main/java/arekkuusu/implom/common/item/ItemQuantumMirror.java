@@ -9,7 +9,7 @@ package arekkuusu.implom.common.item;
 
 import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
-import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.capability.nbt.InventoryNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.InventoryNBTProvider;

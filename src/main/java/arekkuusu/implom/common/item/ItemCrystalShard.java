@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.common.item;
 
-import arekkuusu.implom.api.helper.LumenHelper;
+import arekkuusu.implom.api.capability.LumenHelper;
 import arekkuusu.implom.common.handler.data.capability.LumenShardCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.LumenProvider;
 import arekkuusu.implom.common.lib.LibNames;

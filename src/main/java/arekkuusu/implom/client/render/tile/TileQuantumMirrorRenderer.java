@@ -7,7 +7,7 @@
  */
 package arekkuusu.implom.client.render.tile;
 
-import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
 import arekkuusu.implom.client.util.ShaderLibrary;
 import arekkuusu.implom.client.util.SpriteLibrary;
 import arekkuusu.implom.client.util.helper.RenderHelper;

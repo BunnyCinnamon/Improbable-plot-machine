@@ -19,10 +19,12 @@ public class TilePholarizerRenderer extends TileEntitySpecialRenderer<TilePholar
 	}
 
 	public static void renderModel(EnumFacing facing, double x, double y, double z, float partialTicks) {
+		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		//Base
-		BakerLibrary.PHOLARIZER_FRAME.render();
+		BakerLibrary.PHOLARIZER_FRAME.renderWithRotation(facing);
+		BakerLibrary.PHOLARIZER_CORE.renderWithYOffset(facing, RenderHelper.getInterpolated(tick, 0.025F, 1.25F));
 		//Piece
 		GlStateManager.disableLighting();
 		ShaderLibrary.BRIGHT.begin();
@@ -33,9 +35,7 @@ public class TilePholarizerRenderer extends TileEntitySpecialRenderer<TilePholar
 			b.set(0F + brigthness);
 			b.upload();
 		});
-		BakerLibrary.PHOLARIZER_CORE.renderWithRotation(facing);
 		//Pillar
-		float tick = RenderHelper.getRenderWorldTime(partialTicks);
 		BakerLibrary.PHOLARIZER_CRYSTAL.renderWithRotation(facing, EnumFacing.Axis.Y, tick * -0.5F % 360F);
 		ShaderLibrary.BRIGHT.end();
 		GlStateManager.enableLighting();

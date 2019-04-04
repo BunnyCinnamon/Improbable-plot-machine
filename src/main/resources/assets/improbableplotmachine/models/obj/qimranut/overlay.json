@@ -18,17 +18,7 @@
 	"groups": [
 		{
 			"name": "overlay",
-			"children": [
-				{
-					"name": "overlay",
-					"children": [
-						{
-							"name": "overlay",
-							"children": [0]
-						}
-					]
-				}
-			]
+			"children": [0]
 		}
 	]
 }

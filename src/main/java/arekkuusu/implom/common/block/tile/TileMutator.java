@@ -1,7 +1,7 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
-import arekkuusu.implom.api.helper.WorldAccessHelper;
+import arekkuusu.implom.api.capability.WorldAccessHelper;
 import arekkuusu.implom.common.block.BlockMutator;
 import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
 import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;

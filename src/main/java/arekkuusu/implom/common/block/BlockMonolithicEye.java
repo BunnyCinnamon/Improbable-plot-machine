@@ -17,13 +17,14 @@ import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -51,16 +52,16 @@ public class BlockMonolithicEye extends BlockBase {
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		boolean isPlayerNear = isPlayerNear(worldIn, pos);
-		if(isPlayerNear) {
-			if(rand.nextDouble() < 0.01D) {
+		boolean isEnemyNear = isEnemyNear(worldIn, pos);
+		if(isEnemyNear) {
+			if(rand.nextDouble() < 0.1D) {
 				int eyeAmount = worldIn.getEntitiesWithinAABB(EntityEyeOfSchrodinger.class, new AxisAlignedBB(pos).grow(10)).size();
 				if(eyeAmount < Constants.MAX_EYE_AMOUNT) {
 					spawnEyeEntity(worldIn, pos, rand);
 				}
 			}
 		}
-		if(state.getValue(Properties.ACTIVE) != isPlayerNear) setBlockState(worldIn, pos, isPlayerNear);
+		if(state.getValue(Properties.ACTIVE) != isEnemyNear) setBlockState(worldIn, pos, isEnemyNear);
 		worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 	}
 
@@ -68,8 +69,15 @@ public class BlockMonolithicEye extends BlockBase {
 		world.setBlockState(pos, getDefaultState().withProperty(Properties.ACTIVE, active));
 	}
 
-	private boolean isPlayerNear(World world, BlockPos pos) {
-		return world.getClosestPlayer(pos.getX(), pos.getY(), pos.getZ(), 10D, false) != null; //world.getNearestAttackablePlayer(pos, 10, 10) != null;
+	private boolean isEnemyNear(World world, BlockPos pos) {
+		return !world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(5), entity -> {
+			if(entity instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) entity;
+				return !player.capabilities.disableDamage && player.isEntityAlive() && !player.isSpectator();
+			} else {
+				return entity instanceof EntityMob && !(entity instanceof EntityEyeOfSchrodinger);
+			}
+		}).isEmpty();
 	}
 
 	private void spawnEyeEntity(World world, BlockPos pos, Random rand) {

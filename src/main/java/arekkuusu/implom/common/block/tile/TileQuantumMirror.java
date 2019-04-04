@@ -8,7 +8,7 @@
 package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
-import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.common.IPM;
 import arekkuusu.implom.common.handler.data.capability.nbt.InventoryNBTDataCapability;

@@ -1,6 +1,6 @@
 package arekkuusu.implom.common.handler.recipe;
 
-import arekkuusu.implom.api.helper.InventoryHelper;
+import arekkuusu.implom.api.capability.InventoryHelper;
 import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.common.item.ItemClockwork;
 import arekkuusu.implom.common.item.ItemQuartz;
