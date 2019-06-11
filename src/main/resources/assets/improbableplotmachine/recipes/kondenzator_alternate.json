@@ -1,24 +1,24 @@
 ﻿{
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "#$#",
-    "$I$",
-    "#$#"
-  ],
-  "key": {
-    "#": {
-      "item": "improbableplotmachine:monolithic"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "#$#",
+        "$I$",
+        "#$#"
+    ],
+    "key": {
+        "#": {
+            "item": "improbableplotmachine:magnetic_plate"
+        },
+        "$": {
+            "type": "forge:ore_dict",
+            "ore": "paneGlass"
+        },
+        "I": {
+            "item": "improbableplotmachine:intrinsic_cell"
+        }
     },
-    "$": {
-      "type": "forge:ore_dict",
-      "ore": "paneGlass"
+    "result": {
+        "item": "improbableplotmachine:kondenzator"
     },
-    "I": {
-      "item": "improbableplotmachine:intrinsic_cell"
-    }
-  },
-  "result": {
-    "item": "improbableplotmachine:kondenzator"
-  },
-  "group": "plot_machine"
+    "group": "plot_machine"
 }

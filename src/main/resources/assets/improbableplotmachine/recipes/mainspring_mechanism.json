@@ -1,32 +1,32 @@
 ﻿{
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "BGB",
-    "RFR",
-    "SIS"
-  ],
-  "key": {
-    "B": {
-      "item": "improbableplotmachine:magnetic_bolt"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "BFB",
+        "PMP",
+        "SGS"
+    ],
+    "key": {
+        "F": {
+            "item": "improbableplotmachine:frame_core"
+        },
+        "B": {
+            "item": "improbableplotmachine:inductor"
+        },
+        "M": {
+            "item": "improbableplotmachine:electromagnet"
+        },
+        "P": {
+            "item": "improbableplotmachine:magnetic_plate"
+        },
+        "S": {
+            "item": "improbableplotmachine:magnetic_spring"
+        },
+        "G": {
+            "item": "improbableplotmachine:magnetic_gear"
+        }
     },
-    "S": {
-      "item": "improbableplotmachine:magnetic_spring"
+    "result": {
+        "item": "improbableplotmachine:mainspring_mechanism"
     },
-    "G": {
-      "item": "improbableplotmachine:magnetic_gear"
-    },
-	"F": {
-      "item": "improbableplotmachine:frame_core"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    }
-  },
-  "result": {
-    "item": "improbableplotmachine:mainspring_mechanism"
-  },
-  "group": "plot_machine"
+    "group": "plot_machine"
 }

@@ -1,24 +1,32 @@
 ﻿{
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "#$#",
-    "$I$",
-    "#$#"
-  ],
-  "key": {
-    "#": {
-      "item": "improbableplotmachine:magnetic_plate"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "#B#",
+        "CFC",
+        "#M#"
+    ],
+    "key": {
+        "#": {
+            "item": "improbableplotmachine:magnetic_gear"
+        },
+        "B": {
+            "item": "improbableplotmachine:magnetic_bolt"
+        },
+        "C": {
+            "item": "improbableplotmachine:capacitor"
+        },
+        "F": {
+            "item": "improbableplotmachine:frame_core"
+        },
+        "M": {
+            "item": "improbableplotmachine:mainspring_mechanism"
+        }
     },
-    "$": {
-      "item": "improbableplotmachine:magnetic_bolt"
+    "result": {
+        "item": "improbableplotmachine:clockwork",
+        "nbt": {
+            "unsealed": "true"
+        }
     },
-    "I": {
-      "item": "improbableplotmachine:mainspring_mechanism"
-    }
-  },
-  "result": {
-    "item": "improbableplotmachine:clockwork",
-	"nbt": {"unsealed": "true"}
-  },
-  "group": "plot_machine"
+    "group": "plot_machine"
 }

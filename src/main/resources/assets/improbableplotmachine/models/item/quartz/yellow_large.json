@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "improbableplotmachine:items/quartz/yellow_large"
-  }
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "improbableplotmachine:items/quartz/yellow_large"
+    }
 }

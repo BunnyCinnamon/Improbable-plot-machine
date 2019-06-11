@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "improbableplotmachine:items/crystal_shard"
-  }
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "improbableplotmachine:items/crystal_shard"
+    }
 }

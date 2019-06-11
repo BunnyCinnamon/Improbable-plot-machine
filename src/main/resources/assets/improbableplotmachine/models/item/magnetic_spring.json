@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "improbableplotmachine:items/magnetic_spring"
-  }
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "improbableplotmachine:items/magnetic_spring"
+    }
 }

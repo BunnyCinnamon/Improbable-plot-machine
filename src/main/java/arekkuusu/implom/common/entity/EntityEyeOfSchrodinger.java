@@ -8,9 +8,12 @@
 package arekkuusu.implom.common.entity;
 
 import arekkuusu.implom.api.helper.NBTHelper;
+import arekkuusu.implom.api.helper.RayTraceHelper;
+import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.entity.ai.FlightMoveHelper;
 import arekkuusu.implom.common.entity.ai.FlightPathNavigate;
 import arekkuusu.implom.common.handler.gen.ModGen;
@@ -27,6 +30,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
@@ -37,6 +41,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
@@ -95,6 +100,31 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		}
 	}
 
+	@Override
+	public boolean isEntityInsideOpaqueBlock() {
+		if(this.noClip) {
+			return false;
+		} else {
+			BlockPos.PooledMutableBlockPos pos = BlockPos.PooledMutableBlockPos.retain();
+			for(int i = 0; i < 8; ++i) {
+				int j = MathHelper.floor(this.posY + (double) (((float) ((i) % 2) - 0.5F) * 0.1F) + (double) this.getEyeHeight());
+				int k = MathHelper.floor(this.posX + (double) (((float) ((i >> 1) % 2) - 0.5F) * this.width * 0.8F));
+				int l = MathHelper.floor(this.posZ + (double) (((float) ((i >> 2) % 2) - 0.5F) * this.width * 0.8F));
+
+				if(pos.getX() != k || pos.getY() != j || pos.getZ() != l) {
+					pos.setPos(k, j, l);
+
+					if(this.world.getBlockState(pos).causesSuffocation() && world.getBlockState(pos).getMaterial() != IPMMaterial.MONOLITH) {
+						pos.release();
+						return true;
+					}
+				}
+			}
+			pos.release();
+			return false;
+		}
+	}
+
 	private void setTargetedEntity(boolean hasTarget) {
 		if(!hasTarget || getAttackTarget() == null) {
 			dataManager.set(TARGET, Optional.absent());
@@ -103,6 +133,11 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 			dataManager.set(TARGET, Optional.of(getAttackTarget().getUniqueID()));
 		}
 		dataManager.setDirty(TARGET);
+	}
+
+	@Override
+	public boolean canEntityBeSeen(Entity entityIn) {
+		return hasTargetedEntity() ? RayTraceHelper.rayTraceBlocksExcept(world, Vector3.fromEntityCenter(this), Vector3.fromEntityCenter(entityIn), b -> b.getMaterial() == IPMMaterial.MONOLITH) == null : super.canEntityBeSeen(entityIn);
 	}
 
 	public boolean hasTargetedEntity() {
@@ -143,7 +178,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 		this.getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.25D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(20.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
 	}
 

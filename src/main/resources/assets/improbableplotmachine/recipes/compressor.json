@@ -1,0 +1,29 @@
+﻿{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "#A#",
+        "PIP",
+        "#M#"
+    ],
+    "key": {
+        "#": {
+            "item": "improbableplotmachine:ash_plate"
+        },
+        "A": {
+            "item": "improbableplotmachine:magnetic_actuator"
+        },
+        "I": {
+            "item": "improbableplotmachine:intrinsic_cell"
+        },
+        "P": {
+            "item": "improbableplotmachine:gold_plate"
+        },
+        "M": {
+            "item": "improbableplotmachine:mainspring_mechanism"
+        }
+    },
+    "result": {
+        "item": "improbableplotmachine:compressor"
+    },
+    "group": "plot_machine"
+}

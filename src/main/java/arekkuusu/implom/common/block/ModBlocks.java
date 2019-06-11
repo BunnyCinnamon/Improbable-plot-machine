@@ -29,7 +29,6 @@ public final class ModBlocks {
 
 	private static final Block PLACE_HOLDER = new Block(Material.AIR);
 	//--------------------------------Blocks--------------------------------//
-	public static final Block SAPROLITE = PLACE_HOLDER;
 	public static final Block QUANTUM_MIRROR = PLACE_HOLDER;
 	public static final Block GRAVITY_HOPPER = PLACE_HOLDER;
 	public static final Block MONOLITHIC_EYE = PLACE_HOLDER;
@@ -38,7 +37,6 @@ public final class ModBlocks {
 	public static final Block QUANTA = PLACE_HOLDER;
 	public static final Block HYPER_CONDUCTOR = PLACE_HOLDER;
 	public static final Block ELECTRON = PLACE_HOLDER;
-	public static final Block ASHEN = PLACE_HOLDER;
 	public static final Block MONOLITHIC = PLACE_HOLDER;
 	public static final Block MONOLITHIC_GLYPH = PLACE_HOLDER;
 	public static final Block ANGSTROM = PLACE_HOLDER;
@@ -53,17 +51,19 @@ public final class ModBlocks {
 	public static final Block NEUTRON_BATTERY = PLACE_HOLDER;
 	public static final Block PHOLARIZER = PLACE_HOLDER;
 	public static final Block FISSION_INDUCER = PLACE_HOLDER;
-	public static final Block LUMINIC_DECOMPRESSOR = PLACE_HOLDER;
-	public static final Block QUARTZ_CONSUMER = PLACE_HOLDER;
+	public static final Block COMPRESSOR = PLACE_HOLDER;
+	public static final Block MONOLITHIC_CONSUMER = PLACE_HOLDER;
 	public static final Block SYMMETRICAL_MACHINATION = PLACE_HOLDER;
 	public static final Block ASYMMETRICAL_MACHINATION = PLACE_HOLDER;
 	public static final Block KONDENZATOR = PLACE_HOLDER;
 	public static final Block IMBUED_QUARTZ = PLACE_HOLDER;
 	public static final Block MUTATOR = PLACE_HOLDER;
+	public static final Block FIRE_CLAY_BLOCK = PLACE_HOLDER;
+	public static final Block FIRE_BRICK_BLOCK = PLACE_HOLDER;
+	public static final Block FIRE_BRICKS = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
-		registry.register(new BlockBase(LibNames.SAPROLITE, Material.ROCK).setHardness(10F).setResistance(2000F));
 		registry.register(new BlockMonolithicGlyph());
 		registry.register(new BlockQuantumMirror());
 		registry.register(new BlockGravityHopper());
@@ -73,7 +73,6 @@ public final class ModBlocks {
 		registry.register(new BlockQuanta());
 		registry.register(new BlockHyperConductor());
 		registry.register(new BlockElectron());
-		registry.register(new BlockAshen());
 		registry.register(new BlockMonolithic());
 		registry.register(new BlockAngstrom());
 		registry.register(new BlockQimranut());
@@ -87,13 +86,16 @@ public final class ModBlocks {
 		registry.register(new BlockNeutronBattery());
 		registry.register(new BlockPholarizer());
 		registry.register(new BlockFissionInducer());
-		registry.register(new BlockLuminicDecompressor());
-		registry.register(new BlockQuartzConsumer());
+		registry.register(new BlockCompressor());
+		registry.register(new BlockMonolithicConsumer());
 		registry.register(new BlockSymmetricalMachination());
 		registry.register(new BlockAsymmetricalMachination());
 		registry.register(new BlockKondenzator());
 		registry.register(new BlockImbuedQuartz());
 		registry.register(new BlockMutator());
+		registry.register(new BlockFireClayBricks());
+		registry.register(new BlockBase(LibNames.FIRE_BRICK_BLOCK, Material.ROCK));
+		registry.register(new BlockBase(LibNames.FIRE_BRICKS, Material.ROCK));
 		registerTiles();
 	}
 
@@ -114,7 +116,7 @@ public final class ModBlocks {
 		registerTile(TilePholarizer.class, LibNames.PHOLARIZER);
 		registerTile(TileFissionInducer.class, LibNames.FISSION_INDUCER);
 		registerTile(TileElectron.class, LibNames.ELECTRON);
-		registerTile(TileQuartzConsumer.class, LibNames.QUARTZ_CONSUMER);
+		registerTile(TileQuartzConsumer.class, LibNames.MONOLITHIC_CONSUMER);
 		registerTile(TileSymmetricalMachination.class, LibNames.SYMMETRICAL_MACHINATION);
 		registerTile(TileAsymmetricalMachination.class, LibNames.ASYMMETRICAL_MACHINATION);
 		registerTile(TileKondenzator.class, LibNames.KONDENZATOR);

@@ -1,24 +1,24 @@
 ﻿{
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "#$#",
-    "$I$",
-    "#$#"
-  ],
-  "key": {
-    "$": {
-      "item": "minecraft:gunpowder"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "#$#",
+        "$I$",
+        "#$#"
+    ],
+    "key": {
+        "$": {
+            "item": "minecraft:gunpowder"
+        },
+        "#": {
+            "type": "forge:ore_dict",
+            "ore": "nuggetGold"
+        },
+        "I": {
+            "item": "improbableplotmachine:magnetic_bolt"
+        }
     },
-    "#": {
-      "type": "forge:ore_dict",
-      "ore": "nuggetGold"
+    "result": {
+        "item": "improbableplotmachine:solenoid"
     },
-    "I": {
-      "item": "improbableplotmachine:magnetic_bolt"
-    }
-  },
-  "result": {
-    "item": "improbableplotmachine:solenoid"
-  },
-  "group": "plot_machine"
+    "group": "plot_machine"
 }

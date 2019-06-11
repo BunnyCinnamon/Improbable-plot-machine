@@ -7,8 +7,10 @@
  */
 package arekkuusu.implom.common.entity.ai;
 
+import arekkuusu.implom.api.helper.RayTraceHelper;
+import arekkuusu.implom.api.util.IPMMaterial;
+import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.pathfinding.FlyingNodeProcessor;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +30,8 @@ public class FlightPathNavigate extends PathNavigate {
 
 	@Override
 	protected PathFinder getPathFinder() {
-		this.nodeProcessor = new FlyingNodeProcessor();
+		this.nodeProcessor = new FlyingNodeProcessorIgnore();
+		this.nodeProcessor.setCanSwim(true);
 		return new PathFinder(this.nodeProcessor);
 	}
 
@@ -66,7 +69,7 @@ public class FlightPathNavigate extends PathNavigate {
 
 	@Override
 	protected boolean isDirectPathBetweenPoints(Vec3d posVec31, Vec3d posVec32, int sizeX, int sizeY, int sizeZ) {
-		RayTraceResult raytraceresult = this.world.rayTraceBlocks(posVec31, new Vec3d(posVec32.x, posVec32.y + (double) this.entity.height * 0.5D, posVec32.z), true, true, false);
+		RayTraceResult raytraceresult = RayTraceHelper.rayTraceBlocksExcept(world, new Vector3.WrappedVec3d(posVec31).asImmutable(), new Vector3(posVec32.x, posVec32.y + (double) this.entity.height * 0.5D, posVec32.z), b -> b.getMaterial() == IPMMaterial.MONOLITH);
 		return raytraceresult == null || raytraceresult.typeOfHit == RayTraceResult.Type.MISS;
 	}
 

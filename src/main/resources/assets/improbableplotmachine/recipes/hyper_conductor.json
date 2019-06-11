@@ -1,23 +1,23 @@
 ﻿{
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "#$#",
-    "$I$",
-    "#$#"
-  ],
-  "key": {
-    "#": {
-      "item": "improbableplotmachine:monolithic"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "#$#",
+        "$I$",
+        "#$#"
+    ],
+    "key": {
+        "#": {
+            "item": "improbableplotmachine:monolithic"
+        },
+        "$": {
+            "item": "minecraft:packed_ice"
+        },
+        "I": {
+            "item": "improbableplotmachine:magnetic_bolt"
+        }
     },
-    "$": {
-      "item": "minecraft:packed_ice"
+    "result": {
+        "item": "improbableplotmachine:hyper_conductor"
     },
-    "I": {
-      "item": "improbableplotmachine:magnetic_bolt"
-    }
-  },
-  "result": {
-    "item": "improbableplotmachine:hyper_conductor"
-  },
-  "group": "plot_machine"
+    "group": "plot_machine"
 }

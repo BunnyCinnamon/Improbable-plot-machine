@@ -28,7 +28,6 @@ public final class ModItems {
 	//--------------------------------Items--------------------------------//
 	public static final Item CRYSTAL_PRISM = PLACE_HOLDER;
 	public static final Item ANGSTROM = PLACE_HOLDER;
-	public static final Item ASH = PLACE_HOLDER;
 	public static final Item SINGULARITY = PLACE_HOLDER;
 	public static final Item PLASMON = PLACE_HOLDER;
 	public static final Item NEUTRON_BATTERY = PLACE_HOLDER;
@@ -60,19 +59,19 @@ public final class ModItems {
 	public static final Item SOLENOID = PLACE_HOLDER;
 	public static final Item RESISTOR = PLACE_HOLDER;
 	public static final Item CAPACITOR = PLACE_HOLDER;
-	public static final Item ASH_BRICK_MIX = PLACE_HOLDER;
-	public static final Item ASH_BRICK = PLACE_HOLDER;
-	public static final Item ASH_PLATE = PLACE_HOLDER;
-	public static final Item ASH_PLATE_MIX = PLACE_HOLDER;
 	public static final Item GOLD_PLATE = PLACE_HOLDER;
 	public static final Item MAGNETIC_PLATE = PLACE_HOLDER;
 	public static final Item INDUCTOR = PLACE_HOLDER;
 	public static final Item MAGNETIC_ACTUATOR = PLACE_HOLDER;
 	public static final Item ELECTROMAGNET = PLACE_HOLDER;
 	public static final Item INTRINSIC_CAPACITOR = PLACE_HOLDER;
+	public static final Item FIRE_BRICK = PLACE_HOLDER;
+	public static final Item FIRE_BRICK_PLATE = PLACE_HOLDER;
+	public static final Item FIRE_CLAY = PLACE_HOLDER;
+	public static final Item FIRE_CLAY_BRICK = PLACE_HOLDER;
+	public static final Item FIRE_CLAY_PLATE = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
-		registry.register(itemBlock(ModBlocks.SAPROLITE));
 		registry.register(new ItemQuantumMirror());
 		registry.register(itemBlock(ModBlocks.GRAVITY_HOPPER));
 		registry.register(itemBlock(ModBlocks.MONOLITHIC_EYE));
@@ -82,13 +81,11 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.QUANTA));
 		registry.register(itemBlock(ModBlocks.HYPER_CONDUCTOR));
 		registry.register(itemBlock(ModBlocks.ELECTRON));
-		registry.register(itemBlock(ModBlocks.ASHEN));
 		registry.register(itemBlock(ModBlocks.MONOLITHIC));
 		registry.register(new ItemMonolithicGlyph());
 		registry.register(new ItemAngstrom());
 		registry.register(new ItemQimranut());
 		registry.register(itemBlock(ModBlocks.LARGE_POT));
-		registry.register(new ItemBase(LibNames.ASH));
 		registry.register(new ItemBase(LibNames.SINGULARITY));
 		registry.register(new ItemBase(LibNames.PLASMON));
 		registry.register(new ItemVacuumConveyor());
@@ -100,8 +97,8 @@ public final class ModItems {
 		registry.register(new ItemNeutronBattery());
 		registry.register(itemBlock(ModBlocks.PHOLARIZER));
 		registry.register(itemBlock(ModBlocks.FISSION_INDUCER));
-		registry.register(itemBlock(ModBlocks.LUMINIC_DECOMPRESSOR));
-		registry.register(itemBlock(ModBlocks.QUARTZ_CONSUMER));
+		registry.register(itemBlock(ModBlocks.COMPRESSOR));
+		registry.register(itemBlock(ModBlocks.MONOLITHIC_CONSUMER));
 		registry.register(itemBlock(ModBlocks.SYMMETRICAL_MACHINATION));
 		registry.register(itemBlock(ModBlocks.ASYMMETRICAL_MACHINATION));
 		registry.register(itemBlock(ModBlocks.KONDENZATOR));
@@ -121,16 +118,20 @@ public final class ModItems {
 		registry.register(new ItemBase(LibNames.SOLENOID));
 		registry.register(new ItemBase(LibNames.RESISTOR));
 		registry.register(new ItemBase(LibNames.CAPACITOR));
-		registry.register(new ItemBase(LibNames.ASH_BRICK_MIX));
-		registry.register(new ItemBase(LibNames.ASH_BRICK));
-		registry.register(new ItemBase(LibNames.ASH_PLATE_MIX));
-		registry.register(new ItemBase(LibNames.ASH_PLATE));
 		registry.register(new ItemBase(LibNames.GOLD_PLATE));
 		registry.register(new ItemBase(LibNames.MAGNETIC_PLATE));
 		registry.register(new ItemBase(LibNames.INDUCTOR));
 		registry.register(new ItemBase(LibNames.MAGNETIC_ACTUATOR));
 		registry.register(new ItemBase(LibNames.ELECTROMAGNET));
 		registry.register(new ItemBase(LibNames.INTRINSIC_CAPACITOR));
+		registry.register(new ItemBase(LibNames.FIRE_BRICK));
+		registry.register(new ItemBase(LibNames.FIRE_BRICK_PLATE));
+		registry.register(new ItemBase(LibNames.FIRE_CLAY));
+		registry.register(new ItemBase(LibNames.FIRE_CLAY_BRICK));
+		registry.register(new ItemBase(LibNames.FIRE_CLAY_PLATE));
+		registry.register(itemBlock(ModBlocks.FIRE_CLAY_BLOCK));
+		registry.register(itemBlock(ModBlocks.FIRE_BRICK_BLOCK));
+		registry.register(itemBlock(ModBlocks.FIRE_BRICKS));
 	}
 
 	@SuppressWarnings("ConstantConditions")

@@ -1,0 +1,32 @@
+﻿{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "CBC",
+        "SFS",
+        "DRD"
+    ],
+    "key": {
+        "D": {
+            "item": "minecraft:redstone"
+        },
+        "C": {
+            "item": "improbableplotmachine:capacitor"
+        },
+        "S": {
+            "item": "improbableplotmachine:solenoid"
+        },
+        "F": {
+            "item": "improbableplotmachine:frame_core"
+        },
+        "B": {
+            "item": "improbableplotmachine:magnetic_bolt"
+        },
+        "R": {
+            "item": "improbableplotmachine:resistor"
+        }
+    },
+    "result": {
+        "item": "improbableplotmachine:electromagnet"
+    },
+    "group": "plot_machine"
+}

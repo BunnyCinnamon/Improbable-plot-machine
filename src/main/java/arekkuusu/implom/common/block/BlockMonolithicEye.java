@@ -28,6 +28,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 /*
@@ -52,16 +54,19 @@ public class BlockMonolithicEye extends BlockBase {
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		boolean isEnemyNear = isEnemyNear(worldIn, pos);
-		if(isEnemyNear) {
+		Optional<EntityLivingBase> optional = getClosestEnemy(worldIn, pos);
+		if(optional.isPresent()) {
 			if(rand.nextDouble() < 0.1D) {
 				int eyeAmount = worldIn.getEntitiesWithinAABB(EntityEyeOfSchrodinger.class, new AxisAlignedBB(pos).grow(10)).size();
 				if(eyeAmount < Constants.MAX_EYE_AMOUNT) {
 					spawnEyeEntity(worldIn, pos, rand);
 				}
 			}
+			worldIn.getEntitiesWithinAABB(EntityEyeOfSchrodinger.class, new AxisAlignedBB(pos).grow(5)).forEach(e -> {
+				if(!e.hasTargetedEntity()) e.setAttackTarget(optional.get());
+			});
 		}
-		if(state.getValue(Properties.ACTIVE) != isEnemyNear) setBlockState(worldIn, pos, isEnemyNear);
+		if(state.getValue(Properties.ACTIVE) != optional.isPresent()) setBlockState(worldIn, pos, optional.isPresent());
 		worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
 	}
 
@@ -69,15 +74,25 @@ public class BlockMonolithicEye extends BlockBase {
 		world.setBlockState(pos, getDefaultState().withProperty(Properties.ACTIVE, active));
 	}
 
-	private boolean isEnemyNear(World world, BlockPos pos) {
-		return !world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(5), entity -> {
+	private Optional<EntityLivingBase> getClosestEnemy(World world, BlockPos pos) {
+		List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(10), entity -> {
 			if(entity instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) entity;
 				return !player.capabilities.disableDamage && player.isEntityAlive() && !player.isSpectator();
 			} else {
 				return entity instanceof EntityMob && !(entity instanceof EntityEyeOfSchrodinger);
 			}
-		}).isEmpty();
+		});
+		EntityLivingBase enemy = null;
+		double maxDistance = Integer.MAX_VALUE;
+		for(EntityLivingBase entity : list) {
+			double distance = entity.getDistanceSq(pos);
+			if(distance < maxDistance) {
+				enemy = entity;
+				maxDistance = distance;
+			}
+		}
+		return Optional.ofNullable(enemy);
 	}
 
 	private void spawnEyeEntity(World world, BlockPos pos, Random rand) {

@@ -8,6 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
@@ -16,11 +17,13 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -49,6 +52,12 @@ public class BlockMonolithicGlyph extends BlockBase {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
 		Tooltip.inline().addI18n("tlp.monolithic_description", Tooltip.DarkGrayItalic()).build(tooltip);
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+		if(!(entityIn instanceof EntityEyeOfSchrodinger))
+			super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 	}
 
 	@Override

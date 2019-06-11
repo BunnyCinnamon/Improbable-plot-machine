@@ -1,0 +1,26 @@
+﻿{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "#I#",
+        "BCB",
+        "#I#"
+    ],
+    "key": {
+        "#": {
+            "item": "improbableplotmachine:magnetic_plate"
+        },
+        "B": {
+            "item": "improbableplotmachine:magnetic_bolt"
+        },
+        "I": {
+            "item": "improbableplotmachine:intrinsic_cell"
+        },
+        "C": {
+            "item": "improbableplotmachine:capacitor"
+        }
+    },
+    "result": {
+        "item": "improbableplotmachine:intrinsic_capacitor"
+    },
+    "group": "plot_machine"
+}

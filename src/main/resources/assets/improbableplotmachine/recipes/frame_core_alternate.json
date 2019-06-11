@@ -1,23 +1,23 @@
 ﻿{
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "#$#",
-    "$I$",
-    "#$#"
-  ],
-  "key": {
-    "$": {
-      "item": "improbableplotmachine:magnetic_spring"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "#$#",
+        "$I$",
+        "#$#"
+    ],
+    "key": {
+        "$": {
+            "item": "improbableplotmachine:magnetic_spring"
+        },
+        "#": {
+            "item": "improbableplotmachine:magnetic_bolt"
+        },
+        "I": {
+            "item": "improbableplotmachine:magnetic_plate"
+        }
     },
-    "#": {
-      "item": "improbableplotmachine:magnetic_bolt"
+    "result": {
+        "item": "improbableplotmachine:frame_core"
     },
-    "I": {
-      "item": "improbableplotmachine:monolithic"
-    }
-  },
-  "result": {
-    "item": "improbableplotmachine:frame_core"
-  },
-  "group": "plot_machine"
+    "group": "plot_machine"
 }

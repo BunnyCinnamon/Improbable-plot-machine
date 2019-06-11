@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "improbableplotmachine:items/quartz/blue_medium"
-  }
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "improbableplotmachine:items/quartz/blue_medium"
+    }
 }

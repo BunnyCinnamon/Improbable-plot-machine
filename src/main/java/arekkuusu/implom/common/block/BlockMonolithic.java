@@ -8,6 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
@@ -15,10 +16,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -48,26 +51,9 @@ public class BlockMonolithic extends BlockBase {
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		IBlockState fromState = worldIn.getBlockState(pos.offset(EnumFacing.UP));
-		if(fromState.getMaterial() == Material.FIRE) {
-			worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
-		}
-	}
-
-	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		IBlockState fromState = worldIn.getBlockState(pos.offset(EnumFacing.UP));
-		if(fromState.getMaterial() == Material.FIRE) {
-			if(0.5D / 100D > rand.nextDouble()) {
-				Vector3 vec = new Vector3.WrappedVec3i(pos).asImmutable().add(0.5, 1.5, 0.5);
-				EntityItem item = new EntityItem(worldIn, vec.x(), vec.y(), vec.z(), new ItemStack(this));
-				worldIn.spawnEntity(item);
-				worldIn.setBlockToAir(pos);
-			} else {
-				worldIn.scheduleUpdate(pos, this, tickRate(worldIn));
-			}
-		}
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+		if(!(entityIn instanceof EntityEyeOfSchrodinger))
+			super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
 	}
 
 	@Override

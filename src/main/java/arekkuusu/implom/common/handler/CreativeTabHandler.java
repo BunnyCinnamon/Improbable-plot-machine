@@ -71,16 +71,17 @@ public final class CreativeTabHandler {
 		@SideOnly(Side.CLIENT)
 		public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> list) {
 			this.list = list;
-			addBlock(ModBlocks.SAPROLITE);
 			addBlock(ModBlocks.MONOLITHIC);
 			addBlock(ModBlocks.MONOLITHIC_GLYPH);
 			addBlock(ModBlocks.MONOLITHIC_EYE);
-			addBlock(ModBlocks.ASHEN);
-			addItem(ModItems.ASH);
-			addItem(ModItems.ASH_BRICK_MIX);
-			addItem(ModItems.ASH_BRICK);
-			addItem(ModItems.ASH_PLATE_MIX);
-			addItem(ModItems.ASH_PLATE);
+			addItem(ModItems.FIRE_CLAY);
+			addItem(ModItems.FIRE_CLAY_BRICK);
+			addItem(ModItems.FIRE_CLAY_PLATE);
+			addBlock(ModBlocks.FIRE_CLAY_BLOCK);
+			addItem(ModItems.FIRE_BRICK);
+			addItem(ModItems.FIRE_BRICK_PLATE);
+			addBlock(ModBlocks.FIRE_BRICK_BLOCK);
+			addBlock(ModBlocks.FIRE_BRICKS);
 			addItem(ModItems.GOLD_PLATE);
 			addItem(ModItems.MAGNETIC_PLATE);
 			addItem(ModItems.MAGNETIC_BOLT);
@@ -121,9 +122,9 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.HYPER_CONDUCTOR);
 			addBlock(ModBlocks.ELECTRON);
 			addBlock(ModBlocks.NEUTRON_BATTERY);
-			addBlock(ModBlocks.LUMINIC_DECOMPRESSOR);
+			addBlock(ModBlocks.COMPRESSOR);
 			addBlock(ModBlocks.FISSION_INDUCER);
-			addBlock(ModBlocks.QUARTZ_CONSUMER);
+			addBlock(ModBlocks.MONOLITHIC_CONSUMER);
 			addBlock(ModBlocks.PHOLARIZER);
 			addBlock(ModBlocks.SYMMETRICAL_MACHINATION);
 			addBlock(ModBlocks.ASYMMETRICAL_MACHINATION);

@@ -13,7 +13,6 @@ package arekkuusu.implom.common.lib;
  */
 public class LibNames {
 
-	public static final String SAPROLITE = "saprolite";
 	public static final String SINGULARITY = "singularity";
 	public static final String QUANTUM_MIRROR = "quantum_mirror";
 	public static final String GRAVITY_HOPPER = "gravity_hopper";
@@ -24,13 +23,11 @@ public class LibNames {
 	public static final String QUANTA = "quanta";
 	public static final String HYPER_CONDUCTOR = "hyper_conductor";
 	public static final String ELECTRON = "electron";
-	public static final String ASHEN = "ashen";
 	public static final String MONOLITHIC = "monolithic";
 	public static final String MONOLITHIC_GLYPH = "monolithic_glyph";
 	public static final String ANGSTROM = "angstrom";
 	public static final String QIMRANUT = "qimranut";
 	public static final String LARGE_POT = "large_pot";
-	public static final String ASH = "ash";
 	public static final String PLASMON = "plasmon";
 	public static final String VACUUM_CONVEYOR = "vacuum_conveyor";
 	public static final String MECHANICAL_TRANSLOCATOR = "mechanical_translocator";
@@ -41,8 +38,8 @@ public class LibNames {
 	public static final String NEUTRON_BATTERY = "neutron_battery";
 	public static final String PHOLARIZER = "pholarizer";
 	public static final String FISSION_INDUCER = "fission_inducer";
-	public static final String LUMINIC_DECOMPRESSOR = "luminic_decompressor";
-	public static final String QUARTZ_CONSUMER = "quartz_consumer";
+	public static final String COMPRESSOR = "compressor";
+	public static final String MONOLITHIC_CONSUMER = "monolithic_consumer";
 	public static final String SYMMETRICAL_MACHINATION = "symmetrical_machination";
 	public static final String ASYMMETRICAL_MACHINATION = "asymmetrical_machination";
 	public static final String THEOREMA = "theorema";
@@ -63,13 +60,17 @@ public class LibNames {
 	public static final String RESISTOR = "resistor";
 	public static final String CAPACITOR = "capacitor";
 	public static final String INDUCTOR = "inductor";
-	public static final String ASH_BRICK_MIX = "ash_brick_mix";
-	public static final String ASH_BRICK = "ash_brick";
-	public static final String ASH_PLATE_MIX = "ash_plate_mix";
-	public static final String ASH_PLATE = "ash_plate";
 	public static final String GOLD_PLATE = "gold_plate";
 	public static final String MAGNETIC_PLATE = "magnetic_plate";
 	public static final String MAGNETIC_ACTUATOR = "magnetic_actuator";
 	public static final String ELECTROMAGNET = "electromagnet";
 	public static final String INTRINSIC_CAPACITOR = "intrinsic_capacitor";
+	public static final String FIRE_BRICK = "fire_brick";
+	public static final String FIRE_BRICK_PLATE = "fire_brick_plate";
+	public static final String FIRE_CLAY = "fire_clay";
+	public static final String FIRE_CLAY_BRICK = "fire_clay_brick";
+	public static final String FIRE_CLAY_PLATE = "fire_clay_plate";
+	public static final String FIRE_CLAY_BLOCK = "fire_clay_block";
+	public static final String FIRE_BRICK_BLOCK = "fire_brick_block";
+	public static final String FIRE_BRICKS = "fire_bricks";
 }
