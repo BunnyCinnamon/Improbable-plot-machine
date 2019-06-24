@@ -7,6 +7,7 @@
  */
 package arekkuusu.implom.common.block;
 
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.material.Material;

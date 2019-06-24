@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = LibMod.MOD_ID)
-public class CommonEvents {
+public class UncommonEvents {
 
 	@SubscribeEvent
 	public static void updateImbuingProgress(TickEvent.WorldTickEvent event) {

@@ -132,6 +132,9 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.FIRE_CLAY_BLOCK));
 		registry.register(itemBlock(ModBlocks.FIRE_BRICK_BLOCK));
 		registry.register(itemBlock(ModBlocks.FIRE_BRICKS));
+		registry.register(itemBlock(ModBlocks.AIR_VENT));
+		registry.register(itemBlock(ModBlocks.FIRE_BRICKS_GLASS));
+		registry.register(itemBlock(ModBlocks.FIRE_BRICKS_WINDOW));
 	}
 
 	@SuppressWarnings("ConstantConditions")

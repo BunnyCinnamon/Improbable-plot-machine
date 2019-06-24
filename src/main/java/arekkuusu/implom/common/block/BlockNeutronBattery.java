@@ -17,6 +17,7 @@ import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.base.BlockBaseFacing;
 import arekkuusu.implom.common.block.tile.TileNeutronBattery;
 import arekkuusu.implom.common.item.ItemQuartz;
 import arekkuusu.implom.common.item.ModItems;

@@ -8,6 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.common.block.base.BlockBaseFacing;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;

@@ -73,4 +73,8 @@ public class LibNames {
 	public static final String FIRE_CLAY_BLOCK = "fire_clay_block";
 	public static final String FIRE_BRICK_BLOCK = "fire_brick_block";
 	public static final String FIRE_BRICKS = "fire_bricks";
+	public static final String AIR_VENT = "air_vent";
+	public static final String FIRE_BRICKS_GLASS = "fire_bricks_glass";
+	public static final String IGNITED_COAL = "ignited_coal";
+	public static final String FIRE_BRICKS_WINDOW = "fire_bricks_window";
 }

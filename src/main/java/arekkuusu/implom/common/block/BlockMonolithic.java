@@ -8,17 +8,14 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.client.helper.Tooltip;
-import net.katsstuff.teamnightclipse.mirror.data.Vector3;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -30,7 +27,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 /*
  * Created by <Arekkuusu> on 11/12/2017.

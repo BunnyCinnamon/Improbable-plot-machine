@@ -11,6 +11,7 @@ import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHelper;
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.block.tile.TileQuanta;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.SoundType;

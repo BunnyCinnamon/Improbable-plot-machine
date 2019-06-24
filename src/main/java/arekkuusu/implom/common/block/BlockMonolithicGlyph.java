@@ -8,6 +8,7 @@
 package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibNames;

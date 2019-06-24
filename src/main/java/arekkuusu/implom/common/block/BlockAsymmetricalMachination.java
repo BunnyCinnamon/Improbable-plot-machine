@@ -14,6 +14,7 @@ import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelRendered;
 import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.base.BlockBaseFacing;
 import arekkuusu.implom.common.block.tile.TileAsymmetricalMachination;
 import arekkuusu.implom.common.lib.LibNames;
 import com.google.common.collect.ImmutableMap;

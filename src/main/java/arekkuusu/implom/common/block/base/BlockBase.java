@@ -5,10 +5,11 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Improbable-plot-machine
  */
-package arekkuusu.implom.common.block;
+package arekkuusu.implom.common.block.base;
 
 import arekkuusu.implom.client.util.helper.IModel;
 import arekkuusu.implom.client.util.helper.ModelHelper;
+import arekkuusu.implom.common.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -43,12 +44,12 @@ public class BlockBase extends Block implements IModel {
 		return super.setSoundType(type);
 	}
 
-	IBlockState defaultState() {
+	public IBlockState defaultState() {
 		return blockState.getBaseState();
 	}
 
 	@SuppressWarnings("unchecked")
-	<T extends TileEntity> Optional<T> getTile(Class<T> clazz, IBlockAccess world, BlockPos pos) {
+	public <T extends TileEntity> Optional<T> getTile(Class<T> clazz, IBlockAccess world, BlockPos pos) {
 		TileEntity tile = world.getTileEntity(pos);
 		return clazz.isInstance(tile) ? Optional.of((T) tile) : Optional.empty();
 	}

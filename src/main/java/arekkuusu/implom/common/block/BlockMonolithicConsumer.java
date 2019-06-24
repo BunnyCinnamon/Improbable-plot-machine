@@ -11,6 +11,7 @@ import arekkuusu.implom.api.util.IPMMaterial;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.block.tile.TileQuartzConsumer;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;

@@ -5,7 +5,7 @@
  * The source code is available on github:
  * https://github.com/ArekkuusuJerii/Improbable-plot-machine
  */
-package arekkuusu.implom.common.block;
+package arekkuusu.implom.common.block.base;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;

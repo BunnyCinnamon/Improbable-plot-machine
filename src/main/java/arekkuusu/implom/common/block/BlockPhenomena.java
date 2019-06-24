@@ -9,6 +9,7 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.util.IPMMaterial;
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.block.tile.TilePhenomena;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.Block;

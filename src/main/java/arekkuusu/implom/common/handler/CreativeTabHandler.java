@@ -82,6 +82,9 @@ public final class CreativeTabHandler {
 			addItem(ModItems.FIRE_BRICK_PLATE);
 			addBlock(ModBlocks.FIRE_BRICK_BLOCK);
 			addBlock(ModBlocks.FIRE_BRICKS);
+			addBlock(ModBlocks.FIRE_BRICKS_GLASS);
+			addBlock(ModBlocks.FIRE_BRICKS_WINDOW);
+			addBlock(ModBlocks.AIR_VENT);
 			addItem(ModItems.GOLD_PLATE);
 			addItem(ModItems.MAGNETIC_PLATE);
 			addItem(ModItems.MAGNETIC_BOLT);

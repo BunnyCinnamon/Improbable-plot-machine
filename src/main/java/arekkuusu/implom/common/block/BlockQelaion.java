@@ -16,6 +16,7 @@ import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelQelaion;
 import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.block.tile.TileQelaion;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;

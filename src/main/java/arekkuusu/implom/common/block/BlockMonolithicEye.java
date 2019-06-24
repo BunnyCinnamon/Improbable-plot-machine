@@ -11,6 +11,7 @@ import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.client.effect.Light;
 import arekkuusu.implom.client.util.ResourceLibrary;
 import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.entity.EntityEyeOfSchrodinger;
 import arekkuusu.implom.common.lib.LibNames;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;

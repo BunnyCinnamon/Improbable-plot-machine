@@ -9,6 +9,7 @@ package arekkuusu.implom.common.block;
 
 import arekkuusu.implom.api.util.RandomCollection;
 import arekkuusu.implom.common.IPM;
+import arekkuusu.implom.common.block.base.BlockBase;
 import arekkuusu.implom.common.handler.ConfigHandler;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.block.SoundType;

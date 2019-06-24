@@ -7,6 +7,8 @@
  */
 package arekkuusu.implom.common.block;
 
+import arekkuusu.implom.common.block.base.BlockBase;
+import arekkuusu.implom.common.block.base.BlockBaseGlass;
 import arekkuusu.implom.common.block.fluid.ModFluids;
 import arekkuusu.implom.common.block.tile.*;
 import arekkuusu.implom.common.handler.CreativeTabHandler;
@@ -61,6 +63,10 @@ public final class ModBlocks {
 	public static final Block FIRE_CLAY_BLOCK = PLACE_HOLDER;
 	public static final Block FIRE_BRICK_BLOCK = PLACE_HOLDER;
 	public static final Block FIRE_BRICKS = PLACE_HOLDER;
+	public static final Block AIR_VENT = PLACE_HOLDER;
+	public static final Block FIRE_BRICKS_GLASS = PLACE_HOLDER;
+	public static final Block IGNITED_COAL = PLACE_HOLDER;
+	public static final Block FIRE_BRICKS_WINDOW = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
@@ -96,6 +102,10 @@ public final class ModBlocks {
 		registry.register(new BlockFireClayBricks());
 		registry.register(new BlockBase(LibNames.FIRE_BRICK_BLOCK, Material.ROCK));
 		registry.register(new BlockBase(LibNames.FIRE_BRICKS, Material.ROCK));
+		registry.register(new BlockBase(LibNames.AIR_VENT, Material.GLASS));
+		registry.register(new BlockBaseGlass(LibNames.FIRE_BRICKS_GLASS, Material.GLASS));
+		registry.register(new BlockIgnitedCoal());
+		registry.register(new BlockBaseGlass(LibNames.FIRE_BRICKS_WINDOW, Material.GLASS));
 		registerTiles();
 	}
 
@@ -127,7 +137,7 @@ public final class ModBlocks {
 		GameRegistry.registerTileEntity(tile, new ResourceLocation(LibMod.MOD_ID, name));
 	}
 
-	@SuppressWarnings({"UnusedReturnValue", "WeakerAccess"}) //Shut up
+	@SuppressWarnings({"UnusedReturnValue"}) //Shut up
 	public static Block setRegistry(Block block, String id) {
 		block.setUnlocalizedName(id);
 		block.setRegistryName(LibMod.MOD_ID, id);
