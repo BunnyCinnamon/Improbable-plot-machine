@@ -150,7 +150,6 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void initEntityAI() {
 		EntityAIBase attack = new EyeAIAttack(this);
 		this.tasks.addTask(1, new EyeAIRunAway(this, attack));
@@ -160,7 +159,7 @@ public class EntityEyeOfSchrodinger extends EntityMob {
 		this.tasks.addTask(5, new EntityAISwimming(this));
 		this.tasks.addTask(6, new EntityAIWatchClosest(this, Entity.class, 8));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 2, true, false, new AITargetSelector()));
+		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityLivingBase.class, 2, true, false, new AITargetSelector()));
 	}
 
 	@Override

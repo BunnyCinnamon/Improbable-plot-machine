@@ -26,7 +26,7 @@ public class TileNeutronBatteryRenderer extends TileEntitySpecialRenderer<TileNe
 	@Override
 	public void render(TileNeutronBattery te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		renderModel(te.wrapper.inventoryInstance.getCapacitor(), te.getFacingLazy(), x, y, z, partialTicks);
+		renderModel(te.provider.inventoryInstance.getCapacitor(), te.getFacingLazy(), x, y, z, partialTicks);
 	}
 
 	public static void renderModel(BatteryCapacitor capacity, EnumFacing facing, double x, double y, double z, float partialTicks) {

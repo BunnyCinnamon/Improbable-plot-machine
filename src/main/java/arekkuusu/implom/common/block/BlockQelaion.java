@@ -47,6 +47,7 @@ import java.util.Random;
 public class BlockQelaion extends BlockBase {
 
 	public static final AxisAlignedBB BB = new AxisAlignedBB(0.0625, 0.0625, 0.0625, 0.9375, 0.9375, 0.9375);
+	public static final Properties.UnlistedDirection DIRECTION = new Properties.UnlistedDirection("direction");
 
 	public BlockQelaion() {
 		super(LibNames.QELAION, IPMMaterial.MONOLITH);
@@ -102,7 +103,7 @@ public class BlockQelaion extends BlockBase {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer.Builder(this).add(Properties.ACTIVE).add(Properties.DIR_UNLISTED).build();
+		return new BlockStateContainer.Builder(this).add(Properties.ACTIVE).add(DIRECTION).build();
 	}
 
 	@Override
@@ -112,7 +113,7 @@ public class BlockQelaion extends BlockBase {
 					.filter(f -> !tile.facings.contains(f))
 					.distinct()
 					.toArray(EnumFacing[]::new));
-			return (IBlockState) ((IExtendedBlockState) state).withProperty(Properties.DIR_UNLISTED, direction);
+			return (IBlockState) ((IExtendedBlockState) state).withProperty(DIRECTION, direction);
 		}).orElse(super.getExtendedState(state, world, pos));
 	}
 

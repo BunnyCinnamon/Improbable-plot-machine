@@ -17,9 +17,6 @@ public final class SpriteLibrary {
 	public static final SpriteAtlasResource QUANTA = find(
 			ResourceLibrary.QUANTA
 	);
-	public static final SpriteAtlasResource MUTATOR_SELECTION = find(
-			ResourceLibrary.MUTATOR_SELECTION
-	);
 	public static final SpriteFrameResource QUANTUM_MIRROR = load(
 			ResourceLibrary.QUANTUM_MIRROR, 9, 1
 	);

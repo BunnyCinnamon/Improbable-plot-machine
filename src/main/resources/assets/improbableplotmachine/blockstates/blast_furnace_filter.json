@@ -1,0 +1,44 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "front": "improbableplotmachine:blocks/blast_furnace_filter/front",
+            "back": "improbableplotmachine:blocks/blast_furnace_filter/sides",
+            "sides": "improbableplotmachine:blocks/blast_furnace_filter/front",
+            "particle": "improbableplotmachine:blocks/blast_furnace_filter/sides"
+        },
+        "model": "improbableplotmachine:block_front",
+        "uvlock": true,
+		"x": 180
+    },
+    "variants": {
+        "normal": [
+            {
+            }
+        ],
+        "inventory": [
+            {
+            }
+        ],
+        "facing": {
+            "up": {
+                "x": 270
+            },
+            "down": {
+                "x": 90
+            },
+            "north": {
+				"x": 0
+            },
+            "south": {
+                "y": 180
+            },
+            "east": {
+                "y": 90
+            },
+            "west": {
+                "y": 270
+            }
+        }
+    }
+}

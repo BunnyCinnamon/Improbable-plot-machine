@@ -7,15 +7,13 @@
  */
 package arekkuusu.implom.common.block.tile;
 
+import arekkuusu.implom.api.capability.PositionsHelper;
 import arekkuusu.implom.api.capability.data.PositionsNBTData;
 import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.helper.FacingHelper;
-import arekkuusu.implom.api.capability.PositionsHelper;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.client.util.helper.ProfilerHelper;
-import arekkuusu.implom.common.block.BlockMechanicalTranslocator;
-import arekkuusu.implom.common.handler.data.capability.nbt.PositionsNBTDataCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.PositionsNBTProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.PositionsDefaultProvider;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -43,24 +41,17 @@ import static net.minecraft.util.EnumFacing.UP;
  */
 public class TileMechanicalTranslocator extends TileBase implements INBTDataTransferableImpl {
 
+	public final PositionsDefaultProvider provider = new PositionsDefaultProvider(this);
 	public boolean powered;
-	public final PositionsNBTProvider wrapper = new PositionsNBTProvider(new PositionsNBTDataCapability() {
-		@Override
-		public void setKey(@Nullable UUID uuid) {
-			wrapper.instance.remove(getWorld(), getPos(), getFacingLazy());
-			super.setKey(uuid);
-			wrapper.instance.add(getWorld(), getPos(), getFacingLazy());
-			markDirty();
-		}
-	});
 
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		boolean refresh = super.shouldRefresh(world, pos, oldState, newState);
 		if(!refresh && oldState != newState) {
-			int index = wrapper.instance.index(world, pos, getFacingLazy());
+			int index = provider.positionsNBTDataCapability.index(world, pos, getFacingLazy());
 			if(index != -1)
-				wrapper.instance.get().get(index).setFacing(newState.getValue(BlockDirectional.FACING));
+				provider.positionsNBTDataCapability.get().get(index)
+						.setFacing(newState.getValue(BlockDirectional.FACING));
 		}
 		return refresh;
 	}
@@ -68,9 +59,9 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 	public void activate() {
 		if(!world.isRemote && isActive() && canSend()) {
 			ProfilerHelper.begin("[Mechanical Translocator] Relocating block");
-			List<PositionsNBTData.Position> list = wrapper.instance.get();
+			List<PositionsNBTData.Position> list = provider.positionsNBTDataCapability.get();
 			if(!list.isEmpty() && list.size() > 1) {
-				int index = wrapper.instance.index(getWorld(), getPos(), getFacingLazy());
+				int index = provider.positionsNBTDataCapability.index(getWorld(), getPos(), getFacingLazy());
 				if(index == -1) return;
 				PositionsNBTData.Position origin = list.get(index);
 				if(origin.getWorld() != null && origin.getPos() != null && origin.getFacing() != null) {
@@ -174,27 +165,31 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return wrapper.hasCapability(capability, facing) || super.hasCapability(capability, facing);
+		return provider.hasCapability(capability, facing) || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return wrapper.hasCapability(capability, facing)
-				? wrapper.getCapability(capability, facing)
+		return provider.hasCapability(capability, facing)
+				? provider.getCapability(capability, facing)
 				: super.getCapability(capability, facing);
 	}
 
+	/* NBT */
+	public static final String NBT_PROVIDER = "provider";
+	public static final String NBT_POWERED = "powered";
+
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setTag(BlockMechanicalTranslocator.Constants.NBT_POSITIONS, wrapper.serializeNBT());
-		compound.setBoolean(BlockMechanicalTranslocator.Constants.NBT_POWERED, powered);
+		compound.setTag(NBT_PROVIDER, provider.serializeNBT());
+		compound.setBoolean(NBT_POWERED, powered);
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		wrapper.deserializeNBT(compound.getCompoundTag(BlockMechanicalTranslocator.Constants.NBT_POSITIONS));
-		powered = compound.getBoolean(BlockMechanicalTranslocator.Constants.NBT_POWERED);
+		provider.deserializeNBT(compound.getCompoundTag(NBT_PROVIDER));
+		powered = compound.getBoolean(NBT_POWERED);
 	}
 
 	@Override
@@ -204,22 +199,22 @@ public class TileMechanicalTranslocator extends TileBase implements INBTDataTran
 
 	@Override
 	public void setKey(@Nullable UUID uuid) {
-		wrapper.instance.setKey(uuid);
+		provider.positionsNBTDataCapability.setKey(uuid);
 	}
 
 	@Nullable
 	@Override
 	public UUID getKey() {
-		return wrapper.instance.getKey();
+		return provider.positionsNBTDataCapability.getKey();
 	}
 
 	@Override
 	public void fromItemStack(ItemStack stack) {
-		PositionsHelper.getCapability(stack).map(IPositionsNBTDataCapability::getKey).ifPresent(wrapper.instance::setKey);
+		PositionsHelper.getCapability(stack).map(IPositionsNBTDataCapability::getKey).ifPresent(this::setKey);
 	}
 
 	@Override
 	public void toItemStack(ItemStack stack) {
-		PositionsHelper.getCapability(stack).ifPresent(instance -> instance.setKey(wrapper.instance.getKey()));
+		PositionsHelper.getCapability(stack).ifPresent(instance -> instance.setKey(this.getKey()));
 	}
 }

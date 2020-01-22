@@ -25,7 +25,7 @@ public class InventoryNeutronCapability implements IItemHandlerModifiable, INBTS
 
 	@Override
 	public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-		return stack.getItem() == ModItems.QUARTZ && NBTHelper.getEnum(ItemQuartz.Quartz.class, stack, ItemQuartz.Constants.NBT_QUARTZ)
+		return stack.getItem() == ModItems.QUARTZ && NBTHelper.getEnum(ItemQuartz.Quartz.class, NBTHelper.fixNBT(stack), ItemQuartz.Constants.NBT_QUARTZ)
 				.map(q -> q.size == ItemQuartz.Quartz.Size.MEDIUM)
 				.orElse(false);
 	}
@@ -34,8 +34,8 @@ public class InventoryNeutronCapability implements IItemHandlerModifiable, INBTS
 	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
 		this.stack = stack;
 		if(!stack.isEmpty()) {
-			ItemQuartz.Quartz quartz = NBTHelper.getEnum(ItemQuartz.Quartz.class, stack, ItemQuartz.Constants.NBT_QUARTZ).orElse(null);
-			capacitor = BlockNeutronBattery.Constants.QUARTZ_TO_BATTERY.get(quartz);
+			ItemQuartz.Quartz quartz = NBTHelper.getEnum(ItemQuartz.Quartz.class, NBTHelper.fixNBT(stack), ItemQuartz.Constants.NBT_QUARTZ).orElse(null);
+			capacitor = BlockNeutronBattery.Conversions.QUARTZ_TO_BATTERY.get(quartz);
 		} else capacitor = null;
 	}
 

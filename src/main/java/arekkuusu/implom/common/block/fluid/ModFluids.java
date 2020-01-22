@@ -10,6 +10,8 @@ package arekkuusu.implom.common.block.fluid;
 import arekkuusu.implom.common.lib.LibMod;
 import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -26,8 +28,15 @@ public final class ModFluids {
 
 	public final static Set<Block> FLUIDS = Sets.newHashSet();
 
-	static {
+	public static Fluid HOT_AIR;
 
+	static {
+		HOT_AIR = create("hot_air",
+				f -> new BlockFluid(f, Material.AIR),
+				f -> f.setLuminosity(15).setGaseous(true).setDensity(-1).setTemperature(1300)
+						.setEmptySound(SoundEvents.ITEM_BUCKET_EMPTY)
+						.setFillSound(SoundEvents.ITEM_BUCKET_FILL)
+		);
 	}
 
 	private static Fluid create(String name, Function<Fluid, Block> f, Consumer<Fluid> c) {
@@ -37,7 +46,8 @@ public final class ModFluids {
 		);
 		if(!FluidRegistry.registerFluid(fluid)) {
 			fluid = FluidRegistry.getFluid(name);
-		} else {
+		}
+		else {
 			Block block = f.apply(fluid);
 			c.accept(fluid.setBlock(block).setUnlocalizedName(block.getUnlocalizedName()));
 			FluidRegistry.addBucketForFluid(fluid);

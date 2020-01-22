@@ -153,8 +153,4 @@ public class BlockQimranut extends BlockBaseFacing {
 		);
 		ModelHelper.registerModel(this, 0, "");
 	}
-
-	public static class Constants {
-		public static final String NBT_WORLD_ACCESS = "worldaccess";
-	}
 }

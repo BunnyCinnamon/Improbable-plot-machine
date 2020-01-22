@@ -56,7 +56,7 @@ public class ClockworkRemoveQuartzRecipe extends IForgeRegistryEntry.Impl<IRecip
 			ItemStack stack = inv.getStackInSlot(i);
 			if(stack.getItem() == ModItems.CLOCKWORK) {
 				ItemStack clockwork = stack.copy();
-				NBTHelper.setBoolean(clockwork, ItemClockwork.Constants.NBT_UNSEALED, true);
+				NBTHelper.setBoolean(NBTHelper.fixNBT(clockwork), ItemClockwork.Constants.NBT_UNSEALED, true);
 				InventoryHelper.getCapability(clockwork).map(c -> c.extractItem(0, 1, false));
 				ret.set(i, clockwork);
 				break;

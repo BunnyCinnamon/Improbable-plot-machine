@@ -60,7 +60,7 @@ public class BlockAlternator extends BlockBase {
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		getTile(TileAlternator.class, worldIn, pos).ifPresent(tile -> {
-			tile.wrapper.instance.remove(worldIn, pos, null);
+			tile.provider.positionsNBTDataCapability.remove(worldIn, pos, null);
 		});
 		super.breakBlock(worldIn, pos, state);
 	}
@@ -154,9 +154,5 @@ public class BlockAlternator extends BlockBase {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileAlternator();
-	}
-
-	public static class Constants {
-		public static final String NBT_POSITIONS = "positions";
 	}
 }

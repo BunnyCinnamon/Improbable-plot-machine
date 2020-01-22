@@ -1,0 +1,23 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "front": "improbableplotmachine:blocks/blast_furnace_tank/back",
+            "back": "improbableplotmachine:blocks/blast_furnace_tank/front",
+            "sides": "improbableplotmachine:blocks/blast_furnace_tank/full",
+            "particle": "improbableplotmachine:blocks/blast_furnace_tank/back"
+        },
+        "model": "improbableplotmachine:block_front",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [
+            {
+            }
+        ],
+        "inventory": [
+            {
+            }
+        ]
+    }
+}

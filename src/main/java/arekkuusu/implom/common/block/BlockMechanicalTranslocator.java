@@ -85,7 +85,7 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		getTile(TileMechanicalTranslocator.class, worldIn, pos).ifPresent(tile -> {
-			tile.wrapper.instance.remove(worldIn, pos, state.getValue(BlockDirectional.FACING));
+			tile.provider.positionsNBTDataCapability.remove(worldIn, pos, state.getValue(BlockDirectional.FACING));
 		});
 		super.breakBlock(worldIn, pos, state);
 	}
@@ -208,10 +208,5 @@ public class BlockMechanicalTranslocator extends BlockBaseFacing {
 				).setParticle(ResourceLibrary.MECHANICAL_TRANSLOCATOR)
 		);
 		ModelHelper.registerModel(this, 0, "");
-	}
-
-	public static class Constants {
-		public static final String NBT_POSITIONS = "positions";
-		public static final String NBT_POWERED = "powered";
 	}
 }

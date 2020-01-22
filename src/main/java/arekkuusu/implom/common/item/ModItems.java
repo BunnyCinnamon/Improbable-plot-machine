@@ -70,6 +70,7 @@ public final class ModItems {
 	public static final Item FIRE_CLAY = PLACE_HOLDER;
 	public static final Item FIRE_CLAY_BRICK = PLACE_HOLDER;
 	public static final Item FIRE_CLAY_PLATE = PLACE_HOLDER;
+	public static final Item MOMENTUM_OSCILLATOR = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Item> registry) {
 		registry.register(new ItemQuantumMirror());
@@ -132,9 +133,19 @@ public final class ModItems {
 		registry.register(itemBlock(ModBlocks.FIRE_CLAY_BLOCK));
 		registry.register(itemBlock(ModBlocks.FIRE_BRICK_BLOCK));
 		registry.register(itemBlock(ModBlocks.FIRE_BRICKS));
-		registry.register(itemBlock(ModBlocks.AIR_VENT));
 		registry.register(itemBlock(ModBlocks.FIRE_BRICKS_GLASS));
 		registry.register(itemBlock(ModBlocks.FIRE_BRICKS_WINDOW));
+		registry.register(new ItemBase(LibNames.MOMENTUM_OSCILLATOR));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_CONTROLLER));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_DRAIN));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_FILTER));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_INPUT));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_TUYERE));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_AIR_VENT));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_AIR_PUMP));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_PIPE));
+		registry.register(itemBlock(ModBlocks.HOT_BLAST_HEATER));
+		registry.register(itemBlock(ModBlocks.BLAST_FURNACE_PIPE_GAUGE));
 	}
 
 	@SuppressWarnings("ConstantConditions")

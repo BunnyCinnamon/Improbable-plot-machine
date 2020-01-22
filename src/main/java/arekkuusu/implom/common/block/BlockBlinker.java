@@ -79,8 +79,8 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 		getTile(TileBlinker.class, worldIn, pos).ifPresent(tile -> {
-			tile.wrapper.positionInstance.remove(worldIn, pos, state.getValue(BlockDirectional.FACING));
-			tile.wrapper.redstoneInstance.set(0);
+			tile.provider.positionsNBTDataCapability.remove(worldIn, pos, state.getValue(BlockDirectional.FACING));
+			tile.provider.redstoneNBTCapability.set(0);
 		});
 		super.breakBlock(worldIn, pos, state);
 	}
@@ -96,7 +96,7 @@ public class BlockBlinker extends BlockBaseFacing {
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if(block != this) {
 			getTile(TileBlinker.class, world, pos).ifPresent(tile -> {
-				tile.wrapper.redstoneInstance.set(0);
+				tile.provider.redstoneNBTCapability.set(0);
 			});
 		}
 	}
@@ -105,7 +105,7 @@ public class BlockBlinker extends BlockBaseFacing {
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if(!world.isRemote) {
 			getTile(TileBlinker.class, world, pos).ifPresent(tile -> {
-				boolean active = tile.wrapper.redstoneInstance.get() > 0;
+				boolean active = tile.provider.redstoneNBTCapability.get() > 0;
 				if(active != state.getValue(Properties.ACTIVE)) {
 					world.setBlockState(pos, state.withProperty(Properties.ACTIVE, active));
 					for(EnumFacing facing : EnumFacing.values()) {
@@ -174,7 +174,7 @@ public class BlockBlinker extends BlockBaseFacing {
 		EnumFacing facing = state.getValue(BlockDirectional.FACING);
 		return !world.getBlockState(pos.offset(facing)).canProvidePower() || facing != side.getOpposite()
 				? getTile(TileBlinker.class, world, pos)
-				.map(tile -> tile.wrapper.redstoneInstance.get())
+				.map(tile -> tile.provider.redstoneNBTCapability.get())
 				.orElse(0) : 0;
 	}
 
@@ -182,7 +182,7 @@ public class BlockBlinker extends BlockBaseFacing {
 	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return !world.getBlockState(pos.offset(side.getOpposite())).canProvidePower()
 				? getTile(TileBlinker.class, world, pos)
-				.map(tile -> tile.wrapper.redstoneInstance.get())
+				.map(tile -> tile.provider.redstoneNBTCapability.get())
 				.orElse(0) : 0;
 	}
 
@@ -231,9 +231,5 @@ public class BlockBlinker extends BlockBaseFacing {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileBlinker();
-	}
-
-	public static class Constants {
-		public static final String NBT_REDSTONE = "redstone";
 	}
 }

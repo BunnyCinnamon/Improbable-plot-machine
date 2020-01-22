@@ -7,12 +7,10 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.capability.PositionsHelper;
+import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.common.block.BlockAlternator;
-import arekkuusu.implom.common.handler.data.capability.nbt.PositionsNBTDataCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.PositionsNBTProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.PositionsDefaultProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -27,18 +25,10 @@ import java.util.UUID;
  */
 public class TileAlternator extends TileBase implements INBTDataTransferableImpl {
 
-	public final PositionsNBTProvider wrapper = new PositionsNBTProvider(new PositionsNBTDataCapability() {
-		@Override
-		public void setKey(@Nullable UUID uuid) {
-			wrapper.instance.remove(getWorld(), getPos(), null);
-			super.setKey(uuid);
-			wrapper.instance.add(getWorld(), getPos(), null);
-			markDirty();
-		}
-	});
+	public final PositionsDefaultProvider provider = new PositionsDefaultProvider(this);
 
 	public boolean areAllActive() {
-		return wrapper.instance.get().stream().noneMatch(wa -> (
+		return provider.positionsNBTDataCapability.get().stream().noneMatch(wa -> (
 				(wa.getWorld() == null || wa.getPos() == null) || !(wa.getWorld().isBlockLoaded(wa.getPos()))
 		));
 	}
@@ -49,25 +39,28 @@ public class TileAlternator extends TileBase implements INBTDataTransferableImpl
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return wrapper.hasCapability(capability, facing) || super.hasCapability(capability, facing);
+		return provider.hasCapability(capability, facing) || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return wrapper.hasCapability(capability, facing)
-				? wrapper.getCapability(capability, facing)
+		return provider.hasCapability(capability, facing)
+				? provider.getCapability(capability, facing)
 				: super.getCapability(capability, facing);
 	}
 
+	/* NBT */
+	public static final String NBT_PROVIDER = "provider";
+
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setTag(BlockAlternator.Constants.NBT_POSITIONS, wrapper.serializeNBT());
+		compound.setTag(NBT_PROVIDER, provider.serializeNBT());
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		wrapper.deserializeNBT(compound.getCompoundTag(BlockAlternator.Constants.NBT_POSITIONS));
+		provider.deserializeNBT(compound.getCompoundTag(NBT_PROVIDER));
 	}
 
 	@Override
@@ -76,23 +69,23 @@ public class TileAlternator extends TileBase implements INBTDataTransferableImpl
 	}
 
 	@Override
-	public void setKey(UUID uuid) {
-		wrapper.instance.setKey(uuid);
+	public void setKey(@Nullable UUID uuid) {
+		provider.positionsNBTDataCapability.setKey(uuid);
 	}
 
 	@Nullable
 	@Override
 	public UUID getKey() {
-		return wrapper.instance.getKey();
+		return provider.positionsNBTDataCapability.getKey();
 	}
 
 	@Override
 	public void fromItemStack(ItemStack stack) {
-		PositionsHelper.getCapability(stack).map(IPositionsNBTDataCapability::getKey).ifPresent(wrapper.instance::setKey);
+		PositionsHelper.getCapability(stack).map(IPositionsNBTDataCapability::getKey).ifPresent(this::setKey);
 	}
 
 	@Override
 	public void toItemStack(ItemStack stack) {
-		PositionsHelper.getCapability(stack).ifPresent(instance -> instance.setKey(wrapper.instance.getKey()));
+		PositionsHelper.getCapability(stack).ifPresent(instance -> instance.setKey(this.getKey()));
 	}
 }

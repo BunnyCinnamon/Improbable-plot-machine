@@ -37,8 +37,8 @@ public final class FXUtil {
 		add(new ParticleNeutronBlast(world, pos, speed, scale, age, rgb, light, location, collide));
 	}
 
-	public static void spawnArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
-		add(new ParticleArcDischarge(world, from, to, generations, offset, age, rgb, branch, fade));
+	public static void spawnArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch) {
+		add(new ParticleArcDischarge(world, from, to, generations, offset, age, rgb, branch));
 	}
 
 	public static void spawnBeam(World world, Vector3 from, Vector3 direction, float distance, int amount, float size, int rgb, Light light, ResourceLocation location) {

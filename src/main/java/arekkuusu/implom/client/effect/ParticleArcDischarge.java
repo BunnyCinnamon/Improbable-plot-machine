@@ -13,10 +13,10 @@ import com.google.common.collect.Lists;
 import net.katsstuff.teamnightclipse.mirror.data.MutableVector3;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
@@ -36,16 +36,16 @@ public class ParticleArcDischarge extends ParticleBase {
 	private List<VoltSegment> segments = Lists.newArrayList();
 	private final int generations;
 	private final boolean branch;
-	private final boolean fade;
 	private float offset;
 
-	ParticleArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
+	ParticleArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch) {
 		super(world, from.add(to).divide(2D), Vector3.Zero(), 0, age, rgb, Light.GLOW, ResourceLibrary.EMPTY);
 		this.segments.add(new VoltSegment(from, to));
 		this.generations = generations;
 		this.branch = branch;
 		this.offset = offset;
-		this.fade = fade;
+		setParticleTexture(ResourceLibrary.VOLT_PARTICLE);
+		setRBGColorF(166F / 255F,  166F / 255F, 205F / 255F);
 		calculateBolts();
 	}
 
@@ -75,15 +75,10 @@ public class ParticleArcDischarge extends ParticleBase {
 							.add(mid)
 							.asImmutable();
 					VoltSegment sub = new VoltSegment(mid.asImmutable(), splitEnd);
-					sub.alpha = segment.alpha;
 					temp.add(sub);
 				}
 				VoltSegment one = new VoltSegment(from, mid.asImmutable());
 				VoltSegment two = new VoltSegment(mid.asImmutable(), to);
-				if(fade) {
-					one.alpha = segment.alpha * 0.5F;
-					two.alpha = segment.alpha;
-				}
 				temp.add(one);
 				temp.add(two);
 				if(branched.isEmpty() || branched.contains(segment)) {
@@ -101,12 +96,28 @@ public class ParticleArcDischarge extends ParticleBase {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticleGlow(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		Tessellator.getInstance().draw();
 
-		GlStateManager.disableTexture2D();
-		segments.forEach(VoltSegment::render);
-		GlStateManager.enableTexture2D();
+		GlStateManager.pushMatrix();
+		Entity rView = Minecraft.getMinecraft().getRenderViewEntity();
+		if(rView == null) rView = Minecraft.getMinecraft().player;
+		Entity entity = rView;
+		double tx = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * partialTicks);
+		double ty = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * partialTicks);
+		double tz = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * partialTicks);
+		GlStateManager.translate(-tx, -ty, -tz);
+
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder buf = tes.getBuffer();
+		buf.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
+
+		for (VoltSegment s : segments) {
+			s.render(buffer, partialTicks);
+		}
+
+		tes.draw();
+		GlStateManager.popMatrix();
 
 		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 	}
@@ -124,6 +135,11 @@ public class ParticleArcDischarge extends ParticleBase {
 		}
 	}
 
+	@Override
+	public boolean isAdditive() {
+		return true;
+	}
+
 	private class VoltSegment {
 
 		private final Vector3 from;
@@ -135,22 +151,62 @@ public class ParticleArcDischarge extends ParticleBase {
 			this.to = to;
 		}
 
-		void render() {
-			Tessellator tessellator = Tessellator.getInstance();
-			BufferBuilder buff = tessellator.getBuffer();
+		void render(BufferBuilder buff, float partialTicks) {
+			renderCurrentTextureAroundAxis(buff, from, to, 0F, partialTicks);
+			renderCurrentTextureAroundAxis(buff, from, to, 90F, partialTicks);
+		}
 
-			buff.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-			buff.setTranslation(
-					-TileEntityRendererDispatcher.staticPlayerX,
-					-TileEntityRendererDispatcher.staticPlayerY,
-					-TileEntityRendererDispatcher.staticPlayerZ
-			);
-			buff.pos(from.x(), from.y(), from.z()).color(getRedColorF(), getGreenColorF(), getBlueColorF(), alpha * particleAlpha)
-					.endVertex();
-			buff.pos(to.x(), to.y(), to.z()).color(getRedColorF(), getGreenColorF(), getBlueColorF(), alpha * particleAlpha)
-					.endVertex();
-			buff.setTranslation(0, 0, 0);
-			tessellator.draw();
+		private void renderCurrentTextureAroundAxis(BufferBuilder buf, Vector3 from, Vector3 to, double angle, float partialTicks) {
+			Vector3 distance = to.subtract(from);
+			from = from.offset(distance, -0.1);
+			to = to.offset(distance, 0.1);
+			Vector3 aim = to.subtract(from).normalize();
+			Vector3 aimPerp = perpendicular(aim).normalize();
+			Vector3 perp = aimPerp.rotate(Quat.fromAxisAngle(aim, angle)).normalize();
+			Vector3 perpFrom = perp.multiply(0.035);
+			Vector3 perpTo = perp.multiply(0.035);
+
+			double uMin = 0F;
+			double uMax = 1F;
+			double vMin = 0F;
+			double vMax = 1F;
+			int light = getBrightnessForRender(partialTicks);
+			if(particleTexture != null) {
+				uMin = particleTexture.getMinU();
+				uMax = particleTexture.getMaxU();
+				vMin = particleTexture.getMinV();
+				vMax = particleTexture.getMaxV();
+			}
+
+			Vector3 vec = from.add(perpFrom.multiply(-1));
+			buf.pos(vec.getX(), vec.getY(), vec.getZ()).tex(uMax, vMax).color(particleRed, particleGreen, particleBlue, 1).lightmap(light, light).endVertex();
+			vec = from.add(perpFrom);
+			buf.pos(vec.getX(), vec.getY(), vec.getZ()).tex(uMax, vMin).color(particleRed, particleGreen, particleBlue, 1).lightmap(light, light).endVertex();
+			vec = to.add(perpTo);
+			buf.pos(vec.getX(), vec.getY(), vec.getZ()).tex(uMin, vMin).color(particleRed, particleGreen, particleBlue, 1).lightmap(light, light).endVertex();
+			vec = to.add(perpTo.multiply(-1));
+			buf.pos(vec.getX(), vec.getY(), vec.getZ()).tex(uMin, vMax).color(particleRed, particleGreen, particleBlue, 1).lightmap(light, light).endVertex();
+		}
+
+		public Vector3 perpendicular(Vector3 vec) {
+			if (vec.z() == 0.0D) {
+				return zCrossProduct(vec);
+			}
+			return xCrossProduct(vec);
+		}
+
+		public Vector3 xCrossProduct(Vector3 vec) {
+			double x = 0.0D;
+			double y = vec.z();
+			double z = -vec.y();
+			return vec.create(x, y, z);
+		}
+
+		public Vector3 zCrossProduct(Vector3 vec) {
+			double x = vec.y();
+			double y = -vec.x();
+			double z = 0.0D;
+			return vec.create(x, y, z);
 		}
 	}
 }

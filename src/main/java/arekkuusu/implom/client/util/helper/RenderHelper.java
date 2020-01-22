@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -21,6 +22,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -36,6 +38,7 @@ import java.util.Random;
 public final class RenderHelper {
 
 	private static final Random BEAM_RAND = new Random();
+	public static float FLUID_OFFSET = 0.005f;
 
 	public static float getRenderWorldTime(float partialTicks) {
 		return (Minecraft.getSystemTime() + partialTicks) / 20F;
@@ -129,6 +132,233 @@ public final class RenderHelper {
 			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();
 		}
+	}
+
+	public static void renderFluidCuboid(FluidStack fluid, double renderX, double renderY, double renderZ,
+										 BlockPos lightPos, BlockPos from, BlockPos to,
+										 double ymin, double ymax, float edgeSpacingOffset) {
+		pre(renderX, renderY, renderZ);
+		GlStateManager.translate(from.getX(), from.getY(), from.getZ());
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder renderer = tessellator.getBuffer();
+		renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
+		TextureAtlasSprite still = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
+		TextureAtlasSprite flowing = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
+		if(still == null)
+			still = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+		if(flowing == null)
+			flowing = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+
+		boolean upsideDown = fluid.getFluid().isGaseous(fluid);
+
+		int brightness = Minecraft.getMinecraft().world.getCombinedLight(lightPos, fluid.getFluid().getLuminosity());
+		int l1 = brightness >> 0x10 & 0xFFFF;
+		int l2 = brightness & 0xFFFF;
+
+		int color = fluid.getFluid().getColor(fluid);
+		int a = color >> 24 & 0xFF;
+		int r = color >> 16 & 0xFF;
+		int g = color >> 8 & 0xFF;
+		int b = color & 0xFF;
+
+		int yminInt = (int) ymin;
+
+		int xd = to.getX() - from.getX();
+		int yd = (int) (ymax - yminInt);
+		int zd = to.getZ() - from.getZ();
+
+		if(ymax % 1D == 0) yd--;
+
+		double[] xs = new double[2 + xd];
+		double[] ys = new double[2 + yd];
+		double[] zs = new double[2 + zd];
+
+		double xmin = edgeSpacingOffset;
+		double xmax = xd + 1D - edgeSpacingOffset;
+		double zmin = edgeSpacingOffset;
+		double zmax = zd + 1D - edgeSpacingOffset;
+
+		xs[0] = xmin;
+		for(int i = 1; i <= xd; i++) xs[i] = i;
+		xs[xd+1] = xmax;
+
+		ys[0] = ymin;
+		for(int i = 1; i <= yd; i++) ys[i] = i + ymin;
+		ys[yd+1] = ymax;
+
+		zs[0] = zmin;
+		for(int i = 1; i <= zd; i++) zs[i] = i;
+		zs[zd+1] = zmax;
+
+		for(int y = 0; y <= yd; y++) {
+			for(int z = 0; z <= zd; z++) {
+				for(int x = 0; x <= xd; x++) {
+					double x1 = xs[x];
+					double y1 = ys[y];
+					double z1 = zs[z];
+					double w = xs[x + 1] - x1;
+					double h = ys[y + 1] - y1;
+					double d = zs[z + 1] - z1;
+
+					if(x == 0) addSideQuadTexture(renderer, flowing, EnumFacing.WEST, x1, y1, z1, w, h, d, r, g, b, a, l1, l2, upsideDown, false);
+					if(x == xd) addSideQuadTexture(renderer, flowing, EnumFacing.EAST, x1, y1, z1, w, h, d, r, g, b, a, l1, l2, upsideDown, false);
+					if(y == 0) addSideQuadTexture(renderer, still, EnumFacing.DOWN, x1, y1, z1, w, h, d, r, g, b, a, l1, l2, upsideDown, false);
+					if(y == yd) addSideQuadTexture(renderer, still, EnumFacing.UP, x1, y1, z1, w, h, d, r, g, b, a, l1, l2, upsideDown, false);
+					if(z == 0) addSideQuadTexture(renderer, flowing, EnumFacing.NORTH, x1, y1, z1, w, h, d, r, g, b, a, l1, l2, upsideDown, false);
+					if(z == zd) addSideQuadTexture(renderer, flowing, EnumFacing.SOUTH, x1, y1, z1, w, h, d, r, g, b, a, l1, l2, upsideDown, false);
+				}
+			}
+		}
+
+		tessellator.draw();
+		post();
+	}
+
+	public static void addSideQuadTexture(BufferBuilder buff, TextureAtlasSprite sprite, EnumFacing face,
+										  double x, double y, double z,
+										  double w, double h, double d,
+										  int r, int g, int b, int a,
+										  int light1, int light2,
+										  boolean flipHorizontally,
+										  boolean flipVertical) {
+		//Render Start & End
+		double x1 = x;
+		double y1 = y;
+		double z1 = z;
+		double x2 = x1 + w;
+		double y2 = y1 + h;
+		double z2 = z1 + d;
+
+		//Sprite UV
+		double minU;
+		double maxU;
+		double minV;
+		double maxV;
+		double sizeW = sprite.getIconWidth();
+		double sizeH = sprite.getIconHeight();
+		if(sizeW > 16F) {
+			sizeW = (sizeW % 16F) / 16F;
+		}
+		if(sizeH > 16F) {
+			sizeH = (sizeH % 16F) / 16F;
+		}
+
+		//Sprite dimensions
+		double xSprite1 = x1 % 1D;
+		double ySprite1 = y1 % 1D;
+		double zSprite1 = z1 % 1D;
+
+		double xSprite2 = xSprite1 + w;
+		while(xSprite2 > 1F) xSprite2 -= 1F; //Cut the extra fat
+		double ySprite2 = ySprite1 + h;
+		while(ySprite2 > 1F) ySprite2 -= 1F; //Say no to donuts
+		double zSprite2 = zSprite1 + d;
+		while(zSprite2 > 1F) zSprite2 -= 1F; //Unless...
+
+		if(flipVertical) {
+			double tmp = 1D - ySprite1;
+			ySprite1 = 1D - ySprite2;
+			ySprite2 = tmp;
+		}
+
+		switch(face) {
+			case DOWN:
+			case UP:
+				minU = sprite.getInterpolatedU(xSprite1 * sizeW);
+				maxU = sprite.getInterpolatedU(xSprite2 * sizeW);
+				minV = sprite.getInterpolatedV(zSprite1 * sizeH);
+				maxV = sprite.getInterpolatedV(zSprite2 * sizeH);
+				break;
+			case NORTH:
+			case SOUTH:
+				minU = sprite.getInterpolatedU(xSprite2 * sizeW);
+				maxU = sprite.getInterpolatedU(xSprite1 * sizeW);
+				minV = sprite.getInterpolatedV(ySprite1 * sizeH);
+				maxV = sprite.getInterpolatedV(ySprite2 * sizeH);
+				break;
+			case WEST:
+			case EAST:
+				minU = sprite.getInterpolatedU(zSprite2 * sizeW);
+				maxU = sprite.getInterpolatedU(zSprite1 * sizeW);
+				minV = sprite.getInterpolatedV(ySprite1 * sizeH);
+				maxV = sprite.getInterpolatedV(ySprite2 * sizeH);
+				break;
+			default:
+				minU = sprite.getMinU();
+				maxU = sprite.getMaxU();
+				minV = sprite.getMinV();
+				maxV = sprite.getMaxV();
+		}
+
+		if(flipHorizontally) {
+			double tmp = minV;
+			minV = maxV;
+			maxV = tmp;
+		}
+
+		switch(face) {
+			case DOWN:
+				buff.pos(x1, y1, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y1, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y1, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x1, y1, z2).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+				break;
+			case UP:
+				buff.pos(x1, y2, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x1, y2, z2).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y2, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y2, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
+				break;
+			case NORTH:
+				buff.pos(x1, y1, z1).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x1, y2, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y2, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y1, z1).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
+				break;
+			case SOUTH:
+				buff.pos(x1, y1, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y1, z2).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y2, z2).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x1, y2, z2).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
+				break;
+			case WEST:
+				buff.pos(x1, y1, z1).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x1, y1, z2).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x1, y2, z2).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x1, y2, z1).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
+				break;
+			case EAST:
+				buff.pos(x2, y1, z1).color(r, g, b, a).tex(minU, maxV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y2, z1).color(r, g, b, a).tex(minU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y2, z2).color(r, g, b, a).tex(maxU, minV).lightmap(light1, light2).endVertex();
+				buff.pos(x2, y1, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
+				break;
+		}
+	}
+
+	public static void pre(double x, double y, double z) {
+		GlStateManager.pushMatrix();
+
+		net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		if(Minecraft.isAmbientOcclusionEnabled()) {
+			GL11.glShadeModel(GL11.GL_SMOOTH);
+		}
+		else {
+			GL11.glShadeModel(GL11.GL_FLAT);
+		}
+
+		GlStateManager.translate(x, y, z);
+	}
+
+	public static void post() {
+		GlStateManager.disableBlend();
+		GlStateManager.popMatrix();
+		net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
 	}
 
 	public static void renderSideTexture(EnumFacing facing, double uMin, double uMax, double vMin, double vMax) {

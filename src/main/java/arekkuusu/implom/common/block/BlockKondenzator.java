@@ -111,10 +111,10 @@ public class BlockKondenzator extends BlockBaseFacing {
 		ModelHelper.registerModel(this, 0, "");
 	}
 
-	public static class Constants {
-		public static final int LUMEN_CAPACITY = 100;
-		public static final int IMBUING_TIME = 100;
+	public static class ImbuingConstants {
 		public static final int IMBUING_INCREASE_INTERVAL = 40;
 		public static final int IMBUING_DECREASE_INTERVAL = 80;
+		public static final int IMBUING_CAPACITY = 100;
+		public static final int IMBUING_TIME = 100;
 	}
 }

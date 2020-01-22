@@ -10,9 +10,7 @@ package arekkuusu.implom.common.item;
 import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.WorldAccessHelper;
 import arekkuusu.implom.common.block.ModBlocks;
-import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;
-import arekkuusu.implom.common.network.PacketHelper;
+import arekkuusu.implom.common.handler.data.capability.provider.MutatorCapabilityProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +18,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,21 +41,15 @@ public class ItemMutator extends ItemBaseBlock implements IUUIDDescription {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		WorldAccessHelper.getCapability(stack).ifPresent(instance -> {
-			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip, INBTDataTransferable.DefaultGroup.WORLD_ACCESS);
+			if(instance.getKey() != null)
+				addInformation(instance.getKey(), tooltip, INBTDataTransferable.DefaultGroup.WORLD_ACCESS);
 		});
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new WorldAccessProvider(new WorldAccessNBTDataCapability() {
-			@Override
-			public void onChange() {
-				if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-					PacketHelper.sendMutatorPacket(this);
-				}
-			}
-		});
+		return new MutatorCapabilityProvider(stack);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)

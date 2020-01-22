@@ -24,14 +24,14 @@ public class ClockworkAddQuartzRecipe extends IForgeRegistryEntry.Impl<IRecipe> 
 		for(int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if(stack.getItem() == ModItems.CLOCKWORK) {
-				if(!NBTHelper.getBoolean(stack, ItemClockwork.Constants.NBT_UNSEALED))
+				if(!NBTHelper.getBoolean(NBTHelper.fixNBT(stack), ItemClockwork.Constants.NBT_UNSEALED))
 					return false;
 				if(!InventoryHelper.getCapability(stack).map(c -> c.getStackInSlot(0).isEmpty()).orElse(false))
 					return false;
 				else if(!clockwork) clockwork = true;
 				else return false;
 			} else if(stack.getItem() == ModItems.QUARTZ) {
-				if(!NBTHelper.getEnum(ItemQuartz.Quartz.class, stack, ItemQuartz.Constants.NBT_QUARTZ)
+				if(!NBTHelper.getEnum(ItemQuartz.Quartz.class, NBTHelper.fixNBT(stack), ItemQuartz.Constants.NBT_QUARTZ)
 						.filter(tag -> tag.size == ItemQuartz.Quartz.Size.SMALL)
 						.isPresent())
 					return false;
@@ -54,7 +54,7 @@ public class ClockworkAddQuartzRecipe extends IForgeRegistryEntry.Impl<IRecipe> 
 			}
 		}
 		if(!quartz.isEmpty() && !clockwork.isEmpty()) {
-			NBTHelper.setBoolean(clockwork, ItemClockwork.Constants.NBT_UNSEALED, false);
+			NBTHelper.setBoolean(NBTHelper.fixNBT(clockwork), ItemClockwork.Constants.NBT_UNSEALED, false);
 			ItemStack stack = quartz.copy();
 			InventoryHelper.getCapability(clockwork).ifPresent(c -> c.insertItem(0, stack, false));
 			return clockwork;

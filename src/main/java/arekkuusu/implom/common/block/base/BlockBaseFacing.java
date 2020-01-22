@@ -26,7 +26,7 @@ import net.minecraft.world.World;
  * It's distributed as part of Improbable plot machine.
  */
 @SuppressWarnings("deprecation")
-public abstract class BlockBaseFacing extends BlockBase {
+public class BlockBaseFacing extends BlockBase {
 
 	public BlockBaseFacing(String id, Material material) {
 		super(id, material);
@@ -34,7 +34,11 @@ public abstract class BlockBaseFacing extends BlockBase {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return defaultState().withProperty(BlockDirectional.FACING, facing.getOpposite());
+		return defaultState().withProperty(BlockDirectional.FACING, getPlacementFacing(placer, facing));
+	}
+
+	public EnumFacing getPlacementFacing(EntityLivingBase placer, EnumFacing facing) {
+		return facing.getOpposite();
 	}
 
 	@Override

@@ -10,8 +10,7 @@ package arekkuusu.implom.common.item;
 import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.PositionsHelper;
 import arekkuusu.implom.common.block.ModBlocks;
-import arekkuusu.implom.common.handler.data.capability.nbt.PositionsNBTDataCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.PositionsNBTProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.PositionsDefaultProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,13 +36,14 @@ public class ItemAlternator extends ItemBaseBlock implements IUUIDDescription {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		PositionsHelper.getCapability(stack).ifPresent(instance -> {
-			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip, INBTDataTransferable.DefaultGroup.ALTERNATOR);
+			if(instance.getKey() != null)
+				addInformation(instance.getKey(), tooltip, INBTDataTransferable.DefaultGroup.ALTERNATOR);
 		});
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new PositionsNBTProvider(new PositionsNBTDataCapability());
+		return new PositionsDefaultProvider(stack);
 	}
 }

@@ -63,6 +63,7 @@ public class ClientProxy implements IProxy {
 		map.registerSprite(ResourceLibrary.GLOW_PARTICLE);
 		map.registerSprite(ResourceLibrary.SQUARE_PARTICLE);
 		map.registerSprite(ResourceLibrary.DULL_PARTICLE);
+		map.registerSprite(ResourceLibrary.VOLT_PARTICLE);
 	}
 
 	@SubscribeEvent
@@ -114,8 +115,8 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public void spawnArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
-		if(canParticleSpawn()) FXUtil.spawnArcDischarge(world, from, to, generations, offset, age, rgb, branch, fade);
+	public void spawnArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch) {
+		if(canParticleSpawn()) FXUtil.spawnArcDischarge(world, from, to, generations, offset, age, rgb, branch);
 	}
 
 	@Override

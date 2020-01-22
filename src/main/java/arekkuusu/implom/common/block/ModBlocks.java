@@ -7,8 +7,8 @@
  */
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.common.block.base.BlockBase;
-import arekkuusu.implom.common.block.base.BlockBaseGlass;
+import arekkuusu.implom.common.block.base.BlockBaseMultiblock;
+import arekkuusu.implom.common.block.base.BlockBaseMultiblockGlass;
 import arekkuusu.implom.common.block.fluid.ModFluids;
 import arekkuusu.implom.common.block.tile.*;
 import arekkuusu.implom.common.handler.CreativeTabHandler;
@@ -63,10 +63,18 @@ public final class ModBlocks {
 	public static final Block FIRE_CLAY_BLOCK = PLACE_HOLDER;
 	public static final Block FIRE_BRICK_BLOCK = PLACE_HOLDER;
 	public static final Block FIRE_BRICKS = PLACE_HOLDER;
-	public static final Block AIR_VENT = PLACE_HOLDER;
 	public static final Block FIRE_BRICKS_GLASS = PLACE_HOLDER;
-	public static final Block IGNITED_COAL = PLACE_HOLDER;
 	public static final Block FIRE_BRICKS_WINDOW = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_CONTROLLER = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_DRAIN = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_FILTER = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_INPUT = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_TUYERE = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_AIR_VENT = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_AIR_PUMP = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_PIPE = PLACE_HOLDER;
+	public static final Block HOT_BLAST_HEATER = PLACE_HOLDER;
+	public static final Block BLAST_FURNACE_PIPE_GAUGE = PLACE_HOLDER;
 
 	public static void register(IForgeRegistry<Block> registry) {
 		ModFluids.FLUIDS.forEach(registry::register);
@@ -100,12 +108,20 @@ public final class ModBlocks {
 		registry.register(new BlockImbuedQuartz());
 		registry.register(new BlockMutator());
 		registry.register(new BlockFireClayBricks());
-		registry.register(new BlockBase(LibNames.FIRE_BRICK_BLOCK, Material.ROCK));
-		registry.register(new BlockBase(LibNames.FIRE_BRICKS, Material.ROCK));
-		registry.register(new BlockBase(LibNames.AIR_VENT, Material.GLASS));
-		registry.register(new BlockBaseGlass(LibNames.FIRE_BRICKS_GLASS, Material.GLASS));
-		registry.register(new BlockIgnitedCoal());
-		registry.register(new BlockBaseGlass(LibNames.FIRE_BRICKS_WINDOW, Material.GLASS));
+		registry.register(new BlockBaseMultiblock(LibNames.FIRE_BRICK_BLOCK, Material.ROCK));
+		registry.register(new BlockBaseMultiblock(LibNames.FIRE_BRICKS, Material.ROCK));
+		registry.register(new BlockBaseMultiblockGlass(LibNames.FIRE_BRICKS_GLASS, Material.GLASS));
+		registry.register(new BlockBaseMultiblockGlass(LibNames.FIRE_BRICKS_WINDOW, Material.GLASS));
+		registry.register(new BlockBlastFurnaceController());
+		registry.register(new BlockBlastFurnaceDrain());
+		registry.register(new BlockBlastFurnaceFilter());
+		registry.register(new BlockBlastFurnaceInput());
+		registry.register(new BlockBlastFurnaceTuyere());
+		registry.register(new BlockHotBlastAirVent());
+		registry.register(new BlockHotBlastAirPump());
+		registry.register(new BlockBlastFurnacePipe());
+		registry.register(new BlockHotBlastHeater());
+		registry.register(new BlockBlastFurnacePipeGauge());
 		registerTiles();
 	}
 
@@ -131,6 +147,14 @@ public final class ModBlocks {
 		registerTile(TileAsymmetricalMachination.class, LibNames.ASYMMETRICAL_MACHINATION);
 		registerTile(TileKondenzator.class, LibNames.KONDENZATOR);
 		registerTile(TileMutator.class, LibNames.MUTATOR);
+		registerTile(TileBlastFurnaceController.class, LibNames.BLAST_FURNACE_CONTROLLER);
+		registerTile(TileBlastFurnaceTuyere.class, LibNames.BLAST_FURNACE_TUYERE);
+		registerTile(TileBlastFurnaceDrain.class, LibNames.BLAST_FURNACE_DRAIN);
+		registerTile(TileBlastFurnaceInput.class, LibNames.BLAST_FURNACE_INPUT);
+		registerTile(TileHotBlastAirVent.class, LibNames.BLAST_FURNACE_AIR_VENT);
+		registerTile(TileHotBlastAirPump.class, LibNames.BLAST_FURNACE_AIR_PUMP);
+		registerTile(TileBlastFurnacePipe.class, LibNames.BLAST_FURNACE_PIPE);
+		registerTile(TileMultiblockImouto.class, "multiblock_slave");
 	}
 
 	private static <T extends TileEntity> void registerTile(Class<T> tile, String name) {

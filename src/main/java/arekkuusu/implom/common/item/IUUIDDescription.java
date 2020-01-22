@@ -12,18 +12,18 @@ import java.util.UUID;
 
 public interface IUUIDDescription {
 
-	Map<Character, Character> CHARACTER_MAP = ImmutableMap.<Character, Character>builder()
-			.put('-', 'þ')
-			.put('0', 'ð')
-			.put('1', 'Ʃ')
-			.put('2', 'Ƿ')
-			.put('3', 'ƴ')
-			.put('4', 'ƀ')
-			.put('5', 'Ϫ')
-			.put('6', 'ϗ')
-			.put('7', 'Ɔ')
-			.put('8', 'Ծ')
-			.put('9', 'ή')
+	Map<Character, String> CHARACTER_MAP = ImmutableMap.<Character, String>builder()
+			.put('-', "þ")
+			.put('0', "ð")
+			.put('1', "Ʃ")
+			.put('2', "Ƿ")
+			.put('3', "ƴ")
+			.put('4', "ƀ")
+			.put('5', "Ϫ")
+			.put('6', "ϗ")
+			.put('7', "Ɔ")
+			.put('8', "Ծ")
+			.put('9', "ή")
 			.build();
 
 	/**

@@ -9,8 +9,8 @@ package arekkuusu.implom.common;
 
 import arekkuusu.implom.api.IPMApi;
 import arekkuusu.implom.common.api.ApiInstance;
-import arekkuusu.implom.common.handler.data.capability.ModCapability;
 import arekkuusu.implom.common.handler.data.WorldNBTData;
+import arekkuusu.implom.common.handler.data.capability.ModCapability;
 import arekkuusu.implom.common.handler.gen.ModGen;
 import arekkuusu.implom.common.lib.LibMod;
 import arekkuusu.implom.common.network.GuiHandler;

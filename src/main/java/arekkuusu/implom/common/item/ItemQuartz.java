@@ -24,13 +24,17 @@ public class ItemQuartz extends ItemBase {
 
 	@Override
 	public int getMetadata(ItemStack stack) {
-		return NBTHelper.getEnum(Quartz.class, stack, "quartz").map(Enum::ordinal).orElse(0);
+		return NBTHelper.getEnum(Quartz.class, NBTHelper.fixNBT(stack), "quartz").map(Enum::ordinal).orElse(0);
 	}
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 		if(this.isInCreativeTab(tab)) {
-			Stream.of(Quartz.values()).forEach(q -> items.add(NBTHelper.setEnum(new ItemStack(this), q, Constants.NBT_QUARTZ)));
+			Stream.of(Quartz.values()).forEach(q -> {
+				ItemStack quartz = new ItemStack(this);
+				NBTHelper.setEnum(NBTHelper.fixNBT(quartz), q, Constants.NBT_QUARTZ);
+				items.add(quartz);
+			});
 		}
 	}
 

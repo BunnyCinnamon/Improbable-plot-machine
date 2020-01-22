@@ -1,0 +1,32 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "improbableplotmachine:blast_furnace_tuyere",
+        "uvlock": true,
+        "y": 180
+    },
+    "variants": {
+        "normal": [
+            {
+            }
+        ],
+        "inventory": [
+            {
+            }
+        ],
+        "facing": {
+            "north": {
+				"y": 0
+            },
+            "south": {
+                "y": 180
+            },
+            "east": {
+                "y": 90
+            },
+            "west": {
+                "y": 270
+            }
+        }
+    }
+}

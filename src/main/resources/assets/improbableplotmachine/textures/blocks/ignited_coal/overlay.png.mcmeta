@@ -1,0 +1,16 @@
+{
+  "ctm": {
+	"ctm_version": 1,
+	"type": "edges",
+	"layer": "TRANSLUCENT",
+	"textures": [
+        "improbableplotmachine:blocks/ignited_coal/ctm",
+        "improbableplotmachine:blocks/empty"
+    ],
+    "extra": {
+        "connect_to": [
+            { "block": "stone" }
+        ]
+    }
+  }
+}

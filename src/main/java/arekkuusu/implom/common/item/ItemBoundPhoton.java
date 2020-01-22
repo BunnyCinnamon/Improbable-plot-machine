@@ -31,7 +31,7 @@ public class ItemBoundPhoton extends ItemBase implements IUUIDDescription {
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		Tooltip.inline().condition(() -> NBTHelper.hasTag(stack, Constants.NBT_BOUND)).ifTrueJ(builder -> builder
+		Tooltip.inline().condition(() -> NBTHelper.hasTag(NBTHelper.fixNBT(stack), Constants.NBT_BOUND)).ifTrueJ(builder -> builder
 				.condition(KeyCondition$.MODULE$.shiftKeyDown())
 				.ifTrueJ(sub -> {
 					NBTTagCompound compound = stack.getOrCreateSubCompound(Constants.NBT_BOUND);

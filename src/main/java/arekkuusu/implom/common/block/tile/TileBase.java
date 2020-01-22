@@ -30,6 +30,10 @@ import java.util.Optional;
  */
 public abstract class TileBase extends TileEntity {
 
+	public boolean isClientWorld() {
+		return world.isRemote;
+	}
+
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		return oldState.getBlock() != newState.getBlock();

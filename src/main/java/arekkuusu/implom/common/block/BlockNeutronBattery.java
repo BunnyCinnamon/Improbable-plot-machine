@@ -110,7 +110,7 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
-		getTile(TileNeutronBattery.class, world, pos).map(tile -> tile.wrapper.inventoryInstance.getCapacitor()).ifPresent(capacitor -> {
+		getTile(TileNeutronBattery.class, world, pos).map(tile -> tile.provider.inventoryInstance.getCapacitor()).ifPresent(capacitor -> {
 			Vector3 vec = Vector3.apply(pos.getX(), pos.getY(), pos.getZ());
 			Vector3 facingVec = new Vector3.WrappedVec3i(state.getValue(BlockDirectional.FACING).getDirectionVec()).asImmutable();
 			for(int i = 0; i < 3 + rand.nextInt(4); i++) {
@@ -175,10 +175,11 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 		Arrays.stream(ItemQuartz.Quartz.values()).filter(q -> q.size == ItemQuartz.Quartz.Size.MEDIUM).forEach(q -> {
-			ItemStack stack = new ItemStack(this);
-			ItemStack quartz = NBTHelper.setEnum(new ItemStack(ModItems.QUARTZ), q, ItemQuartz.Constants.NBT_QUARTZ);
-			InventoryHelper.getCapability(stack).ifPresent(instance -> instance.insertItem(0, quartz, false));
-			items.add(stack);
+			ItemStack battery = new ItemStack(this);
+			ItemStack quartz = new ItemStack(ModItems.QUARTZ);
+			NBTHelper.setEnum(NBTHelper.fixNBT(quartz), q, ItemQuartz.Constants.NBT_QUARTZ);
+			InventoryHelper.getCapability(battery).ifPresent(instance -> instance.insertItem(0, quartz, false));
+			items.add(battery);
 		});
 		ItemStack stack = new ItemStack(this); //Empty capacitor
 		items.add(stack);
@@ -217,14 +218,13 @@ public class BlockNeutronBattery extends BlockBaseFacing {
 		}
 	}
 
-	public static class Constants {
+	public static class Conversions {
 		public static final Map<ItemQuartz.Quartz, BatteryCapacitor> QUARTZ_TO_BATTERY = new HashMap<>(BatteryCapacitor.values().length);
 		public static final Map<BatteryCapacitor, ItemQuartz.Quartz> BATTERY_TO_QUARTZ = new HashMap<>(BatteryCapacitor.values().length);
-		public static final String NBT_NEUTRON = "neutron";
 
 		static {
 			/*Constants.putQuartzBattery(ItemQuartz.Quartz.WHITE_MEDIUM, BatteryCapacitor.WHITE);*/
-			Constants.putQuartzBattery(ItemQuartz.Quartz.BLUE_MEDIUM, BatteryCapacitor.BLUE);
+			Conversions.putQuartzBattery(ItemQuartz.Quartz.BLUE_MEDIUM, BatteryCapacitor.BLUE);
 			/*Constants.putQuartzBattery(ItemQuartz.Quartz.GREEN_MEDIUM, BatteryCapacitor.GREEN);
 			Constants.putQuartzBattery(ItemQuartz.Quartz.YELLOW_MEDIUM, BatteryCapacitor.YELLOW);
 			Constants.putQuartzBattery(ItemQuartz.Quartz.PINK_MEDIUM, BatteryCapacitor.PINK);*/

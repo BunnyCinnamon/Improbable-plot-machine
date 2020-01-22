@@ -7,24 +7,24 @@
  */
 package arekkuusu.implom.client.proxy;
 
+import arekkuusu.implom.api.capability.WorldAccessHelper;
 import arekkuusu.implom.api.capability.data.WorldAccessNBTData;
 import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.api.helper.RayTraceHelper;
-import arekkuusu.implom.api.capability.WorldAccessHelper;
-import arekkuusu.implom.client.util.SpriteLibrary;
 import arekkuusu.implom.client.util.helper.RenderHelper;
-import arekkuusu.implom.client.util.sprite.UVFrame;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.block.tile.TileMutator;
 import arekkuusu.implom.common.item.ModItems;
 import arekkuusu.implom.common.lib.LibMod;
-import net.katsstuff.teamnightclipse.mirror.client.helper.Blending;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -97,14 +97,33 @@ public class Events {
 			double y = Minecraft.getMinecraft().getRenderManager().viewerPosY;
 			double z = Minecraft.getMinecraft().getRenderManager().viewerPosZ;
 			GlStateManager.pushMatrix();
+			GlStateManager.disableAlpha();
+			GlStateManager.enableBlend();
+			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			GlStateManager.glLineWidth(2.0F);
+			GlStateManager.disableTexture2D();
 			GlStateManager.depthMask(false);
-			Blending.Normal().apply();
-			GlStateManager.translate(-x, -y, -z);
-			GlStateManager.translate(data.getPos().getX(), data.getPos().getY(), data.getPos().getZ());
-			SpriteLibrary.MUTATOR_SELECTION.bind();
-			UVFrame frame = SpriteLibrary.MUTATOR_SELECTION.getFrame();
-			RenderHelper.renderSideTexture(data.getFacing(), frame.uMin, frame.uMax, frame.vMin, frame.vMax);
+
+			int i = (int) (RenderHelper.getRenderPlayerTime() / 15);
+			int j = EnumDyeColor.values().length;
+			int k = i % j;
+			int l = (i + 1) % j;
+			float f = ((RenderHelper.getRenderPlayerTime() % 15) + Minecraft.getMinecraft().getRenderPartialTicks()) / 15.0F;
+			float[] afloat1 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(k));
+			float[] afloat2 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(l));
+
+			float r, g, b;
+			r = afloat1[0] * (1.0F - f) + afloat2[0] * f;
+			g = afloat1[1] * (1.0F - f) + afloat2[1] * f;
+			b = afloat1[2] * (1.0F - f) + afloat2[2] * f;
+
+			IBlockState state = data.getWorld().getBlockState(data.getPos());
+			RenderGlobal.drawSelectionBoundingBox(state.getSelectedBoundingBox(data.getWorld(), data.getPos()).grow(0.0020000000949949026D).offset(-x, -y, -z), r, g, b, 1F);
+
 			GlStateManager.depthMask(true);
+			GlStateManager.enableTexture2D();
+			GlStateManager.disableBlend();
+			GlStateManager.enableAlpha();
 			GlStateManager.popMatrix();
 		}
 	}

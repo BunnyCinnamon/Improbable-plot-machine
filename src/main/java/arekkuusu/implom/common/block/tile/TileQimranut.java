@@ -7,11 +7,9 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
 import arekkuusu.implom.api.capability.WorldAccessHelper;
-import arekkuusu.implom.common.block.BlockQimranut;
-import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;
+import arekkuusu.implom.api.capability.nbt.IWorldAccessNBTDataCapability;
+import arekkuusu.implom.common.handler.data.capability.provider.QimranutCapabilityProvider;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,33 +27,26 @@ import java.util.UUID;
  */
 public class TileQimranut extends TileBase implements INBTDataTransferableImpl {
 
-	public final WorldAccessProvider wrapper = new WorldAccessProvider(new WorldAccessNBTDataCapability() {
-		@Override
-		public void setKey(@Nullable UUID uuid) {
-			super.setKey(uuid);
-			markDirty();
-			sync();
-		}
-	});
+	public final QimranutCapabilityProvider provider = new QimranutCapabilityProvider(this);
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return getFacingLazy() == facing ? Optional.ofNullable(wrapper.instance.get())
+		return getFacingLazy() == facing ? Optional.ofNullable(provider.worldAccessNBTDataCapability.get())
 				.filter(data -> data.getPos() != null && data.getWorld() != null && data.getFacing() != null)
 				.map(data -> getTile(TileEntity.class, data.getWorld(), data.getPos()).map(tile -> tile.hasCapability(capability, data.getFacing())).orElse(false))
 				.orElse(false)
-				: wrapper.hasCapability(capability, facing)
+				: provider.hasCapability(capability, facing)
 				|| super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return getFacingLazy() == facing ? Optional.ofNullable(wrapper.instance.get())
+		return getFacingLazy() == facing ? Optional.ofNullable(provider.worldAccessNBTDataCapability.get())
 				.filter(data -> data.getPos() != null && data.getWorld() != null && data.getFacing() != null)
-				.map(data -> getTile(TileEntity.class, data.getWorld(), data.getPos()).map(tile -> tile.getCapability(capability, data.getFacing())).orElse(null))
-				.orElse(null) : wrapper.hasCapability(capability, facing)
-				? wrapper.getCapability(capability, facing)
+				.flatMap(data -> getTile(TileEntity.class, data.getWorld(), data.getPos()).map(tile -> tile.getCapability(capability, data.getFacing())))
+				.orElse(null) : provider.hasCapability(capability, facing)
+				? provider.getCapability(capability, facing)
 				: super.getCapability(capability, facing);
 	}
 
@@ -63,14 +54,17 @@ public class TileQimranut extends TileBase implements INBTDataTransferableImpl {
 		return getStateValue(BlockDirectional.FACING, pos).orElse(EnumFacing.UP);
 	}
 
+	/* NBT */
+	public static final String NBT_PROVIDER = "provider";
+
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setTag(BlockQimranut.Constants.NBT_WORLD_ACCESS, wrapper.serializeNBT());
+		compound.setTag(NBT_PROVIDER, provider.serializeNBT());
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		wrapper.deserializeNBT(compound.getTag(BlockQimranut.Constants.NBT_WORLD_ACCESS));
+		provider.deserializeNBT(compound.getCompoundTag(NBT_PROVIDER));
 	}
 
 	@Override
@@ -79,23 +73,23 @@ public class TileQimranut extends TileBase implements INBTDataTransferableImpl {
 	}
 
 	@Override
-	public void setKey(UUID uuid) {
-		wrapper.instance.setKey(uuid);
+	public void setKey(@Nullable UUID uuid) {
+		provider.worldAccessNBTDataCapability.setKey(uuid);
 	}
 
 	@Nullable
 	@Override
 	public UUID getKey() {
-		return wrapper.instance.getKey();
+		return provider.worldAccessNBTDataCapability.getKey();
 	}
 
 	@Override
 	public void fromItemStack(ItemStack stack) {
-		WorldAccessHelper.getCapability(stack).map(IWorldAccessNBTDataCapability::getKey).ifPresent(wrapper.instance::setKey);
+		WorldAccessHelper.getCapability(stack).map(IWorldAccessNBTDataCapability::getKey).ifPresent(this::setKey);
 	}
 
 	@Override
 	public void toItemStack(ItemStack stack) {
-		WorldAccessHelper.getCapability(stack).ifPresent(instance -> instance.setKey(wrapper.instance.getKey()));
+		WorldAccessHelper.getCapability(stack).ifPresent(instance -> instance.setKey(this.getKey()));
 	}
 }

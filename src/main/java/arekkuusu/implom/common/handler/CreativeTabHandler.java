@@ -84,7 +84,16 @@ public final class CreativeTabHandler {
 			addBlock(ModBlocks.FIRE_BRICKS);
 			addBlock(ModBlocks.FIRE_BRICKS_GLASS);
 			addBlock(ModBlocks.FIRE_BRICKS_WINDOW);
-			addBlock(ModBlocks.AIR_VENT);
+			addBlock(ModBlocks.BLAST_FURNACE_CONTROLLER);
+			addBlock(ModBlocks.BLAST_FURNACE_DRAIN);
+			addBlock(ModBlocks.BLAST_FURNACE_FILTER);
+			addBlock(ModBlocks.BLAST_FURNACE_INPUT);
+			addBlock(ModBlocks.BLAST_FURNACE_TUYERE);
+			addBlock(ModBlocks.BLAST_FURNACE_AIR_VENT);
+			addBlock(ModBlocks.BLAST_FURNACE_AIR_PUMP);
+			addBlock(ModBlocks.HOT_BLAST_HEATER);
+			addBlock(ModBlocks.BLAST_FURNACE_PIPE);
+			addBlock(ModBlocks.BLAST_FURNACE_PIPE_GAUGE);
 			addItem(ModItems.GOLD_PLATE);
 			addItem(ModItems.MAGNETIC_PLATE);
 			addItem(ModItems.MAGNETIC_BOLT);
@@ -94,6 +103,7 @@ public final class CreativeTabHandler {
 			addItem(ModItems.RESISTOR);
 			addItem(ModItems.CAPACITOR);
 			addItem(ModItems.INDUCTOR);
+			addItem(ModItems.MOMENTUM_OSCILLATOR);
 			addItem(ModItems.FRAME_CORE);
 			addItem(ModItems.ELECTROMAGNET);
 			addItem(ModItems.MAGNETIC_ACTUATOR);

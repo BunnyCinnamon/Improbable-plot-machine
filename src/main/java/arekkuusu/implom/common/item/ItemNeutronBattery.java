@@ -8,10 +8,11 @@
 package arekkuusu.implom.common.item;
 
 import arekkuusu.implom.api.capability.INBTDataTransferable;
+import arekkuusu.implom.api.capability.WorldAccessHelper;
 import arekkuusu.implom.api.capability.nbt.ILumenNBTDataCapability;
 import arekkuusu.implom.api.capability.LumenHelper;
 import arekkuusu.implom.common.block.ModBlocks;
-import arekkuusu.implom.common.handler.data.capability.provider.NeutronProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.NeutronBatteryCapabilityProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,11 +40,14 @@ public class ItemNeutronBattery extends ItemBaseBlock implements IUUIDDescriptio
 		LumenHelper.getCapability(stack).map(data -> (ILumenNBTDataCapability) data).ifPresent(instance -> {
 			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip, INBTDataTransferable.DefaultGroup.LUMEN);
 		});
+		WorldAccessHelper.getCapability(stack).ifPresent(instance -> {
+			if(instance.getKey() != null) addInformation(instance.getKey(), tooltip, INBTDataTransferable.DefaultGroup.WORLD_ACCESS);
+		});
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new NeutronProvider(null);
+		return new NeutronBatteryCapabilityProvider(stack);
 	}
 }

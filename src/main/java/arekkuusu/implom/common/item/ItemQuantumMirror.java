@@ -8,18 +8,15 @@
 package arekkuusu.implom.common.item;
 
 import arekkuusu.implom.api.capability.INBTDataTransferable;
-import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
 import arekkuusu.implom.api.capability.InventoryHelper;
+import arekkuusu.implom.api.capability.nbt.IInventoryNBTDataCapability;
 import arekkuusu.implom.common.block.ModBlocks;
-import arekkuusu.implom.common.handler.data.capability.nbt.InventoryNBTDataCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.InventoryNBTProvider;
-import arekkuusu.implom.common.network.PacketHelper;
+import arekkuusu.implom.common.handler.data.capability.provider.QuantumMirrorCapabilityProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,15 +43,6 @@ public class ItemQuantumMirror extends ItemBaseBlock implements IUUIDDescription
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new InventoryNBTProvider(new InventoryNBTDataCapability() {
-			@Override
-			public void onChange(ItemStack old) {
-				if(old.getItem() != getStackInSlot(0).getItem()) {
-					if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-						PacketHelper.sendQuantumMirrorPacket(this);
-					}
-				}
-			}
-		});
+		return new QuantumMirrorCapabilityProvider(stack);
 	}
 }

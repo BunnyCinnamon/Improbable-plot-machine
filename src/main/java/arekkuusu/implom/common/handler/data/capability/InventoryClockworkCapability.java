@@ -17,7 +17,7 @@ public class InventoryClockworkCapability implements IItemHandlerModifiable, INB
 
 	@Override
 	public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-		return stack.getItem() == ModItems.QUARTZ && NBTHelper.getEnum(ItemQuartz.Quartz.class, stack, ItemQuartz.Constants.NBT_QUARTZ)
+		return stack.getItem() == ModItems.QUARTZ && NBTHelper.getEnum(ItemQuartz.Quartz.class, NBTHelper.fixNBT(stack), ItemQuartz.Constants.NBT_QUARTZ)
 				.map(q -> q.size == ItemQuartz.Quartz.Size.SMALL)
 				.orElse(false);
 	}

@@ -10,6 +10,6 @@ public class ItemKondenzatorRenderer extends ItemRender {
 	@Override
 	public void renderByItem(ItemStack stack, float partialTicks) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		TileKondenzatorRenderer.renderModel(EnumFacing.UP, 0, 0, 0, BlockKondenzator.Constants.LUMEN_CAPACITY);
+		TileKondenzatorRenderer.renderModel(EnumFacing.UP, 0, 0, 0, BlockKondenzator.ImbuingConstants.IMBUING_CAPACITY);
 	}
 }

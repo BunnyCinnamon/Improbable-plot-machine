@@ -10,7 +10,7 @@ package arekkuusu.implom.common.item;
 import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.PositionsHelper;
 import arekkuusu.implom.common.block.ModBlocks;
-import arekkuusu.implom.common.handler.data.capability.provider.BlinkerProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.BlinkerCapabilityProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,6 +43,6 @@ public class ItemBlinker extends ItemBaseBlock implements IUUIDDescription {
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new BlinkerProvider(null);
+		return new BlinkerCapabilityProvider(stack);
 	}
 }

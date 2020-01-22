@@ -16,7 +16,7 @@ import arekkuusu.implom.common.block.BlockKondenzator;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.handler.data.ImbuingData;
 import arekkuusu.implom.common.handler.data.capability.LumenCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.LumenProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.CapabilityProvider;
 import net.katsstuff.teamnightclipse.mirror.data.Quat;
 import net.katsstuff.teamnightclipse.mirror.data.Vector3;
 import net.minecraft.block.BlockDirectional;
@@ -37,24 +37,23 @@ import javax.annotation.Nullable;
  */
 public class TileKondenzator extends TileBase implements ITickable {
 
-	public final LumenProvider wrapper = new LumenProvider(new LumenCapability(BlockKondenzator.Constants.LUMEN_CAPACITY) {
+	public final LumenCapability lumenCapability = new LumenCapability(BlockKondenzator.ImbuingConstants.IMBUING_CAPACITY) {
 		@Override
 		public void set(int lumen) {
 			super.set(lumen);
-			lumenUpdate();
+			markDirty();
+			sync();
 		}
-	});
-
-	private void lumenUpdate() {
-		markDirty();
-		sync();
-	}
+	};
+	public final CapabilityProvider provider = new CapabilityProvider.Builder(this)
+			.put(Capabilities.LUMEN, lumenCapability)
+			.build();
 
 	public boolean add(ItemStack stack) {
 		if(!stack.isEmpty() && stack.hasCapability(Capabilities.LUMEN, null)) {
 			if(!world.isRemote) {
 				LumenHelper.getCapability(stack).ifPresent(lumen ->
-						LumenHelper.transfer(lumen, wrapper.instance, 10, false)
+						LumenHelper.transfer(lumen, lumenCapability, 10, false)
 				);
 			} else {
 				EnumFacing facing = getFacingLazy().getOpposite();
@@ -77,20 +76,20 @@ public class TileKondenzator extends TileBase implements ITickable {
 
 	@Override
 	public void update() {
-		if(!world.isRemote && wrapper.instance.get() > 0) {
-			if(world.getTotalWorldTime() % BlockKondenzator.Constants.IMBUING_INCREASE_INTERVAL == 0 && isFacingGlass()) {
+		if(!world.isRemote && lumenCapability.get() > 0) {
+			if(world.getTotalWorldTime() % BlockKondenzator.ImbuingConstants.IMBUING_INCREASE_INTERVAL == 0 && isFacingGlass()) {
 				BlockPos pos = getTargetPos();
 				ImbuingData.increment(getWorld(), pos, getPos());
-				if(ImbuingData.getProgress(getWorld(), pos).timer >= BlockKondenzator.Constants.IMBUING_TIME) {
+				if(ImbuingData.getProgress(getWorld(), pos).timer >= BlockKondenzator.ImbuingConstants.IMBUING_TIME) {
 					world.setBlockState(pos, ModBlocks.IMBUED_QUARTZ.getDefaultState());
 				}
 				reduceLumen();
 			}
-			if(world.getTotalWorldTime() % BlockKondenzator.Constants.IMBUING_DECREASE_INTERVAL == 0 && !isFacingGlass()) {
+			if(world.getTotalWorldTime() % BlockKondenzator.ImbuingConstants.IMBUING_DECREASE_INTERVAL == 0 && !isFacingGlass()) {
 				reduceLumen();
 			}
 		}
-		if(world.isRemote && wrapper.instance.get() > 0 && isFacingGlass()) {
+		if(world.isRemote && lumenCapability.get() > 0 && isFacingGlass()) {
 			ImbuingData.Progress progress = ImbuingData.getProgress(getWorld(), getTargetPos());
 			int amount = (int) ((float) progress.timer * (0.15F * (1F - (float) progress.getMultiplier() / 6F)));
 			for(int i = 0; i < amount + world.rand.nextInt(4); i++) {
@@ -101,7 +100,7 @@ public class TileKondenzator extends TileBase implements ITickable {
 	}
 
 	private void reduceLumen() {
-		if(wrapper.instance.get() > 0) wrapper.instance.set(wrapper.instance.get() - 1);
+		if(lumenCapability.get() > 0) lumenCapability.set(lumenCapability.get() - 1);
 	}
 
 	private boolean isFacingGlass() {
@@ -119,26 +118,30 @@ public class TileKondenzator extends TileBase implements ITickable {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return wrapper.hasCapability(capability, facing) || super.hasCapability(capability, facing);
+		return provider.hasCapability(capability, facing) || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return wrapper.hasCapability(capability, facing)
-				? wrapper.getCapability(capability, facing)
+		return provider.hasCapability(capability, facing)
+				? provider.getCapability(capability, facing)
 				: super.getCapability(capability, facing);
 	}
 
+	/* NBT */
+	private static final String NBT_PROVIDER = "provider";
+	private static final String NBT_IMBUING_PROGRESS = "imbuing_progress";
+
 	@Override
 	void writeSync(NBTTagCompound compound) {
-		compound.setTag("lumen", wrapper.serializeNBT());
-		compound.setInteger("imbuing_progress", ImbuingData.getProgress(getWorld(), getTargetPos()).timer);
+		compound.setTag(NBT_PROVIDER, provider.serializeNBT());
+		compound.setInteger(NBT_IMBUING_PROGRESS, ImbuingData.getProgress(getWorld(), getTargetPos()).timer);
 	}
 
 	@Override
 	void readSync(NBTTagCompound compound) {
-		wrapper.deserializeNBT(compound.getCompoundTag("lumen"));
-		ImbuingData.setProgress(getWorld(), getTargetPos(), compound.getInteger("imbuing_progress"));
+		provider.deserializeNBT(compound.getCompoundTag(NBT_PROVIDER));
+		ImbuingData.setProgress(getWorld(), getTargetPos(), compound.getInteger(NBT_IMBUING_PROGRESS));
 	}
 }

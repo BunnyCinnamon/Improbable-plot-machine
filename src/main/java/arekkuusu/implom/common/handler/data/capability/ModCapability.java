@@ -69,9 +69,9 @@ public final class ModCapability {
 
 			@Override
 			public void readNBT(Capability<IPositionsNBTDataCapability> capability, IPositionsNBTDataCapability instance, EnumFacing side, NBTBase nbt) {
-				if(nbt instanceof NBTTagCompound) {
+				if(nbt instanceof NBTTagCompound)
 					instance.deserializeNBT((NBTTagCompound) nbt);
-				} else instance.deserializeNBT(new NBTTagCompound());
+				else instance.deserializeNBT(new NBTTagCompound());
 			}
 		}, PositionsNBTDataCapability::new);
 		register(IInventoryNBTDataCapability.class, new Capability.IStorage<IInventoryNBTDataCapability>() {

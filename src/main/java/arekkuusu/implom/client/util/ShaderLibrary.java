@@ -26,20 +26,27 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public final class ShaderLibrary {
 
+	//FRAGMENT & VERTEX
+	public static final ShaderType FRAGMENT = ShaderType.fragment();
+	public static final ShaderType VERTEX = ShaderType.vertex();
+	//Uniforms
+	public static final UniformType UN_FLOAT = UniformType.unFloat();
+	public static final UniformType VEC3 = UniformType.vec3();
+	//Shaders
 	public static final MirrorShaderProgram ALPHA = loadProgram(
 			ResourceLibrary.BLEND_SHADER,
-			ImmutableList.of(ShaderType.fragment(), ShaderType.vertex()),
-			ImmutableMap.of("alpha", UniformType.unFloat())
+			ImmutableList.of(FRAGMENT, VERTEX),
+			ImmutableMap.of("alpha", UN_FLOAT)
 	);
 	public static final MirrorShaderProgram BRIGHT = loadProgram(
 			ResourceLibrary.BRIGHT_SHADER,
-			ImmutableList.of(ShaderType.fragment(), ShaderType.vertex()),
-			ImmutableMap.of("brightness", UniformType.unFloat())
+			ImmutableList.of(FRAGMENT, VERTEX),
+			ImmutableMap.of("brightness", UN_FLOAT)
 	);
 	public static final MirrorShaderProgram RECOLOR = loadProgram(
 			ResourceLibrary.RECOLOR_SHADER,
-			ImmutableList.of(ShaderType.fragment(), ShaderType.vertex()),
-			ImmutableMap.of("rgba", UniformType.vec3(), "greybase", UniformType.unFloat())
+			ImmutableList.of(FRAGMENT, VERTEX),
+			ImmutableMap.of("rgba", VEC3, "greybase", UN_FLOAT)
 	);
 
 	private static MirrorShaderProgram loadProgram(ResourceLocation location, List<ShaderType> shaders, Map<String, UniformType> types) {

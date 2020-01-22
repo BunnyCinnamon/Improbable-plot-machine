@@ -73,8 +73,17 @@ public class LibNames {
 	public static final String FIRE_CLAY_BLOCK = "fire_clay_block";
 	public static final String FIRE_BRICK_BLOCK = "fire_brick_block";
 	public static final String FIRE_BRICKS = "fire_bricks";
-	public static final String AIR_VENT = "air_vent";
 	public static final String FIRE_BRICKS_GLASS = "fire_bricks_glass";
-	public static final String IGNITED_COAL = "ignited_coal";
 	public static final String FIRE_BRICKS_WINDOW = "fire_bricks_window";
+	public static final String MOMENTUM_OSCILLATOR = "momentum_oscillator";
+	public static final String BLAST_FURNACE_CONTROLLER = "blast_furnace_controller";
+	public static final String BLAST_FURNACE_DRAIN = "blast_furnace_drain";
+	public static final String BLAST_FURNACE_FILTER = "blast_furnace_filter";
+	public static final String BLAST_FURNACE_INPUT = "blast_furnace_input";
+	public static final String BLAST_FURNACE_TUYERE = "blast_furnace_tuyere";
+	public static final String BLAST_FURNACE_AIR_VENT = "blast_furnace_air_vent";
+	public static final String BLAST_FURNACE_PIPE = "blast_furnace_pipe";
+	public static final String BLAST_FURNACE_AIR_PUMP = "blast_furnace_air_pump";
+	public static final String HOT_BLAST_HEATER = "hot_blast_heater";
+	public static final String BLAST_FURNACE_PIPE_GAUGE = "blast_furnace_pipe_gauge";
 }

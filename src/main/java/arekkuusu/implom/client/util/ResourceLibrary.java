@@ -51,7 +51,6 @@ public final class ResourceLibrary {
 	public static final ResourceLocation KONDENZATOR = getBlockTexture("kondenzator/base");
 	public static final ResourceLocation MUTATOR = getBlockTexture("mutator/base");
 	public static final ResourceLocation QUANTUM_MIRROR = getRawTexture(TextureLocation.Blocks(), "quantum_mirror");
-	public static final ResourceLocation MUTATOR_SELECTION = getBlockTexture("mutator_selection");
 	//Item Textures
 	public static final ResourceLocation CLOCKWORK_INSIDES = getItemTexture("clockwork/insides");
 	public static final ResourceLocation CLOCKWORK_SEALED = getItemTexture("clockwork/sealed");
@@ -60,6 +59,7 @@ public final class ResourceLibrary {
 	public static final ResourceLocation GLOW_PARTICLE = getTexture(TextureLocation.Effect(), "glow_particle");
 	public static final ResourceLocation DULL_PARTICLE = getTexture(TextureLocation.Effect(), "dull_particle");
 	public static final ResourceLocation SQUARE_PARTICLE = getTexture(TextureLocation.Effect(), "squared_particle");
+	public static final ResourceLocation VOLT_PARTICLE = getTexture(TextureLocation.Effect(), "volt_particle");
 	public static final ResourceLocation EYE_OF_SCHRODINGER = getRawTexture(TextureLocation.Model(), "eye_of_schrodinger");
 	public static final ResourceLocation EYE_OF_SCHRODINGER_LAYER = getRawTexture(TextureLocation.Model(), "eye_of_schrodinger_layer");
 	//Shader

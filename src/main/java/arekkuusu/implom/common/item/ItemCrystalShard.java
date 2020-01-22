@@ -7,9 +7,10 @@
  */
 package arekkuusu.implom.common.item;
 
+import arekkuusu.implom.api.capability.Capabilities;
 import arekkuusu.implom.api.capability.LumenHelper;
 import arekkuusu.implom.common.handler.data.capability.LumenShardCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.LumenProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.CapabilityProvider;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -41,6 +42,6 @@ public class ItemCrystalShard extends ItemBase {
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new LumenProvider(new LumenShardCapability(stack));
+		return new CapabilityProvider.Builder(stack).put(Capabilities.LUMEN, new LumenShardCapability(stack)).build();
 	}
 }

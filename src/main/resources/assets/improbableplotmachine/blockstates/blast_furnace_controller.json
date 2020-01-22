@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "active=false,facing=north": { "model": "improbableplotmachine:blast_furnace_controller/off" },
+        "active=false,facing=south": { "model": "improbableplotmachine:blast_furnace_controller/off", "y": 180 },
+        "active=false,facing=west":  { "model": "improbableplotmachine:blast_furnace_controller/off", "y": 270 },
+        "active=false,facing=east":  { "model": "improbableplotmachine:blast_furnace_controller/off", "y": 90 },
+        "active=true,facing=north": { "model": "improbableplotmachine:blast_furnace_controller/on" },
+        "active=true,facing=south": { "model": "improbableplotmachine:blast_furnace_controller/on", "y": 180 },
+        "active=true,facing=west":  { "model": "improbableplotmachine:blast_furnace_controller/on", "y": 270 },
+        "active=true,facing=east":  { "model": "improbableplotmachine:blast_furnace_controller/on", "y": 90 }
+    }
+}

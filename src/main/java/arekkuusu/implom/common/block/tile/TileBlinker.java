@@ -7,11 +7,10 @@
  */
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.capability.PositionsHelper;
+import arekkuusu.implom.api.capability.nbt.IPositionsNBTDataCapability;
 import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.common.block.BlockBlinker;
-import arekkuusu.implom.common.handler.data.capability.provider.BlinkerProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.BlinkerCapabilityProvider;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -30,15 +29,17 @@ import java.util.UUID;
  */
 public class TileBlinker extends TileBase implements INBTDataTransferableImpl {
 
-	public final BlinkerProvider wrapper = new BlinkerProvider(this);
+	public final BlinkerCapabilityProvider provider = new BlinkerCapabilityProvider(this);
 
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
 		boolean refresh = super.shouldRefresh(world, pos, oldState, newState);
 		if(!refresh) {
-			int index = wrapper.positionInstance.index(world, pos, getFacingLazy());
-			if(index != -1)
-				wrapper.positionInstance.get().get(index).setFacing(newState.getValue(BlockDirectional.FACING));
+			int index = provider.positionsNBTDataCapability.index(world, pos, getFacingLazy());
+			if(index != -1) {
+				provider.positionsNBTDataCapability.get().get(index)
+						.setFacing(newState.getValue(BlockDirectional.FACING));
+			}
 		}
 		return refresh;
 	}
@@ -46,14 +47,14 @@ public class TileBlinker extends TileBase implements INBTDataTransferableImpl {
 	@Override
 	public void onLoad() {
 		if(!world.isRemote) {
-			wrapper.redstoneInstance.set(0);
+			provider.redstoneNBTCapability.set(0);
 		}
 	}
 
 	@Override
 	public void onChunkUnload() {
 		if(!world.isRemote) {
-			wrapper.redstoneInstance.set(0);
+			provider.redstoneNBTCapability.set(0);
 		}
 	}
 
@@ -67,25 +68,28 @@ public class TileBlinker extends TileBase implements INBTDataTransferableImpl {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return wrapper.hasCapability(capability, facing) || super.hasCapability(capability, facing);
+		return provider.hasCapability(capability, facing) || super.hasCapability(capability, facing);
 	}
 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return wrapper.hasCapability(capability, facing)
-				? wrapper.getCapability(capability, facing)
+		return provider.hasCapability(capability, facing)
+				? provider.getCapability(capability, facing)
 				: super.getCapability(capability, facing);
 	}
 
+	/* NBT */
+	private static final String NBT_PROVIDER = "provider";
+
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setTag(BlockBlinker.Constants.NBT_REDSTONE, wrapper.serializeNBT());
+		compound.setTag(NBT_PROVIDER, provider.serializeNBT());
 	}
 
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		wrapper.deserializeNBT(compound.getCompoundTag(BlockBlinker.Constants.NBT_REDSTONE));
+		provider.deserializeNBT(compound.getCompoundTag(NBT_PROVIDER));
 	}
 
 	@Override
@@ -94,23 +98,23 @@ public class TileBlinker extends TileBase implements INBTDataTransferableImpl {
 	}
 
 	@Override
-	public void setKey(UUID uuid) {
-		wrapper.redstoneInstance.setKey(uuid);
+	public void setKey(@Nullable UUID uuid) {
+		provider.redstoneNBTCapability.setKey(uuid);
 	}
 
 	@Nullable
 	@Override
 	public UUID getKey() {
-		return wrapper.redstoneInstance.getKey();
+		return provider.redstoneNBTCapability.getKey();
 	}
 
 	@Override
 	public void fromItemStack(ItemStack stack) {
-		PositionsHelper.getCapability(stack).map(IPositionsNBTDataCapability::getKey).ifPresent(wrapper.redstoneInstance::setKey);
+		PositionsHelper.getCapability(stack).map(IPositionsNBTDataCapability::getKey).ifPresent(this::setKey);
 	}
 
 	@Override
 	public void toItemStack(ItemStack stack) {
-		PositionsHelper.getCapability(stack).ifPresent(instance -> instance.setKey(wrapper.redstoneInstance.getKey()));
+		PositionsHelper.getCapability(stack).ifPresent(instance -> instance.setKey(this.getKey()));
 	}
 }

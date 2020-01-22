@@ -80,7 +80,7 @@ public class BlockElectron extends BlockBase {
 			for(int i = 0; i < 1 + world.rand.nextInt(3); i++) {
 				Vector3 from = Vector3.Center().add(pos.getX(), pos.getY(), pos.getZ());
 				Vector3 to = Vector3.rotateRandom().add(from);
-				IPM.getProxy().spawnArcDischarge(world, from, to, 4, 0.25F, 15, 0x5194FF, true, true);
+				IPM.getProxy().spawnArcDischarge(world, from, to, 4, 0.25F, 15, 0x5194FF, true);
 			}
 			IPM.getProxy().playSound(world, pos, IMPSounds.SPARK, SoundCategory.BLOCKS, 0.05F);
 		}

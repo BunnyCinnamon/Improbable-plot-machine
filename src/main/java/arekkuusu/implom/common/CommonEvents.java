@@ -46,6 +46,7 @@ public final class CommonEvents {
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		ModRecipes.register(event.getRegistry());
+		ModRecipes.initAPI();
 	}
 
 	@SubscribeEvent

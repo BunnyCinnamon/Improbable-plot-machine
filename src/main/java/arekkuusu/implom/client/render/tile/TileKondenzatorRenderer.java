@@ -25,7 +25,7 @@ public class TileKondenzatorRenderer extends TileEntitySpecialRenderer<TileKonde
 	@Override
 	public void render(TileKondenzator te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		renderModel(te.getFacingLazy(), x, y, z, te.wrapper.instance.get());
+		renderModel(te.getFacingLazy(), x, y, z, te.lumenCapability.get());
 	}
 
 	public static void renderModel(EnumFacing facing, double x, double y, double z, int neutrons) {
@@ -34,7 +34,7 @@ public class TileKondenzatorRenderer extends TileEntitySpecialRenderer<TileKonde
 		BakerLibrary.KONDENZATOR_FRAME.renderWithRotation(facing);
 		ShaderLibrary.BRIGHT.begin();
 		ShaderLibrary.BRIGHT.getUniformJ("brightness").ifPresent(b -> {
-			float brightness = (float) neutrons / (float) BlockKondenzator.Constants.LUMEN_CAPACITY;
+			float brightness = (float) neutrons / (float) BlockKondenzator.ImbuingConstants.IMBUING_CAPACITY;
 			b.set(-0.25F + brightness * 0.25F);
 			b.upload();
 		});

@@ -55,6 +55,7 @@ public final class ModRenders {
 		registerTESR(TileAsymmetricalMachination.class, new TileAsymmetricalMachinationRenderer());
 		registerTESR(TileKondenzator.class, new TileKondenzatorRenderer());
 		registerTESR(TileMutator.class, new TileMutatorRenderer());
+		registerTESR(TileBlastFurnaceController.class, new TileBlastFurnaceControllerRenderer());
 
 		ModItems.QUANTUM_MIRROR.setTileEntityItemStackRenderer(new ItemQuantumMirrorRenderer());
 		ModItems.QUANTA.setTileEntityItemStackRenderer(new ItemQuantaRenderer());

@@ -31,6 +31,10 @@ public final class ConfigHandler {
 	@LangKey(LibMod.MOD_ID + ".config.gen")
 	public static Gen GEN_CONFIG = new Gen();
 
+	@Comment("Enable/Disable/Play with materials")
+	@LangKey(LibMod.MOD_ID + ".config.material")
+	public static Material MATERIAL_CONFIG = new Material();
+
 	public static class Gen {
 
 		@Comment("Enable/Disable/Play with monolith structures")
@@ -123,6 +127,25 @@ public final class ConfigHandler {
 						.build()
 				);
 			}
+		}
+	}
+
+	public static class Material {
+
+		@Comment("Edit smelting ratios")
+		public final SmeltingConfig smelting = new SmeltingConfig();
+
+		public static class SmeltingConfig {
+
+			@Comment("Ore smelting ratio, x0.5, x1, x2, etc")
+			@Config.RequiresMcRestart
+			@RangeDouble(min = 0)
+			public double oreMultiplier = 2;
+
+			@Comment("Ingot smelting liquid amount")
+			@Config.RequiresMcRestart
+			@RangeInt(min = 0)
+			public int ingotAmount = 144;
 		}
 	}
 }

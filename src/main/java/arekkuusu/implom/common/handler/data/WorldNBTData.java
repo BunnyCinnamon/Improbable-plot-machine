@@ -117,7 +117,6 @@ public class WorldNBTData extends WorldSavedData {
 			nbt.setTag("data", subList);
 			nbt.setUniqueId("key", k);
 			map.forEach((cl, v) -> {
-				//noinspection SuspiciousMethodCalls :zoomeyes:
 				if(v.canDeserialize() && IPMApi.getInstance().classMap.containsValue(v.getClass())) {
 					INBTData.NBTHolder nbtData = v.getClass().getAnnotation(INBTData.NBTHolder.class);
 					NBTTagCompound tag = new NBTTagCompound();

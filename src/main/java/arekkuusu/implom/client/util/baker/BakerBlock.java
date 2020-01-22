@@ -67,6 +67,7 @@ public class BakerBlock {
 			GlStateManager.translate(0.5, 0.5, 0.5);
 			switch (facing) {
 				case UP:
+				case DOWN:
 					GlStateManager.rotate(180F, 1F, 0F, 0F);
 					break;
 				case NORTH:
@@ -80,9 +81,6 @@ public class BakerBlock {
 					break;
 				case EAST:
 					GlStateManager.rotate(90F, 0F, 0F, 1F);
-					break;
-				case DOWN:
-					GlStateManager.rotate(180F, 1F, 0F, 0F);
 					break;
 			}
 			GlStateManager.translate(-0.5, -0.5, -0.5);

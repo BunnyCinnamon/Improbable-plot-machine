@@ -13,6 +13,7 @@ version = "${mc_version}-${mayor}.${noapi}.${minor}.${patch}${extra}"
 group = "arekkuusu.implom"
 archivesBaseName = "ImprobablePlotMachine"
 
+compileJava.options.encoding = "UTF-8"
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'

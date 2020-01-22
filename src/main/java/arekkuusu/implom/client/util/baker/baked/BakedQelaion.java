@@ -10,6 +10,7 @@ package arekkuusu.implom.client.util.baker.baked;
 import arekkuusu.implom.api.state.Properties;
 import arekkuusu.implom.api.state.enums.Direction;
 import arekkuusu.implom.client.util.BakerLibrary;
+import arekkuusu.implom.common.block.BlockQelaion;
 import com.google.common.collect.ImmutableList;
 import net.katsstuff.teamnightclipse.mirror.client.baked.QuadBuilder;
 import net.minecraft.block.state.IBlockState;
@@ -63,7 +64,7 @@ public class BakedQelaion extends BakedBrightBase {
 					.bakeJava()
 			);
 			if(state instanceof IExtendedBlockState) {
-				Direction direction = ((IExtendedBlockState) state).getValue(Properties.DIR_UNLISTED);
+				Direction direction = ((IExtendedBlockState) state).getValue(BlockQelaion.DIRECTION);
 				if(direction != null && direction != Direction.NON) {
 					QuadBuilder builder = QuadBuilder.withFormat(format)
 							.setFrom(2, 2, 2)

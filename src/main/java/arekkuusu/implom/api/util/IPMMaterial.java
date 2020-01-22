@@ -17,6 +17,7 @@ import net.minecraft.block.material.Material;
 public class IPMMaterial extends Material {
 
 	public final static Material MONOLITH = new IPMMaterial(MapColor.BLACK).setImmovable().setRequiresTool();
+	public final static Material FIRE_BRICK = new IPMMaterial(MapColor.BLACK).setImmovable().setRequiresTool();
 
 	public IPMMaterial(MapColor color) {
 		super(color);

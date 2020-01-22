@@ -14,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.property.IUnlistedProperty;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -148,28 +147,5 @@ public enum Direction implements IStringSerializable { //Forgive me... 64 in tot
 			return found == state;
 		}).toArray(Boolean[]::new);
 		return Arrays.stream(Direction.values()).filter(c -> c.matches(booleans)).findAny().orElse(FULL);
-	}
-
-	public static class UnlistedDirection implements IUnlistedProperty<Direction> {
-
-		@Override
-		public String getName() {
-			return "direction";
-		}
-
-		@Override
-		public boolean isValid(Direction value) {
-			return true;
-		}
-
-		@Override
-		public Class<Direction> getType() {
-			return Direction.class;
-		}
-
-		@Override
-		public String valueToString(Direction value) {
-			return value.getName();
-		}
 	}
 }

@@ -4,10 +4,10 @@
         "model": "forge:fluid"
     },
     "variants": {
-        "gold": [
+        "hot_air": [
             {
                 "custom": {
-                    "fluid": "gold"
+                    "fluid": "hot_air"
                 }
             }
         ]

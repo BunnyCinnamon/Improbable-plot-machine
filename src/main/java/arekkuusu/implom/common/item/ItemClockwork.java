@@ -5,7 +5,7 @@ import arekkuusu.implom.client.util.baker.DummyModelRegistry;
 import arekkuusu.implom.client.util.baker.model.ModelClockwork;
 import arekkuusu.implom.client.util.helper.ModelHelper;
 import arekkuusu.implom.common.handler.data.capability.InventoryClockworkCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.InventoryProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.CapabilityProvider;
 import arekkuusu.implom.common.lib.LibNames;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,6 +14,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -27,14 +28,14 @@ public class ItemClockwork extends ItemBase {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack stack = playerIn.getHeldItem(handIn);
-		NBTHelper.setBoolean(stack, Constants.NBT_UNSEALED, !NBTHelper.getBoolean(stack, Constants.NBT_UNSEALED));
+		NBTHelper.setBoolean(NBTHelper.fixNBT(stack), Constants.NBT_UNSEALED, !NBTHelper.getBoolean(NBTHelper.fixNBT(stack), Constants.NBT_UNSEALED));
 		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new InventoryProvider<>(new InventoryClockworkCapability());
+		return new CapabilityProvider.Builder(stack).put(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, new InventoryClockworkCapability()).build();
 	}
 
 	@Override

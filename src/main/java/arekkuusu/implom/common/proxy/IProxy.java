@@ -44,7 +44,7 @@ public interface IProxy {
 		//NO-OP
 	}
 
-	default void spawnArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch, boolean fade) {
+	default void spawnArcDischarge(World world, Vector3 from, Vector3 to, int generations, float offset, int age, int rgb, boolean branch) {
 		//NO-OP
 	}
 

@@ -77,6 +77,7 @@ public class TileDilaton extends TileBase {
 				switch(reaction) {
 					case PUSH_ONLY:
 					case NORMAL:
+						//noinspection ConstantConditions
 						if(pushed.add(getState(next, pos.toImmutable())) && pushed.size() > 15) break loop;
 						else ++range;
 						continue loop;
@@ -190,13 +191,16 @@ public class TileDilaton extends TileBase {
 		this.powered = powered;
 	}
 
+	/* NBT */
+	private static final String TAG_POWERED = "powered";
+
 	@Override
 	void readNBT(NBTTagCompound compound) {
-		powered = compound.getBoolean("powered");
+		powered = compound.getBoolean(TAG_POWERED);
 	}
 
 	@Override
 	void writeNBT(NBTTagCompound compound) {
-		compound.setBoolean("powered", powered);
+		compound.setBoolean(TAG_POWERED, powered);
 	}
 }

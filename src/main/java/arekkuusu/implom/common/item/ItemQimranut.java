@@ -10,8 +10,7 @@ package arekkuusu.implom.common.item;
 import arekkuusu.implom.api.capability.INBTDataTransferable;
 import arekkuusu.implom.api.capability.WorldAccessHelper;
 import arekkuusu.implom.common.block.ModBlocks;
-import arekkuusu.implom.common.handler.data.capability.nbt.WorldAccessNBTDataCapability;
-import arekkuusu.implom.common.handler.data.capability.provider.WorldAccessProvider;
+import arekkuusu.implom.common.handler.data.capability.provider.QimranutCapabilityProvider;
 import arekkuusu.implom.common.lib.LibMod;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -47,6 +46,6 @@ public class ItemQimranut extends ItemBaseBlock implements IUUIDDescription {
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
-		return new WorldAccessProvider(new WorldAccessNBTDataCapability());
+		return new QimranutCapabilityProvider(stack);
 	}
 }

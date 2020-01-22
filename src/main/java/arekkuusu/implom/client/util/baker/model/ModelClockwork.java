@@ -101,7 +101,7 @@ public class ModelClockwork implements IModel {
 		@Override
 		public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
 			Function<ResourceLocation, TextureAtlasSprite> textureGetter = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-			boolean unsealed = NBTHelper.getBoolean(stack, ItemClockwork.Constants.NBT_UNSEALED);
+			boolean unsealed = NBTHelper.getBoolean(NBTHelper.fixNBT(stack), ItemClockwork.Constants.NBT_UNSEALED);
 			ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
 			builder.put("background", ResourceLibrary.CLOCKWORK_INSIDES.toString());
 			InventoryHelper.getCapability(stack).map(c -> c.getStackInSlot(0))
