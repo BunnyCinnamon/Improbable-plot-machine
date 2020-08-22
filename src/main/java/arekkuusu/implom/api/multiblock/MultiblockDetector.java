@@ -1,7 +1,7 @@
 package arekkuusu.implom.api.multiblock;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -109,7 +109,7 @@ public abstract class MultiblockDetector {
 		return inside;
 	}
 
-	public BlockPos getOuterPos(World world, BlockPos pos, EnumFacing direction, int limit) {
+	public BlockPos getOuterPos(World world, BlockPos pos, Direction direction, int limit) {
 		for(int i = 0; i < limit && isInside(world, pos); i++) {
 			pos = pos.offset(direction);
 		}

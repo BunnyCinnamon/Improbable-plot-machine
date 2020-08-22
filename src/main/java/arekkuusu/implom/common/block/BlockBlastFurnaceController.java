@@ -1,88 +1,90 @@
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.state.Properties;
-import arekkuusu.implom.api.util.IPMMaterial;
-import arekkuusu.implom.common.block.base.BlockBaseHorizontal;
+import arekkuusu.implom.api.helper.WorldHelper;
 import arekkuusu.implom.common.block.tile.TileBlastFurnaceController;
-import arekkuusu.implom.common.lib.LibNames;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
-public class BlockBlastFurnaceController extends BlockBaseHorizontal {
+public class BlockBlastFurnaceController extends HorizontalBlock {
 
-	public BlockBlastFurnaceController() {
-		super(LibNames.BLAST_FURNACE_CONTROLLER, IPMMaterial.FIRE_BRICK);
-		setDefaultState(getDefaultState().withProperty(Properties.ACTIVE, false).withProperty(BlockHorizontal.FACING, EnumFacing.NORTH));
-		setHarvestLevel(Tool.PICK, ToolLevel.WOOD_GOLD);
-		setHardness(1F);
-	}
+    public BlockBlastFurnaceController(Properties p_i48377_1_) {
+        super(p_i48377_1_);
+    }
 
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(!worldIn.isRemote) {
-			getTile(TileBlastFurnaceController.class, worldIn, pos).ifPresent(tile -> {
-				if(playerIn.getHeldItem(hand).getItem() == Items.FLINT_AND_STEEL)
-					tile.okaeriOniichan();
-				else if(playerIn.isSneaking())
-					tile.setInvalid();
-			});
-		}
-		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
-	}
+    @Override
+    public ActionResultType onBlockActivated(BlockState p_225533_1_, World p_225533_2_, BlockPos p_225533_3_, PlayerEntity p_225533_4_, Hand p_225533_5_, BlockRayTraceResult p_225533_6_) {
+        if (!p_225533_2_.isRemote) {
+            if (!p_225533_4_.isSneaking()) {
+                WorldHelper.getTile(TileBlastFurnaceController.class, p_225533_2_, p_225533_3_).ifPresent(tile -> {
+                    if (p_225533_4_.getHeldItem(p_225533_5_).getItem() == Items.FLINT_AND_STEEL)
+                        tile.okaeriOniichan();
+                    else if (drainWaterBucket(p_225533_4_.getHeldItem(p_225533_5_)))
+                        tile.setInvalid();
+                });
+            }
+        }
+        return super.onBlockActivated(p_225533_1_, p_225533_2_, p_225533_3_, p_225533_4_, p_225533_5_, p_225533_6_);
+    }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumfacing = EnumFacing.getFront(meta & 7);
-		if(enumfacing.getAxis() == EnumFacing.Axis.Y) {
-			enumfacing = EnumFacing.NORTH;
-		}
-		return this.getDefaultState().withProperty(BlockHorizontal.FACING, enumfacing).withProperty(Properties.ACTIVE, (meta & 8) > 0);
-	}
+    public boolean drainWaterBucket(ItemStack stack) {
+        LazyOptional<IFluidHandlerItem> optional = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, Direction.UP);
+        if (optional.isPresent()) {
+            IFluidHandler handler = optional.orElse(Objects.requireNonNull(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY.getDefaultInstance()));
+            FluidStack fluid = handler.drain(1000, IFluidHandler.FluidAction.SIMULATE);
+            if (fluid.getAmount() == 1000) {
+                handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		int i = state.getValue(BlockHorizontal.FACING).getIndex();
-		if(state.getValue(Properties.ACTIVE)) {
-			i |= 8;
-		}
-		return i;
-	}
+    @Override
+    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+        return state.get(BlockBaseMultiBlock.ACTIVE) ? 5 : 0;
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockHorizontal.FACING, Properties.ACTIVE);
-	}
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext p_196258_1_) {
+        return getDefaultState().with(HorizontalBlock.HORIZONTAL_FACING, p_196258_1_.getNearestLookingDirection().getOpposite());
+    }
 
-	@Override
-	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(Properties.ACTIVE) ? 5 : 0;
-	}
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> p_206840_1_) {
+        p_206840_1_.add(HorizontalBlock.HORIZONTAL_FACING, BlockBaseMultiBlock.ACTIVE);
+    }
 
-	@Override
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return false;
+    }
 
-	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
-
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileBlastFurnaceController();
-	}
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return null;
+    }
 }

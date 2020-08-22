@@ -1,171 +1,207 @@
-/*
- * Arekkuusu / Improbable plot machine. 2018
- *
- * This project is licensed under the MIT.
- * The source code is available on github:
- * https://github.com/ArekkuusuJerii/Improbable-plot-machine
- */
 package arekkuusu.implom.api.helper;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-/**
- * Created by <Arekkuusu> on 14/03/2018.
- * It's distributed as part of Improbable plot machine.
- */
 public final class NBTHelper {
 
-	public static NBTTagCompound fixNBT(ItemStack stack) {
-		NBTTagCompound tagCompound = stack.getTagCompound();
-		if(tagCompound == null) {
-			tagCompound = new NBTTagCompound();
-			stack.setTagCompound(tagCompound);
-		}
-		return tagCompound;
-	}
+    /* ItemStack Fixer */
+    public static CompoundNBT fixNBT(ItemStack stack) {
+        CompoundNBT tagCompound = stack.getTag();
+        if (tagCompound == null) {
+            tagCompound = new CompoundNBT();
+            stack.setTag(tagCompound);
+        }
+        return tagCompound;
+    }
 
-	public static void setByte(NBTTagCompound compound, String tag, byte i) {
-		compound.setByte(tag, i);
-	}
+    /* Basic Helpers */
+    public static void putByte(CompoundNBT compound, String tag, byte i) {
+        compound.putByte(tag, i);
+    }
 
-	public static void setInteger(NBTTagCompound compound, String tag, int i) {
-		compound.setInteger(tag, i);
-	}
+    public static void putInt(CompoundNBT compound, String tag, int i) {
+        compound.putInt(tag, i);
+    }
 
-	public static void setFloat(NBTTagCompound compound, String tag, float i) {
-		compound.setFloat(tag, i);
-	}
+    public static void putFloat(CompoundNBT compound, String tag, float i) {
+        compound.putFloat(tag, i);
+    }
 
-	public static void setBoolean(NBTTagCompound compound, String tag, boolean i) {
-		compound.setBoolean(tag, i);
-	}
+    public static void putDouble(CompoundNBT compound, String tag, double i) {
+        compound.putDouble(tag, i);
+    }
 
-	public static void setString(NBTTagCompound compound, String tag, String i) {
-		compound.setString(tag, i);
-	}
+    public static void putBoolean(CompoundNBT compound, String tag, boolean i) {
+        compound.putBoolean(tag, i);
+    }
 
-	public static void setUniqueID(NBTTagCompound compound, String tag, UUID i) {
-		compound.setUniqueId(tag, i);
-	}
+    public static void putString(CompoundNBT compound, String tag, String i) {
+        compound.putString(tag, i);
+    }
 
-	public static void setBlockPos(NBTTagCompound compound, String tag, @Nullable BlockPos pos) {
-		if(pos == null) pos = BlockPos.ORIGIN;
-		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setInteger("x", pos.getX());
-		nbt.setInteger("y", pos.getY());
-		nbt.setInteger("z", pos.getZ());
-		compound.setTag(tag, nbt);
-	}
+    public static void putUUID(CompoundNBT compound, String tag, UUID i) {
+        compound.putUniqueId(tag, i);
+    }
 
-	public static byte getByte(NBTTagCompound compound, String tag) {
-		return compound.getByte(tag);
-	}
+    public static byte getByte(CompoundNBT compound, String tag) {
+        return compound.getByte(tag);
+    }
 
-	public static int getInteger(NBTTagCompound compound, String tag) {
-		return compound.getInteger(tag);
-	}
+    public static int getInteger(CompoundNBT compound, String tag) {
+        return compound.getInt(tag);
+    }
 
-	public static float getFloat(NBTTagCompound compound, String tag) {
-		return compound.getFloat(tag);
-	}
+    public static float getFloat(CompoundNBT compound, String tag) {
+        return compound.getFloat(tag);
+    }
 
-	public static boolean getBoolean(NBTTagCompound compound, String tag) {
-		return compound.getBoolean(tag);
-	}
+    public static double getDouble(CompoundNBT compound, String tag) {
+        return compound.getDouble(tag);
+    }
 
-	public static String getString(NBTTagCompound compound, String tag) {
-		return compound.getString(tag);
-	}
+    public static boolean getBoolean(CompoundNBT compound, String tag) {
+        return compound.getBoolean(tag);
+    }
 
-	@Nullable
-	public static UUID getUniqueID(NBTTagCompound compound, String tag) {
-		return compound.hasUniqueId(tag) ? compound.getUniqueId(tag) : null;
-	}
+    public static String getString(CompoundNBT compound, String tag) {
+        return compound.getString(tag);
+    }
 
-	public static BlockPos getBlockPos(NBTTagCompound compound, String tag) {
-		BlockPos pos = BlockPos.ORIGIN;
-		if(hasTag(compound, tag, NBTType.COMPOUND)) {
-			NBTTagCompound nbt = compound.getCompoundTag(tag);
-			int x = nbt.getInteger("x");
-			int y = nbt.getInteger("y");
-			int z = nbt.getInteger("z");
-			pos = pos.add(x, y, z);
-		}
-		return pos;
-	}
+    @Nullable
+    public static UUID getUUID(CompoundNBT compound, String tag) {
+        return compound.hasUniqueId(tag) ? compound.getUniqueId(tag) : null;
+    }
 
-	public static <T extends Enum<T> & IStringSerializable> void setEnum(NBTTagCompound compound, T t, String tag) {
-		compound.setString(tag, t.getName());
-	}
+    public static <T extends INBT> T setNBT(CompoundNBT compound, String tag, T base) {
+        compound.put(tag, base);
+        return base;
+    }
 
-	public static <T extends Enum<T> & IStringSerializable> Optional<T> getEnum(Class<T> clazz, NBTTagCompound compound, String tag) {
-		String value = compound.getString(tag);
-		return Stream.of(clazz.getEnumConstants()).filter(e -> e.getName().equals(value)).findAny();
-	}
+    public static boolean hasTag(CompoundNBT compound, String tag, int type) {
+        return compound != null && compound.contains(tag, type);
+    }
 
-	public static <T extends NBTBase> T setNBT(NBTTagCompound compound, String tag, T base) {
-		compound.setTag(tag, base);
-		return base;
-	}
+    public static boolean hasTag(CompoundNBT compound, String tag) {
+        return compound != null && compound.contains(tag);
+    }
 
-	public static Optional<NBTTagCompound> getNBTTag(NBTTagCompound compound, String tag) {
-		return hasTag(compound, tag, NBTType.COMPOUND) ? Optional.of(compound.getCompoundTag(tag)) : Optional.empty();
-	}
+    /* Complex Helpers */
+    public static void setArray(CompoundNBT compound, String tag, String... array) {
+        ListNBT list = new ListNBT();
+        for (String s : array) {
+            list.add(StringNBT.valueOf(s));
+        }
+        compound.put(tag, list);
+    }
 
-	public static Optional<NBTTagList> getNBTList(NBTTagCompound compound, String tag) {
-		return hasTag(compound, tag, NBTType.COMPOUND) ? Optional.of(compound.getTagList(tag, NBTType.LIST.ordinal())) : Optional.empty();
-	}
+    public static String[] getArray(CompoundNBT compound, String tag) {
+        ListNBT list = compound.getList(tag, Constants.NBT.TAG_STRING);
+        String[] array = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = list.getString(i);
+        }
+        return array;
+    }
 
-	public static <T extends Entity> Optional<T> getEntityByUUID(Class<T> clazz, UUID uuid, World world) {
-		for(Entity entity : world.loadedEntityList) {
-			if(clazz.isInstance(entity) && entity.getUniqueID().equals(uuid)) return Optional.of(clazz.cast(entity));
-		}
-		return Optional.empty();
-	}
+    public static void setBlockPos(CompoundNBT compound, String tag, @Nullable BlockPos pos) {
+        if (pos == null) pos = BlockPos.ZERO;
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putInt("x", pos.getX());
+        nbt.putInt("y", pos.getY());
+        nbt.putInt("z", pos.getZ());
+        compound.put(tag, nbt);
+    }
 
-	public static boolean hasTag(NBTTagCompound compound, String tag, NBTType type) {
-		return compound != null && compound.hasKey(tag, type.ordinal());
-	}
+    public static BlockPos getBlockPos(CompoundNBT compound, String tag) {
+        BlockPos pos = BlockPos.ZERO;
+        if (hasTag(compound, tag, Constants.NBT.TAG_COMPOUND)) {
+            CompoundNBT nbt = compound.getCompound(tag);
+            int x = nbt.getInt("x");
+            int y = nbt.getInt("y");
+            int z = nbt.getInt("z");
+            pos = pos.add(x, y, z);
+        }
+        return pos;
+    }
 
-	public static boolean hasTag(NBTTagCompound compound, String tag) {
-		return compound != null && compound.hasKey(tag);
-	}
+    public static void setVector(CompoundNBT compound, String tag, Vector3d vec) {
+        CompoundNBT nbt = new CompoundNBT();
+        nbt.putDouble("x", vec.x);
+        nbt.putDouble("y", vec.y);
+        nbt.putDouble("z", vec.z);
+        compound.put(tag, nbt);
+    }
 
-	public static boolean hasUniqueID(NBTTagCompound compound, String tag) {
-		return compound != null && compound.hasUniqueId(tag);
-	}
+    public static Vector3d getVector(CompoundNBT compound, String tag) {
+        Vector3d vec = Vector3d.ZERO;
+        if (hasTag(compound, tag, Constants.NBT.TAG_COMPOUND)) {
+            CompoundNBT nbt = compound.getCompound(tag);
+            double x = nbt.getDouble("x");
+            double y = nbt.getDouble("y");
+            double z = nbt.getDouble("z");
+            vec = vec.add(x, y, z);
+        }
+        return vec;
+    }
 
-	public static void removeTag(NBTTagCompound compound, String tag) {
-		if(compound != null && compound.hasKey(tag)) {
-			compound.removeTag(tag);
-		}
-	}
+    public static <T extends IForgeRegistryEntry<T>> void setRegistry(CompoundNBT compound, String tag, IForgeRegistryEntry<T> instance) {
+        setResourceLocation(compound, tag, Objects.requireNonNull(instance.getRegistryName()));
+    }
 
-	public enum NBTType {
-		END,
-		BYTE,
-		SHORT,
-		INT,
-		LONG,
-		FLOAT,
-		DOUBLE,
-		BYTE_ARRAY,
-		STRING,
-		LIST,
-		COMPOUND,
-		INT_ARRAY,
-		LONG_ARRAY
-	}
+    public static <T extends IForgeRegistryEntry<T>> T getRegistry(CompoundNBT compound, String tag, Class<T> registry) {
+        ResourceLocation location = getResourceLocation(compound, tag);
+        return GameRegistry.findRegistry(registry).getValue(location);
+    }
+
+    public static void setResourceLocation(CompoundNBT compound, String tag, ResourceLocation location) {
+        compound.putString(tag, location.toString());
+    }
+
+    public static ResourceLocation getResourceLocation(CompoundNBT compound, String tag) {
+        return new ResourceLocation(compound.getString(tag));
+    }
+
+    public static <T extends Enum<T> & IStringSerializable> void setEnum(CompoundNBT compound, T t, String tag) {
+        compound.putString(tag, t.getString());
+    }
+
+    public static <T extends Enum<T> & IStringSerializable> Optional<T> getEnum(Class<T> clazz, CompoundNBT compound, String tag) {
+        String value = compound.getString(tag);
+        return Stream.of(clazz.getEnumConstants()).filter(e -> e.getString().equals(value)).findAny();
+    }
+
+    public static CompoundNBT getNBTTag(CompoundNBT compound, String tag) {
+        return hasTag(compound, tag, Constants.NBT.TAG_COMPOUND) ? compound.getCompound(tag) : new CompoundNBT();
+    }
+
+    public static Optional<ListNBT> getNBTList(CompoundNBT compound, String tag) {
+        return hasTag(compound, tag, Constants.NBT.TAG_LIST) ? Optional.of(compound.getList(tag, Constants.NBT.TAG_COMPOUND)) : Optional.empty();
+    }
+
+    public static boolean hasUniqueID(CompoundNBT compound, String tag) {
+        return compound != null && compound.hasUniqueId(tag);
+    }
+
+    public static void removeTag(CompoundNBT compound, String tag) {
+        if (compound != null && compound.contains(tag)) {
+            compound.remove(tag);
+        }
+    }
 }

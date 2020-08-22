@@ -1,9 +1,9 @@
 package arekkuusu.implom.api.multiblock;
 
 import arekkuusu.implom.api.multiblock.layer.LayerPiece;
-import arekkuusu.implom.api.multiblock.layer.MultiblockLayer;
+import arekkuusu.implom.api.multiblock.layer.MultiBlockLayer;
 import com.google.common.collect.Lists;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MultiblockRectanguloid extends MultiblockDetector {
 
-	public final List<MultiblockLayer> layers = Lists.newLinkedList();
+	public final List<MultiBlockLayer> layers = Lists.newLinkedList();
 	public final WallType wallType;
 	public final int maxLength;
 
@@ -22,7 +22,7 @@ public class MultiblockRectanguloid extends MultiblockDetector {
 		this.wallType = wallType;
 	}
 
-	public void insertLayer(MultiblockLayer layer) {
+	public void insertLayer(MultiBlockLayer layer) {
 		layers.add(layer);
 	}
 
@@ -33,7 +33,7 @@ public class MultiblockRectanguloid extends MultiblockDetector {
 
 		// move as low as possible
 		int masterY = center.getY();
-		center = getOuterPos(world, center, EnumFacing.DOWN, 64).up();
+		center = getOuterPos(world, center, Direction.DOWN, 64).up();
 		center = detectCenter(world, center, maxLength);
 
 		// below lowest internal position
@@ -44,7 +44,7 @@ public class MultiblockRectanguloid extends MultiblockDetector {
 		// distances to the edges including the outer blocks
 		int[] edges = new int[4];
 		// order: south/west/north/east
-		for(EnumFacing direction : EnumFacing.HORIZONTALS) {
+		for(Direction direction : Direction.Plane.HORIZONTAL) {
 			// move to wall
 			BlockPos pos = getOuterPos(world, center, direction, maxLength);
 
@@ -52,8 +52,8 @@ public class MultiblockRectanguloid extends MultiblockDetector {
 		}
 
 		// walls too far away?
-		int xd = (edges[EnumFacing.SOUTH.getHorizontalIndex()] - edges[EnumFacing.NORTH.getHorizontalIndex()]) - 1;
-		int zd = (edges[EnumFacing.EAST.getHorizontalIndex()] - edges[EnumFacing.WEST.getHorizontalIndex()]) - 1;
+		int xd = (edges[Direction.SOUTH.getHorizontalIndex()] - edges[Direction.NORTH.getHorizontalIndex()]) - 1;
+		int zd = (edges[Direction.EAST.getHorizontalIndex()] - edges[Direction.WEST.getHorizontalIndex()]) - 1;
 		if(xd > maxLength || zd > maxLength) {
 			return null;
 		}
@@ -68,9 +68,9 @@ public class MultiblockRectanguloid extends MultiblockDetector {
 		}
 		center = center.down();
 		int height = 0;
-		for(Iterator<MultiblockLayer> iterator = layers.iterator(); iterator.hasNext(); ) {
+		for(Iterator<MultiBlockLayer> iterator = layers.iterator(); iterator.hasNext(); ) {
 			List<BlockPos> candidates = Lists.newArrayList();
-			MultiblockLayer layer = iterator.next();
+			MultiBlockLayer layer = iterator.next();
 			int maxLayerHeight = layer.layerData.maxHeight;
 			int minLayerHeight = layer.layerData.minHeight;
 			int layerHeight = 0;

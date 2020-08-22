@@ -1,0 +1,11 @@
+modLoader="javafml"
+loaderVersion="[31,)"
+[[mods]]
+modId="improbableplotmachine"
+version="${file.jarVersion}"
+certificateFingerprint = "72cd337644e68ff7257f69b2927894048793e577"
+displayName="Improbable Plot Machine"
+authors="Arekkuusu"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/improbable-plot-machine"
+logoFile="logo.png"
+description="uwu"

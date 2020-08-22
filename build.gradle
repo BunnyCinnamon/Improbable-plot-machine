@@ -1,58 +1,122 @@
 buildscript {
     repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "${mc_version}-${mayor}.${noapi}.${minor}.${patch}${extra}"
-group = "arekkuusu.implom"
-archivesBaseName = "ImprobablePlotMachine"
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'maven-publish'
 
-compileJava.options.encoding = "UTF-8"
-sourceCompatibility = targetCompatibility = '1.8'
-compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
+import net.minecraftforge.gradle.common.task.SignJar
+if (file('secrets.properties').exists()) {
+    println "Loading parameters from secrets.properties"
+    ext.secrets = new Properties()
+    file('secrets.properties').withReader {ext.secrets.load(it)}
 }
 
-minecraft {
-    version = "${mc_version}-${forge_version}"
-    runDir = "run"
-    
-    mappings = mc_mappings
+version = "${mc_version}-${mayor}.${noapi}.${minor}.${patch}${extra}"
+group = "arekkuusu"
+archivesBaseName = "ImprobablePlotMachine"
 
-    replace 'GRADLE:VERSION', project.version
-    replaceIn 'LibMod.java'
-    replace 'required-after:mirror;', "required-after:mirror@[${mirror_version},);"
-    replaceIn 'LibMod.java'
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+minecraft {
+    mappings channel: "${mc_mappings_channel}", version: "${mc_mappings_version}"
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            mods {
+                improbableplotmachine {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            mods {
+                improbableplotmachine {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+task deobfJar(type: Jar) {
+    from(sourceSets.main.output)
+    archiveName = "${archivesBaseName}-${version}-deobf.${extension}"
+}
+
+artifacts {
+    archives deobfJar
 }
 
 repositories {
-    maven {
-        name = "TeamNightclipse Bintray"
-        setUrl("https://dl.bintray.com/team-nightclipse/maven/")
-    }
+
 }
 
 dependencies {
-    compile("net.katsstuff.teamnightclipse:mirror:${mirror_version}")
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 }
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+jar {
+    exclude "**/*.bat"
+    exclude "**/*.psd"
+    exclude "**/*.txt"
+    exclude "**/*.d"
+    manifest {
+        attributes([
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
-        
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+}
+
+task signJar(type: SignJar, dependsOn: jar) {
+
+    keyStore = project.ext.secrets.keyStore // This needs to be a path to the keystore file
+    alias = project.ext.secrets.keyStoreAlias
+    storePass = project.ext.secrets.keyStorePass
+    keyPass = project.ext.secrets.keyStoreKeyPass
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
+}
+
+build.dependsOn signJar
+
+jar.finalizedBy('reobfJar')
+
+def reobfFile = file("$buildDir/reobfJar/output.jar")
+def reobfArtifact = artifacts.add('default', reobfFile) {
+    //noinspection GroovyAssignabilityCheck
+    type 'jar'
+    builtBy 'reobfJar'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact reobfArtifact
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+
+sourceSets {
+    main {
     }
 }
