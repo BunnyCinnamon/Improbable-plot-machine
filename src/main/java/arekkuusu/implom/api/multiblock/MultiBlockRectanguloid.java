@@ -11,13 +11,13 @@ import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 
-public class MultiblockRectanguloid extends MultiblockDetector {
+public class MultiBlockRectanguloid extends MultiBlockDetector {
 
 	public final List<MultiBlockLayer> layers = Lists.newLinkedList();
 	public final WallType wallType;
 	public final int maxLength;
 
-	public MultiblockRectanguloid(int maxLength, WallType wallType) {
+	public MultiBlockRectanguloid(int maxLength, WallType wallType) {
 		this.maxLength = maxLength;
 		this.wallType = wallType;
 	}
@@ -28,7 +28,7 @@ public class MultiblockRectanguloid extends MultiblockDetector {
 
 	@Override
 	@Nullable
-	public MultiblockStructure detectMultiblock(World world, BlockPos center) {
+	public MultiblockStructure detectMultiBlock(World world, BlockPos center) {
 		List<BlockPos> subBlocks = Lists.newArrayList();
 
 		// move as low as possible

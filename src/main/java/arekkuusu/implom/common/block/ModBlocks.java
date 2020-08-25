@@ -23,40 +23,40 @@ public final class ModBlocks {
             LibNames.FIRE_BRICKS, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> FIRE_BRICKS_GLASS = IPM.BLOCKS.register(
-            LibNames.FIRE_BRICKS_GLASS, () -> new BlockBaseMultiBlockGlass(Block.Properties.create(Material.ROCK))
+            LibNames.FIRE_BRICKS_GLASS, () -> new BlockBaseMultiBlockGlass(Block.Properties.create(Material.GLASS))
     );
     public static final RegistryObject<Block> FIRE_BRICKS_WINDOW = IPM.BLOCKS.register(
-            LibNames.FIRE_BRICKS_WINDOW, () -> new BlockBaseMultiBlockGlass(Block.Properties.create(Material.ROCK))
+            LibNames.FIRE_BRICKS_WINDOW, () -> new BlockBaseMultiBlockGlass(Block.Properties.create(Material.GLASS))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_CONTROLLER = IPM.BLOCKS.register(
             LibNames.BLAST_FURNACE_CONTROLLER, () -> new BlockBlastFurnaceController(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_DRAIN = IPM.BLOCKS.register(
-            LibNames.BLAST_FURNACE_DRAIN, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+            LibNames.BLAST_FURNACE_DRAIN, () -> new BlockBlastFurnaceDrain(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_FILTER = IPM.BLOCKS.register(
-            LibNames.BLAST_FURNACE_FILTER, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+            LibNames.BLAST_FURNACE_FILTER, () -> new BlockBlastFurnaceFilter(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_INPUT = IPM.BLOCKS.register(
-            LibNames.BLAST_FURNACE_INPUT, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+            LibNames.BLAST_FURNACE_INPUT, () -> new BlockBlastFurnaceInput(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_TUYERE = IPM.BLOCKS.register(
-            LibNames.BLAST_FURNACE_TUYERE, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+            LibNames.BLAST_FURNACE_TUYERE, () -> new BlockBlastFurnaceTuyere(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_AIR_VENT = IPM.BLOCKS.register(
-            LibNames.BLAST_FURNACE_AIR_VENT, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+            LibNames.BLAST_FURNACE_AIR_VENT, () -> new BlockHotBlastAirVent(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_AIR_PUMP = IPM.BLOCKS.register(
-            LibNames.BLAST_FURNACE_AIR_PUMP, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+            LibNames.BLAST_FURNACE_AIR_PUMP, () -> new BlockHotBlastAirPump(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_PIPE = IPM.BLOCKS.register(
-            LibNames.BLAST_FURNACE_PIPE, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+            LibNames.BLAST_FURNACE_PIPE, () -> new BlockBlastFurnacePipe(Block.Properties.create(Material.ROCK))
     );
-    public static final RegistryObject<Block> HOT_BLAST_HEATER = IPM.BLOCKS.register(
-            LibNames.HOT_BLAST_HEATER, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+    public static final RegistryObject<Block> BLAST_FURNACE_HEATER = IPM.BLOCKS.register(
+            LibNames.BLAST_FURNACE_HEATER, () -> new BlockBlastFurnaceHeater(Block.Properties.create(Material.ROCK))
     );
     public static final RegistryObject<Block> BLAST_FURNACE_PIPE_GAUGE = IPM.BLOCKS.register(
-            LibNames.BLAST_FURNACE_PIPE_GAUGE, () -> new BlockBaseMultiBlock(Block.Properties.create(Material.ROCK))
+            LibNames.BLAST_FURNACE_PIPE_GAUGE, () -> new BlockBlastFurnacePipeGauge(Block.Properties.create(Material.ROCK))
     );
 
     public static void init() {

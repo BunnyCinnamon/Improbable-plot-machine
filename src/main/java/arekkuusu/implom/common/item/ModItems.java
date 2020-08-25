@@ -50,7 +50,7 @@ public final class ModItems {
             LibNames.BLAST_FURNACE_PIPE, () -> new BlockItem(ModBlocks.BLAST_FURNACE_PIPE.get(), defaultItemProperties())
     );
     public static final RegistryObject<Item> HOT_BLAST_HEATER = IPM.ITEMS.register(
-            LibNames.HOT_BLAST_HEATER, () -> new BlockItem(ModBlocks.HOT_BLAST_HEATER.get(), defaultItemProperties())
+            LibNames.BLAST_FURNACE_HEATER, () -> new BlockItem(ModBlocks.BLAST_FURNACE_HEATER.get(), defaultItemProperties())
     );
     public static final RegistryObject<Item> BLAST_FURNACE_PIPE_GAUGE = IPM.ITEMS.register(
             LibNames.BLAST_FURNACE_PIPE_GAUGE, () -> new BlockItem(ModBlocks.BLAST_FURNACE_PIPE_GAUGE.get(), defaultItemProperties())

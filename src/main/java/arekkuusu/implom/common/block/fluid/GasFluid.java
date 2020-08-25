@@ -1,5 +1,6 @@
 package arekkuusu.implom.common.block.fluid;
 
+import arekkuusu.implom.IPM;
 import arekkuusu.implom.common.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -10,12 +11,15 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.state.StateContainer;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
+import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class GasFluid extends FlowingFluid {
 
@@ -35,8 +39,8 @@ public abstract class GasFluid extends FlowingFluid {
     }
 
     @Override
-    protected boolean canDisplace(FluidState fluidState, IBlockReader blockReader, BlockPos pos, Fluid fluid, Direction direction) {
-        return false;
+    public boolean canDisplace(FluidState fluidState, IBlockReader blockReader, BlockPos pos, Fluid fluid, Direction direction) {
+        return direction == Direction.UP && !fluid.isIn(FluidTags.WATER);
     }
 
     @Override
@@ -68,6 +72,15 @@ public abstract class GasFluid extends FlowingFluid {
     @Override
     protected float getExplosionResistance() {
         return 0F;
+    }
+
+    @Override
+    protected FluidAttributes createAttributes() {
+        return net.minecraftforge.fluids.FluidAttributes.builder(
+                new ResourceLocation(IPM.MOD_ID, "block/hot_air_still"),
+                new ResourceLocation(IPM.MOD_ID, "block/hot_air_flow"))
+                .translationKey("block."+ IPM.MOD_ID +".lava")
+                .luminosity(0).density(100).viscosity(500).temperature(1300).build(this);
     }
 
     @Override

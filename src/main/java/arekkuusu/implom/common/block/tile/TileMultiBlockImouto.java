@@ -1,34 +1,39 @@
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.api.multiblock.IMultiblockImouto;
-import arekkuusu.implom.api.multiblock.IMultiblockOniichan;
+import arekkuusu.implom.api.multiblock.MultiBlockImouto;
+import arekkuusu.implom.api.multiblock.MultiBlockOniichan;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Objects;
 
-public class TileMultiblockImouto extends TileBase implements IMultiblockImouto {
+public class TileMultiBlockImouto extends TileBase implements MultiBlockImouto {
 
-    private boolean hasOniichanByHerSide;
-    private BlockPos oniichan;
-    private Block oniichanBlock;
-    private BlockState oniichanState;
+    public boolean hasOniichanByHerSide;
+    public BlockPos oniichan;
+    public Block oniichanBlock;
+    public BlockState oniichanState;
 
-    public TileMultiblockImouto() {
-        super(ModTiles.IMOUTO.get());
+    public TileMultiBlockImouto(TileEntityType<?> type) {
+        super(type);
+    }
+
+    public TileMultiBlockImouto() {
+        this(ModTiles.IMOUTO.get());
     }
 
     @Override
     public void wakeUpOniichan() {
         if (this.hasOniichanByHerSide) {
             TileEntity tile = getWorld().getTileEntity(oniichan);
-            if (tile instanceof IMultiblockOniichan) {
-                ((IMultiblockOniichan) tile).okaeriOniichan();
+            if (tile instanceof MultiBlockOniichan) {
+                ((MultiBlockOniichan) tile).okaeriOniichan();
             }
         }
     }
@@ -65,8 +70,8 @@ public class TileMultiblockImouto extends TileBase implements IMultiblockImouto 
 
     @Override
     public boolean hasValidOniichan() {
-        return this.hasOniichanByHerSide && this.world.getBlockState(this.oniichan) == this.oniichanState
-                && (this.world.getBlockState(this.oniichan).getBlock() == this.oniichanBlock);
+        return this.hasOniichanByHerSide && hasWorld() && this.getWorld().getBlockState(this.oniichan) == this.oniichanState
+                && (this.getWorld().getBlockState(this.oniichan).getBlock() == this.oniichanBlock);
     }
 
     @Override

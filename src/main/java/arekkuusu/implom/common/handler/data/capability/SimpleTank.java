@@ -1,7 +1,8 @@
 package arekkuusu.implom.common.handler.data.capability;
 
 import arekkuusu.implom.common.block.fluid.ModFluids;
-import arekkuusu.implom.common.block.tile.TileBlastFurnaceController;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,13 +10,13 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
-public class BlastFurnaceAirTank implements IFluidHandler, INBTSerializable<CompoundNBT> {
+public class SimpleTank implements IFluidHandler, INBTSerializable<CompoundNBT> {
 
     public FluidStack fluid = FluidStack.EMPTY;
-    public TileBlastFurnaceController handler;
+    public Runnable handler;
     public int maxCapacity;
 
-    public BlastFurnaceAirTank(TileBlastFurnaceController handler) {
+    public SimpleTank(Runnable handler) {
         this.handler = handler;
     }
 
@@ -30,9 +31,13 @@ public class BlastFurnaceAirTank implements IFluidHandler, INBTSerializable<Comp
         return fluid;
     }
 
+    public void setTankCapacity(int capacity) {
+        this.maxCapacity = capacity;
+    }
+
     @Override
     public int getTankCapacity(int tank) {
-        return 1000;
+        return maxCapacity;
     }
 
     @Override
@@ -43,24 +48,20 @@ public class BlastFurnaceAirTank implements IFluidHandler, INBTSerializable<Comp
     @Override
     public int fill(FluidStack resource, FluidAction action) {
         if (action.simulate()) {
-            if (fluid == null) {
-                return Math.min(maxCapacity, resource.getAmount());
-            }
-
-            if (!fluid.isFluidEqual(resource)) {
+            if (!isFluidValid(0, resource)) {
                 return 0;
             }
 
             return Math.min(maxCapacity - fluid.getAmount(), resource.getAmount());
         }
 
-        if (fluid == FluidStack.EMPTY) {
+        if (fluid.getRawFluid() == Fluids.EMPTY) {
             fluid = new FluidStack(resource, Math.min(maxCapacity, resource.getAmount()));
-            handler.airTankChange();
+            handler.run();
             return fluid.getAmount();
         }
 
-        if (!fluid.isFluidEqual(resource)) {
+        if (!isFluidValid(0, resource)) {
             return 0;
         }
         int filled = maxCapacity - fluid.getAmount();
@@ -71,7 +72,7 @@ public class BlastFurnaceAirTank implements IFluidHandler, INBTSerializable<Comp
         } else {
             fluid.setAmount(maxCapacity);
         }
-        handler.airTankChange();
+        handler.run();
 
         return filled;
     }
@@ -79,10 +80,6 @@ public class BlastFurnaceAirTank implements IFluidHandler, INBTSerializable<Comp
     @Nonnull
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-        if (fluid == null) {
-            return FluidStack.EMPTY;
-        }
-
         int drained = resource.getAmount();
         if (fluid.getAmount() < drained) {
             drained = fluid.getAmount();
@@ -94,7 +91,7 @@ public class BlastFurnaceAirTank implements IFluidHandler, INBTSerializable<Comp
             if (fluid.getAmount() <= 0) {
                 fluid = FluidStack.EMPTY;
             }
-            handler.airTankChange();
+            handler.run();
         }
         return stack;
     }
@@ -109,11 +106,13 @@ public class BlastFurnaceAirTank implements IFluidHandler, INBTSerializable<Comp
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         fluid.writeToNBT(nbt);
+        nbt.putInt("maxCapacity", maxCapacity);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         fluid = FluidStack.loadFluidStackFromNBT(nbt);
+        maxCapacity = nbt.getInt("maxCapacity");
     }
 }

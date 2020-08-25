@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 //From tinkers construct
-public abstract class MultiblockDetector {
+public abstract class MultiBlockDetector {
 
 	public static class MultiblockStructure {
 
@@ -119,24 +119,18 @@ public abstract class MultiblockDetector {
 
 	public abstract boolean isInside(World world, BlockPos pos);
 
-	public abstract MultiblockStructure detectMultiblock(World world, BlockPos center);
+	public abstract MultiblockStructure detectMultiBlock(World world, BlockPos center);
 
 	public boolean checkCanStructureBeDetected(World world, MultiblockStructure structure) {
 		return structure != null && structure.minPos.distanceSq(structure.maxPos) > 1 && world.isAreaLoaded(structure.minPos, structure.maxPos);
 	}
 
 	public static void assignMultiBlockServants(World world, BlockPos master, List<BlockPos> servants) {
-		TileEntity masterBlock = world.getTileEntity(master);
-		if(!(masterBlock instanceof IMultiblockOniichan)) {
-			throw new IllegalArgumentException("Master must be of IMultiblockOniichan");
-		}
-		IMultiblockOniichan oniichan = (IMultiblockOniichan) masterBlock;
-		// assign master to each servant
 		for(BlockPos pos : servants) {
 			if(world.isBlockLoaded(pos)) {
 				TileEntity slave = world.getTileEntity(pos);
-				if(slave instanceof IMultiblockImouto) {
-					IMultiblockImouto imouto = (IMultiblockImouto) slave;
+				if(slave instanceof MultiBlockImouto) {
+					MultiBlockImouto imouto = (MultiBlockImouto) slave;
 					imouto.setOniichan(master);
 				}
 			}

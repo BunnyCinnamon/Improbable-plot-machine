@@ -4,22 +4,32 @@ import arekkuusu.implom.IPM;
 import arekkuusu.implom.api.API;
 import arekkuusu.implom.api.helper.BiomeTemperatureHelper;
 import arekkuusu.implom.api.helper.WorldHelper;
-import arekkuusu.implom.api.multiblock.IMultiblockOniichan;
-import arekkuusu.implom.api.multiblock.MultiblockRectanguloid;
+import arekkuusu.implom.api.multiblock.MultiBlockOniichan;
+import arekkuusu.implom.api.multiblock.MultiBlockRectanguloid;
 import arekkuusu.implom.api.recipe.*;
 import arekkuusu.implom.common.block.BlockBaseMultiBlock;
 import arekkuusu.implom.common.block.tile.multiblock.MultiBlockBlastFurnace;
-import arekkuusu.implom.common.handler.data.capability.BlastFurnaceAirTank;
-import arekkuusu.implom.common.handler.data.capability.BlastFurnaceMeltingTank;
+import arekkuusu.implom.common.container.BlastFurnaceControllerContainer;
+import arekkuusu.implom.common.container.ModContainers;
+import arekkuusu.implom.common.handler.data.capability.MultipleTank;
+import arekkuusu.implom.common.handler.data.capability.SimpleTank;
 import arekkuusu.implom.common.handler.data.capability.provider.CapabilityProvider;
 import net.minecraft.block.HorizontalBlock;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -27,19 +37,20 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class TileBlastFurnaceController extends TileMultiblockOniichan implements IMultiblockOniichan, ITickable {
+public class TileBlastFurnaceController extends TileMultiBlockOniichan implements MultiBlockOniichan, ITickableTileEntity, INamedContainerProvider {
 
-    public static final MultiBlockBlastFurnace MULTI_BLOCK_BLAST_FURNACE = new MultiBlockBlastFurnace(10, MultiblockRectanguloid.WallType.ANY);
+    public static final MultiBlockBlastFurnace MULTI_BLOCK_BLAST_FURNACE = new MultiBlockBlastFurnace(10, MultiBlockRectanguloid.WallType.ANY);
     public static final int ALLOYING_PER_TICK = 10; // how much liquid can be created per tick to make alloys
     public static final int MAXIMUM_TEMPERATURE = 5000; // how much temperature can the structure withhold
-    public static final int TIME_FACTOR = 8; // basically an "accuracy" so the heat can be more fine grained. required temp is multiplied by this
+    public static final int HEAT_TIME_FACTOR = 8; // basically an "accuracy" so the heat can be more fine grained. required temp is multiplied by this
 
-    public final BlastFurnaceAirTank airTank = new BlastFurnaceAirTank(this); // Used to store air fluid, can not drain or fill directly
-    public final BlastFurnaceMeltingTank meltingTank = new BlastFurnaceMeltingTank(this);
+    public final SimpleTank airTank = new SimpleTank(this::airTankChange); // Used to store air fluid, can not drain or fill directly
+    public final MultipleTank meltingTank = new MultipleTank(this::meltingTankChange);
     public final ItemStackHandler fuelStackHandler = new ItemStackHandler(0) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -62,18 +73,22 @@ public class TileBlastFurnaceController extends TileMultiblockOniichan implement
         }
     };
     public final CapabilityProvider provider = new CapabilityProvider.Builder(this)
-            .put(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, meltingTank)
-            .put(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, fuelStackHandler)
-            .put(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, oreStackHandler)
+            .put(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, airTank, Direction.UP)
+            .put(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, meltingTank, Direction.DOWN)
+            .put(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, fuelStackHandler, Direction.UP)
+            .put(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, oreStackHandler, Direction.DOWN)
             .build();
     public LiquidHeat liquidHeat;
     public ItemHeat itemHeat;
     public int temperature;
 
     public TileBlastFurnaceController() {
-        super(ModTiles.IMOUTO.get(), MULTI_BLOCK_BLAST_FURNACE);
+        super(ModTiles.BLAST_FURNACE_CONTROLLER.get(), MULTI_BLOCK_BLAST_FURNACE);
+        liquidHeat = new LiquidHeat();
+        itemHeat = new ItemHeat();
     }
 
+    // Progress update
     @Override
     public void tick() {
         if (isClientWorld()) return;
@@ -88,7 +103,7 @@ public class TileBlastFurnaceController extends TileMultiblockOniichan implement
             }
 
             if (temperature < MAXIMUM_TEMPERATURE) { //Burn fuel
-                int fluidAmount = airTank.getFluidInTank(0).getAmount();
+                int fluidAmount = airTank.getFluidInTank(airTank.getTanks()).getAmount();
                 if (fluidAmount > 0) {
                     float diff = (float) fluidAmount / (float) airTank.maxCapacity;
                     int burningTickSpeed = 1 + (int) (60 - (60 * diff));
@@ -102,7 +117,7 @@ public class TileBlastFurnaceController extends TileMultiblockOniichan implement
     }
 
     private void burnFuel() {
-        int fluidAmount = airTank.getFluidInTank(0).getAmount();
+        int fluidAmount = airTank.getFluidInTank(airTank.getTanks()).getAmount();
         int fluidDrain = 0;
         for (int i = 0; i < fuelStackHandler.getSlots() && fluidDrain < fluidAmount; i++) {
             ItemStack stack = fuelStackHandler.getStackInSlot(i);
@@ -183,6 +198,38 @@ public class TileBlastFurnaceController extends TileMultiblockOniichan implement
             temperature = Math.max(0, temperature - (int) temperaturePerTickLoss);
         }
     }
+    // Progress update
+
+    //Structure change
+    @Override
+    public void updateStructureData() {
+        if (structure == null || !isActiveLazy()) provider.invalidateAll();
+        if (structure == null || isActiveLazy()) return;
+        int inventorySize = (structure.x) * (structure.y) * (structure.z);
+        if (!isClientWorld() && oreStackHandler.getSlots() > inventorySize) {
+            for (int i = inventorySize; i < oreStackHandler.getSlots(); i++) {
+                if (!oreStackHandler.getStackInSlot(i).isEmpty()) {
+                    dropItem(oreStackHandler.getStackInSlot(i));
+                }
+            }
+        }
+        int liquidsSize = inventorySize * 1000;
+        fuelStackHandler.setSize(1 + inventorySize % 5);
+        oreStackHandler.setSize(inventorySize);
+        airTank.setTankCapacity(1000 * (structure.x) * (structure.y));
+        if(!airTank.fluid.isEmpty()) airTank.fluid.setAmount(0);
+        meltingTank.setTankCapacity(liquidsSize);
+        meltingTank.fluids.clear();
+        itemHeat.resize(inventorySize);
+        liquidHeat.resize(0);
+        markDirty();
+    }
+
+    public void dropItem(ItemStack stack) {
+        BlockPos pos = getPos().offset(getFacingLazy());
+        ItemEntity entityItem = new ItemEntity(getWorld(), pos.getX(), pos.getY(), pos.getZ(), stack);
+        getWorld().addEntity(entityItem);
+    }
 
     public void meltingTankChange(List<FluidStack> old, List<FluidStack> updated, FluidStack changed) {
         if (liquidHeat.temperatures.length == 0)
@@ -200,32 +247,12 @@ public class TileBlastFurnaceController extends TileMultiblockOniichan implement
         markDirty();
         sync();
     }
+    //Structure change
 
+    @Nullable
     @Override
-    public void updateStructureData() {
-        if (structure == null || isActiveLazy()) return;
-        int inventorySize = (structure.x) * (structure.y) * (structure.z);
-        if (!isClientWorld() && oreStackHandler.getSlots() > inventorySize) {
-            for (int i = inventorySize; i < oreStackHandler.getSlots(); i++) {
-                if (!oreStackHandler.getStackInSlot(i).isEmpty()) {
-                    dropItem(oreStackHandler.getStackInSlot(i));
-                }
-            }
-        }
-        int liquidsSize = inventorySize * 1000;
-        fuelStackHandler.setSize(1 + inventorySize % 5);
-        oreStackHandler.setSize(inventorySize);
-        meltingTank.setTankCapacity(liquidsSize);
-        meltingTank.fluids.clear();
-        itemHeat.resize(inventorySize);
-        liquidHeat.resize(0);
-        markDirty();
-    }
-
-    public void dropItem(ItemStack stack) {
-        BlockPos pos = getPos().offset(getFacingLazy());
-        ItemEntity entityItem = new ItemEntity(getWorld(), pos.getX(), pos.getY(), pos.getZ(), stack);
-        getWorld().addEntity(entityItem);
+    public <T> LazyOptional<T> getMultiBlockCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        return provider.getCapability(cap, side);
     }
 
     public Direction getFacingLazy() {
@@ -280,6 +307,19 @@ public class TileBlastFurnaceController extends TileMultiblockOniichan implement
         compound.put(TAG_PROVIDER, provider.serializeNBT());
     }
 
+    //Container
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("");
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int p_createMenu_1_, PlayerInventory p_createMenu_2_, PlayerEntity p_createMenu_3_) {
+        return new BlastFurnaceControllerContainer(p_createMenu_1_, getWorld(), getPos(), p_createMenu_2_);
+    }
+    //Container
+
     public class ItemHeat {
         public int[] tempRequired = new int[0];
         public int[] temperatures = new int[0];
@@ -321,7 +361,7 @@ public class TileBlastFurnaceController extends TileMultiblockOniichan implement
             if (index >= tempRequired.length) {
                 return 0;
             }
-            return tempRequired[index] / TIME_FACTOR;
+            return tempRequired[index] / HEAT_TIME_FACTOR;
         }
 
         public void resize(int size) {
@@ -424,7 +464,7 @@ public class TileBlastFurnaceController extends TileMultiblockOniichan implement
             if (index >= tempRequired.length) {
                 return 0;
             }
-            return tempRequired[index] / TIME_FACTOR;
+            return tempRequired[index] / HEAT_TIME_FACTOR;
         }
 
         public void resize(int size) {

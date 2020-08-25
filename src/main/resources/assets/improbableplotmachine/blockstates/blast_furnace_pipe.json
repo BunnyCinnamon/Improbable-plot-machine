@@ -1,90 +1,23 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "improbableplotmachine:blast_furnace_pipe/center",
-        "uvlock": false
-    },
-	"variants": {
-	    "normal": [
-            {
-            }
-        ],
-        "inventory": [
-            {
-            }
-        ],
-		"down": {
-			"true": {
-				"submodel": {
-					"pipe_down": {
-						"model": "improbableplotmachine:blast_furnace_pipe/part",
-						"uvlock": false
-					}
-				}
-			},
-			"false": { }
+	"multipart": [
+		{   "apply": { "model": "improbableplotmachine:block/blast_furnace_pipe/center" }},
+		{   "when": { "north": true },
+			"apply": { "model": "improbableplotmachine:block/blast_furnace_pipe/part", "x": -90 }
 		},
-		"up": {
-			"true": {
-				"submodel": {
-					"pipe_up": {
-						"model": "improbableplotmachine:blast_furnace_pipe/part",
-						"x": 180,
-						"uvlock": false
-					}
-				}
-			},
-			"false": { }
+		{   "when": { "east": true },
+			"apply": { "model": "improbableplotmachine:block/blast_furnace_pipe/part", "x": 90, "y": -90 }
 		},
-		"north": {
-			"true": {
-				"submodel": {
-					"pipe_north": {
-						"model": "improbableplotmachine:blast_furnace_pipe/part",
-						"x": -90,
-						"uvlock": false
-					}
-				}
-			},
-			"false": { }
+		{   "when": { "south": true },
+			"apply": { "model": "improbableplotmachine:block/blast_furnace_pipe/part", "x": 90 }
 		},
-		"south": {
-			"true": {
-				"submodel": {
-					"pipe_south": {
-						"model": "improbableplotmachine:blast_furnace_pipe/part",
-						"x": 90,
-						"uvlock": false
-					}
-				}
-			},
-			"false": { }
+		{   "when": { "west": true },
+			"apply": { "model": "improbableplotmachine:block/blast_furnace_pipe/part", "x": 90, "y": 90 }
 		},
-		"east": {
-			"true": {
-				"submodel": {
-					"pipe_east": {
-						"model": "improbableplotmachine:blast_furnace_pipe/part",
-						"x": 90,
-						"y": -90,
-						"uvlock": false
-					}
-				}
-			},
-			"false": { }
+		{   "when": { "up": true },
+			"apply": { "model": "improbableplotmachine:block/blast_furnace_pipe/part", "x": 180 }
 		},
-		"west": {
-			"true": {
-				"submodel": {
-					"pipe_west": {
-						"model": "improbableplotmachine:blast_furnace_pipe/part",
-						"x": 90,
-						"y": 90,
-						"uvlock": false
-					}
-				}
-			},
-			"false": { }
+		{   "when": { "down": true },
+			"apply": { "model": "improbableplotmachine:block/blast_furnace_pipe/part" }
 		}
-	}
+	]
 }

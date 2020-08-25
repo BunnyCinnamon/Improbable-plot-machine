@@ -1,36 +1,8 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "textures": {
-            "front": "improbableplotmachine:blocks/blast_furnace_input/front",
-            "back": "improbableplotmachine:blocks/blast_furnace_input/back",
-            "sides": "improbableplotmachine:blocks/blast_furnace_input/full",
-            "particle": "improbableplotmachine:blocks/blast_furnace_input/back"
-        },
-        "model": "improbableplotmachine:block_front",
-        "uvlock": true
-    },
     "variants": {
-        "normal": [
-            {
-            }
-        ],
-        "inventory": [
-            {
-            }
-        ],
-        "facing": {
-            "north": {
-            },
-            "south": {
-                "y": 180
-            },
-            "east": {
-                "y": 90
-            },
-            "west": {
-                "y": 270
-            }
-        }
+        "facing=north": { "model": "improbableplotmachine:block/blast_furnace_input" },
+        "facing=south": { "model": "improbableplotmachine:block/blast_furnace_input", "y": 180 },
+        "facing=west":  { "model": "improbableplotmachine:block/blast_furnace_input", "y": 270 },
+        "facing=east":  { "model": "improbableplotmachine:block/blast_furnace_input", "y": 90 }
     }
 }

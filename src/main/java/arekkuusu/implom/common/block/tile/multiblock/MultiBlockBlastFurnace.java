@@ -1,15 +1,18 @@
 package arekkuusu.implom.common.block.tile.multiblock;
 
-import arekkuusu.implom.api.multiblock.MultiblockRectanguloid;
-import arekkuusu.implom.api.multiblock.layer.*;
+import arekkuusu.implom.api.multiblock.MultiBlockRectanguloid;
+import arekkuusu.implom.api.multiblock.layer.Facing;
+import arekkuusu.implom.api.multiblock.layer.LayerPiece;
 import arekkuusu.implom.api.multiblock.layer.MultiBlockLayer.LayerData;
+import arekkuusu.implom.api.multiblock.layer.MultiBlockPlaneLayer;
+import arekkuusu.implom.api.multiblock.layer.MultiBlockWallLayer;
 import arekkuusu.implom.common.block.ModBlocks;
 import net.minecraft.block.Blocks;
 
-import static arekkuusu.implom.api.multiblock.layer.MultiBlockLayer.LayerData.*;
+import static arekkuusu.implom.api.multiblock.layer.MultiBlockLayer.LayerData.of;
 import static arekkuusu.implom.api.multiblock.layer.MultiBlockLayer.LayerData.ofAir;
 
-public class MultiBlockBlastFurnace extends MultiblockRectanguloid {
+public class MultiBlockBlastFurnace extends MultiBlockRectanguloid {
 
     public MultiBlockBlastFurnace(int maxLength, WallType wallType) {
         super(maxLength, wallType);
@@ -34,7 +37,7 @@ public class MultiBlockBlastFurnace extends MultiblockRectanguloid {
         );
         insertLayer(filter);
         MultiBlockWallLayer controller = new MultiBlockWallLayer(
-                new LayerData(true, 1, 1)
+                new LayerData(false, 1, 1)
                         .add(LayerPiece.INSIDE, ofAir())
                         .add(LayerPiece.WALL, of(
                                 ModBlocks.FIRE_BRICKS,
@@ -45,7 +48,6 @@ public class MultiBlockBlastFurnace extends MultiblockRectanguloid {
                         ))
                         .with(ModBlocks.BLAST_FURNACE_CONTROLLER, 1, 1, Facing.ANY)
                         .with(ModBlocks.BLAST_FURNACE_TUYERE, 1, Integer.MAX_VALUE, Facing.ANY)
-                        .add(LayerPiece.FRAME, of(ModBlocks.FIRE_BRICKS, ModBlocks.FIRE_BRICK_BLOCK))
         );
         insertLayer(controller);
         MultiBlockWallLayer coal = new MultiBlockWallLayer(

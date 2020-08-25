@@ -1,6 +1,5 @@
 package arekkuusu.implom.common.handler.data.capability;
 
-import arekkuusu.implom.common.block.tile.TileBlastFurnaceController;
 import com.google.common.collect.Lists;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -8,19 +7,20 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class BlastFurnaceMeltingTank implements IFluidHandler, INBTSerializable<CompoundNBT> {
+public class MultipleTank implements IFluidHandler, INBTSerializable<CompoundNBT> {
 
     public List<FluidStack> fluids = new LinkedList<>();
-    public TileBlastFurnaceController handler;
+    public TriConsumer<List<FluidStack>, List<FluidStack>, FluidStack> handler;
     public int maxCapacity;
 
-    public BlastFurnaceMeltingTank(TileBlastFurnaceController handler) {
+    public MultipleTank(TriConsumer<List<FluidStack>, List<FluidStack>, FluidStack> handler) {
         this.handler = handler;
     }
 
@@ -76,7 +76,7 @@ public class BlastFurnaceMeltingTank implements IFluidHandler, INBTSerializable<
         for (FluidStack liquid : fluids) {
             if (liquid.isFluidEqual(resource)) {
                 liquid.setAmount(liquid.getAmount() + usable);
-                handler.meltingTankChange(fluids, fluids, liquid);
+                handler.accept(fluids, fluids, liquid);
                 return usable;
             }
         }
@@ -85,7 +85,7 @@ public class BlastFurnaceMeltingTank implements IFluidHandler, INBTSerializable<
         resource = resource.copy();
         resource.setAmount(usable);
         fluids.add(resource);
-        handler.meltingTankChange(oldList, fluids, resource);
+        handler.accept(oldList, fluids, resource);
         return usable;
     }
 
@@ -103,7 +103,7 @@ public class BlastFurnaceMeltingTank implements IFluidHandler, INBTSerializable<
                     if (liquid.getAmount() <= 0) {
                         iterator.remove();
                     }
-                    handler.meltingTankChange(oldList, fluids, liquid);
+                    handler.accept(oldList, fluids, liquid);
                 }
 
                 resource = resource.copy();
@@ -131,6 +131,7 @@ public class BlastFurnaceMeltingTank implements IFluidHandler, INBTSerializable<
             list.add(fluidTag);
         }
         nbt.put("list", list);
+        nbt.putInt("maxCapacity", maxCapacity);
         return nbt;
     }
 
@@ -144,5 +145,6 @@ public class BlastFurnaceMeltingTank implements IFluidHandler, INBTSerializable<
                 fluids.add(liquid);
             }
         }
+        maxCapacity = nbt.getInt("maxCapacity");
     }
 }

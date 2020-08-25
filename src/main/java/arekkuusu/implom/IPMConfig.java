@@ -14,17 +14,24 @@ public final class IPMConfig {
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("Common configuration settings")
                     .push("common");
-            // damageFrames
-            builder.comment("comment test")
-                    .push("smelting");
-            ingotAmount = builder
-                    .comment("test1.")
-                    .defineInRange("ingotAmount", 0, 0, Integer.MAX_VALUE);
-            oreMultiplier = builder
-                    .comment("test2.")
-                    .defineInRange("oreMultiplier", 0, 0, Integer.MAX_VALUE);
-            builder.pop();
-            // attackFrames
+            //Material
+            {
+                builder.comment("Enable/Disable/Play with materials")
+                        .push("material");
+                //Smelting
+                {
+                    builder.comment("Edit smelting ratios")
+                            .push("smelting");
+                    ingotAmount = builder
+                            .comment("Ingot smelting liquid amount")
+                            .defineInRange("ingotAmount", 144, 0, Integer.MAX_VALUE);
+                    oreMultiplier = builder
+                            .comment("Ore smelting ratio, x0.5, x1, x2, etc")
+                            .defineInRange("oreMultiplier", 1, 0, Integer.MAX_VALUE);
+                    builder.pop();
+                }
+                builder.pop();
+            }
             builder.pop();
         }
     }

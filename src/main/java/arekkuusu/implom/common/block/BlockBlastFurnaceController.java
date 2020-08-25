@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -23,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -31,6 +33,7 @@ public class BlockBlastFurnaceController extends HorizontalBlock {
 
     public BlockBlastFurnaceController(Properties p_i48377_1_) {
         super(p_i48377_1_);
+        setDefaultState(getDefaultState().with(BlockBaseMultiBlock.ACTIVE, false).with(HORIZONTAL_FACING, Direction.SOUTH));
     }
 
     @Override
@@ -41,7 +44,10 @@ public class BlockBlastFurnaceController extends HorizontalBlock {
                     if (p_225533_4_.getHeldItem(p_225533_5_).getItem() == Items.FLINT_AND_STEEL)
                         tile.okaeriOniichan();
                     else if (drainWaterBucket(p_225533_4_.getHeldItem(p_225533_5_)))
-                        tile.setInvalid();
+                        tile.invalidateStructure();
+                    else if(tile.isActiveLazy()) {
+                        NetworkHooks.openGui((ServerPlayerEntity) p_225533_4_, tile, p_225533_3_);
+                    }
                 });
             }
         }
@@ -69,7 +75,7 @@ public class BlockBlastFurnaceController extends HorizontalBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext p_196258_1_) {
-        return getDefaultState().with(HorizontalBlock.HORIZONTAL_FACING, p_196258_1_.getNearestLookingDirection().getOpposite());
+        return getDefaultState().with(HorizontalBlock.HORIZONTAL_FACING, p_196258_1_.getPlacementHorizontalFacing().getOpposite());
     }
 
     @Override
@@ -79,12 +85,12 @@ public class BlockBlastFurnaceController extends HorizontalBlock {
 
     @Override
     public boolean hasTileEntity(BlockState state) {
-        return false;
+        return true;
     }
 
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return null;
+        return new TileBlastFurnaceController();
     }
 }

@@ -22,12 +22,6 @@ public abstract class TileBase extends TileEntity {
         super(type);
     }
 
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return super.getCapability(cap, side);
-    }
-
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT tag = pkt.getNbtCompound();
@@ -47,6 +41,11 @@ public abstract class TileBase extends TileEntity {
         CompoundNBT tag = new CompoundNBT();
         super.write(tag);
         return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        read(state, tag);
     }
 
     @Override

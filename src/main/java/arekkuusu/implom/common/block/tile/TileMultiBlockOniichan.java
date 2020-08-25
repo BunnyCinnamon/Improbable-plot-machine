@@ -2,8 +2,8 @@ package arekkuusu.implom.common.block.tile;
 
 import arekkuusu.implom.api.helper.NBTHelper;
 import arekkuusu.implom.api.helper.WorldHelper;
-import arekkuusu.implom.api.multiblock.IMultiblockOniichan;
-import arekkuusu.implom.api.multiblock.MultiblockDetector;
+import arekkuusu.implom.api.multiblock.MultiBlockDetector;
+import arekkuusu.implom.api.multiblock.MultiBlockOniichan;
 import arekkuusu.implom.common.block.BlockBaseMultiBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
@@ -17,18 +17,18 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileMultiblockOniichan extends TileBase implements IMultiblockOniichan {
+public class TileMultiBlockOniichan extends TileBase implements MultiBlockOniichan {
 
-    public MultiblockDetector.MultiblockStructure structure;
-    public MultiblockDetector multiblockDetector;
+    public MultiBlockDetector.MultiblockStructure structure;
+    public MultiBlockDetector multiBlockDetector;
     public BlockPos structureMinPos, structureMaxPos;
     public boolean isStructureActive = false;
     public boolean active = false;
     public int tick;
 
-    public TileMultiblockOniichan(TileEntityType<?> type, MultiblockDetector multiblockDetector) {
+    public TileMultiBlockOniichan(TileEntityType<?> type, MultiBlockDetector multiBlockDetector) {
         super(type);
-        this.multiblockDetector = multiblockDetector;
+        this.multiBlockDetector = multiBlockDetector;
     }
 
     public void checkStructure() {
@@ -40,8 +40,8 @@ public class TileMultiblockOniichan extends TileBase implements IMultiblockOniic
     @Override
     public void okaeriOniichan() {
         boolean wasActive = active;
-        if (structure == null || getMultiblockDetector().checkCanStructureBeDetected(world, structure)) {
-            structure = getMultiblockDetector().detectMultiblock(world, getPos().offset(getFacing().getOpposite()));
+        if (structure == null || getMultiBlockDetector().checkCanStructureBeDetected(world, structure)) {
+            structure = getMultiBlockDetector().detectMultiBlock(world, getPos().offset(getFacing().getOpposite()));
             active = structure != null;
             if (active) {
                 isStructureActive = true;
@@ -50,7 +50,7 @@ public class TileMultiblockOniichan extends TileBase implements IMultiblockOniic
                 updateStructure();
             }
             if (active) {
-                MultiblockDetector.assignMultiBlockServants(getWorld(), getPos(), structure.blocks);
+                MultiBlockDetector.assignMultiBlockServants(getWorld(), getPos(), structure.blocks);
             }
         } else {
             structure = null;
@@ -79,7 +79,7 @@ public class TileMultiblockOniichan extends TileBase implements IMultiblockOniic
         active = false;
     }
 
-    public void setInvalid() {
+    public void invalidateStructure() {
         active = false;
         structure = null;
         isStructureActive = false;
@@ -90,8 +90,8 @@ public class TileMultiblockOniichan extends TileBase implements IMultiblockOniic
         return WorldHelper.getStateValue(getWorld(), getPos(), HorizontalBlock.HORIZONTAL_FACING).orElse(Direction.UP);
     }
 
-    public MultiblockDetector getMultiblockDetector() {
-        return multiblockDetector;
+    public MultiBlockDetector getMultiBlockDetector() {
+        return multiBlockDetector;
     }
 
     @Nullable

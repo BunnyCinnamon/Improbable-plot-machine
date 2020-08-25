@@ -1,32 +1,8 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "improbableplotmachine:blast_furnace_tuyere",
-        "uvlock": true,
-        "y": 180
-    },
     "variants": {
-        "normal": [
-            {
-            }
-        ],
-        "inventory": [
-            {
-            }
-        ],
-        "facing": {
-            "north": {
-				"y": 0
-            },
-            "south": {
-                "y": 180
-            },
-            "east": {
-                "y": 90
-            },
-            "west": {
-                "y": 270
-            }
-        }
+        "facing=north": { "model": "improbableplotmachine:block/blast_furnace_tuyere" },
+        "facing=south": { "model": "improbableplotmachine:block/blast_furnace_tuyere", "y": 180 },
+        "facing=west":  { "model": "improbableplotmachine:block/blast_furnace_tuyere", "y": 270 },
+        "facing=east":  { "model": "improbableplotmachine:block/blast_furnace_tuyere", "y": 90 }
     }
 }

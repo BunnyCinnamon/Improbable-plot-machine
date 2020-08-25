@@ -1,44 +1,10 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "textures": {
-            "front": "improbableplotmachine:blocks/blast_furnace_drain/front",
-            "back": "improbableplotmachine:blocks/blast_furnace_drain/back",
-            "sides": "improbableplotmachine:blocks/blast_furnace_drain/front",
-            "particle": "improbableplotmachine:blocks/blast_furnace_drain/front"
-        },
-        "model": "improbableplotmachine:block_front",
-        "uvlock": true,
-		"x": 180
-    },
     "variants": {
-        "normal": [
-            {
-            }
-        ],
-        "inventory": [
-            {
-            }
-        ],
-        "facing": {
-            "up": {
-                "x": 270
-            },
-            "down": {
-                "x": 90
-            },
-            "north": {
-                "x": 0
-            },
-            "south": {
-                "y": 180
-            },
-            "east": {
-                "y": 90
-            },
-            "west": {
-                "y": 270
-            }
-        }
+        "facing=north": { "model": "improbableplotmachine:block/blast_furnace_drain" },
+        "facing=south": { "model": "improbableplotmachine:block/blast_furnace_drain", "y": 180 },
+        "facing=west":  { "model": "improbableplotmachine:block/blast_furnace_drain", "y": 270 },
+        "facing=east":  { "model": "improbableplotmachine:block/blast_furnace_drain", "y": 90 },
+        "facing=up":  { "model": "improbableplotmachine:block/blast_furnace_drain", "x": 270 },
+        "facing=down":  { "model": "improbableplotmachine:block/blast_furnace_drain", "x": 90 }
     }
 }

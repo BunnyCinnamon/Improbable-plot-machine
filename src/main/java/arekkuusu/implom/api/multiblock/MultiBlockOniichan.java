@@ -1,6 +1,6 @@
 package arekkuusu.implom.api.multiblock;
 
-public interface IMultiblockOniichan {
+public interface MultiBlockOniichan {
 
 	void okaeriOniichan();
 }

@@ -2,15 +2,24 @@ package arekkuusu.implom;
 
 import arekkuusu.implom.client.ClientProxy;
 import arekkuusu.implom.common.ServerProxy;
+import arekkuusu.implom.common.block.BlockBlastFurnacePipeGauge;
 import arekkuusu.implom.common.block.ModBlocks;
 import arekkuusu.implom.common.block.fluid.ModFluids;
 import arekkuusu.implom.common.block.tile.ModTiles;
+import arekkuusu.implom.common.container.BlastFurnaceControllerContainer;
+import arekkuusu.implom.common.container.ModContainers;
 import arekkuusu.implom.common.handler.recipe.ModRecipes;
 import arekkuusu.implom.common.item.ModItems;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -39,6 +48,7 @@ public final class IPM {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, IPM.MOD_ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, IPM.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, IPM.MOD_ID);
+    public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, IPM.MOD_ID);
 
     public static final String MOD_ID = "improbableplotmachine";
     public static final Logger LOG = LogManager.getLogger(IPM.MOD_ID);
@@ -60,10 +70,12 @@ public final class IPM {
         ModItems.init();
         ModTiles.init();
         ModRecipes.init();
+        ModContainers.init();
         IPM.FLUIDS.register(modBus);
         IPM.BLOCKS.register(modBus);
         IPM.TILES.register(modBus);
         IPM.ITEMS.register(modBus);
+        IPM.CONTAINERS.register(modBus);
         modBus.addListener(this::commonSetup);
         modBus.addListener(this::clientSetup);
         modBus.addListener(this::onModConfigEvent);
@@ -72,14 +84,20 @@ public final class IPM {
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         forgeBus.addListener(this::serverStarting);
         forgeBus.addListener(this::serverStopping);
+        forgeBus.addListener(BlockBlastFurnacePipeGauge::onDrawScreenPost);
     }
 
     public void commonSetup(FMLCommonSetupEvent event) {
 
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
-
+        RenderTypeLookup.setRenderLayer(ModBlocks.FIRE_BRICKS_GLASS.get(), RenderType.getCutoutMipped());
+        RenderTypeLookup.setRenderLayer(ModBlocks.FIRE_BRICKS_WINDOW.get(), RenderType.getCutoutMipped());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BLAST_FURNACE_CONTROLLER.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BLAST_FURNACE_AIR_VENT.get(), RenderType.getTranslucent());
+        ScreenManager.registerFactory(ModContainers.BLAST_FURNACE_CONTROLLER.get(), BlastFurnaceControllerContainer.BlastFurnaceControllerContainerScreen::new);
     }
 
     public void onModConfigEvent(ModConfig.ModConfigEvent event) {

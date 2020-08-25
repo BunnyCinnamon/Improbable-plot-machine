@@ -12,21 +12,26 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 
 public class CapabilityProvider implements ICapabilitySerializable<CompoundNBT> {
 
     public LinkedList<CapabilityWrapper<?, ?>> capabilities;
+    public Map<CapabilityWrapper<?, ?>, LazyOptional<?>> providers;
     public ICapabilitySerializable<?> holder;
 
     public CapabilityProvider(ICapabilitySerializable<?> holder, LinkedList<CapabilityWrapper<?, ?>> capabilities) {
         this.capabilities = capabilities;
+        this.providers = new LinkedHashMap<>();
         this.holder = holder;
     }
 
     public CapabilityProvider(ICapabilitySerializable<?> holder) {
         this.capabilities = new LinkedList<>();
+        this.providers = new LinkedHashMap<>();
         this.holder = holder;
     }
 
@@ -37,10 +42,29 @@ public class CapabilityProvider implements ICapabilitySerializable<CompoundNBT> 
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		return capabilities.stream().filter(c -> c.capability == cap).findFirst()
-				.map(c -> LazyOptional.of(() -> (T) c.instance))
+		return capabilities.stream().filter(c -> c.capability == cap && (side == c.side || c.side == null)).findFirst()
+				.map(w -> providers.containsKey(w) ? providers.get(w) : providers.put(w, LazyOptional.of(() -> w.instance)))
+                .map(l -> (LazyOptional<T>) l)
 				.orElse(LazyOptional.empty());
 	}
+
+    public <T> void invalidateAll() {
+        capabilities.forEach(w -> {
+            providers.computeIfPresent(w, (capabilityWrapper, lazyOptional) -> {
+                lazyOptional.invalidate();
+                return null;
+            });
+        });
+    }
+
+	public <T> void invalidate(Capability<T> cap) {
+        capabilities.stream().filter(c -> c.capability == cap).findFirst().ifPresent(w -> {
+            providers.computeIfPresent(w, (capabilityWrapper, lazyOptional) -> {
+                lazyOptional.invalidate();
+                return null;
+            });
+        });
+    }
 
 	/* NBT */
     public final static String TAG_LIST_SIZE = "size";
@@ -76,10 +100,12 @@ public class CapabilityProvider implements ICapabilitySerializable<CompoundNBT> 
 
         final Capability<?> capability;
         final C instance;
+        final Direction side;
 
-        public CapabilityWrapper(Capability<?> capability, C instance) {
+        public CapabilityWrapper(Capability<?> capability, C instance, Direction side) {
             this.capability = capability;
             this.instance = instance;
+            this.side = side;
         }
 
         private T serialize() {
@@ -112,7 +138,12 @@ public class CapabilityProvider implements ICapabilitySerializable<CompoundNBT> 
         }
 
         public <C extends INBTSerializable<T>, T extends INBT> Builder put(Capability<?> capability, C instance) {
-            capabilities.add(new CapabilityWrapper<>(capability, instance));
+            capabilities.add(new CapabilityWrapper<>(capability, instance, null));
+            return this;
+        }
+
+        public <C extends INBTSerializable<T>, T extends INBT> Builder put(Capability<?> capability, C instance, Direction side) {
+            capabilities.add(new CapabilityWrapper<>(capability, instance, side));
             return this;
         }
 

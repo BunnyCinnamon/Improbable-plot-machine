@@ -2,7 +2,7 @@ package arekkuusu.implom.api.multiblock;
 
 import net.minecraft.util.math.BlockPos;
 
-public interface IMultiblockImouto {
+public interface MultiBlockImouto {
 
 	void wakeUpOniichan();
 

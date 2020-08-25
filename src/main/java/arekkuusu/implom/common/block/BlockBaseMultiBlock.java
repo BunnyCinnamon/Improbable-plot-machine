@@ -1,8 +1,8 @@
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.multiblock.IMultiblockImouto;
-import arekkuusu.implom.api.multiblock.IMultiblockOniichan;
-import arekkuusu.implom.common.block.tile.TileMultiblockImouto;
+import arekkuusu.implom.api.multiblock.MultiBlockImouto;
+import arekkuusu.implom.api.multiblock.MultiBlockOniichan;
+import arekkuusu.implom.common.block.tile.TileMultiBlockImouto;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -12,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
@@ -24,19 +23,19 @@ public class BlockBaseMultiBlock extends Block {
 
     public static void handleBreakBlock(IWorldReader world, BlockPos pos) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof IMultiblockImouto) {
-            ((IMultiblockImouto) tile).wakeUpOniichan();
+        if (tile instanceof MultiBlockImouto) {
+            ((MultiBlockImouto) tile).wakeUpOniichan();
         }
     }
 
     public static void handlePlaceBlock(IWorldReader world, BlockPos pos) {
         for (Direction dir : Direction.values()) {
             TileEntity tile = world.getTileEntity(pos.offset(dir));
-            if (tile instanceof IMultiblockOniichan) {
-                ((IMultiblockOniichan) tile).okaeriOniichan();
+            if (tile instanceof MultiBlockOniichan) {
+                ((MultiBlockOniichan) tile).okaeriOniichan();
             }
-            if (tile instanceof IMultiblockImouto) {
-                IMultiblockImouto imouto = (IMultiblockImouto) tile;
+            if (tile instanceof MultiBlockImouto) {
+                MultiBlockImouto imouto = (MultiBlockImouto) tile;
                 if (imouto.hasValidOniichan()) {
                     imouto.wakeUpOniichan();
                 }
@@ -54,8 +53,9 @@ public class BlockBaseMultiBlock extends Block {
     }
 
     @Override
-    public void onPlayerDestroy(IWorld p_176206_1_, BlockPos p_176206_2_, BlockState p_176206_3_) {
-        BlockBaseMultiBlock.handleBreakBlock(p_176206_1_, p_176206_2_);
+    public void onReplaced(BlockState p_196243_1_, World p_196243_2_, BlockPos p_196243_3_, BlockState p_196243_4_, boolean p_196243_5_) {
+        BlockBaseMultiBlock.handleBreakBlock(p_196243_2_, p_196243_3_);
+        super.onReplaced(p_196243_1_, p_196243_2_, p_196243_3_, p_196243_4_, p_196243_5_);
     }
 
     @Override
@@ -66,6 +66,6 @@ public class BlockBaseMultiBlock extends Block {
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TileMultiblockImouto();
+        return new TileMultiBlockImouto();
     }
 }
