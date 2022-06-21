@@ -1,6 +1,5 @@
 package arekkuusu.implom.api.recipe;
 
-import arekkuusu.implom.api.util.IPMAPIException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,13 +18,13 @@ public class AlloyRecipe {
 		ImmutableList.Builder<FluidStack> builder = ImmutableList.builder();
 		for(FluidStack liquid : recipe) {
 			if(liquid == null) {
-				throw new IPMAPIException("Invalid Alloy recipe: Input cannot be null");
+				throw new RuntimeException("Invalid Alloy recipe: Input cannot be null");
 			}
-			if(liquid.amount < 1) {
-				throw new IPMAPIException("Invalid Alloy recipe: Fluid amount can't be less than 1");
+			if(liquid.getAmount() < 1) {
+				throw new RuntimeException("Invalid Alloy recipe: Fluid amount can't be less than 1");
 			}
 			if(liquid.containsFluid(result)) {
-				throw new IPMAPIException("Invalid Alloy recipe: Result cannot be contained in inputs");
+				throw new RuntimeException("Invalid Alloy recipe: Result cannot be contained in inputs");
 			}
 			builder.add(liquid);
 		}
@@ -48,8 +47,8 @@ public class AlloyRecipe {
 					iter.remove();
 
 					// check how often we can apply the recipe with this
-					if(fluid.amount / need.amount < times) {
-						times = fluid.amount / need.amount;
+					if(fluid.getAmount() / need.getAmount() < times) {
+						times = fluid.getAmount() / need.getAmount();
 					}
 					break;
 				}

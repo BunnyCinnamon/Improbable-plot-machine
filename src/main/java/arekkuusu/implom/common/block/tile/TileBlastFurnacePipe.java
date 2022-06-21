@@ -1,232 +1,133 @@
 package arekkuusu.implom.common.block.tile;
 
-import arekkuusu.implom.common.handler.data.capability.FluidDefaultTank;
+import arekkuusu.implom.api.helper.WorldHelper;
+import arekkuusu.implom.common.handler.data.capability.SimpleTank;
 import arekkuusu.implom.common.handler.data.capability.provider.CapabilityProvider;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ITickable;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.EnumMap;
 
-public class TileBlastFurnacePipe extends TileBase implements FluidDefaultTank.ITankHandler, ITickable {
+public class TileBlastFurnacePipe extends TileBase implements ITickableTileEntity {
 
-	public static final int CRITICAL_AMOUNT = Fluid.BUCKET_VOLUME;
+    public static final Comparator<IFluidHandler> COMPARATOR = (a, b) -> {
+        FluidStack s0 = a.getFluidInTank(0);
+        FluidStack s1 = b.getFluidInTank(0);
+        int a0 = s0.getAmount();
+        int a1 = s1.getAmount();
+        return Integer.compare(a0, a1);
+    };
+    public static final int CRITICAL_AMOUNT = 1000;
 
-	public final FluidDefaultTank fluidDefaultTank = new FluidDefaultTank(Fluid.BUCKET_VOLUME, this);
-	public final CapabilityProvider provider = new CapabilityProvider.Builder(this)
-			.put(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, fluidDefaultTank)
-			.build();
-	private ChannelConnection[] connections = new ChannelConnection[6]; // Connections to Up, Down, North...
-	private int tick;
+    public final SimpleTank airTank = new SimpleTank(this::airTankChange); { airTank.setTankCapacity(1000); }
+    public final CapabilityProvider provider = new CapabilityProvider.Builder(this)
+            .put(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, airTank)
+            .build();
+    public EnumMap<Direction, LazyOptional<IFluidHandler>> cached = new EnumMap<>(Direction.class);
+    public boolean scan = false;
+    public boolean load = false;
+    public int tick;
 
-	public TileBlastFurnacePipe() {
-		Arrays.fill(this.connections, ChannelConnection.ANY);
-	}
+    public TileBlastFurnacePipe() {
+        super(ModTiles.BLAST_FURNACE_PIPE.get());
+    }
 
-	@Override
-	public void update() {
-		if(isClientWorld()) return;
-		if(tick % 2 == 0) {
-			if(fluidDefaultTank.getFluidAmount() > 0) {
-				List<IFluidHandler> fluidHandlers = getTransferFluidHandlers();
-				if(!fluidHandlers.isEmpty()) {
-					FluidStack[] fluidStacks = getTransferAmounts(fluidHandlers);
-					for(int i = 0; i < fluidHandlers.size(); i++) {
-						IFluidHandler fluidHandler = fluidHandlers.get(i);
-						transfer(fluidHandler, fluidStacks[i]);
-					}
-				}
-			}
+    @Override
+    public void tick() {
+        if (isClientWorld()) return;
+        if (!load) {
+            this.setupConnections();
+            load = true;
+        }
+        if (scan) setupConnections();
+        int amount = airTank.getFluidInTank(airTank.getTanks()).getAmount();
+        if (amount > 0 && !cached.isEmpty()) {
+            IFluidHandler[] transfers = getTransfers(amount); //Lookup valid targets
+            transfer(transfers, amount); //Transfer air to targets
+        }
 
-			if(fluidDefaultTank.getFluidAmount() >= CRITICAL_AMOUNT) {
-				//BAKURETSU LA LA LA
-			}
-		}
+        if (amount >= CRITICAL_AMOUNT) {
+            //BAKURETSU LA LA LA
+        }
+        tick = (tick + 1) % 20;
+    }
 
-		tick = (tick + 1) % 20;
-	}
+    public IFluidHandler[] getTransfers(int max) {
+        IFluidHandler[] transfers = new IFluidHandler[0];
+        for (LazyOptional<IFluidHandler> lazy : cached.values()) {
+            if (!lazy.isPresent()) continue; //Woa mama!
+            IFluidHandler handler = lazy.orElseThrow(NullPointerException::new);
+            for (int i = 0; i < handler.getTanks(); i++) {
+                if (handler.isFluidValid(i, airTank.fluid) && handler.getFluidInTank(i).getAmount() < max) {
+                    transfers = Arrays.copyOf(transfers, transfers.length + 1);
+                    transfers[transfers.length - 1] = handler;
+                    break;
+                }
+            }
+        }
+        Arrays.sort(transfers, COMPARATOR);
+        return transfers;
+    }
 
-	public List<IFluidHandler> getTransferFluidHandlers() {
-		List<IFluidHandler> fluidHandlers = new ArrayList<>(6);
-		for(EnumFacing facing : EnumFacing.VALUES) {
-			ChannelConnection connection = getConnection(facing);
-			if(connection != ChannelConnection.NONE) {
-				setConnection(facing, ChannelConnection.NONE); //Found nothing by default
-				TileEntity tile = getWorld().getTileEntity(pos.offset(facing));
-				if(tile == null) continue;
-				setConnection(facing, ChannelConnection.SOME); //Found a tile that might change, check later
-				getFluidHandler(tile, facing).ifPresent(handler -> {
-					for(IFluidTankProperties tankProperty : handler.getTankProperties()) {
-						if(isTankAmountValid(tankProperty) && isTankPropertyValid(tankProperty)) {
-							setConnection(facing, ChannelConnection.ANY); //Found one that can transfer into
-							fluidHandlers.add(handler);
-							break;
-						}
-						//Found one that might not work on this tank property, keep checking
-					}
-				});
-			}
-		}
-		return fluidHandlers;
-	}
+    public void transfer(IFluidHandler[] handlers, int inserted) {
+        for (IFluidHandler handler : handlers) {
+            int stored = handler.getFluidInTank(0).getAmount();
+            if(stored >= inserted) continue; //Skip if amount is less or equal
+            FluidStack stack = new FluidStack(airTank.fluid.getFluid(), (int) (((inserted - stored) / 2) * 0.9));
+            if (handler.fill(stack, IFluidHandler.FluidAction.SIMULATE) > 0) {
+                inserted -= handler.fill(stack, IFluidHandler.FluidAction.EXECUTE);
+            }
+            if (inserted <= 0) break; //Exit if amount is depleted
+        }
+    }
 
-	public boolean isTankAmountValid(IFluidTankProperties tankProperty) {
-		FluidStack tankFluidStack = tankProperty.getContents();
-		return tankFluidStack == null || tankFluidStack.amount < fluidDefaultTank.getFluidAmount();
-	}
+    public void setupConnections() {
+        for (Direction direction : Direction.values()) {
+            LazyOptional<IFluidHandler> optional = this.cached.getOrDefault(direction, LazyOptional.empty());
+            if (!optional.isPresent()) {
+                LazyOptional<IFluidHandler> lazy = WorldHelper.getCapability(getWorld(), getPos().offset(direction), CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite());
+                if (lazy.isPresent()) this.cached.put(direction, lazy);
+                if (lazy.isPresent() && this.scan) this.scan = false;
+                else if (!lazy.isPresent() && !this.scan) this.scan = true;
+                lazy.addListener(l -> {
+                    this.cached.remove(direction);
+                    this.scan = true;
+                });
+            }
+        }
+    }
 
-	public boolean isTankPropertyValid(IFluidTankProperties tankProperty) {
-		FluidStack tankFluidStack = tankProperty.getContents();
-		return (tankFluidStack == null || tankFluidStack.isFluidEqual(fluidDefaultTank.getFluid()))
-				&& fluidDefaultTank.getFluid() != null
-				&& tankProperty.canFillFluidType(fluidDefaultTank.getFluid())
-				&& tankProperty.canFill();
-	}
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        return provider.getCapability(cap, side);
+    }
 
-	/*public boolean isTankPropertyInvalid(IFluidTankProperties tankProperty) {
-		FluidStack tankFluidStack = tankProperty.getContents();
-		return ((fluidDefaultTank.getFluid() != null && !tankProperty.canFillFluidType(fluidDefaultTank.getFluid()))
-				|| (fluidDefaultTank.getFluid() == null && !tankProperty.canFill()));
-	}*/
+    public void airTankChange() {
+        markDirty();
+        sync();
+    }
 
-	public Optional<IFluidHandler> getFluidHandler(TileEntity tile, EnumFacing facing) {
-		return Optional.ofNullable(tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()));
-	}
+    /* NBT */
+    private static final String TAG_PROVIDER = "provider";
 
-	public FluidStack[] getTransferAmounts(List<IFluidHandler> transfers) {
-		assert fluidDefaultTank.getFluid() != null;
-		FluidStack[] fluidStacks = new FluidStack[transfers.size()];
-		transfers.sort((a, b) -> {
-			FluidStack s0 = a.getTankProperties()[0].getContents();
-			FluidStack s1 = b.getTankProperties()[0].getContents();
-			int a0 = s0 != null ? s0.amount : 0;
-			int a1 = s1 != null ? s1.amount : 0;
-			return Integer.compare(a0, a1);
-		});
+    @Override
+    void load(CompoundNBT compound) {
+        this.provider.deserializeNBT(compound.getCompound(TAG_PROVIDER));
+    }
 
-		int totalTransferable = fluidDefaultTank.getFluidAmount();
-		FluidStack transfer = new FluidStack(fluidDefaultTank.getFluid(), 0);
-		for(int i = 0; i < fluidStacks.length; i++) {
-			IFluidHandler handler = transfers.get(i);
-			FluidStack stack = handler.getTankProperties()[0].getContents();
-			int amountStored = stack != null ? stack.amount : 0;
-			if(totalTransferable <= 0 || totalTransferable <= amountStored) {
-				fluidStacks[i] = transfer.copy();
-				continue;
-			}
-			int amountTransfer = (int) (((totalTransferable - amountStored) / 2) * 0.9);
-			fluidStacks[i] = new FluidStack(transfer, amountTransfer);
-			totalTransferable -= amountTransfer;
-		}
-		return fluidStacks;
-	}
-
-	public void transfer(IFluidHandler handler, FluidStack stack) {
-		if(handler.fill(stack, false) > 0) {
-			fluidDefaultTank.drain(handler.fill(stack, true), true);
-		}
-	}
-
-	public void setConnection(EnumFacing facing, ChannelConnection connection) {
-		int index = facing.getIndex();
-		ChannelConnection oldConnection = this.connections[index];
-		if(oldConnection != connection) {
-			this.connections[index] = connection;
-			markDirty();
-		}
-	}
-
-	public ChannelConnection getConnection(EnumFacing facing) {
-		int index = facing.getIndex();
-		ChannelConnection connection = this.connections[index];
-		return connection != null ? connection : ChannelConnection.NONE;
-	}
-
-	public void resetConnections() {
-		Arrays.fill(this.connections, ChannelConnection.ANY);
-		markDirty();
-	}
-
-	@Override
-	public void onTankChange(@Nullable FluidStack old, @Nullable FluidStack updated) {
-		if(!isClientWorld()) {
-			markDirty();
-			sync();
-		}
-	}
-
-	@Override
-	public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-		return this.provider.hasCapability(capability, facing) || super.hasCapability(capability, facing);
-	}
-
-	@Override
-	@Nullable
-	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		if(this.provider.hasCapability(capability, facing) && facing != null) {
-			setConnection(facing, ChannelConnection.ANY);
-			return this.provider.getCapability(capability, facing);
-		}
-		else {
-			return super.getCapability(capability, facing);
-		}
-	}
-
-	/* NBT */
-	private static final String TAG_PROVIDER = "provider";
-	private static final String TAG_CONNECTIONS = "connections";
-
-	@Override
-	void writeNBT(NBTTagCompound compound) {
-		compound.setTag(TAG_PROVIDER, this.provider.serializeNBT());
-		int[] intArray = new int[6];
-		for(int i = 0; i < this.connections.length; i++) {
-			ChannelConnection connection = this.connections[i];
-			intArray[i] = connection.ordinal();
-		}
-		compound.setIntArray(TAG_CONNECTIONS, intArray);
-	}
-
-	@Override
-	void readNBT(NBTTagCompound compound) {
-		this.provider.deserializeNBT(compound.getCompoundTag(TAG_PROVIDER));
-		if(compound.hasKey(TAG_CONNECTIONS)) {
-			this.connections = new ChannelConnection[6];
-			int[] intArray = compound.getIntArray(TAG_CONNECTIONS);
-			for(int i = 0; i < intArray.length; i++) {
-				this.connections[i] = ChannelConnection.values()[intArray[i]];
-			}
-		}
-	}
-
-	@Override
-	void readSync(NBTTagCompound compound) {
-		provider.deserializeNBT(compound.getCompoundTag(TAG_PROVIDER));
-	}
-
-	@Override
-	void writeSync(NBTTagCompound compound) {
-		compound.setTag(TAG_PROVIDER, provider.serializeNBT());
-	}
-
-	public enum ChannelConnection implements IStringSerializable {
-		ANY,
-		SOME,
-		NONE;
-
-		@Override
-		public String getName() {
-			return this.toString().toLowerCase(Locale.ROOT);
-		}
-	}
+    @Override
+    void save(CompoundNBT compound) {
+        compound.put(TAG_PROVIDER, this.provider.serializeNBT());
+    }
 }

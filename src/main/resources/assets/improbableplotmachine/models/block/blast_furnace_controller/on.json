@@ -3,7 +3,7 @@
 	"parent": "block/cube",
 	"textures": {
 		"0": "improbableplotmachine:blocks/blast_furnace_controller/full",
-		"1": "blocks/fire_layer_0",
+		"1": "block/fire_0",
 		"2": "improbableplotmachine:blocks/blast_furnace_controller/front_on_1",
 		"3": "improbableplotmachine:blocks/blast_furnace_controller/front_on_0",
 		"4": "improbableplotmachine:blocks/blast_furnace_controller/back",

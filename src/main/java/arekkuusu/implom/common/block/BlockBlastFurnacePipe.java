@@ -1,142 +1,93 @@
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.IPMMaterial;
-import arekkuusu.implom.common.block.base.BlockBase;
+import arekkuusu.implom.api.helper.WorldHelper;
 import arekkuusu.implom.common.block.tile.TileBlastFurnacePipe;
-import arekkuusu.implom.common.lib.LibNames;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import net.katsstuff.teamnightclipse.mirror.data.Vector3;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.*;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.pathfinding.PathType;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.AttachFace;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-@SuppressWarnings("deprecation")
-public class BlockBlastFurnacePipe extends BlockBase {
+public class BlockBlastFurnacePipe extends SixWayBlock {
 
-	public static final ImmutableList<IProperty<Boolean>> CONNECTED_PROPERTIES = ImmutableList.copyOf(
-			Stream.of(EnumFacing.VALUES)
-					.map(facing -> PropertyBool.create(facing.getName()))
-					.collect(Collectors.toList())
-	);
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
-			new Vector3(5.5, 10, 5.5),
-			new Vector3(9.5, 16, 9.5),
-			EnumFacing.UP
-	).build();
-	private static final AxisAlignedBB BB = FacingAlignedBB.create(new Vector3(5.5, 5.5, 5.5), new Vector3(10.5, 10.5, 10.5));
+    public BlockBlastFurnacePipe(Properties p_i48440_1_) {
+        super(0.2F, p_i48440_1_.setAllowsSpawn(Blocks::neverAllowSpawn).setOpaque(Blocks::isntSolid).setSuffocates(Blocks::isntSolid).setBlocksVision(Blocks::isntSolid));
+        this.setDefaultState(this.stateContainer.getBaseState().with(NORTH, Boolean.FALSE).with(EAST, Boolean.FALSE).with(SOUTH, Boolean.FALSE).with(WEST, Boolean.FALSE).with(UP, Boolean.FALSE).with(DOWN, Boolean.FALSE));
+    }
 
-	public BlockBlastFurnacePipe() {
-		super(LibNames.BLAST_FURNACE_PIPE, IPMMaterial.FIRE_BRICK);
-	}
+    @Override
+    public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
+        WorldHelper.getTile(TileBlastFurnacePipe.class, world, pos).ifPresent(TileBlastFurnacePipe::setupConnections);
+    }
 
-	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		getTile(TileBlastFurnacePipe.class, worldIn, pos).ifPresent(TileBlastFurnacePipe::resetConnections);
-	}
+    @Override
+    public BlockState updatePostPlacement(BlockState p_196271_1_, Direction p_196271_2_, BlockState p_196271_3_, IWorld p_196271_4_, BlockPos p_196271_5_, BlockPos p_196271_6_) {
+        return p_196271_1_.with(FACING_TO_PROPERTY_MAP.get(p_196271_2_), this.canConnectTo(p_196271_4_, p_196271_6_, p_196271_2_.getOpposite()));
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer.Builder(this).add(CONNECTED_PROPERTIES.toArray(new IProperty[0])).build();
-	}
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return this.makeConnections(context.getWorld(), context.getPos());
+    }
 
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState();
-	}
+    public BlockState makeConnections(IBlockReader blockReader, BlockPos pos) {
+        boolean down = canConnectTo(blockReader, pos, Direction.DOWN);
+        boolean up = canConnectTo(blockReader, pos, Direction.UP);
+        boolean north = canConnectTo(blockReader, pos, Direction.NORTH);
+        boolean east = canConnectTo(blockReader, pos, Direction.EAST);
+        boolean south = canConnectTo(blockReader, pos, Direction.SOUTH);
+        boolean west = canConnectTo(blockReader, pos, Direction.WEST);
+        return this.getDefaultState().with(DOWN, down).with(UP, up).with(NORTH, north).with(EAST, east).with(SOUTH, south).with(WEST, west);
+    }
 
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return 0;
-	}
+    public boolean canConnectTo(IBlockReader blockReader, BlockPos pos, Direction neighbourDirection) {
+        BlockPos neighbourPos = pos.offset(neighbourDirection);
+        BlockState neighbourState = blockReader.getBlockState(neighbourPos);
+        Block neighbourBlock = neighbourState.getBlock();
 
-	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		for(EnumFacing facing : EnumFacing.VALUES) {
-			boolean connected = canConnectTo(world, pos, facing);
-			state = state.withProperty(CONNECTED_PROPERTIES.get(facing.getIndex()), connected);
-		}
-		return state;
-	}
+        boolean canConnect = false;
+        if (neighbourBlock == ModBlocks.BLAST_FURNACE_PIPE.get()) {
+            canConnect = true;
+        } else if (neighbourBlock == ModBlocks.BLAST_FURNACE_PIPE_GAUGE.get()) {
+            canConnect = neighbourState.get(HorizontalFaceBlock.FACE) != AttachFace.WALL ?
+                    neighbourState.get(HorizontalFaceBlock.FACE) == AttachFace.CEILING ?
+                            neighbourDirection == Direction.DOWN
+                            : neighbourDirection == Direction.UP
+                    : neighbourState.get(HorizontalFaceBlock.HORIZONTAL_FACING) == neighbourDirection.getOpposite();
+        } else if (WorldHelper.getCapability(blockReader, neighbourPos, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighbourDirection.getOpposite()).isPresent()) {
+            canConnect = true;
+        }
 
-	public boolean canConnectTo(IBlockAccess worldIn, BlockPos ownPos, EnumFacing neighbourDirection) {
-		BlockPos neighbourPos = ownPos.offset(neighbourDirection);
-		IBlockState neighbourState = worldIn.getBlockState(neighbourPos);
-		Block neighbourBlock = neighbourState.getBlock();
+        return canConnect;
+    }
 
-		boolean canConnect = false;
-		if(neighbourBlock == ModBlocks.BLAST_FURNACE_PIPE) {
-			canConnect = true;
-		}
-		else if(neighbourBlock == ModBlocks.BLAST_FURNACE_PIPE_GAUGE && ownPos.offset(neighbourState.getValue(BlockDirectional.FACING).getOpposite()).equals(neighbourPos)) {
-			canConnect = true;
-		}
-		else if(Optional.ofNullable(worldIn.getTileEntity(neighbourPos)).map(tile ->
-						tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, neighbourDirection.getOpposite())
-		).orElse(false)) {
-			canConnect = true;
-		}
+    @Override
+    public boolean allowsMovement(BlockState p_196266_1_, IBlockReader p_196266_2_, BlockPos p_196266_3_, PathType p_196266_4_) {
+        return false;
+    }
 
-		return canConnect;
-	}
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN);
+    }
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return BB;
-	}
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
 
-	@Override
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
-		addCollisionBoxToList(pos, entityBox, collidingBoxes, BB);
-		for(EnumFacing facing : EnumFacing.VALUES) {
-			if(isConnected(getActualState(state, worldIn, pos), facing)) {
-				AxisAlignedBB axisAlignedBB = BB_MAP.get(facing);
-				addCollisionBoxToList(pos, entityBox, collidingBoxes, axisAlignedBB);
-			}
-		}
-	}
-
-	public final boolean isConnected(IBlockState state, EnumFacing facing) {
-		return state.getValue(CONNECTED_PROPERTIES.get(facing.getIndex()));
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
-	}
-
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new TileBlastFurnacePipe();
-	}
+    @Nullable
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return new TileBlastFurnacePipe();
+    }
 }

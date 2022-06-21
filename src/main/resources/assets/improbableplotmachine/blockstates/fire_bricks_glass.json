@@ -1,20 +1,7 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "textures": {
-            "all": "improbableplotmachine:blocks/fire_bricks_glass/full"
-        },
-        "model": "cube_all",
-        "uvlock": false
-    },
     "variants": {
-        "normal": [
-            {
-            }
-        ],
-        "inventory": [
-            {
-            }
-        ]
+        "": {
+            "model": "improbableplotmachine:block/fire_bricks_glass"
+        }
     }
 }

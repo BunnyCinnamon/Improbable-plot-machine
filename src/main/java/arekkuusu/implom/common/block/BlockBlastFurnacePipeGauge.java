@@ -1,94 +1,131 @@
 package arekkuusu.implom.common.block;
 
-import arekkuusu.implom.api.util.IPMMaterial;
-import arekkuusu.implom.common.block.base.BlockBaseFacing;
-import arekkuusu.implom.common.lib.LibNames;
-import com.google.common.collect.ImmutableMap;
-import net.katsstuff.teamnightclipse.mirror.data.Vector3;
+import arekkuusu.implom.IPM;
+import arekkuusu.implom.api.helper.WorldHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalFaceBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.AttachFace;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SuppressWarnings("deprecation")
-public class BlockBlastFurnacePipeGauge extends BlockBaseFacing {
+import java.util.Objects;
 
-	private static final ImmutableMap<EnumFacing, AxisAlignedBB> BB_MAP = FacingAlignedBB.create(
-			new Vector3(4.5, 13, 4.5),
-			new Vector3(11.5, 16, 11.5),
-			EnumFacing.UP
-	).build();
+public class BlockBlastFurnacePipeGauge extends HorizontalFaceBlock {
 
-	public BlockBlastFurnacePipeGauge() {
-		super(LibNames.BLAST_FURNACE_PIPE_GAUGE, IPMMaterial.FIRE_BRICK);
-		MinecraftForge.EVENT_BUS.register(this);
-	}
+    protected static final VoxelShape AABB_CEILING_Z = Block.makeCuboidShape(6.0D, 8.0D, 5.0D, 10.0D, 16.0D, 11.0D);
+    protected static final VoxelShape AABB_CEILING_X = Block.makeCuboidShape(5.0D, 8.0D, 6.0D, 11.0D, 16.0D, 10.0D);
+    protected static final VoxelShape AABB_FLOOR_Z = Block.makeCuboidShape(6.0D, 0.0D, 5.0D, 10.0D, 8.0D, 11.0D);
+    protected static final VoxelShape AABB_FLOOR_X = Block.makeCuboidShape(5.0D, 0.0D, 6.0D, 11.0D, 8.0D, 10.0D);
+    protected static final VoxelShape AABB_NORTH = Block.makeCuboidShape(6.0D, 5.0D, 8.0D, 10.0D, 11.0D, 16.0D);
+    protected static final VoxelShape AABB_SOUTH = Block.makeCuboidShape(6.0D, 5.0D, 0.0D, 10.0D, 11.0D, 8.0D);
+    protected static final VoxelShape AABB_WEST = Block.makeCuboidShape(8.0D, 5.0D, 6.0D, 16.0D, 11.0D, 10.0D);
+    protected static final VoxelShape AABB_EAST = Block.makeCuboidShape(0.0D, 5.0D, 6.0D, 8.0D, 11.0D, 10.0D);
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		EnumFacing facing = state.getValue(BlockDirectional.FACING);
-		return BB_MAP.getOrDefault(facing, FULL_BLOCK_AABB);
-	}
+    protected BlockBlastFurnacePipeGauge(Properties builder) {
+        super(builder.setAllowsSpawn(Blocks::neverAllowSpawn).setOpaque(Blocks::isntSolid).setSuffocates(Blocks::isntSolid).setBlocksVision(Blocks::isntSolid));
+        this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(FACE, AttachFace.WALL));
+    }
 
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void onDrawScreenPost(RenderGameOverlayEvent.Post event) {
-		Minecraft mc = Minecraft.getMinecraft();
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        Direction direction = state.get(HORIZONTAL_FACING);
+        switch (state.get(FACE)) {
+            case FLOOR:
+                if (direction.getAxis() == Direction.Axis.X) {
+                    return AABB_FLOOR_X;
+                }
 
-		if(event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-			RayTraceResult ray = mc.objectMouseOver;
-			if(ray != null) {
-				BlockPos pos = ray.typeOfHit == RayTraceResult.Type.BLOCK ? ray.getBlockPos() : null;
-				IBlockState state = pos != null ? mc.world.getBlockState(pos) : null;
-				Block block = state == null ? null : state.getBlock();
-				if(block == this) {
-					EnumFacing facing = state.getValue(BlockDirectional.FACING);
-					BlockPos offset = pos.offset(facing);
-					TileEntity tile = mc.world.getTileEntity(offset);
-					if(tile != null) {
-						IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
-						if(handler != null) {
-							int xc = event.getResolution().getScaledWidth() / 2;
-							int yc = event.getResolution().getScaledHeight() / 2;
-							int max = 0;
-							int amount = 0;
+                return AABB_FLOOR_Z;
+            case WALL:
+                switch (direction) {
+                    case EAST:
+                        return AABB_EAST;
+                    case WEST:
+                        return AABB_WEST;
+                    case SOUTH:
+                        return AABB_SOUTH;
+                    case NORTH:
+                    default:
+                        return AABB_NORTH;
+                }
+            case CEILING:
+            default:
+                if (direction.getAxis() == Direction.Axis.X) {
+                    return AABB_CEILING_X;
+                } else {
+                    return AABB_CEILING_Z;
+                }
+        }
+    }
 
-							if(handler instanceof IFluidTank) {
-								max = ((IFluidTank) handler).getCapacity();
-								amount = ((IFluidTank) handler).getFluidAmount();
-							}
-							else {
-								IFluidTankProperties tankProperty = handler.getTankProperties()[0];
-								max = tankProperty.getCapacity();
-								if(tankProperty.getContents() != null)
-									amount += tankProperty.getContents().amount;
-							}
+    @Override
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        Direction direction = getFacing(state).getOpposite();
+        BlockPos blockpos = pos.offset(direction);
+        BlockState blockState = worldIn.getBlockState(blockpos);
+        return blockState.getBlock() == ModBlocks.BLAST_FURNACE_PIPE.get() || blockState.isSolidSide(worldIn, blockpos, direction.getOpposite());
+    }
 
-							String s = I18n.format("status.gauge");
-							String s1 = amount + "/" + max;
-							mc.fontRenderer.drawStringWithShadow(s, xc - mc.fontRenderer.getStringWidth(s) / 2, yc + 10, 0xFFFFFF);
-							mc.fontRenderer.drawStringWithShadow(s1, xc - mc.fontRenderer.getStringWidth(s) / 2, yc + 20, 0xFFFFFF);
-						}
-					}
-				}
-			}
-		}
-	}
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(HORIZONTAL_FACING, FACE);
+    }
+
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void onDrawScreenPost(RenderGameOverlayEvent.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+
+        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+            RayTraceResult ray = mc.objectMouseOver;
+            if (ray != null) {
+                BlockPos pos = ray.getType() == RayTraceResult.Type.BLOCK ? new BlockPos(ray.getHitVec()) : null;
+                BlockState state = pos != null ? Objects.requireNonNull(mc.world).getBlockState(pos) : null;
+                Block block = state == null ? null : state.getBlock();
+                if (block == ModBlocks.BLAST_FURNACE_PIPE_GAUGE.get()) {
+                    Direction facing = state.get(HorizontalFaceBlock.FACE) != AttachFace.WALL
+                            ? state.get(HorizontalFaceBlock.FACE) == AttachFace.CEILING
+                            ? Direction.UP
+                            : Direction.DOWN
+                            : state.get(HorizontalFaceBlock.HORIZONTAL_FACING).getOpposite();
+                    BlockPos offset = pos.offset(facing);
+                    WorldHelper.getCapability(mc.world, offset, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()).ifPresent(handler -> {
+                        int xc = event.getWindow().getScaledWidth() / 2;
+                        int yc = event.getWindow().getScaledHeight() / 2;
+                        int max = 0;
+                        int amount = 0;
+
+                        if (handler instanceof IFluidTank) {
+                            max = ((IFluidTank) handler).getCapacity();
+                            amount = ((IFluidTank) handler).getFluidAmount();
+                        } else {
+                            max = handler.getTankCapacity(0);
+                            amount += handler.getFluidInTank(0).getAmount();
+                        }
+
+                        String s = new TranslationTextComponent(IPM.MOD_ID + ".ui.status.gauge").getString();
+                        String s1 = amount + "/" + max;
+                        mc.fontRenderer.drawStringWithShadow(event.getMatrixStack(), s, xc - mc.fontRenderer.getStringWidth(s) / 2F, yc + 10, 0xFFFFFF);
+                        mc.fontRenderer.drawStringWithShadow(event.getMatrixStack(), s1, xc - mc.fontRenderer.getStringWidth(s) / 2F, yc + 20, 0xFFFFFF);
+                    });
+                }
+            }
+        }
+    }
 }

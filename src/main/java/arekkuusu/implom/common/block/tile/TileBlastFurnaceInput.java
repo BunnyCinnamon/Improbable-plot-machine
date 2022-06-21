@@ -1,50 +1,76 @@
 package arekkuusu.implom.common.block.tile;
 
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.entity.item.EntityItem;
+import arekkuusu.implom.api.helper.WorldHelper;
+import net.minecraft.block.HorizontalBlock;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;
 
-public class TileBlastFurnaceInput extends TileMultiblockImouto implements ITickable {
+public class TileBlastFurnaceInput extends TileMultiBlockImouto implements ITickableTileEntity {
 
-	@Override
-	public void update() {
-		if(isClientWorld()) return;
+    public LazyOptional<IItemHandler> cached = LazyOptional.empty();
+    public NonNullConsumer<IItemHandler> consumer = this::transfer;
+    public boolean scan = false;
+    public boolean load = false;
 
-		if(hasValidOniichan()) {
-			IItemHandler handler = getTile(TileMultiblockOniichan.class, getWorld(), getOniichan())
-					.filter(tile -> tile.hasSecretCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
-					.map(tile -> tile.getSecretCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null))
-					.orElse(null);
-			if(handler != null) {
-				List<EntityItem> list = getWorld().getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(getPos().offset(getFacingLazy())));
-				for(EntityItem entityItem : list) {
-					ItemStack entityStack = entityItem.getItem();
-					if(entityStack.isEmpty()) continue;
+    public TileBlastFurnaceInput() {
+        super(ModTiles.BLAST_FURNACE_INPUT.get());
+    }
 
-					for(int i = 0; i < handler.getSlots(); i++) {
-						ItemStack insertRemaining = handler.insertItem(i, entityStack, true);
-						int inserted = entityStack.getCount() - insertRemaining.getCount();
-						if(inserted > 0) {
-							ItemStack insert = ItemHandlerHelper.copyStackWithSize(entityStack, inserted);
-							handler.insertItem(i, insert, false);
-							entityItem.getItem().shrink(inserted);
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
+    @Override
+    public void tick() {
+        if (isClientWorld()) return;
+        if (!load) {
+            this.setupConnections();
+            load = true;
+        }
+        if (hasValidOniichan()) {
+            if (scan) setupConnections();
+            cached.ifPresent(consumer);
+        }
+    }
 
-	public EnumFacing getFacingLazy() {
-		return getStateValue(BlockHorizontal.FACING, getPos()).orElse(EnumFacing.NORTH);
-	}
+    public void transfer(IItemHandler handler) {
+        List<ItemEntity> list = getWorld().getEntitiesWithinAABB(ItemEntity.class, new AxisAlignedBB(getPos().offset(getFacingLazy())));
+        for (ItemEntity entityItem : list) {
+            ItemStack entityStack = entityItem.getItem();
+            if (entityStack.isEmpty()) continue;
+
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack insertRemaining = handler.insertItem(i, entityStack, true);
+                int inserted = entityStack.getCount() - insertRemaining.getCount();
+                if (inserted > 0) {
+                    ItemStack insert = ItemHandlerHelper.copyStackWithSize(entityStack, inserted);
+                    handler.insertItem(i, insert, false);
+                    entityItem.getItem().shrink(inserted);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setupConnections() {
+        if (!this.cached.isPresent()) {
+            if (this.hasOniichanByHerSide) {
+                this.cached = WorldHelper.getTile(TileBlastFurnaceController.class, getWorld(), getOniichan())
+                        .map(t -> t.getMultiBlockCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP))
+                        .orElse(LazyOptional.empty());
+                if (this.cached.isPresent()) this.scan = false;
+                this.cached.addListener(l -> this.scan = true);
+            } else this.scan = true;
+        }
+    }
+
+    public Direction getFacingLazy() {
+        return WorldHelper.getStateValue(getWorld(), getPos(), HorizontalBlock.HORIZONTAL_FACING).orElse(Direction.NORTH);
+    }
 }

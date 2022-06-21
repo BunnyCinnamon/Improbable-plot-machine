@@ -4,7 +4,6 @@ A glorified Deus Ex Machina
 [downloads]: http://cf.way2muchnoise.eu/versions/For%20MC_289528_all.svg "All versions"
 [version]: http://cf.way2muchnoise.eu/versions/289528_latest.svg "Latest version"
 
-[![Build Status](https://travis-ci.org/ArekkuusuJerii/Improbable-plot-machine.svg?branch=master)](https://travis-ci.org/ArekkuusuJerii/Improbable-plot-machine)
 [![][downloads]](https://minecraft.curseforge.com/projects/improbable-plot-machine/files) [![][version]](https://minecraft.curseforge.com/projects/improbable-plot-machine)
 
 ## Lore
