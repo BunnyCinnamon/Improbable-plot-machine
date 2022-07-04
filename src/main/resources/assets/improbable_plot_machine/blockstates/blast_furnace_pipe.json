@@ -1,0 +1,23 @@
+{
+	"multipart": [
+		{   "apply": { "model": "improbable_plot_machine:block/blast_furnace_pipe/center" }},
+		{   "when": { "north": true },
+			"apply": { "model": "improbable_plot_machine:block/blast_furnace_pipe/part", "x": -90 }
+		},
+		{   "when": { "east": true },
+			"apply": { "model": "improbable_plot_machine:block/blast_furnace_pipe/part", "x": 90, "y": -90 }
+		},
+		{   "when": { "south": true },
+			"apply": { "model": "improbable_plot_machine:block/blast_furnace_pipe/part", "x": 90 }
+		},
+		{   "when": { "west": true },
+			"apply": { "model": "improbable_plot_machine:block/blast_furnace_pipe/part", "x": 90, "y": 90 }
+		},
+		{   "when": { "up": true },
+			"apply": { "model": "improbable_plot_machine:block/blast_furnace_pipe/part", "x": 180 }
+		},
+		{   "when": { "down": true },
+			"apply": { "model": "improbable_plot_machine:block/blast_furnace_pipe/part" }
+		}
+	]
+}

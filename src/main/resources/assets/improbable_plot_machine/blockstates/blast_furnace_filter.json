@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=north": { "model": "improbable_plot_machine:block/blast_furnace_filter" },
+        "facing=south": { "model": "improbable_plot_machine:block/blast_furnace_filter", "y": 180 },
+        "facing=west":  { "model": "improbable_plot_machine:block/blast_furnace_filter", "y": 270 },
+        "facing=east":  { "model": "improbable_plot_machine:block/blast_furnace_filter", "y": 90 },
+        "facing=up":  { "model": "improbable_plot_machine:block/blast_furnace_filter", "x": 270 },
+        "facing=down":  { "model": "improbable_plot_machine:block/blast_furnace_filter", "x": 90 }
+    }
+}

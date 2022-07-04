@@ -1,9 +1,0 @@
-{
-    "parent": "improbableplotmachine:blocks/block_front",
-    "textures": {
-        "front": "improbableplotmachine:blocks/blast_furnace_filter/front",
-        "back": "improbableplotmachine:blocks/blast_furnace_filter/sides",
-        "sides": "improbableplotmachine:blocks/blast_furnace_filter/front",
-        "particle": "improbableplotmachine:blocks/blast_furnace_filter/sides"
-    }
-}

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "cinnamon.implom.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+  ],
+  "client": [
+    "ExampleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

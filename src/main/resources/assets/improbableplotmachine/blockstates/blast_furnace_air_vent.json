@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "active=false": { "model": "improbableplotmachine:block/blast_furnace_air_vent/off" },
-    "active=true": { "model": "improbableplotmachine:block/blast_furnace_air_vent/on" }
-  }
-}

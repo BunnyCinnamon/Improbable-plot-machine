@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "improbable_plot_machine:blocks/fire_brick_block/full"
+    }
+}

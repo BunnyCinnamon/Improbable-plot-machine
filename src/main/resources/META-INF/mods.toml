@@ -1,11 +1,25 @@
-modLoader="javafml"
-loaderVersion="[31,)"
+modLoader = "javafml"
+loaderVersion = "[41,)"
+license = "MIT"
+
 [[mods]]
-modId="improbableplotmachine"
-version="${file.jarVersion}"
-certificateFingerprint = "72cd337644e68ff7257f69b2927894048793e577"
-displayName="Improbable Plot Machine"
-authors="Arekkuusu"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/improbable-plot-machine"
-logoFile="logo.png"
-description="uwu"
+modId = "improbable_plot_machine"
+version = "${version}"
+displayName = "improbable_plot_machine"
+description = '''
+magik
+'''
+
+[[dependencies.improbable_plot_machine]]
+modId = "forge"
+mandatory = true
+versionRange = "[41,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.improbable_plot_machine]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19,)"
+ordering = "NONE"
+side = "BOTH"

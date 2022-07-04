@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "improbableplotmachine:block/blast_furnace_air_pump" },
-        "facing=south": { "model": "improbableplotmachine:block/blast_furnace_air_pump", "y": 180 },
-        "facing=west":  { "model": "improbableplotmachine:block/blast_furnace_air_pump", "y": 270 },
-        "facing=east":  { "model": "improbableplotmachine:block/blast_furnace_air_pump", "y": 90 }
-    }
-}

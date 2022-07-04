@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "face=floor,facing=east":  { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "y": 90 },
+        "face=floor,facing=west":  { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "y": 270 },
+        "face=floor,facing=south": { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "y": 180 },
+        "face=floor,facing=north": { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center" },
+        "face=wall,facing=east":  { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "x": 90, "y": 90 },
+        "face=wall,facing=west":  { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "x": 90, "y": 270 },
+        "face=wall,facing=south": { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "x": 90, "y": 180 },
+        "face=wall,facing=north": { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "x": 90 },
+        "face=ceiling,facing=east":  { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "x": 180, "y": 270 },
+        "face=ceiling,facing=west":  { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "x": 180, "y": 90 },
+        "face=ceiling,facing=south": { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "x": 180 },
+        "face=ceiling,facing=north": { "model": "improbable_plot_machine:block/blast_furnace_pipe_gauge/center", "x": 180, "y": 180 }
+    }
+}

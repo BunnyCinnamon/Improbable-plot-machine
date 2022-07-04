@@ -1,0 +1,7 @@
+{
+    "ctm": {
+        "ctm_version": 1,
+        "type": "ctm",
+        "textures": [ "improbable_plot_machine:blocks/fire_clay_block/ctm" ]
+    }
+}

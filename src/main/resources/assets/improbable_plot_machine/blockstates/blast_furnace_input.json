@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "improbable_plot_machine:block/blast_furnace_input" },
+        "facing=south": { "model": "improbable_plot_machine:block/blast_furnace_input", "y": 180 },
+        "facing=west":  { "model": "improbable_plot_machine:block/blast_furnace_input", "y": 270 },
+        "facing=east":  { "model": "improbable_plot_machine:block/blast_furnace_input", "y": 90 }
+    }
+}
