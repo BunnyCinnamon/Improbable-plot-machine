@@ -5,11 +5,13 @@ import cinnamon.implom.LibNames;
 import cinnamon.implom.common.block.fluid.ModFluids;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.RegistryObject;
 
 public final class ModBlocks {
 
+    //Furnace
     public static final RegistryObject<Block> HOT_AIR = IPM.BLOCKS.register(
             LibNames.HOT_AIR, () -> new LiquidBlock(ModFluids.HOT_AIR, Block.Properties.of(Material.WATER).strength(100.0F).noLootTable())
     );
@@ -61,26 +63,11 @@ public final class ModBlocks {
     public static final RegistryObject<Block> BLAST_FURNACE_PIPE_GAUGE = IPM.BLOCKS.register(
             LibNames.BLAST_FURNACE_PIPE_GAUGE, () -> new BlockBlastFurnacePipeGauge(Block.Properties.of(Material.STONE))
     );
+    //Blocks
+    public static final RegistryObject<Block> MONOLITHIC = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC, () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
 
     public static void init() {
-    }
-
-    public enum Tool {
-        PICK("pickaxe"),
-        AXE("axe"),
-        SHOVEL("shovel");
-
-        final String name;
-
-        Tool(String name) {
-            this.name = name;
-        }
-    }
-
-    public enum ToolLevel {
-        WOOD_GOLD,
-        STONE,
-        IRON,
-        DIAMOND
     }
 }

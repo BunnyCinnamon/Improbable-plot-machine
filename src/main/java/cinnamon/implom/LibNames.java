@@ -25,7 +25,6 @@ public class LibNames {
 	public static final String FIRE_CLAY_BRICK = "fire_clay_brick";
 	public static final String FIRE_CLAY_PLATE = "fire_clay_plate";
 	public static final String MONOLITHIC = "monolithic";
-	public static final String MONOLITHIC_GLYPH = "monolithic_glyph";
 	public static final String FIRE_CLAY_BLOCK = "fire_clay_block";
 	public static final String FIRE_BRICK_BLOCK = "fire_brick_block";
 	public static final String FIRE_BRICKS = "fire_bricks";

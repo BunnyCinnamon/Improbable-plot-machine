@@ -25,6 +25,7 @@ public class TileBlastFurnaceInput extends TileMultiBlockImouto {
 
     public LazyOptional<IItemHandler> cached = LazyOptional.empty();
     public NonNullConsumer<IItemHandler> consumer = this::transfer;
+    public ItemStack filter = ItemStack.EMPTY;
     public boolean scan = false;
     public boolean load = false;
 
@@ -36,7 +37,7 @@ public class TileBlastFurnaceInput extends TileMultiBlockImouto {
         List<ItemEntity> list = getLevel().getEntitiesOfClass(ItemEntity.class, new AABB(getBlockPos().relative(getFacingLazy())));
         for (ItemEntity entityItem : list) {
             ItemStack entityStack = entityItem.getItem();
-            if (entityStack.isEmpty()) continue;
+            if (entityStack.isEmpty() || (!filter.isEmpty() && filter.getTags().anyMatch(entityStack::is))) continue;
 
             for (int i = 0; i < handler.getSlots(); i++) {
                 ItemStack insertRemaining = handler.insertItem(i, entityStack, true);

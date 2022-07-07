@@ -47,7 +47,7 @@ public class MultiBlockHotAir extends MultiBlockRectanguloid {
 						ModBlocks.FIRE_BRICK_BLOCK,
 						ModBlocks.FIRE_BRICKS_WINDOW,
 						ModBlocks.FIRE_BRICKS_GLASS
-				)).with(ModBlocks.BLAST_FURNACE_AIR_PUMP, 1, 5, Facing.INWARDS_OUTWARDS)
+				)).with(ModBlocks.BLAST_FURNACE_AIR_PUMP, 1, 8, Facing.INWARDS_OUTWARDS)
 		);
 		insertLayer(pump);
 		MultiBlockPlaneLayer top = new MultiBlockPlaneLayer(new MultiBlockLayer.LayerData(true, 1, 1)

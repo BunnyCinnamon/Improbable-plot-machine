@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -25,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockBlastFurnaceController extends HorizontalDirectionalBlock implements EntityBlock {
 
@@ -74,7 +77,7 @@ public class BlockBlastFurnaceController extends HorizontalDirectionalBlock impl
         return true;
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext arg) {
         return defaultBlockState().setValue(FACING, arg.getHorizontalDirection().getOpposite());
@@ -85,9 +88,15 @@ public class BlockBlastFurnaceController extends HorizontalDirectionalBlock impl
         arg.add(FACING, BlockBaseMultiBlock.ACTIVE);
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos arg, BlockState arg2) {
         return new TileBlastFurnaceController(arg, arg2);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level arg, BlockState arg2, BlockEntityType<T> arg3) {
+        return (BlockEntityTicker<T>) new TileBlastFurnaceController.Ticking();
     }
 }

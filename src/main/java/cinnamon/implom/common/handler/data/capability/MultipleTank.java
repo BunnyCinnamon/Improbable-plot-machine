@@ -104,10 +104,10 @@ public class MultipleTank implements IFluidHandler, INBTSerializable<CompoundTag
                 int drainable = Math.min(resource.getAmount(), liquid.getAmount());
                 if (action.execute()) {
                     liquid.setAmount(liquid.getAmount() - drainable);
+                    handler.accept(oldList, fluids, liquid);
                     if (liquid.getAmount() <= 0) {
                         iterator.remove();
                     }
-                    handler.accept(oldList, fluids, liquid);
                 }
 
                 resource = resource.copy();

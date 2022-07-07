@@ -77,8 +77,11 @@ public class MultiBlockBlastFurnace extends MultiBlockRectanguloid {
         );
         insertLayer(stone);
         MultiBlockPlaneLayer top = new MultiBlockPlaneLayer(
-                new LayerData(false, 0, 1)
-                        .add(LayerPiece.WALL, of(ModBlocks.FIRE_BRICKS))
+                new LayerData(false, 1, 1)
+                        .add(LayerPiece.WALL, of(
+                                ModBlocks.FIRE_BRICKS,
+                                ModBlocks.BLAST_FURNACE_INPUT
+                        ))
         );
         insertLayer(top);
     }

@@ -6,10 +6,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -17,12 +20,23 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.ticks.ScheduledTick;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockBlastFurnacePipe extends PipeBlock implements EntityBlock {
 
     public BlockBlastFurnacePipe(BlockBehaviour.Properties p_i48440_1_) {
         super(0.2F, p_i48440_1_.randomTicks().noOcclusion());
         this.registerDefaultState(this.getStateDefinition().any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE));
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext arg) {
+        var blockState = this.defaultBlockState();
+        for (Direction value : Direction.values()) {
+           blockState = blockState.setValue(PROPERTY_BY_DIRECTION.get(value), canConnectTo(arg.getLevel(), arg.getClickedPos(), value));
+        }
+        return blockState;
     }
 
     @Override
@@ -68,5 +82,11 @@ public class BlockBlastFurnacePipe extends PipeBlock implements EntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos arg, BlockState arg2) {
         return new TileBlastFurnacePipe(arg, arg2);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level arg, BlockState arg2, BlockEntityType<T> arg3) {
+        return (BlockEntityTicker<T>) new TileBlastFurnacePipe.Ticking();
     }
 }

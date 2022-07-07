@@ -11,9 +11,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import org.jetbrains.annotations.Nullable;
 
 public class BlockHotBlastAirPump extends HorizontalDirectionalBlock implements EntityBlock {
 
@@ -48,5 +51,11 @@ public class BlockHotBlastAirPump extends HorizontalDirectionalBlock implements 
     @Override
     public BlockEntity newBlockEntity(BlockPos arg, BlockState arg2) {
         return new TileBlastFurnaceAirPump(arg, arg2);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level arg, BlockState arg2, BlockEntityType<T> arg3) {
+        return (BlockEntityTicker<T>) new TileBlastFurnaceAirPump.Ticking();
     }
 }

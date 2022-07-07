@@ -1,6 +1,6 @@
 package cinnamon.implom.client.render.tile;
 
-import cinnamon.implom.client.util.helper.MiscRenders;
+import cinnamon.implom.client.util.helper.FluidRenderer;
 import cinnamon.implom.common.block.tile.TileBlastFurnaceController;
 import cinnamon.implom.common.handler.data.capability.MultipleTank;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -43,12 +43,12 @@ public class TileBlastFurnaceControllerRenderer implements BlockEntityRenderer<T
             BlockPos maxPos = new BlockPos(realMaxPosX, basePosY, realMaxPosZ);
 
             int totalHeight = 1 + Math.max(0, maxStructurePos.getY() - minStructurePos.getY());
-            int[] heights = calcLiquidHeights(fluids, tank.maxCapacity, totalHeight * 1000 - (int) (MiscRenders.FLUID_OFFSET * 2000D), 100);
-            //float offset = MiscRenders.FLUID_OFFSET;
+            int[] heights = calcLiquidHeights(fluids, tank.maxCapacity, totalHeight * 1000 - (int) (FluidRenderer.FLUID_OFFSET * 2000D), 100);
+            float offset = FluidRenderer.FLUID_OFFSET;
             for(int i = 0; i < fluids.size(); i++) {
                 float height = (float) heights[i] / 1000F;
-                //MiscRenders.renderFluidCuboid(matrixStack, buffer, fluids.get(i), maxStructurePos, minPos, maxPos, offset, offset + height, 0.0625F);
-                //offset += height;
+                FluidRenderer.renderFluidCuboid(poseStack, buffer, fluids.get(i), minPos, maxPos, combinedLightIn, offset, offset + height);
+                offset += height;
             }
         }
     }

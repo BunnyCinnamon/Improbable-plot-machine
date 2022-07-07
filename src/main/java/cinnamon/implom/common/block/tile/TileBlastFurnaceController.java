@@ -177,6 +177,15 @@ public class TileBlastFurnaceController extends TileMultiBlockOniichan implement
             temperature = Math.max(0, temperature - temperaturePerTickLoss);
         }
     }
+
+    private void loseAir() {
+        int amount = airTank.getFluidInTank(airTank.getTanks()).getAmount();
+        if(amount > 0) {
+            float min = Math.min(amount / 100F, amount);
+            int floor = (int) Math.floor(min);
+            airTank.drain(floor, IFluidHandler.FluidAction.EXECUTE);
+        }
+    }
     // Progress update
 
     //Structure change
@@ -204,8 +213,8 @@ public class TileBlastFurnaceController extends TileMultiBlockOniichan implement
         int index = old.indexOf(changed);
         if (index == -1)
             index = updated.indexOf(changed);
-        liquidHeat.updateHeatRequired(index);
         liquidHeat.resize(updated.size());
+        liquidHeat.updateHeatRequired(index);
         setChanged();
         sync();
     }
@@ -480,6 +489,7 @@ public class TileBlastFurnaceController extends TileMultiBlockOniichan implement
                     instance.alloyAlloys();
                     instance.liquidHeat.heat();
                     instance.loseHeat();
+                    instance.loseAir();
                 }
 
                 if (instance.temperature < MAXIMUM_TEMPERATURE) { //Burn fuel
