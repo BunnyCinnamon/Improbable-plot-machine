@@ -1,8 +1,10 @@
 package cinnamon.implom.common.block.tile;
 
+import cinnamon.implom.api.helper.NBTHelper;
 import cinnamon.implom.api.helper.WorldHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -74,6 +76,33 @@ public class TileBlastFurnaceInput extends TileMultiBlockImouto {
 
     public Direction getFacingLazy() {
         return WorldHelper.getStateValue(getLevel(), getBlockPos(), HorizontalDirectionalBlock.FACING).orElse(Direction.NORTH);
+    }
+
+    /* NBT */
+    public final static String TAG_FILTER = "size";
+
+    @Override
+    void loadDisk(CompoundTag compound) {
+        super.loadDisk(compound);
+        filter = ItemStack.of(compound.getCompound(TAG_FILTER));
+    }
+
+    @Override
+    void saveDisk(CompoundTag compound) {
+        super.saveDisk(compound);
+        compound.put(TAG_FILTER, filter.serializeNBT());
+    }
+
+    @Override
+    void readSync(CompoundTag compound) {
+        super.readSync(compound);
+        loadDisk(compound);
+    }
+
+    @Override
+    void writeSync(CompoundTag compound) {
+        super.writeSync(compound);
+        saveDisk(compound);
     }
 
     public static class Ticking implements BlockEntityTicker<TileBlastFurnaceInput> {

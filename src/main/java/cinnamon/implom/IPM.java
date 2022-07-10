@@ -2,6 +2,7 @@ package cinnamon.implom;
 
 import cinnamon.implom.client.ClientProxy;
 import cinnamon.implom.client.render.tile.TileBlastFurnaceControllerRenderer;
+import cinnamon.implom.client.render.tile.TileBlastFurnaceInputRenderer;
 import cinnamon.implom.common.ServerProxy;
 import cinnamon.implom.common.block.ModBlocks;
 import cinnamon.implom.common.block.fluid.ModFluids;
@@ -88,6 +89,7 @@ public final class IPM {
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLAST_FURNACE_CONTROLLER.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLAST_FURNACE_AIR_VENT.get(), RenderType.translucent());
         BlockEntityRenderers.register(ModTiles.BLAST_FURNACE_CONTROLLER.get(), TileBlastFurnaceControllerRenderer::new);
+        BlockEntityRenderers.register(ModTiles.BLAST_FURNACE_INPUT.get(), TileBlastFurnaceInputRenderer::new);
     }
 
     public void onModConfigEvent(ModConfigEvent event) {

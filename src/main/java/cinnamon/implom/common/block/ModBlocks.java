@@ -63,9 +63,60 @@ public final class ModBlocks {
     public static final RegistryObject<Block> BLAST_FURNACE_PIPE_GAUGE = IPM.BLOCKS.register(
             LibNames.BLAST_FURNACE_PIPE_GAUGE, () -> new BlockBlastFurnacePipeGauge(Block.Properties.of(Material.STONE))
     );
+    public static final RegistryObject<Block> BLAST_FURNACE_THERMOMETER = IPM.BLOCKS.register(
+            LibNames.BLAST_FURNACE_THERMOMETER, () -> new BlockBlastFurnaceThermometer(Block.Properties.of(Material.STONE))
+    );
     //Blocks
     public static final RegistryObject<Block> MONOLITHIC = IPM.BLOCKS.register(
             LibNames.MONOLITHIC, () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_0 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "0", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_1 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "1", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_2 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "2", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_3 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "3", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_4 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "4", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_5 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "5", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_6 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "6", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_7 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "7", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_8 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "8", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_9 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "9", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_10 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "10", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_11 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "11", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_12 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "12", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_13 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "13", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_14 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "14", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
+    );
+    public static final RegistryObject<Block> MONOLITHIC_15 = IPM.BLOCKS.register(
+            LibNames.MONOLITHIC_ + "15", () -> new Block(BlockBehaviour.Properties.of(Material.STONE).strength(9999))
     );
 
     public static void init() {

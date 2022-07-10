@@ -1,0 +1,7 @@
+{
+    "parent": "improbable_plot_machine:block/monolithic/decoration",
+    "textures": {
+        "end": "improbable_plot_machine:blocks/monolithic/structure/full",
+        "side": "improbable_plot_machine:blocks/monolithic/decoration/glyph_overlay_14"
+    }
+}

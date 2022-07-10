@@ -45,9 +45,6 @@ public class BlockBlastFurnaceController extends HorizontalDirectionalBlock impl
                         tile.okaeriOniichan();
                     else if (drainWaterBucket(arg4.getItemInHand(arg5)))
                         tile.invalidateStructure();
-                    else if (tile.isActiveLazy()) {
-                        //NO-OP
-                    }
                 });
             }
         }

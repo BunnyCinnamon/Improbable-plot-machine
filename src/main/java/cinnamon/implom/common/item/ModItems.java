@@ -121,6 +121,57 @@ public final class ModItems {
     public static final RegistryObject<Item> BLAST_FURNACE_PIPE_GAUGE = IPM.ITEMS.register(
             LibNames.BLAST_FURNACE_PIPE_GAUGE, () -> new BlockItem(ModBlocks.BLAST_FURNACE_PIPE_GAUGE.get(), defaultItemProperties())
     );
+    public static final RegistryObject<Item> MONOLITHIC = IPM.ITEMS.register(
+            LibNames.MONOLITHIC, () -> new BlockItem(ModBlocks.MONOLITHIC.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_0 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "0", () -> new BlockItem(ModBlocks.MONOLITHIC_0.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_1 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "1", () -> new BlockItem(ModBlocks.MONOLITHIC_1.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_2 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "2", () -> new BlockItem(ModBlocks.MONOLITHIC_2.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_3 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "3", () -> new BlockItem(ModBlocks.MONOLITHIC_3.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_4 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "4", () -> new BlockItem(ModBlocks.MONOLITHIC_4.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_5 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "5", () -> new BlockItem(ModBlocks.MONOLITHIC_5.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_6 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "6", () -> new BlockItem(ModBlocks.MONOLITHIC_6.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_7 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "7", () -> new BlockItem(ModBlocks.MONOLITHIC_7.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_8 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "8", () -> new BlockItem(ModBlocks.MONOLITHIC_8.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_9 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "9", () -> new BlockItem(ModBlocks.MONOLITHIC_9.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_10 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "10", () -> new BlockItem(ModBlocks.MONOLITHIC_10.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_11 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "11", () -> new BlockItem(ModBlocks.MONOLITHIC_11.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_12 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "12", () -> new BlockItem(ModBlocks.MONOLITHIC_12.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_13 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "13", () -> new BlockItem(ModBlocks.MONOLITHIC_13.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_14 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "14", () -> new BlockItem(ModBlocks.MONOLITHIC_14.get(), defaultItemProperties())
+    );
+    public static final RegistryObject<Item> MONOLITHIC_15 = IPM.ITEMS.register(
+            LibNames.MONOLITHIC_ + "15", () -> new BlockItem(ModBlocks.MONOLITHIC_15.get(), defaultItemProperties())
+    );
 
     public static Item.Properties defaultItemProperties() {
         return new Item.Properties().tab(CreativeTabHandler.MISC);

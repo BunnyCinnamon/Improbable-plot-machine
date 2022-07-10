@@ -4,8 +4,12 @@ import cinnamon.implom.api.helper.WorldHelper;
 import cinnamon.implom.common.block.tile.TileBlastFurnaceInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -17,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockBlastFurnaceInput extends HorizontalDirectionalBlock implements EntityBlock {
@@ -24,6 +29,20 @@ public class BlockBlastFurnaceInput extends HorizontalDirectionalBlock implement
     protected BlockBlastFurnaceInput(Properties p_i48415_1_) {
         super(p_i48415_1_);
         this.registerDefaultState(getStateDefinition().any().setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH));
+    }
+
+    @Override
+    public InteractionResult use(BlockState arg, Level arg2, BlockPos arg3, Player arg4, InteractionHand arg5, BlockHitResult arg6) {
+        if (!arg2.isClientSide() && arg5 == InteractionHand.MAIN_HAND) {
+            if (!arg4.isShiftKeyDown()) {
+                WorldHelper.getTile(TileBlastFurnaceInput.class, arg2, arg3).ifPresent(tile -> {
+                    tile.filter = arg4.getItemInHand(arg5);
+                    tile.setChanged();
+                    tile.sync();
+                });
+            }
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override

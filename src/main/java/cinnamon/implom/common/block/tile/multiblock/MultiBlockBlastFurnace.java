@@ -44,9 +44,11 @@ public class MultiBlockBlastFurnace extends MultiBlockRectanguloid {
                                 ModBlocks.FIRE_BRICK_BLOCK,
                                 ModBlocks.FIRE_BRICKS_WINDOW,
                                 ModBlocks.BLAST_FURNACE_CONTROLLER,
+                                ModBlocks.BLAST_FURNACE_THERMOMETER,
                                 ModBlocks.BLAST_FURNACE_TUYERE
                         ))
                         .with(ModBlocks.BLAST_FURNACE_CONTROLLER, 1, 1, Facing.ANY)
+                        .with(ModBlocks.BLAST_FURNACE_THERMOMETER, 0, 1, Facing.ANY)
                         .with(ModBlocks.BLAST_FURNACE_TUYERE, 1, Integer.MAX_VALUE, Facing.ANY)
         );
         insertLayer(controller);

@@ -1,7 +1,7 @@
 {
     "variants": {
         "": {
-            "model": "improbable_plot_machine:block/monolithic/base"
+            "model": "improbable_plot_machine:block/monolithic/structure"
         }
     }
 }

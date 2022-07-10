@@ -25,6 +25,7 @@ public class LibNames {
 	public static final String FIRE_CLAY_BRICK = "fire_clay_brick";
 	public static final String FIRE_CLAY_PLATE = "fire_clay_plate";
 	public static final String MONOLITHIC = "monolithic";
+	public static final String MONOLITHIC_ = "monolithic_";
 	public static final String FIRE_CLAY_BLOCK = "fire_clay_block";
 	public static final String FIRE_BRICK_BLOCK = "fire_brick_block";
 	public static final String FIRE_BRICKS = "fire_bricks";
@@ -40,6 +41,7 @@ public class LibNames {
 	public static final String BLAST_FURNACE_AIR_PUMP = "blast_furnace_air_pump";
 	public static final String BLAST_FURNACE_HEATER = "blast_furnace_heater";
 	public static final String BLAST_FURNACE_PIPE_GAUGE = "blast_furnace_pipe_gauge";
+	public static final String BLAST_FURNACE_THERMOMETER = "blast_furnace_thermometer";
 	public static final String HOT_AIR = "hot_air";
 	public static final String LUMEN = "lumen";
 }
