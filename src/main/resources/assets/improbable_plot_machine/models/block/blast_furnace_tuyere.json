@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/cube",
 	"textures": {
-		"0": "improbable_plot_machine:blocks/blast_furnace_tuyere/front_off",
-		"2": "improbable_plot_machine:blocks/blast_furnace_tuyere/back",
-		"particle": "improbable_plot_machine:blocks/blast_furnace_tuyere/front_off"
+		"0": "improbable_plot_machine:block/blast_furnace_tuyere/front_off",
+		"2": "improbable_plot_machine:block/blast_furnace_tuyere/back",
+		"particle": "improbable_plot_machine:block/blast_furnace_tuyere/front_off"
 	},
 	"elements": [
 		{

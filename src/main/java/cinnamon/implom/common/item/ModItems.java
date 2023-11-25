@@ -3,7 +3,6 @@ package cinnamon.implom.common.item;
 import cinnamon.implom.IPM;
 import cinnamon.implom.LibNames;
 import cinnamon.implom.common.block.ModBlocks;
-import cinnamon.implom.common.handler.CreativeTabHandler;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
@@ -121,6 +120,9 @@ public final class ModItems {
     public static final RegistryObject<Item> BLAST_FURNACE_PIPE_GAUGE = IPM.ITEMS.register(
             LibNames.BLAST_FURNACE_PIPE_GAUGE, () -> new BlockItem(ModBlocks.BLAST_FURNACE_PIPE_GAUGE.get(), defaultItemProperties())
     );
+    public static final RegistryObject<Item> BLAST_FURNACE_THERMOMETER = IPM.ITEMS.register(
+            LibNames.BLAST_FURNACE_THERMOMETER, () -> new BlockItem(ModBlocks.BLAST_FURNACE_THERMOMETER.get(), defaultItemProperties())
+    );
     public static final RegistryObject<Item> MONOLITHIC = IPM.ITEMS.register(
             LibNames.MONOLITHIC, () -> new BlockItem(ModBlocks.MONOLITHIC.get(), defaultItemProperties())
     );
@@ -174,7 +176,7 @@ public final class ModItems {
     );
 
     public static Item.Properties defaultItemProperties() {
-        return new Item.Properties().tab(CreativeTabHandler.MISC);
+        return new Item.Properties();
     }
 
     public static void init() {

@@ -22,11 +22,10 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -79,11 +78,11 @@ public class TileBlastFurnaceController extends TileMultiBlockOniichan implement
     };
     public final SharedStackHandler sharedStackHandler = new SharedStackHandler(fuelStackHandler, oreStackHandler);
     public final CapabilityProvider provider = new CapabilityProvider.Builder(this)
-            .put(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, airTank, Direction.UP)
-            .put(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, meltingTank, Direction.DOWN)
-            .put(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, sharedStackHandler)
-            .put(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, fuelStackHandler, Direction.UP)
-            .put(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, oreStackHandler, Direction.DOWN)
+            .put(ForgeCapabilities.FLUID_HANDLER, airTank, Direction.UP)
+            .put(ForgeCapabilities.FLUID_HANDLER, meltingTank, Direction.DOWN)
+            .put(ForgeCapabilities.ITEM_HANDLER, sharedStackHandler)
+            .put(ForgeCapabilities.ITEM_HANDLER, fuelStackHandler, Direction.UP)
+            .put(ForgeCapabilities.ITEM_HANDLER, oreStackHandler, Direction.DOWN)
             .build();
     public LiquidHeat liquidHeat;
     public ItemHeat itemHeat;

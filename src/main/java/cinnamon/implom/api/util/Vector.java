@@ -1,6 +1,5 @@
 package cinnamon.implom.api.util;
 
-import com.mojang.math.Vector3d;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -35,12 +34,6 @@ public class Vector {
         this.x = pos.getX();
         this.y = pos.getY();
         this.z = pos.getZ();
-    }
-
-    public Vector(Vector3d vec3d) {
-        this.x = vec3d.x;
-        this.y = vec3d.y;
-        this.z = vec3d.z;
     }
 
     public Vector(Vec3i vector3i) {
@@ -145,12 +138,8 @@ public class Vector {
         return new Vector(x, y, z);
     }
 
-    public Vector3d toVector3d() {
-        return new Vector3d(x, y, z);
-    }
-
     public Vec3i toVector3i() {
-        return new Vec3i(x, y, z);
+        return new Vec3i((int) x, (int) y, (int) z);
     }
 
     public static Vector fromSpherical(double yaw, double pitch) {

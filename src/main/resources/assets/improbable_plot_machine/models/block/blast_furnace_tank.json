@@ -1,9 +1,9 @@
 {
-    "parent": "improbable_plot_machine:blocks/block_front",
+    "parent": "improbable_plot_machine:block/block_front",
     "textures": {
-        "front": "improbable_plot_machine:blocks/blast_furnace_tank/back",
-        "back": "improbable_plot_machine:blocks/blast_furnace_tank/front",
-        "sides": "improbable_plot_machine:blocks/blast_furnace_tank/full",
-        "particle": "improbable_plot_machine:blocks/blast_furnace_tank/back"
+        "front": "improbable_plot_machine:block/blast_furnace_tank/back",
+        "back": "improbable_plot_machine:block/blast_furnace_tank/front",
+        "sides": "improbable_plot_machine:block/blast_furnace_tank/full",
+        "particle": "improbable_plot_machine:block/blast_furnace_tank/back"
     }
 }

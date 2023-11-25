@@ -1,9 +1,39 @@
 {
-    "parent": "improbable_plot_machine:block/block_front",
-    "textures": {
-        "front": "improbable_plot_machine:blocks/blast_furnace_thermometer/front",
-        "back": "improbable_plot_machine:blocks/blast_furnace_thermometer/back",
-        "sides": "improbable_plot_machine:blocks/blast_furnace_thermometer/front",
-        "particle": "improbable_plot_machine:blocks/blast_furnace_thermometer/back"
-    }
+	"parent": "block/cube",
+	"textures": {
+		"0": "improbable_plot_machine:block/blast_furnace_thermometer/back",
+		"1": "improbable_plot_machine:block/blast_furnace_thermometer/heat",
+		"2": "improbable_plot_machine:block/blast_furnace_thermometer/front_1",
+		"3": "improbable_plot_machine:block/blast_furnace_thermometer/front_0",
+		"4": "improbable_plot_machine:block/blast_furnace_thermometer/back",
+		"particle": "improbable_plot_machine:block/blast_furnace_thermometer/back"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#4"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#2"}
+			}
+		}
+	]
 }

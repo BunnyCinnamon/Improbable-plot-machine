@@ -24,6 +24,6 @@ public class EvaporationRecipe {
 	}
 
 	public int getTemperature(FluidStack stack) {
-		return recipeMatch.template.getFluid().getAttributes().getTemperature(stack);
+		return recipeMatch.template.getFluid().getFluidType().getTemperature(stack);
 	}
 }

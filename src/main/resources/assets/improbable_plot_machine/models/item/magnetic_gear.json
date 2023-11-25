@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "improbable_plot_machine:items/magnetic_gear"
+        "layer0": "improbable_plot_machine:item/magnetic_gear"
     }
 }

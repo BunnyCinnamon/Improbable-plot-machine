@@ -9,7 +9,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockBlastFurnaceInput extends HorizontalDirectionalBlock implements EntityBlock {
@@ -34,13 +34,23 @@ public class BlockBlastFurnaceInput extends HorizontalDirectionalBlock implement
     @Override
     public InteractionResult use(BlockState arg, Level arg2, BlockPos arg3, Player arg4, InteractionHand arg5, BlockHitResult arg6) {
         if (!arg2.isClientSide() && arg5 == InteractionHand.MAIN_HAND) {
-            if (!arg4.isShiftKeyDown()) {
-                WorldHelper.getTile(TileBlastFurnaceInput.class, arg2, arg3).ifPresent(tile -> {
-                    tile.filter = arg4.getItemInHand(arg5);
-                    tile.setChanged();
-                    tile.sync();
-                });
-            }
+            WorldHelper.getTile(TileBlastFurnaceInput.class, arg2, arg3).ifPresent(tile -> {
+                if (!arg4.isShiftKeyDown()) {
+                    ItemStack itemInHand = arg4.getItemInHand(arg5);
+                    if(!itemInHand.isEmpty()) {
+                        tile.filter = itemInHand;
+                    } else {
+                        ItemStack itemInside = tile.filter;
+                        WorldHelper.getCapability(arg2, tile.getOniichan(), CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP).ifPresent(cap -> {
+                            ItemStack itemStack = cap.extractItem(0, 0, false);
+                        });
+                    }
+                } else {
+                    tile.filter = ItemStack.EMPTY;
+                }
+                tile.setChanged();
+                tile.sync();
+            });
         }
         return InteractionResult.SUCCESS;
     }

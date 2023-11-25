@@ -5,8 +5,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -16,9 +14,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import org.apache.commons.lang3.NotImplementedException;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 public final class FluidRenderer extends RenderStateShard {
 
@@ -45,11 +46,11 @@ public final class FluidRenderer extends RenderStateShard {
             return;
         }
 
-        FluidAttributes attributes = fluidStack.getFluid().getAttributes();
-        TextureAtlasSprite still = FluidRenderer.getBlockSprite(attributes.getStillTexture(fluidStack));
-        int color = attributes.getColor(fluidStack);
-        brightness = FluidRenderer.withBlockLight(brightness, attributes.getLuminosity(fluidStack));
-        boolean upsideDown = attributes.isGaseous(fluidStack);
+        FluidType attributes = fluidStack.getFluid().getFluidType();
+        TextureAtlasSprite still = FluidRenderer.getBlockSprite(IClientFluidTypeExtensions.of(attributes).getStillTexture(fluidStack));
+        int color = IClientFluidTypeExtensions.of(attributes).getTintColor();
+        brightness = FluidRenderer.withBlockLight(brightness, attributes.getLightLevel(fluidStack));
+        boolean upsideDown = attributes.getDensity(fluidStack) <= 0;
 
         int yd = (int) (yMax - (int) yMin);
         int xd = maxPos.getX() - minPos.getX();
@@ -85,7 +86,7 @@ public final class FluidRenderer extends RenderStateShard {
                         FluidRenderer.putTexturedQuad(builder, matrix, still, from, to, Direction.UP, color, brightness, rotation, false);
                     if (y == 0) {
                         // increase Y position slightly to prevent z fighting on neighboring fluids
-                        from.setY(from.y() + 0.001f);
+                        from.y = (from.y() + 0.001f);
                         FluidRenderer.putTexturedQuad(builder, matrix, still, from, to, Direction.DOWN, color, brightness, rotation, false);
                     }
                 }

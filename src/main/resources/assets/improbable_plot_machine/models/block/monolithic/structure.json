@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "improbable_plot_machine:blocks/monolithic/structure/full"
+        "all": "improbable_plot_machine:block/monolithic/structure/full"
     }
 }

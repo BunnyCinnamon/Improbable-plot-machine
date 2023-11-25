@@ -1,6 +1,6 @@
 {
 	"parent": "block/cube_all",
 	"textures": {
-		"all": "improbable_plot_machine:blocks/blast_furnace_air_vent/on"
+		"all": "improbable_plot_machine:block/blast_furnace_air_vent/on"
 	}
 }

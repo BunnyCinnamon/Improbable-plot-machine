@@ -9,6 +9,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -18,22 +19,23 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class HotAirFluid extends FlowingFluid {
 
     @Override
-    public Fluid getFlowing() {
+    public @NotNull Fluid getFlowing() {
         return ModFluids.FLOWING_HOT_AIR.get();
     }
 
     @Override
-    public Fluid getSource() {
+    public @NotNull Fluid getSource() {
         return ModFluids.HOT_AIR.get();
     }
 
     @Override
-    public Item getBucket() {
+    public @NotNull Item getBucket() {
         return Items.WATER_BUCKET;
     }
 
@@ -49,7 +51,7 @@ public abstract class HotAirFluid extends FlowingFluid {
     }
 
     @Override
-    protected boolean canConvertToSource() {
+    protected boolean canConvertToSource(Level level) {
         return false;
     }
 
@@ -75,16 +77,12 @@ public abstract class HotAirFluid extends FlowingFluid {
     }
 
     @Override
-    protected FluidAttributes createAttributes() {
-        return net.minecraftforge.fluids.FluidAttributes.builder(
-                        new ResourceLocation(IPM.MOD_ID, "block/hot_air_still"),
-                        new ResourceLocation(IPM.MOD_ID, "block/hot_air_flow"))
-                .translationKey("block." + IPM.MOD_ID + ".hot_air")
-                .luminosity(0).density(100).viscosity(500).temperature(1300).build(this);
+    public @NotNull FluidType getFluidType() {
+        return ModFluids.HOT_AIR_TYPE.get();
     }
 
     @Override
-    public BlockState createLegacyBlock(FluidState arg) {
+    public @NotNull BlockState createLegacyBlock(FluidState arg) {
         return ModBlocks.HOT_AIR.get().defaultBlockState().setValue(LEVEL, getLegacyLevel(arg));
     }
 

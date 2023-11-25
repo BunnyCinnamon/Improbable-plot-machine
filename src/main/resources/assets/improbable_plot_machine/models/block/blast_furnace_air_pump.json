@@ -2,10 +2,10 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/cube",
 	"textures": {
-		"2": "improbable_plot_machine:blocks/blast_furnace_air_pump/back",
-		"3": "improbable_plot_machine:blocks/blast_furnace_air_pump/full",
-		"4": "improbable_plot_machine:blocks/blast_furnace_air_pump/front",
-		"particle": "improbable_plot_machine:blocks/blast_furnace_air_pump/front"
+		"2": "improbable_plot_machine:block/blast_furnace_air_pump/back",
+		"3": "improbable_plot_machine:block/blast_furnace_air_pump/full",
+		"4": "improbable_plot_machine:block/blast_furnace_air_pump/front",
+		"particle": "improbable_plot_machine:block/blast_furnace_air_pump/front"
 	},
 	"elements": [
 		{

@@ -39,8 +39,8 @@ public class TileBlastFurnaceControllerRenderer implements BlockEntityRenderer<T
 
             double basePosY = minStructurePos.getY() - tilePos.getY();
 
-            BlockPos minPos = new BlockPos(realMinPosX, basePosY, realMinPosZ);
-            BlockPos maxPos = new BlockPos(realMaxPosX, basePosY, realMaxPosZ);
+            BlockPos minPos = new BlockPos((int) realMinPosX, (int) basePosY, (int) realMinPosZ);
+            BlockPos maxPos = new BlockPos((int) realMaxPosX, (int) basePosY, (int) realMaxPosZ);
 
             int totalHeight = 1 + Math.max(0, maxStructurePos.getY() - minStructurePos.getY());
             int[] heights = calcLiquidHeights(fluids, tank.maxCapacity, totalHeight * 1000 - (int) (FluidRenderer.FLUID_OFFSET * 2000D), 100);

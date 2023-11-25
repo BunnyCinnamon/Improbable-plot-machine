@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "improbable_plot_machine:blocks/blast_furnace_pipe_gauge/full",
-		"particle": "improbable_plot_machine:blocks/blast_furnace_pipe_gauge/full"
+		"0": "improbable_plot_machine:block/blast_furnace_pipe_gauge/full",
+		"particle": "improbable_plot_machine:block/blast_furnace_pipe_gauge/full"
 	},
 	"elements": [
 		{
