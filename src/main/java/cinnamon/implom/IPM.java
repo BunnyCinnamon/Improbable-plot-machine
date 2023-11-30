@@ -95,15 +95,33 @@ public final class IPM {
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.FIRE_BRICKS_GLASS.get(), RenderType.cutoutMipped());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.FIRE_BRICKS_WINDOW.get(), RenderType.cutoutMipped());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLAST_FURNACE_CONTROLLER.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLAST_FURNACE_THERMOMETER.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLAST_FURNACE_PIPE_GAUGE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLAST_FURNACE_AIR_VENT.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_0.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_1.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_2.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_3.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_4.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_5.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_6.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_7.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_8.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_9.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_10.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_11.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_12.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_13.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_14.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MONOLITHIC_15.get(), RenderType.cutout());
         BlockEntityRenderers.register(ModTiles.BLAST_FURNACE_CONTROLLER.get(), TileBlastFurnaceControllerRenderer::new);
         BlockEntityRenderers.register(ModTiles.BLAST_FURNACE_INPUT.get(), TileBlastFurnaceInputRenderer::new);
     }
 
     public void buildContents(CreativeModeTabEvent.Register event) {
-        event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "example"), builder ->
+        event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "misc_tab"), builder ->
                 // Set name of tab to display
-                builder.title(Component.literal(IPM.MOD_ID + "." + "misc_tab"))
+                builder.title(Component.translatable(IPM.MOD_ID + "." + "misc_tab"))
                         // Set icon of creative tab
                         .icon(() -> new ItemStack(ModItems.FIRE_BRICK_BLOCK.get()))
                         // Add default items to tab

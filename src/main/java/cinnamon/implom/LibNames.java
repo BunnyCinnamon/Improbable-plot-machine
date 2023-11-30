@@ -14,6 +14,8 @@ public class LibNames {
 	public static final String CAPACITOR = "capacitor";
 	public static final String INDUCTOR = "inductor";
 	public static final String GOLD_PLATE = "gold_plate";
+	public static final String IRON_PLATE = "iron_plate";
+	public static final String COPPER_PLATE = "copper_plate";
 	public static final String MAGNETIC_PLATE = "magnetic_plate";
 	public static final String MAGNETIC_ACTUATOR = "magnetic_actuator";
 	public static final String ELECTROMAGNET = "electromagnet";

@@ -35,7 +35,7 @@ public class TileBlastFurnaceInputRenderer implements BlockEntityRenderer<TileBl
         var lightColor = LevelRenderer.getLightColor(tile.getLevel(), tile.getBlockPos().relative(direction));
         poseStack.translate(0.5, 0.5, 0.5);
         poseStack.translate(direction.getStepX() * 0.5, direction.getStepY(), direction.getStepZ() * 0.5);
-        poseStack.mulPose(new Quaternionf().rotationX(180.0f - direction.toYRot()));
+        poseStack.mulPose(new Quaternionf().rotationY((float) (Math.PI / 180d) * 180.0f - direction.toYRot()));
         if (!itemstack.isEmpty()) {
             poseStack.scale(0.5f, 0.5f, 0.5f);
             this.itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, lightColor, OverlayTexture.NO_OVERLAY, poseStack, buffer, tile.getLevel(), k);

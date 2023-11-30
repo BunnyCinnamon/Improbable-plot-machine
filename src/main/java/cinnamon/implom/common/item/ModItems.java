@@ -45,6 +45,12 @@ public final class ModItems {
     public static final RegistryObject<Item> GOLD_PLATE = IPM.ITEMS.register(
             LibNames.GOLD_PLATE, () -> new Item(defaultItemProperties())
     );
+    public static final RegistryObject<Item> IRON_PLATE = IPM.ITEMS.register(
+            LibNames.IRON_PLATE, () -> new Item(defaultItemProperties())
+    );
+    public static final RegistryObject<Item> COPPER_PLATE = IPM.ITEMS.register(
+            LibNames.COPPER_PLATE, () -> new Item(defaultItemProperties())
+    );
     public static final RegistryObject<Item> MAGNETIC_PLATE = IPM.ITEMS.register(
             LibNames.MAGNETIC_PLATE, () -> new Item(defaultItemProperties())
     );

@@ -1,0 +1,22 @@
+{
+  "name": "improbable_plot_machine:crafting_cube_megalith_huge/start_pool",
+
+  "fallback": "minecraft:empty",
+
+  "elements": [
+    {
+
+      "weight": 1,
+      "element": {
+
+        "location": "improbable_plot_machine:crafting_cube_megalith_huge",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

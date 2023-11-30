@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "improbable_plot_machine:item/iron_plate"
+    }
+}
